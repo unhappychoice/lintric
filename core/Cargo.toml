@@ -9,4 +9,8 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tree-sitter = "0.22.6"
 tree-sitter-rust = "0.21.2"
-tree-sitter-typescript = "0.21.1" # Add this line
+tree-sitter-typescript = "0.21.1"
+
+[[test]]
+name = "integration_test"
+path = "tests/integration_test.rs"

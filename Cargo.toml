@@ -12,5 +12,8 @@ edition = "2021"
 # This is a dummy package to satisfy Cargo's requirements for a workspace root.
 # It won't be compiled or published.
 
+[lib]
+path = "src/lib.rs" # Dummy path, this file won't actually exist
+
 [dependencies]
 # No dependencies for the workspace root itself

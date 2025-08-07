@@ -1,3 +1,7 @@
+import { SomeClass } from './some_module';
+import * as Utils from './utils';
+import DefaultExport from './default_module';
+
 interface Point {
     x: number;
     y: number;
@@ -29,4 +33,12 @@ function main() {
 
     console.log(p3);
     console.log(p4);
+}
+
+const instance = new SomeClass();
+const result = Utils.helperFunction();
+DefaultExport.init();
+
+function anotherFunction() {
+    console.log(instance, result);
 }
