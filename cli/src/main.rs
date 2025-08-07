@@ -59,6 +59,7 @@ fn main() {
         results: all_results,
         total_files_analyzed,
         total_overall_complexity_score,
+        average_complexity_score: total_overall_complexity_score / total_files_analyzed as f64,
     };
 
     if args.json {
@@ -95,6 +96,7 @@ fn main() {
         println!("\n--- Overall Report ---");
         println!("Total Files Analyzed: {}", overall_report.total_files_analyzed);
         println!("Total Overall Complexity Score: {:.2}", overall_report.total_overall_complexity_score);
+        println!("Average Complexity Score: {:.2}", overall_report.average_complexity_score);
     }
 }
 

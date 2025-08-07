@@ -13,5 +13,5 @@ pub fn analyze_code(
 ) -> Result<AnalysisResult, String> {
     let (graph, _line_nodes) = parse_code(content, &file_path)?;
 
-    calculate_metrics(graph, file_path)
+    calculate_metrics(graph, content, file_path)
 }

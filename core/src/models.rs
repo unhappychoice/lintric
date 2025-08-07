@@ -4,7 +4,7 @@ use serde::{Serialize, Deserialize};
 pub struct LineMetrics {
     pub line_number: usize,
     pub total_dependencies: usize,
-    pub dependency_distance_cost: usize,
+    pub dependency_distance_cost: f64,
     pub depth: usize,
     pub transitive_dependencies: usize,
 }
@@ -21,4 +21,5 @@ pub struct OverallAnalysisReport {
     pub results: Vec<AnalysisResult>,
     pub total_files_analyzed: usize,
     pub total_overall_complexity_score: f64,
+    pub average_complexity_score: f64,
 }

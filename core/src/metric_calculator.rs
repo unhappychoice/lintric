@@ -6,13 +6,14 @@ use crate::models::{AnalysisResult, LineMetrics};
 
 pub fn calculate_metrics(
     graph: DiGraph<usize, usize>,
+    content: &str,
     file_path: String,
 ) -> Result<AnalysisResult, String> {
     let mut overall_complexity_score = 0.0;
     let mut all_line_metrics: Vec<LineMetrics> = Vec::new();
 
     for node_index in graph.node_indices() {
-        let line_metrics = calculate_line_metrics(&graph, node_index);
+        let line_metrics = calculate_line_metrics(&graph, node_index, content);
 
         overall_complexity_score += (line_metrics.total_dependencies as f64)
             + (line_metrics.dependency_distance_cost as f64 / 10.0)
@@ -29,13 +30,13 @@ pub fn calculate_metrics(
     })
 }
 
-fn calculate_line_metrics(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> LineMetrics {
+fn calculate_line_metrics(graph: &DiGraph<usize, usize>, node_index: NodeIndex, content: &str) -> LineMetrics {
     let line_number = graph[node_index];
 
     let total_dependencies = total_dependencies(&graph, node_index);
-    let dependency_distance_cost: usize = dependency_distance_cost(&graph, node_index);
+    let dependency_distance_cost = dependency_distance_cost(&graph, node_index, content);
     let depth = dfs_longest_path(&graph, node_index, &mut HashMap::new());
-    let transitive_dependencies: usize = transitive_dependencies(&graph, node_index);
+    let transitive_dependencies = transitive_dependencies(&graph, node_index);
 
     LineMetrics {
         line_number,
@@ -50,8 +51,12 @@ fn total_dependencies(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> u
     graph.neighbors_directed(node_index, petgraph::Direction::Outgoing).count()
 }
 
-fn dependency_distance_cost(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> usize {
-    graph.edges_directed(node_index, petgraph::Direction::Outgoing).map(|edge| *edge.weight()).sum()
+fn dependency_distance_cost(graph: &DiGraph<usize, usize>, node_index: NodeIndex, content: &str) -> f64 {
+    let line_count = content.lines().count();
+    graph
+        .edges_directed(node_index, petgraph::Direction::Outgoing)
+        .map(|edge| (*edge.weight() as f64) / (line_count as f64))
+        .sum()
 }
 
 fn transitive_dependencies(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> usize {

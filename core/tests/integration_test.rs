@@ -11,14 +11,14 @@ fn test_analyze_code_basic() {
     let line1_metrics = &result.line_metrics[0];
     assert_eq!(line1_metrics.line_number, 1);
     assert_eq!(line1_metrics.total_dependencies, 0);
-    assert_eq!(line1_metrics.dependency_distance_cost, 0);
+    assert_eq!(line1_metrics.dependency_distance_cost, 0.0);
     assert_eq!(line1_metrics.depth, 0);
     assert_eq!(line1_metrics.transitive_dependencies, 0);
 
     let line2_metrics = &result.line_metrics[1];
     assert_eq!(line2_metrics.line_number, 2);
     assert_eq!(line2_metrics.total_dependencies, 1);
-    assert_eq!(line2_metrics.dependency_distance_cost, 1);
+    assert_eq!(line2_metrics.dependency_distance_cost, 0.5);
     assert_eq!(line2_metrics.depth, 1);
     assert_eq!(line2_metrics.transitive_dependencies, 1);
 
