@@ -3,6 +3,7 @@ use lintric_core::{analyze_code, AnalysisResult};
 use lintric_core::models::OverallAnalysisReport;
 use std::fs;
 use std::path::{Path, PathBuf};
+use comfy_table::{Table, Row, Cell};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -66,16 +67,30 @@ fn main() {
         if args.verbose {
             for result in &overall_report.results {
                 println!("\n--- Analysis for {} ---", result.file_path);
+                let mut table = Table::new();
+                table.set_header(vec!["Line", "Total Deps", "Dist Cost", "Depth", "Transitive Deps"]);
                 for metrics in &result.line_metrics {
-                    println!("Line {}: Total Dependencies = {}, Dependency Distance Cost = {}, Depth = {}, Transitive Dependencies = {}", 
-                               metrics.line_number, metrics.total_dependencies, metrics.dependency_distance_cost, metrics.depth, metrics.transitive_dependencies);
+                    table.add_row(Row::from(vec![
+                        Cell::new(metrics.line_number),
+                        Cell::new(metrics.total_dependencies),
+                        Cell::new(metrics.dependency_distance_cost),
+                        Cell::new(metrics.depth),
+                        Cell::new(metrics.transitive_dependencies),
+                    ]));
                 }
+                println!("{}", table);
                 println!("Overall Complexity Score: {:.2}", result.overall_complexity_score);
             }
         } else {
+            let mut table = Table::new();
+            table.set_header(vec!["File", "Overall Complexity Score"]);
             for result in &overall_report.results {
-                println!("File: {}, Overall Complexity Score: {:.2}", result.file_path, result.overall_complexity_score);
+                table.add_row(Row::from(vec![
+                    Cell::new(&result.file_path),
+                    Cell::new(format!("{:.2}", result.overall_complexity_score)),
+                ]));
             }
+            println!("{}", table);
         }
         println!("\n--- Overall Report ---");
         println!("Total Files Analyzed: {}", overall_report.total_files_analyzed);
