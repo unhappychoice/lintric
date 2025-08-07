@@ -1,6 +1,16 @@
+[workspace]
+members = [
+    "core",
+    "cli",
+]
+
 [package]
-name = "lintric"
+name = "lintric-workspace"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
+
+# This is a dummy package to satisfy Cargo's requirements for a workspace root.
+# It won't be compiled or published.
 
 [dependencies]
+# No dependencies for the workspace root itself
