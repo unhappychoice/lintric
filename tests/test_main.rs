@@ -96,3 +96,68 @@ fn test_json_output() {
 
     fs::remove_file(temp_file_path).expect("Unable to remove test file");
 }
+
+#[test]
+fn test_complex_rust_analysis() {
+    let fixture_path = "tests/fixtures/complex_rust_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--quiet")
+        .arg("--")
+        .arg("--verbose")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    println!("stdout: {}", stdout);
+    println!("stderr: {}", stderr);
+
+    assert!(output.status.success());
+    assert!(stdout.contains("Line 8: Total Dependencies = 1, Dependency Distance Cost = 1, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 16: Total Dependencies = 2, Dependency Distance Cost = 7, Depth = 1, Transitive Dependencies = 2"));
+    assert!(stdout.contains("Line 17: Total Dependencies = 2, Dependency Distance Cost = 9, Depth = 1, Transitive Dependencies = 2"));
+    assert!(stdout.contains("Line 22: Total Dependencies = 1, Dependency Distance Cost = 1, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 23: Total Dependencies = 1, Dependency Distance Cost = 1, Depth = 2, Transitive Dependencies = 2"));
+    assert!(stdout.contains("Line 27: Total Dependencies = 1, Dependency Distance Cost = 1, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 28: Total Dependencies = 2, Dependency Distance Cost = 3, Depth = 2, Transitive Dependencies = 2"));
+    assert!(stdout.contains("Line 30: Total Dependencies = 1, Dependency Distance Cost = 15, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 31: Total Dependencies = 1, Dependency Distance Cost = 11, Depth = 1, Transitive Dependencies = 1"));
+}
+
+#[test]
+fn test_complex_typescript_analysis() {
+    let fixture_path = "tests/fixtures/complex_typescript_code.ts";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--quiet")
+        .arg("--")
+        .arg("--verbose")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    println!("stdout: {}", stdout);
+    println!("stderr: {}", stderr);
+
+    assert!(output.status.success());
+    assert!(stdout.contains("Line 8: Total Dependencies = 1, Dependency Distance Cost = 1, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 16: Total Dependencies = 4, Dependency Distance Cost = 27, Depth = 1, Transitive Dependencies = 3"));
+    assert!(stdout.contains("Line 17: Total Dependencies = 4, Dependency Distance Cost = 31, Depth = 1, Transitive Dependencies = 3"));
+    assert!(stdout.contains("Line 23: Total Dependencies = 1, Dependency Distance Cost = 1, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 28: Total Dependencies = 2, Dependency Distance Cost = 3, Depth = 2, Transitive Dependencies = 2"));
+    assert!(stdout.contains("Line 29: Total Dependencies = 0, Dependency Distance Cost = 0, Depth = 0, Transitive Dependencies = 0"));
+    assert!(stdout.contains("Line 30: Total Dependencies = 1, Dependency Distance Cost = 15, Depth = 1, Transitive Dependencies = 1"));
+    assert!(stdout.contains("Line 31: Total Dependencies = 1, Dependency Distance Cost = 11, Depth = 1, Transitive Dependencies = 1"));
+}

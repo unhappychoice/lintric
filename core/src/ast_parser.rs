@@ -42,8 +42,7 @@ pub fn traverse(
 
     match node.kind() {
         "let_declaration" | "variable_declarator" | "function_declaration" | "class_declaration" => {
-            // Rust: let_declaration
-            // TypeScript: variable_declarator (for let/const/var), function_declaration, class_declaration
+            // Existing definition handling
             if let Some(pattern_node) = node.child_by_field_name("pattern") {
                 find_identifiers_in_pattern(pattern_node, source_code, definitions, language);
             } else { // For function_declaration and class_declaration, the identifier is often a direct child
@@ -56,12 +55,34 @@ pub fn traverse(
             }
         }
         "identifier" => {
-            let name = node.utf8_text(source_code.as_bytes()).unwrap().to_string();
-            if let Some(def_line) = definitions.get(&name) {
-                if let (Some(&from_node), Some(&to_node)) = (line_nodes.get(&start_line), line_nodes.get(def_line)) {
-                    if from_node != to_node { // 自己ループを避ける
-                        let distance = start_line.abs_diff(*def_line);
-                        graph.add_edge(from_node, to_node, distance);
+            // Only add dependency if this identifier is a usage, not a definition.
+            // A simple heuristic: if it's not a child of a "pattern" node, it's likely a usage.
+            let parent_kind = node.parent().map(|p| p.kind());
+            if parent_kind != Some("pattern") {
+                let name = node.utf8_text(source_code.as_bytes()).unwrap().to_string();
+                if let Some(def_line) = definitions.get(&name) {
+                    add_dependency(start_line, *def_line, graph, line_nodes);
+                }
+            }
+        }
+        "call_expression" => {
+            // Handle the function being called
+            if let Some(function_node) = node.child_by_field_name("function") {
+                if function_node.kind() == "identifier" {
+                    let name = function_node.utf8_text(source_code.as_bytes()).unwrap().to_string();
+                    if let Some(def_line) = definitions.get(&name) {
+                        add_dependency(start_line, *def_line, graph, line_nodes);
+                    }
+                }
+            }
+        }
+        "field_expression" => {
+            // Handle the operand (e.g., `p1` in `p1.x`)
+            if let Some(operand_node) = node.child_by_field_name("operand") {
+                if operand_node.kind() == "identifier" {
+                    let name = operand_node.utf8_text(source_code.as_bytes()).unwrap().to_string();
+                    if let Some(def_line) = definitions.get(&name) {
+                        add_dependency(start_line, *def_line, graph, line_nodes);
                     }
                 }
             }
@@ -90,5 +111,20 @@ pub fn find_identifiers_in_pattern(
     let mut cursor = node.walk();
     for child in node.children(&mut cursor) {
         find_identifiers_in_pattern(child, source_code, definitions, language);
+    }
+}
+
+// Helper function to add dependencies
+fn add_dependency(
+    from_line: usize,
+    to_line: usize,
+    graph: &mut DiGraph<usize, usize>,
+    line_nodes: &mut HashMap<usize, NodeIndex>,
+) {
+    if let (Some(&from_node), Some(&to_node)) = (line_nodes.get(&from_line), line_nodes.get(&to_line)) {
+        if from_node != to_node { // Avoid self-loops
+            let distance = from_line.abs_diff(to_line);
+            graph.add_edge(from_node, to_node, distance);
+        }
     }
 }
