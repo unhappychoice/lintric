@@ -52,8 +52,8 @@ fn test_multiple_files_analysis() {
     let _stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(output.status.success());
-    assert!(stdout.contains("| temp_test_dir/file1.rs | 2.25                     |"));
-    assert!(stdout.contains("| temp_test_dir/file2.ts | 2.25                     |"));
+    assert!(stdout.contains("| file1.rs | 2.25                     |"));
+    assert!(stdout.contains("| file2.ts | 2.25                     |"));
     assert!(stdout.contains("Total Files Analyzed: 2"));
 
     fs::remove_dir_all(&temp_dir).expect("Unable to remove test directory");
@@ -130,8 +130,6 @@ fn test_complex_typescript_analysis() {
 
     let stdout = String::from_utf8_lossy(&output.stdout);
     let _stderr = String::from_utf8_lossy(&output.stderr);
-
-    println!("{}", stdout);
 
     assert!(output.status.success());
     assert!(stdout.contains("| 12   | 1          | 0.6136363636363636   | 1     | 1               |"));
