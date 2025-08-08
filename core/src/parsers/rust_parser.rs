@@ -1,6 +1,6 @@
 use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
-use tree_sitter::{Language, Node, Parser as TreeSitterParser};
+use tree_sitter::{Node, Parser as TreeSitterParser};
 
 pub fn parse_rust_code(
     content: &str,
@@ -16,8 +16,8 @@ pub fn parse_rust_code(
     let mut graph: DiGraph<usize, usize> = DiGraph::new();
     let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
 
-    collect_definitions(tree.root_node(), content, &mut definitions, &tree_sitter_rust::language());
-    collect_dependencies(tree.root_node(), content, &mut graph, &mut line_nodes, &definitions, &tree_sitter_rust::language());
+    collect_definitions(tree.root_node(), content, &mut definitions);
+    collect_dependencies(tree.root_node(), content, &mut graph, &mut line_nodes, &definitions);
 
     Ok((graph, line_nodes))
 }
@@ -26,32 +26,41 @@ fn collect_definitions(
     node: Node,
     source_code: &str,
     definitions: &mut HashMap<String, usize>,
-    language: &Language,
 ) {
-    let start_line = node.start_position().row + 1;
+    let mut stack: Vec<Node> = Vec::new();
+    stack.push(node);
 
-    match node.kind() {
-        "let_declaration" | "variable_declarator" | "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" | "type_alias" => {
-            if let Some(pattern_node) = node.child_by_field_name("name") { // For function_item, struct_item etc.
-                let name = pattern_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-                definitions.insert(name, start_line);
-            } else if let Some(pattern_node) = node.child_by_field_name("pattern") { // For let_declaration
-                find_identifiers_in_pattern(pattern_node, source_code, definitions, language);
-            } else {
-                let mut cursor = node.walk();
-                for child in node.children(&mut cursor) {
-                    if child.kind() == "identifier" {
-                        find_identifiers_in_pattern(child, source_code, definitions, language);
+    while let Some(n) = stack.pop() {
+        let start_line = n.start_position().row + 1;
+
+        match n.kind() {
+            "let_declaration" | "variable_declarator" | "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" | "type_alias" => {
+                if let Some(pattern_node) = n.child_by_field_name("name") { // For function_item, struct_item etc.
+                    let name = pattern_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                    definitions.insert(name, start_line);
+                } else if let Some(pattern_node) = n.child_by_field_name("pattern") { // For let_declaration
+                    find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                } else {
+                    let mut cursor = n.walk();
+                    for child in n.children(&mut cursor) {
+                        if child.kind() == "identifier" {
+                            find_identifiers_in_pattern(child, source_code, definitions);
+                        }
                     }
                 }
             }
+            _ => {}
         }
-        _ => {}
-    }
 
-    for i in 0..node.child_count() {
-        if let Some(child) = node.child(i) {
-            collect_definitions(child, source_code, definitions, language);
+        // 子ノードを積む
+        let mut cursor = n.walk();
+        let mut children: Vec<Node> = Vec::new();
+        for child in n.children(&mut cursor) {
+            children.push(child);
+        }
+        // DFS の順序を大きく変えないために逆順で push
+        for child in children.into_iter().rev() {
+            stack.push(child);
         }
     }
 }
@@ -61,71 +70,79 @@ fn collect_dependencies(
     source_code: &str,
     graph: &mut DiGraph<usize, usize>,
     line_nodes: &mut HashMap<usize, NodeIndex>,
-    definitions: &HashMap<String, usize>,
-    language: &Language,
+    definitions: &HashMap<String, usize>
 ) {
-    let start_line = node.start_position().row + 1;
-    let end_line = node.end_position().row + 1;
+    let mut stack: Vec<Node> = Vec::new();
+    stack.push(node);
 
-    for line in start_line..=end_line {
-        if !line_nodes.contains_key(&line) {
-            let node_index = graph.add_node(line);
-            line_nodes.insert(line, node_index);
-        }
-    }
+    while let Some(n) = stack.pop() {
+        let start_line = n.start_position().row + 1;
+        let end_line = n.end_position().row + 1;
 
-    match node.kind() {
-        "identifier" => {
-            let parent_kind = node.parent().map(|p| p.kind());
-            let name = node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-
-            if parent_kind != Some("pattern") { // Avoid re-adding definitions
-                if let Some(def_line) = definitions.get(&name) {
-                    add_dependency(start_line, *def_line, graph, line_nodes);
-                }
+        for line in start_line..=end_line {
+            if !line_nodes.contains_key(&line) {
+                let node_index = graph.add_node(line);
+                line_nodes.insert(line, node_index);
             }
         }
-        "call_expression" => {
-            if let Some(function_node) = node.child_by_field_name("function") {
-                if function_node.kind() == "identifier" {
-                    let name = function_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+
+        match n.kind() {
+            "identifier" => {
+                let parent_kind = n.parent().map(|p| p.kind());
+                let name = n.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+
+                if parent_kind != Some("pattern") { // Avoid re-adding definitions
                     if let Some(def_line) = definitions.get(&name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }
                 }
             }
-        }
-        "field_expression" => {
-            if let Some(operand_node) = node.child_by_field_name("operand") {
-                if operand_node.kind() == "identifier" {
-                    let name = operand_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-                    if let Some(def_line) = definitions.get(&name) {
+            "call_expression" => {
+                if let Some(function_node) = n.child_by_field_name("function") {
+                    if function_node.kind() == "identifier" {
+                        let name = function_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                        if let Some(def_line) = definitions.get(&name) {
+                            add_dependency(start_line, *def_line, graph, line_nodes);
+                        }
+                    }
+                }
+            }
+            "field_expression" => {
+                if let Some(operand_node) = n.child_by_field_name("operand") {
+                    if operand_node.kind() == "identifier" {
+                        let name = operand_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                        if let Some(def_line) = definitions.get(&name) {
+                            add_dependency(start_line, *def_line, graph, line_nodes);
+                        }
+                    }
+                }
+                // Add dependency to the struct definition if the field access is on a struct instance
+                if let Some(type_node) = n.child_by_field_name("field") {
+                    let type_name = type_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                    if let Some(def_line) = definitions.get(&type_name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }
                 }
             }
-            // Add dependency to the struct definition if the field access is on a struct instance
-            if let Some(type_node) = node.child_by_field_name("field") {
-                let type_name = type_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-                if let Some(def_line) = definitions.get(&type_name) {
-                    add_dependency(start_line, *def_line, graph, line_nodes);
+            "struct_expression" => {
+                if let Some(type_node) = n.child_by_field_name("type") {
+                    let type_name = type_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                    if let Some(def_line) = definitions.get(&type_name) {
+                        add_dependency(start_line, *def_line, graph, line_nodes);
+                    }
                 }
             }
+            _ => {}
         }
-        "struct_expression" => {
-            if let Some(type_node) = node.child_by_field_name("type") {
-                let type_name = type_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-                if let Some(def_line) = definitions.get(&type_name) {
-                    add_dependency(start_line, *def_line, graph, line_nodes);
-                }
-            }
-        }
-        _ => {}
-    }
 
-    for i in 0..node.child_count() {
-        if let Some(child) = node.child(i) {
-            collect_dependencies(child, source_code, graph, line_nodes, definitions, language);
+        // 子ノードを積む
+        let mut cursor = n.walk();
+        let mut children: Vec<Node> = Vec::new();
+        for child in n.children(&mut cursor) {
+            children.push(child);
+        }
+        for child in children.into_iter().rev() {
+            stack.push(child);
         }
     }
 }
@@ -134,16 +151,24 @@ fn find_identifiers_in_pattern(
     node: Node,
     source_code: &str,
     definitions: &mut HashMap<String, usize>,
-    language: &Language,
 ) {
-    if node.kind() == "identifier" {
-        let name = node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-        definitions.insert(name.clone(), node.start_position().row + 1);
-    }
+    let mut stack: Vec<Node> = Vec::new();
+    stack.push(node);
 
-    let mut cursor = node.walk();
-    for child in node.children(&mut cursor) {
-        find_identifiers_in_pattern(child, source_code, definitions, language);
+    while let Some(n) = stack.pop() {
+        if n.kind() == "identifier" {
+            let name = n.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+            definitions.insert(name.clone(), n.start_position().row + 1);
+        }
+
+        let mut cursor = n.walk();
+        let mut children: Vec<Node> = Vec::new();
+        for child in n.children(&mut cursor) {
+            children.push(child);
+        }
+        for child in children.into_iter().rev() {
+            stack.push(child);
+        }
     }
 }
 

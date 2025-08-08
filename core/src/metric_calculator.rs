@@ -1,6 +1,6 @@
 use petgraph::graph::{DiGraph, NodeIndex};
 use petgraph::visit::Dfs;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use crate::models::{AnalysisResult, LineMetrics};
 
@@ -35,7 +35,7 @@ fn calculate_line_metrics(graph: &DiGraph<usize, usize>, node_index: NodeIndex, 
 
     let total_dependencies = total_dependencies(&graph, node_index);
     let dependency_distance_cost = dependency_distance_cost(&graph, node_index, content);
-    let depth = dfs_longest_path(&graph, node_index, &mut HashMap::new());
+    let depth = dfs_longest_path(&graph, node_index, &mut HashMap::new(), &mut HashSet::new());
     let transitive_dependencies = transitive_dependencies(&graph, node_index);
 
     LineMetrics {
@@ -74,17 +74,72 @@ fn transitive_dependencies(graph: &DiGraph<usize, usize>, node_index: NodeIndex)
 fn dfs_longest_path(
     graph: &DiGraph<usize, usize>,
     start_node: NodeIndex,
-    memo: &mut HashMap<NodeIndex, usize>
+    memo: &mut HashMap<NodeIndex, usize>,
+    on_path: &mut HashSet<NodeIndex>,
 ) -> usize {
     if let Some(&cached_depth) = memo.get(&start_node) {
         return cached_depth;
     }
 
-    let mut max_depth = 0;
-    for neighbor in graph.neighbors(start_node) {
-        max_depth = max_depth.max(1 + dfs_longest_path(graph, neighbor, memo));
+    // 反復 DFS 用の補助構造
+    on_path.clear(); // 呼び出し元から渡される集合を使い回す
+    let mut processed: HashSet<NodeIndex> = HashSet::new();
+    let mut neighbor_idx: HashMap<NodeIndex, usize> = HashMap::new();
+    let mut neighbors_map: HashMap<NodeIndex, Vec<NodeIndex>> = HashMap::new();
+    let mut stack: Vec<NodeIndex> = Vec::new();
+
+    stack.push(start_node);
+
+    while let Some(&node) = stack.last() {
+        if processed.contains(&node) {
+            stack.pop();
+            continue;
+        }
+
+        if !neighbors_map.contains_key(&node) {
+            let ns: Vec<NodeIndex> = graph.neighbors(node).collect();
+            neighbors_map.insert(node, ns);
+            neighbor_idx.insert(node, 0);
+            on_path.insert(node);
+        }
+
+        let idx = neighbor_idx.get_mut(&node).unwrap();
+        let neighbors = neighbors_map.get(&node).unwrap();
+
+        if *idx < neighbors.len() {
+            let nb = neighbors[*idx];
+            *idx += 1;
+
+            if processed.contains(&nb) {
+                continue;
+            }
+            if on_path.contains(&nb) {
+                // サイクル辺は最長経路の延長には使わない
+                continue;
+            }
+            if memo.contains_key(&nb) {
+                // 既に深さ計算済み
+                continue;
+            }
+
+            // 探索を更に深く進める
+            stack.push(nb);
+        } else {
+            // すべての隣接先を処理済み -> 深さを確定
+            let mut max_depth = 0usize;
+            for &nb in neighbors.iter() {
+                let dnb = *memo.get(&nb).unwrap_or(&0);
+                let cand = 1 + dnb;
+                if cand > max_depth {
+                    max_depth = cand;
+                }
+            }
+            memo.insert(node, max_depth);
+            processed.insert(node);
+            on_path.remove(&node);
+            stack.pop();
+        }
     }
 
-    memo.insert(start_node, max_depth);
-    max_depth
+    *memo.get(&start_node).unwrap_or(&0)
 }
