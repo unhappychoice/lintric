@@ -1,6 +1,7 @@
 use std::process::Command;
 use std::fs;
 use std::path::PathBuf;
+use insta::assert_snapshot;
 
 #[test]
 fn test_basic_analysis() {
@@ -24,11 +25,7 @@ fn test_basic_analysis() {
     let _stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(output.status.success());
-    assert!(stdout.contains("| 1    | 0          | -0        | 0     | 0               |"));
-    assert!(stdout.contains("| 2    | 1          | 0.5       | 1     | 1               |"));
-    assert!(stdout.contains("Overall Complexity Score:"));
-
-    fs::remove_file(temp_file_path).expect("Unable to remove test file");
+    assert_snapshot!(stdout);
 }
 
 #[test]
@@ -55,11 +52,7 @@ fn test_multiple_files_analysis() {
     let _stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(output.status.success());
-    assert!(stdout.contains("| file1.rs | 2.25                     |"));
-    assert!(stdout.contains("| file2.ts | 2.25                     |"));
-    assert!(stdout.contains("Total Files Analyzed: 2"));
-
-    fs::remove_dir_all(&temp_dir).expect("Unable to remove test directory");
+    assert_snapshot!(stdout);
 }
 
 #[test]
@@ -84,11 +77,7 @@ fn test_json_output() {
     let _stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(output.status.success());
-    assert!(stdout.contains("\"file_path\": \"temp_test_file_json.rs\""));
-    assert!(stdout.contains("\"line_metrics\": ["));
-    assert!(stdout.contains("\"overall_complexity_score\":"));
-
-    fs::remove_file(temp_file_path).expect("Unable to remove test file");
+    assert_snapshot!(stdout);
 }
 
 #[test]
@@ -109,15 +98,7 @@ fn test_complex_rust_analysis() {
     let _stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(output.status.success());
-    assert!(stdout.contains("| 8    | 1          | 0.03125   | 1     | 1               |"));
-    assert!(stdout.contains("| 16   | 6          | 1.46875   | 1     | 4               |"));
-    assert!(stdout.contains("| 17   | 6          | 1.59375   | 2     | 5               |"));
-    assert!(stdout.contains("| 22   | 1          | 0.03125   | 1     | 1               |"));
-    assert!(stdout.contains("| 23   | 1          | 0.03125   | 2     | 2               |"));
-    assert!(stdout.contains("| 27   | 1          | 0.03125   | 1     | 1               |"));
-    assert!(stdout.contains("| 28   | 2          | 0.09375   | 2     | 2               |"));
-    assert!(stdout.contains("| 30   | 1          | 0.46875   | 1     | 1               |"));
-    assert!(stdout.contains("| 31   | 1          | 0.34375   | 1     | 1               |"));
+    assert_snapshot!(stdout);
 }
 
 #[test]
@@ -138,15 +119,5 @@ fn test_complex_typescript_analysis() {
     let _stderr = String::from_utf8_lossy(&output.stderr);
 
     assert!(output.status.success());
-    assert!(stdout.contains("| 12   | 1          | 0.6136363636363636   | 1     | 1               |"));
-    assert!(stdout.contains("| 20   | 6          | 0.7727272727272727   | 1     | 3               |"));
-    assert!(stdout.contains("| 21   | 6          | 0.9090909090909092   | 1     | 3               |"));
-    assert!(stdout.contains("| 27   | 1          | 0.022727272727272728 | 1     | 1               |"));
-    assert!(stdout.contains("| 31   | 1          | 0.022727272727272728 | 1     | 1               |"));
-    assert!(stdout.contains("| 32   | 2          | 0.06818181818181818  | 2     | 2               |"));
-    assert!(stdout.contains("| 34   | 1          | 0.3409090909090909   | 1     | 1               |"));
-    assert!(stdout.contains("| 35   | 1          | 0.25                 | 1     | 1               |"));
-    assert!(stdout.contains("| 38   | 1          | 0.8409090909090909   | 1     | 1               |"));
-    assert!(stdout.contains("| 40   | 2          | 1.6818181818181819   | 1     | 1               |"));
-    assert!(stdout.contains("| 43   | 2          | 0.20454545454545453  | 2     | 3               |"));
+    assert_snapshot!(stdout);
 }

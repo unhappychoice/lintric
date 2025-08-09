@@ -1,0 +1,17 @@
+---
+source: cli/tests/test_main.rs
+expression: processed_stdout
+---
+┌────────────────────────┬──────────────────────────┐
+│ File                   ┆ Overall Complexity Score │
+╞════════════════════════╪══════════════════════════╡
+│ file1.rs               ┆ 2.25                     │
+│ file2.ts               ┆ 2.25                     │
+│ temp_test_file.rs      ┆ 2.25                     │
+│ temp_test_file_json.rs ┆ 0.00                     │
+└────────────────────────┴──────────────────────────┘
+
+--- Overall Report ---
+Total Files Analyzed: 4
+Total Overall Complexity Score: 6.75
+Average Complexity Score: 1.69

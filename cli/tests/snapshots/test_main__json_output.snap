@@ -1,0 +1,24 @@
+---
+source: cli/tests/test_main.rs
+expression: processed_stdout
+---
+{
+  "results": [
+    {
+      "file_path": "tmp/temp_test_file_json.rs",
+      "line_metrics": [
+        {
+          "line_number": 1,
+          "total_dependencies": 0,
+          "dependency_distance_cost": -0.0,
+          "depth": 0,
+          "transitive_dependencies": 0
+        }
+      ],
+      "overall_complexity_score": 0.0
+    }
+  ],
+  "total_files_analyzed": 1,
+  "total_overall_complexity_score": 0.0,
+  "average_complexity_score": 0.0
+}

@@ -1,0 +1,24 @@
+---
+source: core/tests/typescript/mod.rs
+expression: "serde_json::to_string_pretty(&result).unwrap()"
+---
+{
+  "file_path": "test.ts",
+  "line_metrics": [
+    {
+      "line_number": 1,
+      "total_dependencies": 0,
+      "dependency_distance_cost": -0.0,
+      "depth": 0,
+      "transitive_dependencies": 0
+    },
+    {
+      "line_number": 2,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 1.0,
+      "depth": 1,
+      "transitive_dependencies": 1
+    }
+  ],
+  "overall_complexity_score": 3.3000000000000003
+}

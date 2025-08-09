@@ -1,5 +1,6 @@
-use lintric_core::{analyze_code, AnalysisResult, LineMetrics};
-use crate::assert_analysis_results_match;
+use lintric_core::{analyze_code};
+use insta::assert_snapshot;
+use serde_json;
 
 #[test]
 fn test_analyze_code_basic() {
@@ -10,16 +11,7 @@ let b = a + 1;
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
-    let expected_result = AnalysisResult {
-        file_path: file_path,
-        line_metrics: vec![
-            LineMetrics { line_number: 1, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 2, total_dependencies: 1, dependency_distance_cost: 0.5, depth: 1, transitive_dependencies: 1 },
-        ],
-        overall_complexity_score: 2.25,
-    };
-
-    assert_analysis_results_match!(result, expected_result);
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
 
 #[test]
@@ -35,20 +27,7 @@ fn main() {
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
-    let expected_result = AnalysisResult {
-        file_path: file_path,
-        line_metrics: vec![
-            LineMetrics { line_number: 1, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 2, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 3, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 4, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 5, total_dependencies: 2, dependency_distance_cost: 1.3333333333333333, depth: 1, transitive_dependencies: 1 },
-            LineMetrics { line_number: 6, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-        ],
-        overall_complexity_score: 3.3333333333333335,
-    };
-
-    assert_analysis_results_match!(result, expected_result);
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
 
 #[test] fn test_rust_struct_field_access_dependency() {
@@ -62,17 +41,32 @@ fn main() {
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
-    let expected_result = AnalysisResult {
-        file_path: file_path,
-        line_metrics: vec![
-            LineMetrics { line_number: 1, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 2, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 3, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-            LineMetrics { line_number: 4, total_dependencies: 1, dependency_distance_cost: 0.2, depth: 1, transitive_dependencies: 1, },
-            LineMetrics { line_number: 5, total_dependencies: 0, dependency_distance_cost: 0.0, depth: 0, transitive_dependencies: 0 },
-        ],
-        overall_complexity_score: 2.22,
-    };
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+}
 
-    assert_analysis_results_match!(result, expected_result);
+#[test]
+fn test_rust_use_statements_dependency() {
+    let code = r#"
+mod my_module {
+    pub struct MyStruct;
+    pub fn my_function() {}
+    pub const MY_CONST: i32 = 1;
+}
+
+use my_module::MyStruct;
+use my_module::{my_function, MY_CONST};
+use my_module::*;
+use my_module as mm;
+
+fn main() {
+    let s = MyStruct;
+    my_function();
+    let c = MY_CONST;
+    let s2 = mm::MyStruct;
+}
+"#.trim();
+    let file_path = "test.rs".to_string();
+    let result = analyze_code(code, file_path.clone()).unwrap();
+
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
