@@ -1,16 +1,17 @@
 use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
+use crate::parsers::{rust_parser, typescript_parser};
 
 pub fn parse_code(
     content: &str,
     file_path: &str,
 ) -> Result<(DiGraph<usize, usize>, HashMap<usize, NodeIndex>), String> {
     if file_path.ends_with(".rs") {
-        crate::parsers::rust_parser::parse_rust_code(content)
+        rust_parser::parse_rust_code(content)
     } else if file_path.ends_with(".ts") {
-        crate::parsers::typescript_parser::parse_typescript_code(content, false)
+        typescript_parser::parse_typescript_code(content, false)
     } else if file_path.ends_with(".tsx") {
-        crate::parsers::typescript_parser::parse_typescript_code(content, true)
+        typescript_parser::parse_typescript_code(content, true)
     } else {
         Err(format!("Unsupported file extension for {}. Only .rs, .ts, .tsx are supported.", file_path))
     }

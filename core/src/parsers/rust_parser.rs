@@ -49,6 +49,32 @@ fn collect_definitions(
                     }
                 }
             }
+            "use_declaration" => {
+                let mut use_cursor = n.walk();
+                for use_child in n.children(&mut use_cursor) {
+                    match use_child.kind() {
+                        "scoped_identifier" | "identifier" => {
+                            let name = use_child.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                            definitions.insert(name, start_line);
+                        }
+                        "use_clause" => {
+                            let mut clause_cursor = use_child.walk();
+                            for clause_child in use_child.children(&mut clause_cursor) {
+                                if clause_child.kind() == "identifier" || clause_child.kind() == "scoped_identifier" {
+                                    let name = clause_child.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                    definitions.insert(name, start_line);
+                                } else if clause_child.kind() == "use_as_clause" {
+                                    if let Some(alias_node) = clause_child.child_by_field_name("alias") {
+                                        let name = alias_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                        definitions.insert(name, start_line);
+                                    }
+                                }
+                            }
+                        }
+                        _ => {}
+                    }
+                }
+            }
             _ => {}
         }
 
