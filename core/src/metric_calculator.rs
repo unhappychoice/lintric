@@ -8,6 +8,7 @@ pub fn calculate_metrics(
     graph: DiGraph<usize, usize>,
     content: &str,
     file_path: String,
+    original_file_path: String,
 ) -> Result<AnalysisResult, String> {
     let mut overall_complexity_score = 0.0;
     let mut all_line_metrics: Vec<LineMetrics> = Vec::new();
@@ -25,6 +26,7 @@ pub fn calculate_metrics(
 
     Ok(AnalysisResult {
         file_path,
+        original_file_path,
         line_metrics: all_line_metrics,
         overall_complexity_score,
     })

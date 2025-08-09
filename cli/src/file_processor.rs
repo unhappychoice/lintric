@@ -17,7 +17,7 @@ pub fn process_file(path: &Path, base_path: Option<&Path>) -> Result<AnalysisRes
         path.to_string_lossy().into_owned()
     };
     
-    analyze_code(&content, display_path)
+    analyze_code(&content, display_path, path.to_string_lossy().into_owned())
 }
 
 /// Process a directory recursively and return analysis results for all supported files

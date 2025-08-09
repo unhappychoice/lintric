@@ -10,8 +10,9 @@ use metric_calculator::calculate_metrics;
 pub fn analyze_code(
     content: &str,
     file_path: String,
+    original_file_path: String,
 ) -> Result<AnalysisResult, String> {
     let (graph, _line_nodes) = parse_code(content, &file_path)?;
 
-    calculate_metrics(graph, content, file_path)
+    calculate_metrics(graph, content, file_path, original_file_path)
 }

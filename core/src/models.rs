@@ -12,6 +12,7 @@ pub struct LineMetrics {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AnalysisResult {
     pub file_path: String,
+    pub original_file_path: String,
     pub line_metrics: Vec<LineMetrics>,
     pub overall_complexity_score: f64,
 }

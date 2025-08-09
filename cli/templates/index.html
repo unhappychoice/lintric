@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lintric Analysis Report</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 960px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eceff1; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #34495e; margin-top: 30px; margin-bottom: 15px; }
+        p { line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #dfe6e9; padding: 12px 15px; text-align: left; }
+        th { background-color: #e9f0f3; font-weight: 600; color: #555; }
+        tr:nth-child(even) { background-color: #f9fbfb; }
+        tr:hover { background-color: #f0f4f7; }
+        .file-link { text-decoration: none; color: #3498db; font-weight: 500; }
+        .file-link:hover { text-decoration: underline; }
+        .summary-box { background-color: #ecf0f1; padding: 15px 20px; border-radius: 5px; margin-bottom: 20px; }
+        .summary-box p { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lintric Analysis Report</h1>
+        <div class="summary-box">
+            <p><strong>Total files analyzed:</strong> {{ total_files_analyzed }}</p>
+            <p><strong>Average complexity score:</strong> {{ average_complexity_score | float | round(precision=2) }}</p>
+        </div>
+        <h2>Analyzed Files</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Overall Complexity Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in results %}
+                <tr>
+                    <td><a href="{{ file.html_file_name }}" class="file-link">{{ file.file_path }}</a></td>
+                    <td>{{ file.overall_complexity_score | float | round(precision=2) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

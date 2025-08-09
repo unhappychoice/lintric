@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lintric Analysis: {{ file_path }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h1 { color: #2c3e50; border-bottom: 2px solid #eceff1; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #34495e; margin-top: 30px; margin-bottom: 15px; }
+        pre {
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            overflow-x: auto;
+            color: #f8f8f2;
+            font-family: monospace;
+            line-height: 1.5;
+            tab-size: 4;
+
+            code {
+                display: flex;
+                flex-direction: column;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        .line { display: flex; flex-direction: row; }
+        .line:hover { background-color: #313131; }
+        .line:last-child { border-bottom: none; }
+        .line-number { flex-shrink: 0; width: 50px; text-align: right; padding-right: 15px; color: #666; user-select: none; font-size: 0.9em; }
+        .code { flex-grow: 1; padding-right: 10px; white-space: pre-wrap; word-break: break-all; }
+        .metrics { flex-shrink: 0; width: 250px; padding-left: 15px; color: #bbb; font-size: 0.85em; border-left: 1px solid rgba(255,255,255,0.1); }
+        .metric-value { font-weight: bold; color: #a6e22e; }
+        .line-highlight-none {}
+        .line-highlight-low.metric-value { color: #a6e22e; }
+        .line-highlight-medium.metric-value { color: #fd971f; }
+        .line-highlight-high.metric-value { color: #f92672; }
+        .overall-score { font-weight: bold; color: #e6db74; }
+        .back-link { display: block; margin-top: 20px; color: #3498db; text-decoration: none; font-weight: 500; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analysis for: {{ file_path }}</h1>
+        <p>Overall Complexity Score: <span class="overall-score">{{ overall_complexity_score | float | round(precision=2) }}</span></p>
+        <pre>
+            <code class="language-{{ language_extension | safe }}">
+                {% for line in code_lines -%}
+                <div class="line">
+                    <div class="line-number">{{ line.line_number }}</div>
+                    <div class="code">{{ line.code | safe }}</div>
+                    {{ line.metrics_str | safe }}
+                </div>
+                {%- endfor %}
+            </code>
+        </pre>
+        <a href="index.html" class="back-link">Back to Index</a>
+    </div>
+</body>
+</html>

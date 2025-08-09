@@ -4,6 +4,7 @@ use lintric_core::AnalysisResult;
 
 mod display;
 mod file_processor;
+mod html_output; // Add this line
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -19,6 +20,10 @@ struct Args {
     /// Show verbose output (line-by-line metrics)
     #[arg(long, default_value_t = false)]
     verbose: bool,
+
+    /// Output in HTML format
+    #[arg(long, default_value_t = false)]
+    html: bool, // Add this line
 }
 
 fn main() {
@@ -50,6 +55,8 @@ fn main() {
         display::display_json(&overall_report);
     } else if args.verbose {
         display::display_verbose(&overall_report);
+    } else if args.html { // Add this line
+        html_output::generate_html_report(&overall_report); // Add this line
     } else {
         display::display_summary(&overall_report);
     }
