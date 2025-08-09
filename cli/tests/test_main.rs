@@ -4,8 +4,11 @@ use std::path::PathBuf;
 
 #[test]
 fn test_basic_analysis() {
-    let temp_file_path = "temp_test_file.rs";
-    fs::write(temp_file_path, "let a = 1;\nlet b = a + 1;\n").expect("Unable to write test file");
+    let temp_dir = PathBuf::from("tmp");
+    fs::create_dir_all(&temp_dir).expect("Unable to create test directory");
+
+    let temp_file_path = temp_dir.join("temp_test_file.rs");
+    fs::write(&temp_file_path, "let a = 1;\nlet b = a + 1;\n").expect("Unable to write test file");
 
     let output = Command::new("cargo")
         .arg("run")
@@ -13,7 +16,7 @@ fn test_basic_analysis() {
         .arg("lintric-cli")
         .arg("--")
         .arg("--verbose")
-        .arg(temp_file_path)
+        .arg(temp_file_path.to_str().unwrap())
         .output()
         .expect("Failed to execute command");
 
@@ -30,7 +33,7 @@ fn test_basic_analysis() {
 
 #[test]
 fn test_multiple_files_analysis() {
-    let temp_dir = PathBuf::from("temp_test_dir");
+    let temp_dir = PathBuf::from("tmp");
     fs::create_dir_all(&temp_dir).expect("Unable to create test directory");
 
     let file1_path = temp_dir.join("file1.rs");
@@ -61,8 +64,11 @@ fn test_multiple_files_analysis() {
 
 #[test]
 fn test_json_output() {
-    let temp_file_path = "temp_test_file_json.rs";
-    fs::write(temp_file_path, "let val = 10;\n").expect("Unable to write test file");
+    let temp_dir = PathBuf::from("tmp");
+    fs::create_dir_all(&temp_dir).expect("Unable to create test directory");
+
+    let temp_file_path = temp_dir.join("temp_test_file_json.rs");
+    fs::write(&temp_file_path, "let val = 10;").expect("Unable to write test file");
 
     let output = Command::new("cargo")
         .arg("run")
@@ -70,7 +76,7 @@ fn test_json_output() {
         .arg("lintric-cli")
         .arg("--")
         .arg("--json")
-        .arg(temp_file_path)
+        .arg(&temp_file_path)
         .output()
         .expect("Failed to execute command");
 
@@ -87,7 +93,7 @@ fn test_json_output() {
 
 #[test]
 fn test_complex_rust_analysis() {
-    let fixture_path = "../core/tests/fixtures/complex_rust_code.rs";
+    let fixture_path = "../core/tests/rust/fixtures/complex_rust_code.rs";
 
     let output = Command::new("cargo")
         .arg("run")
@@ -116,7 +122,7 @@ fn test_complex_rust_analysis() {
 
 #[test]
 fn test_complex_typescript_analysis() {
-    let fixture_path = "../core/tests/fixtures/complex_typescript_code.ts";
+    let fixture_path = "../core/tests/typescript/fixtures/complex_typescript_code.ts";
 
     let output = Command::new("cargo")
         .arg("run")
