@@ -1,3 +1,10 @@
-/target
-tmp/
-.lintric/output
+# Rust
+target/
+*.rs.bk
+
+# IDEs
+.idea/
+
+# Custom
+/cli/tmp/
+.lintric/output/
