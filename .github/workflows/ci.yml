@@ -52,11 +52,11 @@ jobs:
         run: cargo install cargo-tarpaulin
       - name: Run tarpaulin
         run: cargo tarpaulin --out Lcov
-      - name: Upload to coveralls
-        uses: coverallsapp/github-action@master
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          github-token: ${{ secrets.github_token }}
-          path-to-lcov: lcov.info
+          files: lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }} # Codecov token (optional)
 
   audit:
     name: Security audit
