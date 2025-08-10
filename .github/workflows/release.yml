@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create release on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - run: cargo build --release
+      - name: Archive binary
+        run: |
+          mkdir -p target/release/archives
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            7z a target/release/archives/lintric-windows.zip .\target\release\lintric.exe
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            tar -czf target/release/archives/lintric-macos.tar.gz -C target/release lintric
+          else
+            tar -czf target/release/archives/lintric-linux.tar.gz -C target/release lintric
+          fi
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/archives/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
