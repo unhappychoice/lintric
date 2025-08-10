@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        rust: [1.89.0, 1.90.0, 1.91.0]
+        rust: [1.89.0, stable]
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
@@ -51,12 +51,12 @@ jobs:
       - name: Install tarpaulin
         run: cargo install cargo-tarpaulin
       - name: Run tarpaulin
-        run: cargo tarpaulin --out Xml
+        run: cargo tarpaulin --out Lcov
       - name: Upload to coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
-          path-to-lcov: cobertura.xml
+          path-to-lcov: lcov.info
 
   audit:
     name: Security audit
