@@ -25,39 +25,35 @@ cargo build --release
 
 This will create an executable in `target/release/lintric`.
 
-## Usage
+For more detailed installation and usage instructions for the CLI, see [cli/README.md](cli/README.md).
 
-To analyze a Rust source code file, run the following command:
+## Core Library
 
-```bash
-target/release/lintric <path_to_your_file.rs>
-```
+The core logic for metric calculation is provided by the `lintric-core` library. For details on the metrics and their explanations, see [core/README.md](core/README.md).
 
-For example:
+## Development
 
-```bash
-target/release/lintric src/main.rs
-```
-
-To output the results in JSON format, use the `--json` flag:
+To contribute to Lintric, use the following commands:
 
 ```bash
-target/release/lintric --json <path_to_your_file.rs>
+# Build
+cargo build --release
+
+# Testing & Quality: Run tests, check formatting, and analyze code quality
+cargo test --workspace
+cargo fmt -- --check
+cargo clippy --workspace -- -D warnings
+
+# Update Snapshots: Update snapshot files for tests
+INSTA_UPDATE=always cargo test --workspace
+
+# Coverage: Generate code coverage report
+# Install cargo-tarpaulin if not already installed
+# cargo install cargo-tarpaulin
+cargo tarpaulin --workspace --out Lcov
+
+# Security Audit: Perform a security audit of dependencies
+# Install cargo-audit if not already installed
+# cargo install cargo-audit
+cargo audit
 ```
-
-## Metrics Explained
-
-### Total Dependencies
-This metric represents the total number of lines that a given line of code directly depends on. A higher number indicates more direct dependencies, potentially suggesting higher coupling.
-
-### Dependency Distance Cost
-This metric calculates a cost based on the distance (line numbers) between dependent lines. Dependencies that span a greater number of lines incur a higher cost. This can indicate that related code is not co-located, potentially making the code harder to understand and maintain.
-
-### Dependency Tree Complexity - Depth
-This metric measures the maximum depth of the dependency tree originating from a given line. A deeper tree suggests a longer chain of dependencies, which might imply a more complex flow of control or data, and potentially more difficult debugging.
-
-### Dependency Tree Complexity - Transitive Dependency Size
-This metric counts the total number of lines that a given line transitively depends on (i.e., direct dependencies, their dependencies, and so on). A larger transitive dependency size indicates a broader impact of changes to that line, suggesting higher overall coupling and potential for ripple effects.
-
-### Overall Complexity Score
-This is a combined metric that aggregates the above individual metrics into a single score. It provides a holistic view of the line's complexity and maintainability. The exact weighting of individual metrics can be adjusted based on further analysis and project needs.
