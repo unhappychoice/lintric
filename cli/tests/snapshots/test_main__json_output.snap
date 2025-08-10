@@ -1,6 +1,5 @@
 ---
 source: cli/tests/test_main.rs
-assertion_line: 80
 expression: stdout
 ---
 {
@@ -14,7 +13,8 @@ expression: stdout
           "total_dependencies": 0,
           "dependency_distance_cost": -0.0,
           "depth": 0,
-          "transitive_dependencies": 0
+          "transitive_dependencies": 0,
+          "dependent_lines": []
         }
       ],
       "overall_complexity_score": 0.0

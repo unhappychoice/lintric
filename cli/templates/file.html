@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lintric Analysis: {{ file_path }}</title>
     <style>
+        {{ highlight_css | safe }}
         body { font-family: sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         h1 { color: #2c3e50; border-bottom: 2px solid #eceff1; padding-bottom: 10px; margin-bottom: 20px; }
         h2 { color: #34495e; margin-top: 30px; margin-bottom: 15px; }
         pre {
-            background-color: #2d2d2d;
+            /* syntectが生成するpreタグのスタイルを上書き */
+            background-color: #2b303b; /* base16-ocean.darkの背景色 */
             border-radius: 5px;
             overflow-x: auto;
-            color: #f8f8f2;
             font-family: monospace;
             line-height: 1.5;
             tab-size: 4;
-
-            code {
-                display: flex;
-                flex-direction: column;
-                margin: 0;
-                padding: 0;
-            }
+            padding: 10px; /* パディングを追加 */
+        }
+        pre code {
+            /* syntectが生成するcodeタグのスタイルを上書き */
+            display: block; /* flexを解除 */
+            margin: 0;
+            padding: 0;
         }
         .line { display: flex; flex-direction: row; }
         .line:hover { background-color: #313131; }
@@ -39,6 +40,23 @@
         .overall-score { font-weight: bold; color: #e6db74; }
         .back-link { display: block; margin-top: 20px; color: #3498db; text-decoration: none; font-weight: 500; }
         .back-link:hover { text-decoration: underline; }
+        .dependency-tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+            white-space: pre; /* Preserve whitespace for code */
+            max-width: 600px; /* Limit tooltip width */
+            overflow-x: auto; /* Allow horizontal scrolling for long lines */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .highlighted-line {
+            background-color: #4a4a4a; /* 例: ハイライト色 */
+        }
     </style>
 </head>
 <body>
@@ -48,7 +66,7 @@
         <pre>
             <code class="language-{{ language_extension | safe }}">
                 {% for line in code_lines -%}
-                <div class="line">
+                <div class="line" data-line-number="{{ line.line_number }}" data-dependent-lines="{{ line.dependent_lines | join(sep=',') }}">
                     <div class="line-number">{{ line.line_number }}</div>
                     <div class="code">{{ line.code | safe }}</div>
                     {{ line.metrics_str | safe }}
@@ -58,5 +76,53 @@
         </pre>
         <a href="index.html" class="back-link">Back to Index</a>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lines = document.querySelectorAll('.line');
+            const codeContainer = document.querySelector('pre code');
+            let tooltip = document.createElement('div');
+            tooltip.className = 'dependency-tooltip';
+            document.body.appendChild(tooltip);
+
+            lines.forEach(lineDiv => {
+                lineDiv.addEventListener('mouseenter', (event) => {
+                    const dependentLinesStr = lineDiv.dataset.dependentLines;
+                    if (dependentLinesStr) {
+                        const dependentLineNumbers = dependentLinesStr.split(',').map(Number).filter(n => !isNaN(n) && n > 0);
+                        if (dependentLineNumbers.length > 0) {
+                            let tooltipContent = 'Dependent on lines:\n';
+                            dependentLineNumbers.forEach(depLineNum => {
+                                const targetLineDiv = codeContainer.querySelector(`.line[data-line-number="${depLineNum}"]`);
+                                if (targetLineDiv) {
+                                    const code = targetLineDiv.querySelector('.code').textContent;
+                                    tooltipContent += `${depLineNum}: ${code}\n`;
+                                    // ハイライトを追加
+                                    targetLineDiv.classList.add('highlighted-line');
+                                }
+                            });
+                            tooltip.textContent = tooltipContent.trim();
+                            tooltip.style.display = 'block';
+                            tooltip.style.left = `${event.pageX + 15}px`;
+                            tooltip.style.top = `${event.pageY + 15}px`;
+                        }
+                    }
+                });
+
+                lineDiv.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                    // すべてのハイライトを削除
+                    lines.forEach(l => l.classList.remove('highlighted-line'));
+                });
+
+                lineDiv.addEventListener('mousemove', (event) => {
+                    if (tooltip.style.display === 'block') {
+                        tooltip.style.left = `${event.pageX + 15}px`;
+                        tooltip.style.top = `${event.pageY + 15}px`;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

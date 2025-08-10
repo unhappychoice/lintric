@@ -43,6 +43,7 @@ fn calculate_line_metrics(
     let dependency_distance_cost = dependency_distance_cost(graph, node_index, content);
     let depth = dfs_longest_path(graph, node_index, &mut HashMap::new(), &mut HashSet::new());
     let transitive_dependencies = transitive_dependencies(graph, node_index);
+    let dependent_lines = get_dependent_lines(graph, node_index);
 
     LineMetrics {
         line_number,
@@ -50,7 +51,15 @@ fn calculate_line_metrics(
         dependency_distance_cost,
         depth,
         transitive_dependencies,
+        dependent_lines,
     }
+}
+
+fn get_dependent_lines(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> Vec<usize> {
+    graph
+        .neighbors_directed(node_index, petgraph::Direction::Outgoing)
+        .map(|neighbor_node_index| graph[neighbor_node_index])
+        .collect()
 }
 
 fn total_dependencies(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> usize {

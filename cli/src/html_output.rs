@@ -2,6 +2,9 @@ use lintric_core::models::{AnalysisResult, OverallAnalysisReport};
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+use syntect::highlighting::ThemeSet;
+use syntect::html::css_for_theme_with_class_style;
+use syntect::parsing::SyntaxSet;
 use tera::{Context, Tera};
 
 // Helper functions (moved to top for scope)
@@ -14,14 +17,6 @@ fn sanitize_filename(path: &str) -> String {
         .replace("__", "_") // Replace double underscores that might result from multiple replacements
         .trim_matches('_')
         .to_string()
-}
-
-fn escape_html(s: &str) -> String {
-    s.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace("\"", "&quot;") // Corrected: escape double quote
-        .replace("'", "&#x27;")
 }
 
 fn get_complexity_class(score: f64) -> &'static str {
@@ -56,6 +51,9 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
     }
 
     // Initialize Tera with templates embedded in the binary
+    let ps = SyntaxSet::load_defaults_newlines();
+    let ts = ThemeSet::load_defaults();
+    let theme = &ts.themes["base16-ocean.dark"]; // 好みのテーマを選択
     let mut tera = Tera::default();
     tera.add_raw_template("index.html", include_str!("../templates/index.html"))
         .unwrap();
@@ -77,7 +75,7 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
         results_for_template.push(file_data);
 
         // Generate individual file HTML
-        if let Err(e) = generate_file_html(&output_dir, result, &tera) {
+        if let Err(e) = generate_file_html(&output_dir, result, &tera, &ps, theme) {
             eprintln!("Error generating HTML for file {}: {}", result.file_path, e);
         }
     }
@@ -103,6 +101,8 @@ fn generate_file_html(
     output_dir: &Path,
     result: &AnalysisResult,
     tera: &Tera,
+    ps: &SyntaxSet,
+    theme: &syntect::highlighting::Theme,
 ) -> Result<(), String> {
     let source_code = fs::read_to_string(&result.original_file_path).map_err(|e| {
         format!(
@@ -111,15 +111,40 @@ fn generate_file_html(
         )
     })?;
 
-    let mut code_lines_for_template: Vec<serde_json::Value> = Vec::new();
-    let lines: Vec<&str> = source_code.lines().collect();
-
     let file_extension = Path::new(&result.file_path)
         .extension()
         .and_then(|s| s.to_str())
-        .unwrap_or("text"); // Default to "text" if no extension
+        .unwrap_or("txt"); // Default to "txt" if no extension
 
-    for (i, line_content) in lines.iter().enumerate() {
+    let syntax = ps
+        .find_syntax_by_extension(file_extension)
+        .unwrap_or_else(|| ps.find_syntax_plain_text());
+
+    use syntect::easy::HighlightLines;
+    use syntect::util::LinesWithEndings;
+
+    let mut h = HighlightLines::new(syntax, theme);
+    let mut highlighted_lines: Vec<String> = Vec::new();
+
+    for line in LinesWithEndings::from(&source_code) {
+        let ranges = h
+            .highlight_line(line, ps)
+            .map_err(|e| format!("Error highlighting line: {e}"))?;
+        let html = syntect::html::styled_line_to_highlighted_html(
+            &ranges[..],
+            syntect::html::IncludeBackground::No,
+        )
+        .map_err(|e| format!("Error converting to HTML: {e}"))?;
+        highlighted_lines.push(html);
+    }
+
+    let css = css_for_theme_with_class_style(theme, syntect::html::ClassStyle::Spaced)
+        .map_err(|e| format!("Error generating CSS: {e}"))?;
+
+    let mut code_lines_for_template: Vec<serde_json::Value> = Vec::new();
+    let lines: Vec<&str> = source_code.lines().collect();
+
+    for (i, _line_content) in lines.iter().enumerate() {
         let line_number = i + 1;
         let line_metrics = result
             .line_metrics
@@ -151,8 +176,18 @@ fn generate_file_html(
 
         let mut line_data = Context::new();
         line_data.insert("line_number", &line_number);
-        line_data.insert("code", &escape_html(line_content));
+        // highlighted_linesから対応する行のHTMLを取得
+        let highlighted_code_line = highlighted_lines
+            .get(i)
+            .unwrap_or(&String::new())
+            .to_string();
+        line_data.insert("code", &highlighted_code_line);
         line_data.insert("metrics_str", &metrics_str);
+        // Add dependent_lines to line_data
+        line_data.insert(
+            "dependent_lines",
+            &line_metrics.map_or(vec![], |m| m.dependent_lines.clone()),
+        );
         code_lines_for_template.push(line_data.into_json());
     }
 
@@ -161,6 +196,7 @@ fn generate_file_html(
     file_context.insert("overall_complexity_score", &result.overall_complexity_score);
     file_context.insert("code_lines", &code_lines_for_template);
     file_context.insert("language_extension", &file_extension);
+    file_context.insert("highlight_css", &css);
 
     let file_html_content = match tera.render("file.html", &file_context) {
         Ok(s) => s,
