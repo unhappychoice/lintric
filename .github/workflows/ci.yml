@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: rustup component add clippy
-      - run: cargo clippy -- -D warnings
+      - run: cargo clippy --workspace -- -D warnings
 
   test:
     name: Run tests
@@ -37,7 +37,7 @@ jobs:
         with:
           toolchain: ${{ matrix.rust }}
           override: true
-      - run: cargo test
+      - run: cargo test --workspace
 
   coverage:
     name: Code coverage
