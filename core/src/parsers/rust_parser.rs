@@ -39,8 +39,7 @@ fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<
         let start_line = n.start_position().row + 1;
 
         match n.kind() {
-            "let_declaration"
-            | "variable_declarator" => {
+            "let_declaration" | "variable_declarator" => {
                 if let Some(pattern_node) = n.child_by_field_name("name") {
                     // For function_item, struct_item etc.
                     let name = pattern_node
@@ -82,11 +81,7 @@ fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<
                     }
                 }
             }
-            "struct_item"
-            | "enum_item"
-            | "trait_item"
-            | "impl_item"
-            | "type_alias" => {
+            "struct_item" | "enum_item" | "trait_item" | "impl_item" | "type_alias" => {
                 if let Some(pattern_node) = n.child_by_field_name("name") {
                     // For function_item, struct_item etc.
                     let name = pattern_node
@@ -188,18 +183,25 @@ fn collect_dependencies(
                     .to_string();
 
                 // Avoid re-adding definitions and parameter declarations
-                let is_declaration_name = parent_kind == Some("function_item") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("struct_item") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("enum_item") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("trait_item") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("impl_item") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("type_alias") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n);
+                let is_declaration_name = parent_kind == Some("function_item")
+                    && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("struct_item")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("enum_item")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("trait_item")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("impl_item")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("type_alias")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n));
 
                 let is_parameter_declaration = parent_kind == Some("parameter");
 
                 if parent_kind != Some("pattern")
                     && !is_declaration_name
-                    && !is_parameter_declaration // Don't add dependency if it's the parameter declaration itself
+                    && !is_parameter_declaration
+                // Don't add dependency if it's the parameter declaration itself
                 {
                     if let Some(def_line) = definitions.get(&name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);

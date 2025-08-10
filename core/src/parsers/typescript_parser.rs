@@ -27,7 +27,9 @@ pub fn parse_typescript_code(
 
     // Add all lines to line_nodes before collecting definitions and dependencies
     for line_num in 1..=content.lines().count() {
-        line_nodes.entry(line_num).or_insert_with(|| graph.add_node(line_num));
+        line_nodes
+            .entry(line_num)
+            .or_insert_with(|| graph.add_node(line_num));
     }
 
     collect_definitions(tree.root_node(), content, &mut definitions);
@@ -60,31 +62,34 @@ fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<
                     definitions.insert(name.clone(), start_line);
                 } else if let Some(pattern_node) = n.child_by_field_name("pattern") {
                     find_identifiers_in_pattern(pattern_node, source_code, definitions);
-                } else {
-
                 }
             }
-           "arrow_function" | "function" => {
-               if let Some(parameters_node) = n.child_by_field_name("parameters") {
-                   let mut param_cursor = parameters_node.walk();
-                   for param_child in parameters_node.children(&mut param_cursor) {
-                       if param_child.kind() == "required_parameter" || param_child.kind() == "optional_parameter" {
-                           if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
-                               find_identifiers_in_pattern(pattern_node, source_code, definitions);
-                           } else if let Some(identifier_node) = param_child.child(0) {
-                               if identifier_node.kind() == "identifier" {
-                                   let name = identifier_node
-                                       .utf8_text(source_code.as_bytes())
-                                       .unwrap()
-                                       .trim()
-                                       .to_string();
-                                   definitions.insert(name.clone(), identifier_node.start_position().row + 1);
-                               }
-                           }
-                       }
-                   }
-               }
-           }
+            "arrow_function" | "function" => {
+                if let Some(parameters_node) = n.child_by_field_name("parameters") {
+                    let mut param_cursor = parameters_node.walk();
+                    for param_child in parameters_node.children(&mut param_cursor) {
+                        if param_child.kind() == "required_parameter"
+                            || param_child.kind() == "optional_parameter"
+                        {
+                            if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
+                                find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                            } else if let Some(identifier_node) = param_child.child(0) {
+                                if identifier_node.kind() == "identifier" {
+                                    let name = identifier_node
+                                        .utf8_text(source_code.as_bytes())
+                                        .unwrap()
+                                        .trim()
+                                        .to_string();
+                                    definitions.insert(
+                                        name.clone(),
+                                        identifier_node.start_position().row + 1,
+                                    );
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             "function_declaration" => {
                 if let Some(name_node) = n.child_by_field_name("name") {
                     let name = name_node
@@ -98,17 +103,23 @@ fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<
                 if let Some(parameters_node) = n.child_by_field_name("parameters") {
                     let mut param_cursor = parameters_node.walk();
                     for param_child in parameters_node.children(&mut param_cursor) {
-                        if param_child.kind() == "required_parameter" || param_child.kind() == "optional_parameter" {
+                        if param_child.kind() == "required_parameter"
+                            || param_child.kind() == "optional_parameter"
+                        {
                             if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
                                 find_identifiers_in_pattern(pattern_node, source_code, definitions);
-                            } else if let Some(identifier_node) = param_child.child(0) { // Direct identifier for simple parameters
+                            } else if let Some(identifier_node) = param_child.child(0) {
+                                // Direct identifier for simple parameters
                                 if identifier_node.kind() == "identifier" {
                                     let name = identifier_node
                                         .utf8_text(source_code.as_bytes())
                                         .unwrap()
                                         .trim()
                                         .to_string();
-                                    definitions.insert(name.clone(), identifier_node.start_position().row + 1);
+                                    definitions.insert(
+                                        name.clone(),
+                                        identifier_node.start_position().row + 1,
+                                    );
                                 }
                             }
                         }
@@ -244,11 +255,16 @@ fn collect_dependencies(
                     .trim()
                     .to_string();
 
-                let is_declaration_name = parent_kind == Some("function_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                    parent_kind == Some("class_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                    parent_kind == Some("interface_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                    parent_kind == Some("type_alias_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                    parent_kind == Some("enum_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n);
+                let is_declaration_name = parent_kind == Some("function_declaration")
+                    && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("class_declaration")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("interface_declaration")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("type_alias_declaration")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n))
+                    || parent_kind == Some("enum_declaration")
+                        && (n.parent().unwrap().child_by_field_name("name") == Some(n));
 
                 if parent_kind != Some("variable_declarator")
                     && parent_kind != Some("property_identifier")
@@ -284,7 +300,12 @@ fn collect_dependencies(
                                 .trim()
                                 .to_string();
                             if let Some(def_line) = definitions.get(&name) {
-                                add_dependency(arg_child.start_position().row + 1, *def_line, graph, line_nodes);
+                                add_dependency(
+                                    arg_child.start_position().row + 1,
+                                    *def_line,
+                                    graph,
+                                    line_nodes,
+                                );
                             }
                         }
                     }
