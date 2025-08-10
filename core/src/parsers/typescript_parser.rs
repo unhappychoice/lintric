@@ -16,23 +16,27 @@ pub fn parse_typescript_code(
         .set_language(&language)
         .map_err(|e| format!("Error loading TypeScript/TSX grammar: {}", e))?;
 
-    let tree = parser.parse(&content, None).ok_or_else(|| "Failed to parse the source code.".to_string())?;
+    let tree = parser
+        .parse(&content, None)
+        .ok_or_else(|| "Failed to parse the source code.".to_string())?;
 
     let mut definitions: HashMap<String, usize> = HashMap::new();
     let mut graph: DiGraph<usize, usize> = DiGraph::new();
     let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
 
     collect_definitions(tree.root_node(), content, &mut definitions);
-    collect_dependencies(tree.root_node(), content, &mut graph, &mut line_nodes, &definitions);
+    collect_dependencies(
+        tree.root_node(),
+        content,
+        &mut graph,
+        &mut line_nodes,
+        &definitions,
+    );
 
     Ok((graph, line_nodes))
 }
 
-fn collect_definitions(
-    node: Node,
-    source_code: &str,
-    definitions: &mut HashMap<String, usize>,
-) {
+fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<String, usize>) {
     let mut stack: Vec<Node> = Vec::new();
     stack.push(node);
 
@@ -40,9 +44,18 @@ fn collect_definitions(
         let start_line = n.start_position().row + 1;
 
         match n.kind() {
-            "variable_declarator" | "function_declaration" | "class_declaration" | "interface_declaration" | "type_alias_declaration" | "enum_declaration" => {
+            "variable_declarator"
+            | "function_declaration"
+            | "class_declaration"
+            | "interface_declaration"
+            | "type_alias_declaration"
+            | "enum_declaration" => {
                 if let Some(pattern_node) = n.child_by_field_name("name") {
-                    let name = pattern_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                    let name = pattern_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
                     definitions.insert(name.clone(), start_line);
                 } else if let Some(pattern_node) = n.child_by_field_name("pattern") {
                     find_identifiers_in_pattern(pattern_node, source_code, definitions);
@@ -60,31 +73,55 @@ fn collect_definitions(
                     let child = n.child(i);
 
                     if let Some(child) = child {
-                        if child.kind() != "import_clause" { continue; }
+                        if child.kind() != "import_clause" {
+                            continue;
+                        }
 
                         let mut import_clause_cursor = child.walk();
                         for import_clause_child in child.children(&mut import_clause_cursor) {
-                            if import_clause_child.kind() == "from_clause" { continue; }
+                            if import_clause_child.kind() == "from_clause" {
+                                continue;
+                            }
                             match import_clause_child.kind() {
                                 "named_imports" => {
                                     let mut named_imports_cursor = import_clause_child.walk();
-                                    for named_import_child in import_clause_child.children(&mut named_imports_cursor) {
+                                    for named_import_child in
+                                        import_clause_child.children(&mut named_imports_cursor)
+                                    {
                                         if named_import_child.kind() == "import_specifier" {
-                                            if let Some(identifier_node) = named_import_child.child(0) {
-                                                let imported_symbol = identifier_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
-                                                definitions.insert(imported_symbol.clone(), start_line);
+                                            if let Some(identifier_node) =
+                                                named_import_child.child(0)
+                                            {
+                                                let imported_symbol = identifier_node
+                                                    .utf8_text(source_code.as_bytes())
+                                                    .unwrap()
+                                                    .trim()
+                                                    .to_string();
+                                                definitions
+                                                    .insert(imported_symbol.clone(), start_line);
                                             }
                                         }
                                     }
                                 }
                                 "namespace_import" => {
-                                    if let Some(alias_node) = import_clause_child.child_by_field_name("alias") {
-                                        let imported_symbol = alias_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                    if let Some(alias_node) =
+                                        import_clause_child.child_by_field_name("alias")
+                                    {
+                                        let imported_symbol = alias_node
+                                            .utf8_text(source_code.as_bytes())
+                                            .unwrap()
+                                            .trim()
+                                            .to_string();
                                         definitions.insert(imported_symbol.clone(), start_line);
                                     }
                                 }
-                                "identifier" => { // Default import
-                                    let imported_symbol = import_clause_child.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                "identifier" => {
+                                    // Default import
+                                    let imported_symbol = import_clause_child
+                                        .utf8_text(source_code.as_bytes())
+                                        .unwrap()
+                                        .trim()
+                                        .to_string();
                                     definitions.insert(imported_symbol.clone(), start_line);
                                 }
                                 _ => {}
@@ -132,9 +169,16 @@ fn collect_dependencies(
         match n.kind() {
             "identifier" => {
                 let parent_kind = n.parent().map(|p| p.kind());
-                let name = n.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                let name = n
+                    .utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string();
 
-                if parent_kind != Some("variable_declarator") && parent_kind != Some("property_identifier") { // Avoid re-adding definitions or property access
+                if parent_kind != Some("variable_declarator")
+                    && parent_kind != Some("property_identifier")
+                {
+                    // Avoid re-adding definitions or property access
                     if let Some(def_line) = definitions.get(&name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }
@@ -143,7 +187,11 @@ fn collect_dependencies(
             "call_expression" => {
                 if let Some(function_node) = n.child_by_field_name("function") {
                     if function_node.kind() == "identifier" {
-                        let name = function_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                        let name = function_node
+                            .utf8_text(source_code.as_bytes())
+                            .unwrap()
+                            .trim()
+                            .to_string();
                         if let Some(def_line) = definitions.get(&name) {
                             add_dependency(start_line, *def_line, graph, line_nodes);
                         }
@@ -155,7 +203,11 @@ fn collect_dependencies(
                     if parent.kind() == "member_expression" {
                         if let Some(object_node) = parent.child_by_field_name("object") {
                             if object_node.kind() == "identifier" {
-                                let name = object_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                let name = object_node
+                                    .utf8_text(source_code.as_bytes())
+                                    .unwrap()
+                                    .trim()
+                                    .to_string();
                                 if let Some(def_line) = definitions.get(&name) {
                                     add_dependency(start_line, *def_line, graph, line_nodes);
                                 }
@@ -188,7 +240,11 @@ fn find_identifiers_in_pattern(
 
     while let Some(n) = stack.pop() {
         if n.kind() == "identifier" {
-            let name = n.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+            let name = n
+                .utf8_text(source_code.as_bytes())
+                .unwrap()
+                .trim()
+                .to_string();
             definitions.insert(name.clone(), n.start_position().row + 1);
         }
 
@@ -214,7 +270,8 @@ fn add_dependency(
     let to_node_opt = line_nodes.get(&to_line);
 
     if let (Some(&from_node), Some(&to_node)) = (from_node_opt, to_node_opt) {
-        if from_node != to_node { // Avoid self-loops
+        if from_node != to_node {
+            // Avoid self-loops
             let distance = from_line.abs_diff(to_line);
             graph.add_edge(from_node, to_node, distance);
         }

@@ -1,5 +1,5 @@
-use lintric_core::{analyze_code};
 use insta::assert_snapshot;
+use lintric_core::analyze_code;
 use serde_json;
 
 #[test]
@@ -10,14 +10,16 @@ let y = x + 2;
 function foo() {
     return y;
 }
-".trim();
+"
+    .trim();
     let file_path = "test.ts".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
 
-#[test] fn test_typescript_class_method_dependency() {
+#[test]
+fn test_typescript_class_method_dependency() {
     let code = r#"
 class MyClass {
     constructor(public value: number){}
@@ -25,7 +27,8 @@ class MyClass {
 }
 let instance = new MyClass(10);
 instance.greet();
-"#.trim();
+"#
+    .trim();
     let file_path = "test.ts".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
@@ -37,7 +40,8 @@ fn test_typescript_import_dependency() {
     let code = r#"
 import { someFunction } from './module';
 const result = someFunction();
-"#.trim();
+"#
+    .trim();
     let file_path = "test.ts".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 

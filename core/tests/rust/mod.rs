@@ -1,5 +1,5 @@
-use lintric_core::{analyze_code};
 use insta::assert_snapshot;
+use lintric_core::analyze_code;
 use serde_json;
 
 #[test]
@@ -7,7 +7,8 @@ fn test_analyze_code_basic() {
     let code = "
 let a = 1;
 let b = a + 1;
-".trim();
+"
+    .trim();
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
@@ -23,21 +24,24 @@ fn add(a: i32, b: i32) -> i32 {
 fn main() {
     let x = add(1, 2);
 }
-".trim();
+"
+    .trim();
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
 
-#[test] fn test_rust_struct_field_access_dependency() {
+#[test]
+fn test_rust_struct_field_access_dependency() {
     let code = r#"
 struct Point { x: i32, y: i32 }
 fn main() {
     let p = Point { x: 1, y: 2 };
     let val = p.x;
 }
-"#.trim();
+"#
+    .trim();
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
@@ -64,7 +68,8 @@ fn main() {
     let c = MY_CONST;
     let s2 = mm::MyStruct;
 }
-"#.trim();
+"#
+    .trim();
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone()).unwrap();
 
