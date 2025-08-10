@@ -18,10 +18,10 @@ fn sanitize_filename(path: &str) -> String {
 
 fn escape_html(s: &str) -> String {
     s.replace("&", "&amp;")
-     .replace("<", "&lt;")
-     .replace(">", "&gt;")
-     .replace("\"", "&quot;") // Corrected: escape double quote
-     .replace("'", "&#x27;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("\"", "&quot;") // Corrected: escape double quote
+        .replace("'", "&#x27;")
 }
 
 fn get_complexity_class(score: f64) -> &'static str {
@@ -47,14 +47,20 @@ fn write_file(path: &Path, content: &str) -> Result<(), String> {
 pub fn generate_html_report(report: &OverallAnalysisReport) {
     let output_dir = PathBuf::from(".lintric/output/html");
     if let Err(e) = fs::create_dir_all(&output_dir) {
-        eprintln!("Error creating output directory {}: {}", output_dir.display(), e);
+        eprintln!(
+            "Error creating output directory {}: {}",
+            output_dir.display(),
+            e
+        );
         return;
     }
 
     // Initialize Tera with templates embedded in the binary
     let mut tera = Tera::default();
-    tera.add_raw_template("index.html", include_str!("../templates/index.html")).unwrap();
-    tera.add_raw_template("file.html", include_str!("../templates/file.html")).unwrap();
+    tera.add_raw_template("index.html", include_str!("../templates/index.html"))
+        .unwrap();
+    tera.add_raw_template("file.html", include_str!("../templates/file.html"))
+        .unwrap();
 
     let mut index_context = Context::new();
     index_context.insert("total_files_analyzed", &report.total_files_analyzed);
@@ -64,7 +70,7 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
 
     for result in &report.results {
         let html_file_name = format!("{}.html", sanitize_filename(&result.file_path));
-        
+
         // Prepare data for index template
         let mut file_data = serde_json::to_value(result).unwrap();
         file_data["html_file_name"] = serde_json::to_value(html_file_name.clone()).unwrap();
@@ -93,9 +99,17 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
     }
 }
 
-fn generate_file_html(output_dir: &Path, result: &AnalysisResult, tera: &Tera) -> Result<(), String> {
-    let source_code = fs::read_to_string(&result.original_file_path)
-        .map_err(|e| format!("Error reading source file {}: {}", result.original_file_path, e))?;
+fn generate_file_html(
+    output_dir: &Path,
+    result: &AnalysisResult,
+    tera: &Tera,
+) -> Result<(), String> {
+    let source_code = fs::read_to_string(&result.original_file_path).map_err(|e| {
+        format!(
+            "Error reading source file {}: {}",
+            result.original_file_path, e
+        )
+    })?;
 
     let mut code_lines_for_template: Vec<serde_json::Value> = Vec::new();
     let lines: Vec<&str> = source_code.lines().collect();
@@ -107,7 +121,10 @@ fn generate_file_html(output_dir: &Path, result: &AnalysisResult, tera: &Tera) -
 
     for (i, line_content) in lines.iter().enumerate() {
         let line_number = i + 1;
-        let line_metrics = result.line_metrics.iter().find(|m| m.line_number == line_number);
+        let line_metrics = result
+            .line_metrics
+            .iter()
+            .find(|m| m.line_number == line_number);
 
         let metrics_str = if let Some(metrics) = line_metrics {
             if metrics.total_dependencies == 0 {

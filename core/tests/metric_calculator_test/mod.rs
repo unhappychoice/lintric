@@ -13,13 +13,21 @@ fn test_simple_dependency() {
 
     assert_eq!(result.line_metrics.len(), 2);
 
-    let line1_metrics = result.line_metrics.iter().find(|m| m.line_number == 1).unwrap();
+    let line1_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 1)
+        .unwrap();
     assert_eq!(line1_metrics.total_dependencies, 0);
     assert_eq!(line1_metrics.dependency_distance_cost, 0.0);
     assert_eq!(line1_metrics.depth, 0);
     assert_eq!(line1_metrics.transitive_dependencies, 0);
 
-    let line2_metrics = result.line_metrics.iter().find(|m| m.line_number == 2).unwrap();
+    let line2_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 2)
+        .unwrap();
     assert_eq!(line2_metrics.total_dependencies, 1);
     assert_eq!(line2_metrics.dependency_distance_cost, 0.5);
     assert_eq!(line2_metrics.depth, 1);
@@ -38,7 +46,11 @@ fn test_multiple_dependencies() {
     let code = "let a = 1;\nlet b = 2;\nlet c = a + b;";
     let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
 
-    let line3_metrics = result.line_metrics.iter().find(|m| m.line_number == 3).unwrap();
+    let line3_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 3)
+        .unwrap();
     assert_eq!(line3_metrics.total_dependencies, 2);
 }
 
@@ -54,7 +66,11 @@ fn test_transitive_dependencies() {
     let code = "let a = 1;\nlet b = a;\nlet c = b;";
     let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
 
-    let line3_metrics = result.line_metrics.iter().find(|m| m.line_number == 3).unwrap();
+    let line3_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 3)
+        .unwrap();
     assert_eq!(line3_metrics.depth, 2);
     assert_eq!(line3_metrics.transitive_dependencies, 2);
 }
@@ -70,7 +86,11 @@ fn test_cyclic_dependencies() {
     let code = "fn a() { b() }\nfn b() { a() }";
     let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
 
-    let line1_metrics = result.line_metrics.iter().find(|m| m.line_number == 1).unwrap();
+    let line1_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 1)
+        .unwrap();
     assert_eq!(line1_metrics.depth, 2);
 }
 
@@ -83,9 +103,17 @@ fn test_no_dependencies() {
     let code = "let a = 1;\nlet b = 2;".trim();
     let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
 
-    let line1_metrics = result.line_metrics.iter().find(|m| m.line_number == 1).unwrap();
+    let line1_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 1)
+        .unwrap();
     assert_eq!(line1_metrics.total_dependencies, 0);
 
-    let line2_metrics = result.line_metrics.iter().find(|m| m.line_number == 2).unwrap();
+    let line2_metrics = result
+        .line_metrics
+        .iter()
+        .find(|m| m.line_number == 2)
+        .unwrap();
     assert_eq!(line2_metrics.total_dependencies, 0);
 }

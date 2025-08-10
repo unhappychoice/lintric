@@ -10,23 +10,27 @@ pub fn parse_rust_code(
         .set_language(&tree_sitter_rust::language())
         .map_err(|e| format!("Error loading Rust grammar: {}", e))?;
 
-    let tree = parser.parse(&content, None).ok_or_else(|| "Failed to parse the source code.".to_string())?;
+    let tree = parser
+        .parse(&content, None)
+        .ok_or_else(|| "Failed to parse the source code.".to_string())?;
 
     let mut definitions: HashMap<String, usize> = HashMap::new();
     let mut graph: DiGraph<usize, usize> = DiGraph::new();
     let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
 
     collect_definitions(tree.root_node(), content, &mut definitions);
-    collect_dependencies(tree.root_node(), content, &mut graph, &mut line_nodes, &definitions);
+    collect_dependencies(
+        tree.root_node(),
+        content,
+        &mut graph,
+        &mut line_nodes,
+        &definitions,
+    );
 
     Ok((graph, line_nodes))
 }
 
-fn collect_definitions(
-    node: Node,
-    source_code: &str,
-    definitions: &mut HashMap<String, usize>,
-) {
+fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<String, usize>) {
     let mut stack: Vec<Node> = Vec::new();
     stack.push(node);
 
@@ -34,11 +38,24 @@ fn collect_definitions(
         let start_line = n.start_position().row + 1;
 
         match n.kind() {
-            "let_declaration" | "variable_declarator" | "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" | "type_alias" => {
-                if let Some(pattern_node) = n.child_by_field_name("name") { // For function_item, struct_item etc.
-                    let name = pattern_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+            "let_declaration"
+            | "variable_declarator"
+            | "function_item"
+            | "struct_item"
+            | "enum_item"
+            | "trait_item"
+            | "impl_item"
+            | "type_alias" => {
+                if let Some(pattern_node) = n.child_by_field_name("name") {
+                    // For function_item, struct_item etc.
+                    let name = pattern_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
                     definitions.insert(name, start_line);
-                } else if let Some(pattern_node) = n.child_by_field_name("pattern") { // For let_declaration
+                } else if let Some(pattern_node) = n.child_by_field_name("pattern") {
+                    // For let_declaration
                     find_identifiers_in_pattern(pattern_node, source_code, definitions);
                 } else {
                     let mut cursor = n.walk();
@@ -54,18 +71,34 @@ fn collect_definitions(
                 for use_child in n.children(&mut use_cursor) {
                     match use_child.kind() {
                         "scoped_identifier" | "identifier" => {
-                            let name = use_child.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                            let name = use_child
+                                .utf8_text(source_code.as_bytes())
+                                .unwrap()
+                                .trim()
+                                .to_string();
                             definitions.insert(name, start_line);
                         }
                         "use_clause" => {
                             let mut clause_cursor = use_child.walk();
                             for clause_child in use_child.children(&mut clause_cursor) {
-                                if clause_child.kind() == "identifier" || clause_child.kind() == "scoped_identifier" {
-                                    let name = clause_child.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                if clause_child.kind() == "identifier"
+                                    || clause_child.kind() == "scoped_identifier"
+                                {
+                                    let name = clause_child
+                                        .utf8_text(source_code.as_bytes())
+                                        .unwrap()
+                                        .trim()
+                                        .to_string();
                                     definitions.insert(name, start_line);
                                 } else if clause_child.kind() == "use_as_clause" {
-                                    if let Some(alias_node) = clause_child.child_by_field_name("alias") {
-                                        let name = alias_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                                    if let Some(alias_node) =
+                                        clause_child.child_by_field_name("alias")
+                                    {
+                                        let name = alias_node
+                                            .utf8_text(source_code.as_bytes())
+                                            .unwrap()
+                                            .trim()
+                                            .to_string();
                                         definitions.insert(name, start_line);
                                     }
                                 }
@@ -96,7 +129,7 @@ fn collect_dependencies(
     source_code: &str,
     graph: &mut DiGraph<usize, usize>,
     line_nodes: &mut HashMap<usize, NodeIndex>,
-    definitions: &HashMap<String, usize>
+    definitions: &HashMap<String, usize>,
 ) {
     let mut stack: Vec<Node> = Vec::new();
     stack.push(node);
@@ -115,9 +148,14 @@ fn collect_dependencies(
         match n.kind() {
             "identifier" => {
                 let parent_kind = n.parent().map(|p| p.kind());
-                let name = n.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                let name = n
+                    .utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string();
 
-                if parent_kind != Some("pattern") { // Avoid re-adding definitions
+                if parent_kind != Some("pattern") {
+                    // Avoid re-adding definitions
                     if let Some(def_line) = definitions.get(&name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }
@@ -126,7 +164,11 @@ fn collect_dependencies(
             "call_expression" => {
                 if let Some(function_node) = n.child_by_field_name("function") {
                     if function_node.kind() == "identifier" {
-                        let name = function_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                        let name = function_node
+                            .utf8_text(source_code.as_bytes())
+                            .unwrap()
+                            .trim()
+                            .to_string();
                         if let Some(def_line) = definitions.get(&name) {
                             add_dependency(start_line, *def_line, graph, line_nodes);
                         }
@@ -136,7 +178,11 @@ fn collect_dependencies(
             "field_expression" => {
                 if let Some(operand_node) = n.child_by_field_name("operand") {
                     if operand_node.kind() == "identifier" {
-                        let name = operand_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                        let name = operand_node
+                            .utf8_text(source_code.as_bytes())
+                            .unwrap()
+                            .trim()
+                            .to_string();
                         if let Some(def_line) = definitions.get(&name) {
                             add_dependency(start_line, *def_line, graph, line_nodes);
                         }
@@ -144,7 +190,11 @@ fn collect_dependencies(
                 }
                 // Add dependency to the struct definition if the field access is on a struct instance
                 if let Some(type_node) = n.child_by_field_name("field") {
-                    let type_name = type_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                    let type_name = type_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
                     if let Some(def_line) = definitions.get(&type_name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }
@@ -152,7 +202,11 @@ fn collect_dependencies(
             }
             "struct_expression" => {
                 if let Some(type_node) = n.child_by_field_name("type") {
-                    let type_name = type_node.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+                    let type_name = type_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
                     if let Some(def_line) = definitions.get(&type_name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }
@@ -183,7 +237,11 @@ fn find_identifiers_in_pattern(
 
     while let Some(n) = stack.pop() {
         if n.kind() == "identifier" {
-            let name = n.utf8_text(source_code.as_bytes()).unwrap().trim().to_string();
+            let name = n
+                .utf8_text(source_code.as_bytes())
+                .unwrap()
+                .trim()
+                .to_string();
             definitions.insert(name.clone(), n.start_position().row + 1);
         }
 
@@ -209,7 +267,8 @@ fn add_dependency(
     let to_node_opt = line_nodes.get(&to_line);
 
     if let (Some(&from_node), Some(&to_node)) = (from_node_opt, to_node_opt) {
-        if from_node != to_node { // Avoid self-loops
+        if from_node != to_node {
+            // Avoid self-loops
             let distance = from_line.abs_diff(to_line);
             graph.add_edge(from_node, to_node, distance);
         }

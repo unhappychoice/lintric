@@ -1,4 +1,4 @@
-use clap::{Parser, ArgAction};
+use clap::{ArgAction, Parser};
 use lintric_core::models::OverallAnalysisReport;
 use lintric_core::AnalysisResult;
 
@@ -55,7 +55,8 @@ fn main() {
         display::display_json(&overall_report);
     } else if args.verbose {
         display::display_verbose(&overall_report);
-    } else if args.html { // Add this line
+    } else if args.html {
+        // Add this line
         html_output::generate_html_report(&overall_report); // Add this line
     } else {
         display::display_summary(&overall_report);

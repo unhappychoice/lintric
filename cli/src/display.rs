@@ -16,7 +16,13 @@ pub fn display_verbose(overall_report: &OverallAnalysisReport) {
         println!("\n--- Analysis for {} ---", result.file_path);
         let mut table = Table::new();
         table.load_preset(UTF8_FULL_CONDENSED);
-        table.set_header(vec!["Line", "Total Deps", "Dist Cost", "Depth", "Transitive Deps"]);
+        table.set_header(vec![
+            "Line",
+            "Total Deps",
+            "Dist Cost",
+            "Depth",
+            "Transitive Deps",
+        ]);
         for metrics in &result.line_metrics {
             table.add_row(Row::from(vec![
                 Cell::new(metrics.line_number),
@@ -27,9 +33,12 @@ pub fn display_verbose(overall_report: &OverallAnalysisReport) {
             ]));
         }
         println!("{}", table);
-        println!("Overall Complexity Score: {:.2}", result.overall_complexity_score);
+        println!(
+            "Overall Complexity Score: {:.2}",
+            result.overall_complexity_score
+        );
     }
-    
+
     display_summary(overall_report);
 }
 
@@ -38,11 +47,11 @@ pub fn display_summary(overall_report: &OverallAnalysisReport) {
     let mut table = Table::new();
     table.load_preset(UTF8_FULL_CONDENSED);
     table.set_header(vec!["File", "Overall Complexity Score"]);
-    
+
     // Sort results by file_path before displaying
     let mut sorted_results = overall_report.results.clone();
     sorted_results.sort_by(|a, b| a.file_path.cmp(&b.file_path));
-    
+
     for result in &sorted_results {
         table.add_row(Row::from(vec![
             Cell::new(&result.file_path),
@@ -50,14 +59,23 @@ pub fn display_summary(overall_report: &OverallAnalysisReport) {
         ]));
     }
     println!("{}", table);
-    
+
     display_overall_summary(overall_report);
 }
 
 /// Display the overall summary of the analysis
 pub fn display_overall_summary(overall_report: &OverallAnalysisReport) {
     println!("\n--- Overall Report ---");
-    println!("Total Files Analyzed: {}", overall_report.total_files_analyzed);
-    println!("Total Overall Complexity Score: {:.2}", overall_report.total_overall_complexity_score);
-    println!("Average Complexity Score: {:.2}", overall_report.average_complexity_score);
+    println!(
+        "Total Files Analyzed: {}",
+        overall_report.total_files_analyzed
+    );
+    println!(
+        "Total Overall Complexity Score: {:.2}",
+        overall_report.total_overall_complexity_score
+    );
+    println!(
+        "Average Complexity Score: {:.2}",
+        overall_report.average_complexity_score
+    );
 }

@@ -1,11 +1,11 @@
-pub mod models;
 pub mod ast_parser;
 pub mod metric_calculator;
+pub mod models;
 pub mod parsers;
 
-pub use models::{AnalysisResult, LineMetrics};
 use ast_parser::parse_code;
 use metric_calculator::calculate_metrics;
+pub use models::{AnalysisResult, LineMetrics};
 
 pub fn analyze_code(
     content: &str,

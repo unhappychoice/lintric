@@ -1,7 +1,7 @@
-use std::process::Command;
+use insta::assert_snapshot;
 use std::fs;
 use std::path::PathBuf;
-use insta::assert_snapshot;
+use std::process::Command;
 
 #[test]
 fn test_basic_analysis() {

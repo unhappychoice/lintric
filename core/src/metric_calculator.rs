@@ -32,7 +32,11 @@ pub fn calculate_metrics(
     })
 }
 
-fn calculate_line_metrics(graph: &DiGraph<usize, usize>, node_index: NodeIndex, content: &str) -> LineMetrics {
+fn calculate_line_metrics(
+    graph: &DiGraph<usize, usize>,
+    node_index: NodeIndex,
+    content: &str,
+) -> LineMetrics {
     let line_number = graph[node_index];
 
     let total_dependencies = total_dependencies(&graph, node_index);
@@ -50,10 +54,16 @@ fn calculate_line_metrics(graph: &DiGraph<usize, usize>, node_index: NodeIndex, 
 }
 
 fn total_dependencies(graph: &DiGraph<usize, usize>, node_index: NodeIndex) -> usize {
-    graph.neighbors_directed(node_index, petgraph::Direction::Outgoing).count()
+    graph
+        .neighbors_directed(node_index, petgraph::Direction::Outgoing)
+        .count()
 }
 
-fn dependency_distance_cost(graph: &DiGraph<usize, usize>, node_index: NodeIndex, content: &str) -> f64 {
+fn dependency_distance_cost(
+    graph: &DiGraph<usize, usize>,
+    node_index: NodeIndex,
+    content: &str,
+) -> f64 {
     let line_count = content.lines().count();
     graph
         .edges_directed(node_index, petgraph::Direction::Outgoing)
