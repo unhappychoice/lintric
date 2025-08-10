@@ -2,7 +2,7 @@ use crate::collectors::common::definition_collectors::{
     find_identifiers_in_pattern, DefinitionCollector,
 };
 use std::collections::HashMap;
-use tree_sitter::{Node, Parser as TreeSitterParser};
+use tree_sitter::Node;
 
 // Define a type alias for the handler function signature
 type DefinitionHandler = fn(Node, &str, &mut HashMap<String, usize>);
@@ -10,19 +10,10 @@ type DefinitionHandler = fn(Node, &str, &mut HashMap<String, usize>);
 pub struct RustDefinitionCollector;
 
 impl DefinitionCollector for RustDefinitionCollector {
-    fn collect_definitions(
+    fn collect_definitions_from_root(
+        root: Node,
         content: &str,
-        _is_tsx: bool,
-        parser: &mut TreeSitterParser,
     ) -> Result<HashMap<String, usize>, String> {
-        parser
-            .set_language(&tree_sitter_rust::language())
-            .map_err(|e| format!("Error loading Rust grammar: {e}"))?;
-
-        let tree = parser
-            .parse(content, None)
-            .ok_or_else(|| "Failed to parse the source code.".to_string())?;
-
         let mut definitions: HashMap<String, usize> = HashMap::new();
 
         let mut kind_handlers: HashMap<&str, DefinitionHandler> = HashMap::new();
@@ -36,12 +27,7 @@ impl DefinitionCollector for RustDefinitionCollector {
         kind_handlers.insert("type_alias", Self::collect_type_definitions);
         kind_handlers.insert("use_declaration", Self::collect_import_definitions);
 
-        Self::collect_definitions_recursive(
-            tree.root_node(),
-            content,
-            &mut definitions,
-            &kind_handlers,
-        );
+        Self::collect_definitions_recursive(root, content, &mut definitions, &kind_handlers);
         Ok(definitions)
     }
 

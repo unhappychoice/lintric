@@ -16,25 +16,50 @@ pub fn parse_code(
     let mut parser = TreeSitterParser::new();
 
     if file_path.ends_with(".rs") {
+        parser
+            .set_language(&tree_sitter_rust::language())
+            .map_err(|e| format!("Error loading Rust grammar: {e}"))?;
+        let tree = parser
+            .parse(content, None)
+            .ok_or_else(|| "Failed to parse the source code.".to_string())?;
+
         let definitions =
-            RustDefinitionCollector::collect_definitions(content, false, &mut parser)?;
-        RustDependencyCollector::collect_dependencies(content, false, &mut parser, &definitions)
-    } else if file_path.ends_with(".ts") {
-        let definitions =
-            TypescriptDefinitionCollector::collect_definitions(content, false, &mut parser)?;
-        TypescriptDependencyCollector::collect_dependencies(
+            RustDefinitionCollector::collect_definitions_from_root(tree.root_node(), content)?;
+        RustDependencyCollector::collect_dependencies_from_root(
+            tree.root_node(),
             content,
-            false,
-            &mut parser,
+            &definitions,
+        )
+    } else if file_path.ends_with(".ts") {
+        parser
+            .set_language(&tree_sitter_typescript::language_typescript())
+            .map_err(|e| format!("Error loading TypeScript grammar: {e}"))?;
+        let tree = parser
+            .parse(content, None)
+            .ok_or_else(|| "Failed to parse the source code.".to_string())?;
+        let definitions = TypescriptDefinitionCollector::collect_definitions_from_root(
+            tree.root_node(),
+            content,
+        )?;
+        TypescriptDependencyCollector::collect_dependencies_from_root(
+            tree.root_node(),
+            content,
             &definitions,
         )
     } else if file_path.ends_with(".tsx") {
-        let definitions =
-            TypescriptDefinitionCollector::collect_definitions(content, true, &mut parser)?;
-        TypescriptDependencyCollector::collect_dependencies(
+        parser
+            .set_language(&tree_sitter_typescript::language_tsx())
+            .map_err(|e| format!("Error loading TSX grammar: {e}"))?;
+        let tree = parser
+            .parse(content, None)
+            .ok_or_else(|| "Failed to parse the source code.".to_string())?;
+        let definitions = TypescriptDefinitionCollector::collect_definitions_from_root(
+            tree.root_node(),
             content,
-            true,
-            &mut parser,
+        )?;
+        TypescriptDependencyCollector::collect_dependencies_from_root(
+            tree.root_node(),
+            content,
             &definitions,
         )
     } else {

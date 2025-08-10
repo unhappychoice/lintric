@@ -4,32 +4,18 @@ use crate::collectors::common::definition_collectors::{
     DefinitionHandler, // Add DefinitionHandler here
 };
 use std::collections::HashMap;
-use tree_sitter::{Node, Parser as TreeSitterParser};
+use tree_sitter::Node;
 
 pub struct TypescriptDefinitionCollector;
 
 impl DefinitionCollector for TypescriptDefinitionCollector {
-    fn collect_definitions(
+    fn collect_definitions_from_root(
+        root: Node,
         content: &str,
-        is_tsx: bool,
-        parser: &mut TreeSitterParser,
     ) -> Result<HashMap<String, usize>, String> {
-        let language = if is_tsx {
-            tree_sitter_typescript::language_tsx()
-        } else {
-            tree_sitter_typescript::language_typescript()
-        };
-        parser
-            .set_language(&language)
-            .map_err(|e| format!("Error loading TypeScript/TSX grammar: {e}"))?;
-
-        let tree = parser
-            .parse(content, None)
-            .ok_or_else(|| "Failed to parse the source code.".to_string())?;
-
         let mut definitions: HashMap<String, usize> = HashMap::new();
 
-        let mut kind_handlers: HashMap<&str, DefinitionHandler> = HashMap::new(); // Use DefinitionHandler here
+        let mut kind_handlers: HashMap<&str, DefinitionHandler> = HashMap::new();
         kind_handlers.insert("variable_declarator", Self::collect_variable_definitions);
         kind_handlers.insert("arrow_function", Self::collect_function_definitions);
         kind_handlers.insert("function", Self::collect_function_definitions);
@@ -40,12 +26,7 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
         kind_handlers.insert("enum_declaration", Self::collect_type_definitions);
         kind_handlers.insert("import_statement", Self::collect_import_definitions);
 
-        Self::collect_definitions_recursive(
-            tree.root_node(),
-            content,
-            &mut definitions,
-            &kind_handlers,
-        );
+        Self::collect_definitions_recursive(root, content, &mut definitions, &kind_handlers);
         Ok(definitions)
     }
 

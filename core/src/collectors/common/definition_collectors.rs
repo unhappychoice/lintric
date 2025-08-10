@@ -1,13 +1,12 @@
 use std::collections::HashMap;
-use tree_sitter::{Node, Parser as TreeSitterParser};
+use tree_sitter::Node;
 
 pub type DefinitionHandler = fn(Node, &str, &mut HashMap<String, usize>);
 
 pub trait DefinitionCollector {
-    fn collect_definitions(
+    fn collect_definitions_from_root(
+        root: Node,
         content: &str,
-        is_tsx: bool,
-        parser: &mut TreeSitterParser,
     ) -> Result<HashMap<String, usize>, String>;
 
     fn collect_definitions_recursive(
