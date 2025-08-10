@@ -13,7 +13,7 @@ function foo() {
 "
     .trim();
     let file_path = "test.ts".to_string();
-    let result = analyze_code(code, file_path.clone()).unwrap();
+    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
@@ -30,7 +30,7 @@ instance.greet();
 "#
     .trim();
     let file_path = "test.ts".to_string();
-    let result = analyze_code(code, file_path.clone()).unwrap();
+    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
@@ -43,7 +43,7 @@ const result = someFunction();
 "#
     .trim();
     let file_path = "test.ts".to_string();
-    let result = analyze_code(code, file_path.clone()).unwrap();
+    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }

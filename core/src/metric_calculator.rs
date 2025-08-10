@@ -39,10 +39,10 @@ fn calculate_line_metrics(
 ) -> LineMetrics {
     let line_number = graph[node_index];
 
-    let total_dependencies = total_dependencies(&graph, node_index);
-    let dependency_distance_cost = dependency_distance_cost(&graph, node_index, content);
-    let depth = dfs_longest_path(&graph, node_index, &mut HashMap::new(), &mut HashSet::new());
-    let transitive_dependencies = transitive_dependencies(&graph, node_index);
+    let total_dependencies = total_dependencies(graph, node_index);
+    let dependency_distance_cost = dependency_distance_cost(graph, node_index, content);
+    let depth = dfs_longest_path(graph, node_index, &mut HashMap::new(), &mut HashSet::new());
+    let transitive_dependencies = transitive_dependencies(graph, node_index);
 
     LineMetrics {
         line_number,
@@ -75,7 +75,7 @@ fn transitive_dependencies(graph: &DiGraph<usize, usize>, node_index: NodeIndex)
     let mut dfs = Dfs::new(&graph, node_index);
     let mut transitive_dependencies: usize = 0;
 
-    while let Some(_) = dfs.next(&graph) {
+    while dfs.next(&graph).is_some() {
         transitive_dependencies += 1;
     }
     transitive_dependencies = transitive_dependencies.saturating_sub(1);
@@ -108,9 +108,9 @@ fn dfs_longest_path(
             continue;
         }
 
-        if !neighbors_map.contains_key(&node) {
+        if let std::collections::hash_map::Entry::Vacant(e) = neighbors_map.entry(node) {
             let ns: Vec<NodeIndex> = graph.neighbors(node).collect();
-            neighbors_map.insert(node, ns);
+            e.insert(ns);
             neighbor_idx.insert(node, 0);
             on_path.insert(node);
         }

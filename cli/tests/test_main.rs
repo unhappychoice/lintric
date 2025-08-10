@@ -17,7 +17,7 @@ fn test_basic_analysis() {
         .arg("lintric-cli")
         .arg("--")
         .arg("--verbose")
-        .arg(temp_file_path.to_str().unwrap())
+        .arg(temp_file_path.to_string_lossy().replace("\\", "/"))
         .output()
         .expect("Failed to execute command");
 
@@ -44,7 +44,7 @@ fn test_multiple_files_analysis() {
         .arg("--package")
         .arg("lintric-cli")
         .arg("--")
-        .arg(temp_dir.to_str().unwrap())
+        .arg(temp_dir.to_string_lossy().replace("\\", "/"))
         .output()
         .expect("Failed to execute command");
 
@@ -69,7 +69,7 @@ fn test_json_output() {
         .arg("lintric-cli")
         .arg("--")
         .arg("--json")
-        .arg(&temp_file_path)
+        .arg(temp_file_path.to_string_lossy().replace("\\", "/"))
         .output()
         .expect("Failed to execute command");
 

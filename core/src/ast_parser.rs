@@ -2,6 +2,7 @@ use crate::parsers::{rust_parser, typescript_parser};
 use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
 
+#[allow(clippy::type_complexity)]
 pub fn parse_code(
     content: &str,
     file_path: &str,
@@ -14,8 +15,7 @@ pub fn parse_code(
         typescript_parser::parse_typescript_code(content, true)
     } else {
         Err(format!(
-            "Unsupported file extension for {}. Only .rs, .ts, .tsx are supported.",
-            file_path
+            "Unsupported file extension for {file_path}. Only .rs, .ts, .tsx are supported."
         ))
     }
 }

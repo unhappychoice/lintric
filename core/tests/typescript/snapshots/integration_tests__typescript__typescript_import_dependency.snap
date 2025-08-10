@@ -1,9 +1,11 @@
 ---
 source: core/tests/typescript/mod.rs
+assertion_line: 48
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "test.ts",
+  "original_file_path": "test.ts",
   "line_metrics": [
     {
       "line_number": 1,

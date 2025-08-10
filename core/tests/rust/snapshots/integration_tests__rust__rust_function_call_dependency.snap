@@ -1,9 +1,11 @@
 ---
 source: core/tests/rust/mod.rs
+assertion_line: 32
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "test.rs",
+  "original_file_path": "test.rs",
   "line_metrics": [
     {
       "line_number": 1,

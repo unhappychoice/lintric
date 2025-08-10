@@ -29,11 +29,11 @@ pub fn process_directory(
     for entry in fs::read_dir(path)
         .map_err(|e| format!("Error reading directory {}: {}", path.display(), e))?
     {
-        let entry = entry.map_err(|e| format!("Error reading directory entry: {}", e))?;
+        let entry = entry.map_err(|e| format!("Error reading directory entry: {e}"))?;
         let entry_path = entry.path();
 
         if entry_path.is_file()
-            && entry_path.extension().map_or(false, |ext| {
+            && entry_path.extension().is_some_and(|ext| {
                 let ext_str = ext.to_string_lossy();
                 ext_str == "rs" || ext_str == "ts" || ext_str == "tsx"
             })

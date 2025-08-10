@@ -2,6 +2,7 @@ use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
 use tree_sitter::{Node, Parser as TreeSitterParser};
 
+#[allow(clippy::type_complexity)]
 pub fn parse_typescript_code(
     content: &str,
     is_tsx: bool,
@@ -14,10 +15,10 @@ pub fn parse_typescript_code(
     };
     parser
         .set_language(&language)
-        .map_err(|e| format!("Error loading TypeScript/TSX grammar: {}", e))?;
+        .map_err(|e| format!("Error loading TypeScript/TSX grammar: {e}"))?;
 
     let tree = parser
-        .parse(&content, None)
+        .parse(content, None)
         .ok_or_else(|| "Failed to parse the source code.".to_string())?;
 
     let mut definitions: HashMap<String, usize> = HashMap::new();
@@ -160,10 +161,9 @@ fn collect_dependencies(
         let end_line = n.end_position().row + 1;
 
         for line in start_line..=end_line {
-            if !line_nodes.contains_key(&line) {
-                let node_index = graph.add_node(line);
-                line_nodes.insert(line, node_index);
-            }
+            line_nodes
+                .entry(line)
+                .or_insert_with(|| graph.add_node(line));
         }
 
         match n.kind() {

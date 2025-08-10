@@ -86,14 +86,14 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
     let index_html_content = match tera.render("index.html", &index_context) {
         Ok(s) => s,
         Err(e) => {
-            eprintln!("Error rendering index.html: {}", e);
+            eprintln!("Error rendering index.html: {e}");
             return;
         }
     };
 
     let index_file_path = output_dir.join("index.html");
     if let Err(e) = write_file(&index_file_path, &index_html_content) {
-        eprintln!("Error writing index.html: {}", e);
+        eprintln!("Error writing index.html: {e}");
     } else {
         println!("HTML report generated at: {}", index_file_path.display());
     }
@@ -166,7 +166,7 @@ fn generate_file_html(
         Ok(s) => s,
         Err(e) => {
             eprintln!("Error rendering file.html for {}: {}", result.file_path, e);
-            return Err(format!("Error rendering file.html: {}", e));
+            return Err(format!("Error rendering file.html: {e}"));
         }
     };
 
