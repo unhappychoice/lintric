@@ -47,3 +47,17 @@ const result = someFunction();
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
+
+#[test]
+fn test_typescript_function_parameter_dependency() {
+    let code = r#"
+function a(b: string) {
+  console.log(b);
+}
+"#
+    .trim();
+    let file_path = "test.ts".to_string();
+    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+}

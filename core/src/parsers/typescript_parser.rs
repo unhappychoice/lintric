@@ -45,9 +45,56 @@ fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<
         let start_line = n.start_position().row + 1;
 
         match n.kind() {
-            "variable_declarator"
-            | "function_declaration"
-            | "class_declaration"
+            "variable_declarator" => {
+                if let Some(pattern_node) = n.child_by_field_name("name") {
+                    let name = pattern_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
+                    definitions.insert(name.clone(), start_line);
+                } else if let Some(pattern_node) = n.child_by_field_name("pattern") {
+                    find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                } else {
+                    let mut cursor = n.walk();
+                    for child in n.children(&mut cursor) {
+                        if child.kind() == "identifier" {
+                            find_identifiers_in_pattern(child, source_code, definitions);
+                        }
+                    }
+                }
+            }
+            "function_declaration" => {
+                if let Some(name_node) = n.child_by_field_name("name") {
+                    let name = name_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
+                    definitions.insert(name.clone(), start_line);
+                }
+                // Add parameters to definitions
+                if let Some(parameters_node) = n.child_by_field_name("parameters") {
+                    let mut param_cursor = parameters_node.walk();
+                    for param_child in parameters_node.children(&mut param_cursor) {
+                        if param_child.kind() == "required_parameter" || param_child.kind() == "optional_parameter" {
+                            if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
+                                find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                            } else if let Some(identifier_node) = param_child.child(0) { // Direct identifier for simple parameters
+                                if identifier_node.kind() == "identifier" {
+                                    let name = identifier_node
+                                        .utf8_text(source_code.as_bytes())
+                                        .unwrap()
+                                        .trim()
+                                        .to_string();
+                                    definitions.insert(name.clone(), identifier_node.start_position().row + 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            "class_declaration"
             | "interface_declaration"
             | "type_alias_declaration"
             | "enum_declaration" => {
@@ -175,10 +222,23 @@ fn collect_dependencies(
                     .trim()
                     .to_string();
 
+                // If the identifier is not a variable declaration or a property identifier,
+                // and it's not part of a function/class/interface/type/enum declaration name,
+                // then it's likely a usage.
+                // We also need to ensure it's not the name of a parameter being declared.
+                let is_declaration_name = parent_kind == Some("function_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                                   parent_kind == Some("class_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                                   parent_kind == Some("interface_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                                   parent_kind == Some("type_alias_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                                   parent_kind == Some("enum_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n);
+
+                let is_parameter_declaration = parent_kind == Some("required_parameter") || parent_kind == Some("optional_parameter");
+
                 if parent_kind != Some("variable_declarator")
                     && parent_kind != Some("property_identifier")
+                    && !is_declaration_name
+                    && !is_parameter_declaration // Don't add dependency if it's the parameter declaration itself
                 {
-                    // Avoid re-adding definitions or property access
                     if let Some(def_line) = definitions.get(&name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
                     }

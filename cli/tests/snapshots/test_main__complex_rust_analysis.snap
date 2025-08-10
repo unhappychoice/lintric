@@ -12,8 +12,8 @@ expression: stdout
 │ 4    ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
 │ 5    ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
 │ 6    ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
-│ 7    ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
-│ 8    ┆ 1          ┆ 0.03125   ┆ 1     ┆ 1               │
+│ 7    ┆ 2          ┆ 0.0625    ┆ 1     ┆ 1               │
+│ 8    ┆ 1          ┆ 0.03125   ┆ 2     ┆ 2               │
 │ 9    ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
 │ 10   ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
 │ 11   ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
@@ -40,14 +40,14 @@ expression: stdout
 │ 32   ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
 │ 33   ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
 └──────┴────────────┴───────────┴───────┴─────────────────┘
-Overall Complexity Score: 36.01
+Overall Complexity Score: 40.42
 ┌──────────────────────────────────────────────────┬──────────────────────────┐
 │ File                                             ┆ Overall Complexity Score │
 ╞══════════════════════════════════════════════════╪══════════════════════════╡
-│ ../core/tests/rust/fixtures/complex_rust_code.rs ┆ 36.01                    │
+│ ../core/tests/rust/fixtures/complex_rust_code.rs ┆ 40.42                    │
 └──────────────────────────────────────────────────┴──────────────────────────┘
 
 --- Overall Report ---
 Total Files Analyzed: 1
-Total Overall Complexity Score: 36.01
-Average Complexity Score: 36.01
+Total Overall Complexity Score: 40.42
+Average Complexity Score: 40.42
