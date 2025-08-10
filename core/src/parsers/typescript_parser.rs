@@ -25,13 +25,18 @@ pub fn parse_typescript_code(
     let mut graph: DiGraph<usize, usize> = DiGraph::new();
     let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
 
+    // Add all lines to line_nodes before collecting definitions and dependencies
+    for line_num in 1..=content.lines().count() {
+        line_nodes.entry(line_num).or_insert_with(|| graph.add_node(line_num));
+    }
+
     collect_definitions(tree.root_node(), content, &mut definitions);
     collect_dependencies(
         tree.root_node(),
         content,
         &mut graph,
         &mut line_nodes,
-        &definitions,
+        &mut definitions,
     );
 
     Ok((graph, line_nodes))
@@ -56,14 +61,30 @@ fn collect_definitions(node: Node, source_code: &str, definitions: &mut HashMap<
                 } else if let Some(pattern_node) = n.child_by_field_name("pattern") {
                     find_identifiers_in_pattern(pattern_node, source_code, definitions);
                 } else {
-                    let mut cursor = n.walk();
-                    for child in n.children(&mut cursor) {
-                        if child.kind() == "identifier" {
-                            find_identifiers_in_pattern(child, source_code, definitions);
-                        }
-                    }
+
                 }
             }
+           "arrow_function" | "function" => {
+               if let Some(parameters_node) = n.child_by_field_name("parameters") {
+                   let mut param_cursor = parameters_node.walk();
+                   for param_child in parameters_node.children(&mut param_cursor) {
+                       if param_child.kind() == "required_parameter" || param_child.kind() == "optional_parameter" {
+                           if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
+                               find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                           } else if let Some(identifier_node) = param_child.child(0) {
+                               if identifier_node.kind() == "identifier" {
+                                   let name = identifier_node
+                                       .utf8_text(source_code.as_bytes())
+                                       .unwrap()
+                                       .trim()
+                                       .to_string();
+                                   definitions.insert(name.clone(), identifier_node.start_position().row + 1);
+                               }
+                           }
+                       }
+                   }
+               }
+           }
             "function_declaration" => {
                 if let Some(name_node) = n.child_by_field_name("name") {
                     let name = name_node
@@ -198,7 +219,7 @@ fn collect_dependencies(
     source_code: &str,
     graph: &mut DiGraph<usize, usize>,
     line_nodes: &mut HashMap<usize, NodeIndex>,
-    definitions: &HashMap<String, usize>,
+    definitions: &mut HashMap<String, usize>,
 ) {
     let mut stack: Vec<Node> = Vec::new();
     stack.push(node);
@@ -213,6 +234,7 @@ fn collect_dependencies(
                 .or_insert_with(|| graph.add_node(line));
         }
 
+        // Add this block to handle arguments in call_expression
         match n.kind() {
             "identifier" => {
                 let parent_kind = n.parent().map(|p| p.kind());
@@ -222,22 +244,16 @@ fn collect_dependencies(
                     .trim()
                     .to_string();
 
-                // If the identifier is not a variable declaration or a property identifier,
-                // and it's not part of a function/class/interface/type/enum declaration name,
-                // then it's likely a usage.
-                // We also need to ensure it's not the name of a parameter being declared.
                 let is_declaration_name = parent_kind == Some("function_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("class_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("interface_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("type_alias_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
-                                   parent_kind == Some("enum_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n);
-
-                let is_parameter_declaration = parent_kind == Some("required_parameter") || parent_kind == Some("optional_parameter");
+                    parent_kind == Some("class_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                    parent_kind == Some("interface_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                    parent_kind == Some("type_alias_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n) ||
+                    parent_kind == Some("enum_declaration") && n.parent().unwrap().child_by_field_name("name").map_or(false, |node| node == n);
 
                 if parent_kind != Some("variable_declarator")
                     && parent_kind != Some("property_identifier")
+                    && parent_kind != Some("arguments")
                     && !is_declaration_name
-                    && !is_parameter_declaration // Don't add dependency if it's the parameter declaration itself
                 {
                     if let Some(def_line) = definitions.get(&name) {
                         add_dependency(start_line, *def_line, graph, line_nodes);
@@ -254,6 +270,22 @@ fn collect_dependencies(
                             .to_string();
                         if let Some(def_line) = definitions.get(&name) {
                             add_dependency(start_line, *def_line, graph, line_nodes);
+                        }
+                    }
+                }
+                // Add this block to handle arguments in call_expression
+                if let Some(arguments_node) = n.child_by_field_name("arguments") {
+                    let mut arg_cursor = arguments_node.walk();
+                    for arg_child in arguments_node.children(&mut arg_cursor) {
+                        if arg_child.kind() == "identifier" {
+                            let name = arg_child
+                                .utf8_text(source_code.as_bytes())
+                                .unwrap()
+                                .trim()
+                                .to_string();
+                            if let Some(def_line) = definitions.get(&name) {
+                                add_dependency(arg_child.start_position().row + 1, *def_line, graph, line_nodes);
+                            }
                         }
                     }
                 }
