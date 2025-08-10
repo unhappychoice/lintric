@@ -1,7 +1,7 @@
 pub mod ast_parser;
+pub mod collectors;
 pub mod metric_calculator;
 pub mod models;
-pub mod parsers;
 
 use ast_parser::parse_code;
 use metric_calculator::calculate_metrics;
