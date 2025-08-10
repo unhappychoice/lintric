@@ -1,11 +1,13 @@
 ---
 source: cli/tests/test_main.rs
-expression: processed_stdout
+assertion_line: 80
+expression: stdout
 ---
 {
   "results": [
     {
       "file_path": "tmp/temp_test_file_json.rs",
+      "original_file_path": "tmp/temp_test_file_json.rs",
       "line_metrics": [
         {
           "line_number": 1,

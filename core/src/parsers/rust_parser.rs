@@ -2,16 +2,17 @@ use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
 use tree_sitter::{Node, Parser as TreeSitterParser};
 
+#[allow(clippy::type_complexity)]
 pub fn parse_rust_code(
     content: &str,
 ) -> Result<(DiGraph<usize, usize>, HashMap<usize, NodeIndex>), String> {
     let mut parser = TreeSitterParser::new();
     parser
         .set_language(&tree_sitter_rust::language())
-        .map_err(|e| format!("Error loading Rust grammar: {}", e))?;
+        .map_err(|e| format!("Error loading Rust grammar: {e}"))?;
 
     let tree = parser
-        .parse(&content, None)
+        .parse(content, None)
         .ok_or_else(|| "Failed to parse the source code.".to_string())?;
 
     let mut definitions: HashMap<String, usize> = HashMap::new();
@@ -139,10 +140,9 @@ fn collect_dependencies(
         let end_line = n.end_position().row + 1;
 
         for line in start_line..=end_line {
-            if !line_nodes.contains_key(&line) {
-                let node_index = graph.add_node(line);
-                line_nodes.insert(line, node_index);
-            }
+            line_nodes
+                .entry(line)
+                .or_insert_with(|| graph.add_node(line));
         }
 
         match n.kind() {

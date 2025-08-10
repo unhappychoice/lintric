@@ -9,7 +9,13 @@ fn test_simple_dependency() {
     graph.add_edge(node2, node1, 1);
 
     let code = "let a = 1;\nlet b = a;";
-    let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
+    let result = calculate_metrics(
+        graph,
+        code,
+        "test.rs".to_string(),
+        "original_test.rs".to_string(),
+    )
+    .unwrap();
 
     assert_eq!(result.line_metrics.len(), 2);
 
@@ -44,7 +50,13 @@ fn test_multiple_dependencies() {
     graph.add_edge(node3, node2, 1);
 
     let code = "let a = 1;\nlet b = 2;\nlet c = a + b;";
-    let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
+    let result = calculate_metrics(
+        graph,
+        code,
+        "test.rs".to_string(),
+        "original_test.rs".to_string(),
+    )
+    .unwrap();
 
     let line3_metrics = result
         .line_metrics
@@ -64,7 +76,13 @@ fn test_transitive_dependencies() {
     graph.add_edge(node3, node2, 1);
 
     let code = "let a = 1;\nlet b = a;\nlet c = b;";
-    let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
+    let result = calculate_metrics(
+        graph,
+        code,
+        "test.rs".to_string(),
+        "original_test.rs".to_string(),
+    )
+    .unwrap();
 
     let line3_metrics = result
         .line_metrics
@@ -84,7 +102,13 @@ fn test_cyclic_dependencies() {
     graph.add_edge(node2, node1, 1);
 
     let code = "fn a() { b() }\nfn b() { a() }";
-    let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
+    let result = calculate_metrics(
+        graph,
+        code,
+        "test.rs".to_string(),
+        "original_test.rs".to_string(),
+    )
+    .unwrap();
 
     let line1_metrics = result
         .line_metrics
@@ -101,7 +125,13 @@ fn test_no_dependencies() {
     graph.add_node(2);
 
     let code = "let a = 1;\nlet b = 2;".trim();
-    let result = calculate_metrics(graph, code, "test.rs".to_string()).unwrap();
+    let result = calculate_metrics(
+        graph,
+        code,
+        "test.rs".to_string(),
+        "original_test.rs".to_string(),
+    )
+    .unwrap();
 
     let line1_metrics = result
         .line_metrics

@@ -32,7 +32,7 @@ pub fn display_verbose(overall_report: &OverallAnalysisReport) {
                 Cell::new(metrics.transitive_dependencies),
             ]));
         }
-        println!("{}", table);
+        println!("{table}");
         println!(
             "Overall Complexity Score: {:.2}",
             result.overall_complexity_score
@@ -58,7 +58,7 @@ pub fn display_summary(overall_report: &OverallAnalysisReport) {
             Cell::new(format!("{:.2}", result.overall_complexity_score)),
         ]));
     }
-    println!("{}", table);
+    println!("{table}");
 
     display_overall_summary(overall_report);
 }
