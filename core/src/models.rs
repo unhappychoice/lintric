@@ -7,6 +7,7 @@ pub struct LineMetrics {
     pub dependency_distance_cost: f64,
     pub depth: usize,
     pub transitive_dependencies: usize,
+    pub dependent_lines: Vec<usize>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
