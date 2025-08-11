@@ -27,8 +27,12 @@ impl DefinitionCollector for RustDefinitionCollector {
         kind_handlers.insert("type_alias", Self::collect_type_definitions);
         kind_handlers.insert("use_declaration", Self::collect_import_definitions);
         kind_handlers.insert("closure_expression", Self::collect_closure_definitions);
+        kind_handlers.insert("for_expression", Self::collect_variable_definitions);
+        kind_handlers.insert("if_expression", Self::collect_variable_definitions);
+        kind_handlers.insert("while_expression", Self::collect_variable_definitions);
 
         Self::collect_definitions_recursive(root, content, &mut definitions, &kind_handlers);
+
         Ok(definitions)
     }
 
@@ -38,22 +42,51 @@ impl DefinitionCollector for RustDefinitionCollector {
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
-        if let Some(pattern_node) = node.child_by_field_name("name") {
-            let name = pattern_node
-                .utf8_text(source_code.as_bytes())
-                .unwrap()
-                .trim()
-                .to_string();
-            definitions.insert(name, start_line);
-        } else if let Some(pattern_node) = node.child_by_field_name("pattern") {
-            find_identifiers_in_pattern(pattern_node, source_code, definitions);
-        } else {
-            let mut cursor = node.walk();
-            for child in node.children(&mut cursor) {
-                if child.kind() == "identifier" {
-                    find_identifiers_in_pattern(child, source_code, definitions);
+        match node.kind() {
+            "for_expression" => {
+                if let Some(pattern_node) = node.child_by_field_name("pattern") {
+                    let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+                    for (name, line) in identifiers {
+                        definitions.insert(name, line);
+                    }
                 }
             }
+            "if_expression" | "while_expression" => {
+                let mut cursor = node.walk();
+                for let_condition_node in node.children(&mut cursor) {
+                    if let_condition_node.kind() == "let_condition" {
+                        let mut let_cursor = let_condition_node.walk();
+                        for destruct_pattern_node in let_condition_node.children(&mut let_cursor) {
+                            if destruct_pattern_node.kind() == "tuple_struct_pattern" {
+                                let mut identifiers =
+                                    find_identifiers_in_pattern(destruct_pattern_node, source_code)
+                                        .into_iter();
+                                // Remove the first element, which is the name of the tuple struct.
+                                identifiers.next();
+                                for (name, line) in identifiers {
+                                    definitions.insert(name, line);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            "let_declaration" | "variable_declarator" => {
+                if let Some(pattern_node) = node.child_by_field_name("name") {
+                    let name = pattern_node
+                        .utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string();
+                    definitions.insert(name, start_line);
+                } else if let Some(pattern_node) = node.child_by_field_name("pattern") {
+                    let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+                    for (name, line) in identifiers {
+                        definitions.insert(name, line);
+                    }
+                }
+            }
+            _ => {}
         }
     }
 
@@ -76,7 +109,10 @@ impl DefinitionCollector for RustDefinitionCollector {
             for param_child in parameters_node.children(&mut param_cursor) {
                 if param_child.kind() == "parameter" {
                     if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
-                        find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                        let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+                        for (name, line) in identifiers {
+                            definitions.insert(name, line);
+                        }
                     }
                 }
             }
@@ -97,7 +133,10 @@ impl DefinitionCollector for RustDefinitionCollector {
                 .to_string();
             definitions.insert(name, start_line);
         } else if let Some(pattern_node) = node.child_by_field_name("pattern") {
-            find_identifiers_in_pattern(pattern_node, source_code, definitions);
+            let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+            for (name, line) in identifiers {
+                definitions.insert(name, line);
+            }
         }
     }
 
@@ -156,7 +195,10 @@ impl DefinitionCollector for RustDefinitionCollector {
         if let Some(parameters_node) = node.child_by_field_name("parameters") {
             let mut param_cursor = parameters_node.walk();
             for param_child in parameters_node.children(&mut param_cursor) {
-                find_identifiers_in_pattern(param_child, source_code, definitions);
+                let identifiers = find_identifiers_in_pattern(param_child, source_code);
+                for (name, line) in identifiers {
+                    definitions.insert(name, line);
+                }
             }
         }
     }
