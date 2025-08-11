@@ -75,3 +75,12 @@ fn main() {
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
+
+#[test]
+fn test_rust_closure_dependency() {
+    let code = include_str!("fixtures/closure_dependency.rs");
+    let file_path = "fixtures/closure_dependency.rs".to_string();
+    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+}

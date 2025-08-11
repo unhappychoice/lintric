@@ -26,6 +26,7 @@ impl DefinitionCollector for RustDefinitionCollector {
         kind_handlers.insert("impl_item", Self::collect_type_definitions);
         kind_handlers.insert("type_alias", Self::collect_type_definitions);
         kind_handlers.insert("use_declaration", Self::collect_import_definitions);
+        kind_handlers.insert("closure_expression", Self::collect_closure_definitions);
 
         Self::collect_definitions_recursive(root, content, &mut definitions, &kind_handlers);
         Ok(definitions)
@@ -143,6 +144,19 @@ impl DefinitionCollector for RustDefinitionCollector {
                     }
                 }
                 _ => {}
+            }
+        }
+    }
+
+    fn collect_closure_definitions(
+        node: Node,
+        source_code: &str,
+        definitions: &mut HashMap<String, usize>,
+    ) {
+        if let Some(parameters_node) = node.child_by_field_name("parameters") {
+            let mut param_cursor = parameters_node.walk();
+            for param_child in parameters_node.children(&mut param_cursor) {
+                find_identifiers_in_pattern(param_child, source_code, definitions);
             }
         }
     }
