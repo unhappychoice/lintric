@@ -1,5 +1,6 @@
 ---
 source: cli/tests/test_main.rs
+assertion_line: 55
 expression: stdout
 ---
 ┌───────────────────┬──────────────────────────┐

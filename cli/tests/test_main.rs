@@ -57,11 +57,7 @@ fn test_multiple_files_analysis() {
 
 #[test]
 fn test_json_output() {
-    let temp_dir = PathBuf::from("tmp");
-    fs::create_dir_all(&temp_dir).expect("Unable to create test directory");
-
-    let temp_file_path = temp_dir.join("temp_test_file_json.rs");
-    fs::write(&temp_file_path, "let val = 10;").expect("Unable to write test file");
+    let fixture_path = "../core/tests/rust/fixtures/complex_rust_code.rs";
 
     let output = Command::new("cargo")
         .arg("run")
@@ -69,7 +65,7 @@ fn test_json_output() {
         .arg("lintric-cli")
         .arg("--")
         .arg("--json")
-        .arg(temp_file_path.to_string_lossy().replace("\\", "/"))
+        .arg(fixture_path)
         .output()
         .expect("Failed to execute command");
 
