@@ -57,6 +57,12 @@ pub trait DefinitionCollector {
         source_code: &str,
         definitions: &mut HashMap<String, usize>,
     );
+
+    fn collect_closure_definitions(
+        node: Node,
+        source_code: &str,
+        definitions: &mut HashMap<String, usize>,
+    );
 }
 
 pub fn find_identifiers_in_pattern(

@@ -160,4 +160,12 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
             }
         }
     }
+
+    fn collect_closure_definitions(
+        _node: Node,
+        _source_code: &str,
+        _definitions: &mut HashMap<String, usize>,
+    ) {
+        // Arrow functions are handled by collect_variable_definitions
+    }
 }
