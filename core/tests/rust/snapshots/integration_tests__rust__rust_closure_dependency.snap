@@ -1,6 +1,5 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 85
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
@@ -63,14 +62,6 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     },
     {
       "line_number": 7,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
-      "transitive_dependencies": 0,
-      "dependent_lines": []
-    },
-    {
-      "line_number": 8,
       "total_dependencies": 0,
       "dependency_distance_cost": -0.0,
       "depth": 0,

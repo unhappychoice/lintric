@@ -1,0 +1,187 @@
+---
+source: cli/tests/test_main.rs
+expression: stdout
+---
+(source_file
+  (struct_item
+    (type_identifier)
+    (field_declaration_list
+      (field_declaration
+        (field_identifier)
+        (primitive_type)
+      )
+      (field_declaration
+        (field_identifier)
+        (primitive_type)
+      )
+    )
+  )
+  (function_item
+    (identifier add)
+    (parameters
+      (parameter
+        (identifier a)
+        (primitive_type)
+      )
+      (parameter
+        (identifier b)
+        (primitive_type)
+      )
+    )
+    (primitive_type)
+    (block
+      (let_declaration
+        (identifier result)
+        (binary_expression
+          (identifier a)
+          (identifier b)
+        )
+      )
+      (identifier result)
+    )
+  )
+  (function_item
+    (identifier main)
+    (parameters)
+    (block
+      (let_declaration
+        (identifier p1)
+        (struct_expression
+          (type_identifier)
+          (field_initializer_list
+            (field_initializer
+              (field_identifier)
+              (integer_literal)
+            )
+            (field_initializer
+              (field_identifier)
+              (integer_literal)
+            )
+          )
+        )
+      )
+      (let_declaration
+        (identifier p2)
+        (struct_expression
+          (type_identifier)
+          (field_initializer_list
+            (field_initializer
+              (field_identifier)
+              (integer_literal)
+            )
+            (field_initializer
+              (field_identifier)
+              (integer_literal)
+            )
+          )
+        )
+      )
+      (let_declaration
+        (identifier p3)
+        (struct_expression
+          (type_identifier)
+          (field_initializer_list
+            (field_initializer
+              (field_identifier)
+              (call_expression
+                (identifier add)
+                (arguments
+                  (field_expression
+                    (identifier p1)
+                    (field_identifier)
+                  )
+                  (field_expression
+                    (identifier p2)
+                    (field_identifier)
+                  )
+                )
+              )
+            )
+            (field_initializer
+              (field_identifier)
+              (call_expression
+                (identifier add)
+                (arguments
+                  (field_expression
+                    (identifier p1)
+                    (field_identifier)
+                  )
+                  (field_expression
+                    (identifier p2)
+                    (field_identifier)
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+      (let_declaration
+        (identifier p4)
+        (block
+          (let_declaration
+            (identifier p5)
+            (struct_expression
+              (type_identifier)
+              (field_initializer_list
+                (field_initializer
+                  (field_identifier)
+                  (integer_literal)
+                )
+                (field_initializer
+                  (field_identifier)
+                  (integer_literal)
+                )
+              )
+            )
+          )
+          (let_declaration
+            (identifier p6)
+            (identifier p5)
+          )
+          (identifier p6)
+        )
+      )
+      (let_declaration
+        (identifier x)
+        (integer_literal)
+      )
+      (let_declaration
+        (identifier y)
+        (binary_expression
+          (identifier x)
+          (integer_literal)
+        )
+      )
+      (let_declaration
+        (identifier z)
+        (binary_expression
+          (identifier y)
+          (identifier x)
+        )
+      )
+      (expression_statement
+        (macro_invocation
+          (identifier println)
+          (token_tree
+            (string_literal
+              (string_content)
+            )
+            (identifier p3)
+          )
+        )
+      )
+      (expression_statement
+        (macro_invocation
+          (identifier println)
+          (token_tree
+            (string_literal
+              (string_content)
+            )
+            (identifier p4)
+          )
+        )
+      )
+    )
+  )
+)

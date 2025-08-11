@@ -1,66 +1,71 @@
 use std::collections::HashMap;
 use tree_sitter::Node;
 
-pub type DefinitionHandler = fn(Node, &str, &mut HashMap<String, usize>);
+pub trait DefinitionCollector: Send + Sync {
+    fn collect_definitions_from_root<'a>(
+        &self,
+        root: Node<'a>,
+        content: &'a str,
+    ) -> Result<HashMap<String, usize>, String> {
+        let mut definitions: HashMap<String, usize> = HashMap::new();
+        let mut stack: Vec<Node<'a>> = Vec::new();
+        stack.push(root);
 
-pub trait DefinitionCollector {
-    fn collect_definitions_from_root(
-        root: Node,
-        content: &str,
-    ) -> Result<HashMap<String, usize>, String>;
+        while let Some(node) = stack.pop() {
+            self.process_node(node, content, &mut definitions);
 
-    fn collect_definitions_recursive(
-        node: Node,
-        source_code: &str,
-        definitions: &mut HashMap<String, usize>,
-        kind_handlers: &HashMap<&str, DefinitionHandler>,
-    ) {
-        let mut stack: Vec<Node> = Vec::new();
-        stack.push(node);
-
-        while let Some(n) = stack.pop() {
-            if let Some(handler) = kind_handlers.get(n.kind()) {
-                handler(n, source_code, definitions);
-            }
-
-            let mut cursor = n.walk();
-            let mut children: Vec<Node> = Vec::new();
-            for child in n.children(&mut cursor) {
+            let mut cursor = node.walk();
+            let mut children: Vec<Node<'a>> = Vec::new();
+            for child in node.children(&mut cursor) {
                 children.push(child);
             }
             for child in children.into_iter().rev() {
                 stack.push(child);
             }
         }
+
+        Ok(definitions)
     }
 
-    fn collect_variable_definitions(
-        node: Node,
-        source_code: &str,
+    fn process_node<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     );
 
-    fn collect_function_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_variable_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     );
 
-    fn collect_type_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_function_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     );
 
-    fn collect_import_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_type_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     );
 
-    fn collect_closure_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_import_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        definitions: &mut HashMap<String, usize>,
+    );
+
+    fn collect_closure_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     );
 }

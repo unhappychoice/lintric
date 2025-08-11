@@ -117,3 +117,135 @@ fn test_complex_typescript_analysis() {
     assert!(output.status.success());
     assert_snapshot!(stdout);
 }
+
+#[test]
+fn test_debug_ast_rust() {
+    let fixture_path = "../core/tests/rust/fixtures/complex_rust_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--")
+        .arg("debug")
+        .arg("ast")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let _stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(output.status.success());
+    assert_snapshot!(stdout);
+}
+
+#[test]
+fn test_debug_ast_typescript() {
+    let fixture_path = "../core/tests/typescript/fixtures/complex_typescript_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--")
+        .arg("debug")
+        .arg("ast")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let _stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(output.status.success());
+    assert_snapshot!(stdout);
+}
+
+#[test]
+fn test_debug_definition_rust() {
+    let fixture_path = "../core/tests/rust/fixtures/complex_rust_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--")
+        .arg("debug")
+        .arg("definition")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let _stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(output.status.success());
+    assert_snapshot!(stdout);
+}
+
+#[test]
+fn test_debug_definition_typescript() {
+    let fixture_path = "../core/tests/typescript/fixtures/complex_typescript_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--")
+        .arg("debug")
+        .arg("definition")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let _stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(output.status.success());
+    assert_snapshot!(stdout);
+}
+
+#[test]
+fn test_debug_dependency_rust() {
+    let fixture_path = "../core/tests/rust/fixtures/complex_rust_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--")
+        .arg("debug")
+        .arg("dependency")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let _stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(output.status.success());
+    assert_snapshot!(stdout);
+}
+
+#[test]
+fn test_debug_dependency_typescript() {
+    let fixture_path = "../core/tests/typescript/fixtures/complex_typescript_code.rs";
+
+    let output = Command::new("cargo")
+        .arg("run")
+        .arg("--package")
+        .arg("lintric-cli")
+        .arg("--")
+        .arg("debug")
+        .arg("dependency")
+        .arg(fixture_path)
+        .output()
+        .expect("Failed to execute command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let _stderr = String::from_utf8_lossy(&output.stderr);
+
+    assert!(output.status.success());
+    assert_snapshot!(stdout);
+}
