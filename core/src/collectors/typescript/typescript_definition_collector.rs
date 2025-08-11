@@ -44,7 +44,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
                 .to_string();
             definitions.insert(name.clone(), start_line);
         } else if let Some(pattern_node) = node.child_by_field_name("pattern") {
-            find_identifiers_in_pattern(pattern_node, source_code, definitions);
+            let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+            for (name, line) in identifiers {
+                definitions.insert(name, line);
+            }
         }
     }
 
@@ -71,7 +74,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
                     || param_child.kind() == "optional_parameter"
                 {
                     if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
-                        find_identifiers_in_pattern(pattern_node, source_code, definitions);
+                        let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+                        for (name, line) in identifiers {
+                            definitions.insert(name, line);
+                        }
                     }
                 }
             }
@@ -92,7 +98,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
                 .to_string();
             definitions.insert(name.clone(), start_line);
         } else if let Some(pattern_node) = node.child_by_field_name("pattern") {
-            find_identifiers_in_pattern(pattern_node, source_code, definitions);
+            let identifiers = find_identifiers_in_pattern(pattern_node, source_code);
+            for (name, line) in identifiers {
+                definitions.insert(name, line);
+            }
         }
     }
 

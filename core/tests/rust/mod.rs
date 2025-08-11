@@ -84,3 +84,12 @@ fn test_rust_closure_dependency() {
 
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
+
+#[test]
+fn test_pattern_match_bindings_definitions() {
+    let code = include_str!("fixtures/pattern_match_bindings.rs");
+    let file_path = "fixtures/pattern_match_bindings.rs".to_string();
+    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+
+    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+}

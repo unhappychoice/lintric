@@ -65,11 +65,8 @@ pub trait DefinitionCollector {
     );
 }
 
-pub fn find_identifiers_in_pattern(
-    node: Node,
-    source_code: &str,
-    definitions: &mut HashMap<String, usize>,
-) {
+pub fn find_identifiers_in_pattern(node: Node, source_code: &str) -> Vec<(String, usize)> {
+    let mut identifiers = Vec::new();
     let mut stack: Vec<Node> = Vec::new();
     stack.push(node);
 
@@ -80,7 +77,7 @@ pub fn find_identifiers_in_pattern(
                 .unwrap()
                 .trim()
                 .to_string();
-            definitions.insert(name.clone(), n.start_position().row + 1);
+            identifiers.push((name.clone(), n.start_position().row + 1));
         }
 
         let mut cursor = n.walk();
@@ -92,4 +89,5 @@ pub fn find_identifiers_in_pattern(
             stack.push(child);
         }
     }
+    identifiers
 }

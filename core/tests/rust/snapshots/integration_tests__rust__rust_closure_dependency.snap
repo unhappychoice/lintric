@@ -25,23 +25,21 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     },
     {
       "line_number": 3,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.14285714285714285,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        2
+      ]
+    },
+    {
+      "line_number": 4,
       "total_dependencies": 0,
       "dependency_distance_cost": -0.0,
       "depth": 0,
       "transitive_dependencies": 0,
       "dependent_lines": []
-    },
-    {
-      "line_number": 4,
-      "total_dependencies": 3,
-      "dependency_distance_cost": 1.0,
-      "depth": 1,
-      "transitive_dependencies": 2,
-      "dependent_lines": [
-        3,
-        2,
-        2
-      ]
     },
     {
       "line_number": 5,
@@ -53,6 +51,26 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     },
     {
       "line_number": 6,
+      "total_dependencies": 3,
+      "dependency_distance_cost": 1.2857142857142856,
+      "depth": 1,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        5,
+        2,
+        2
+      ]
+    },
+    {
+      "line_number": 7,
+      "total_dependencies": 0,
+      "dependency_distance_cost": -0.0,
+      "depth": 0,
+      "transitive_dependencies": 0,
+      "dependent_lines": []
+    },
+    {
+      "line_number": 8,
       "total_dependencies": 0,
       "dependency_distance_cost": -0.0,
       "depth": 0,
@@ -60,5 +78,5 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       "dependent_lines": []
     }
   ],
-  "overall_complexity_score": 4.5
+  "overall_complexity_score": 6.742857142857143
 }
