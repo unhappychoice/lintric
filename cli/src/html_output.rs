@@ -7,38 +7,6 @@ use syntect::html::css_for_theme_with_class_style;
 use syntect::parsing::SyntaxSet;
 use tera::{Context, Tera};
 
-// Helper functions (moved to top for scope)
-fn sanitize_filename(path: &str) -> String {
-    path.replace("/", "_")
-        .replace("\\", "_") // Corrected: escape backslash
-        .replace(":", "_")
-        .replace(" ", "_")
-        .replace(".", "_") // Remove dots to avoid issues with file extensions
-        .replace("__", "_") // Replace double underscores that might result from multiple replacements
-        .trim_matches('_')
-        .to_string()
-}
-
-fn get_complexity_class(score: f64) -> &'static str {
-    if score > 10.0 {
-        "high"
-    } else if score > 5.0 {
-        "medium"
-    } else if score > 0.0 {
-        "low"
-    } else {
-        "none"
-    }
-}
-
-fn write_file(path: &Path, content: &str) -> Result<(), String> {
-    let mut file = fs::File::create(path)
-        .map_err(|e| format!("Error creating file {}: {}", path.display(), e))?;
-    file.write_all(content.as_bytes())
-        .map_err(|e| format!("Error writing to file {}: {}", path.display(), e))?;
-    Ok(())
-}
-
 pub fn generate_html_report(report: &OverallAnalysisReport) {
     let output_dir = PathBuf::from(".lintric/output/html");
     if let Err(e) = fs::create_dir_all(&output_dir) {
@@ -97,6 +65,37 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
     }
 }
 
+fn sanitize_filename(path: &str) -> String {
+    path.replace("/", "_")
+        .replace("\\", "_") // Corrected: escape backslash
+        .replace(":", "_")
+        .replace(" ", "_")
+        .replace(".", "_") // Remove dots to avoid issues with file extensions
+        .replace("__", "_") // Replace double underscores that might result from multiple replacements
+        .trim_matches('_')
+        .to_string()
+}
+
+fn get_complexity_class(score: f64) -> &'static str {
+    if score > 10.0 {
+        "high"
+    } else if score > 5.0 {
+        "medium"
+    } else if score > 0.0 {
+        "low"
+    } else {
+        "none"
+    }
+}
+
+fn write_file(path: &Path, content: &str) -> Result<(), String> {
+    let mut file = fs::File::create(path)
+        .map_err(|e| format!("Error creating file {}: {}", path.display(), e))?;
+    file.write_all(content.as_bytes())
+        .map_err(|e| format!("Error writing to file {}: {}", path.display(), e))?;
+    Ok(())
+}
+
 fn generate_file_html(
     output_dir: &Path,
     result: &AnalysisResult,
@@ -114,7 +113,7 @@ fn generate_file_html(
     let file_extension = Path::new(&result.file_path)
         .extension()
         .and_then(|s| s.to_str())
-        .unwrap_or("txt"); // Default to "txt" if no extension
+        .unwrap_or("txt");
 
     let syntax = ps
         .find_syntax_by_extension(file_extension)
@@ -176,14 +175,13 @@ fn generate_file_html(
 
         let mut line_data = Context::new();
         line_data.insert("line_number", &line_number);
-        // highlighted_linesから対応する行のHTMLを取得
+
         let highlighted_code_line = highlighted_lines
             .get(i)
             .unwrap_or(&String::new())
             .to_string();
         line_data.insert("code", &highlighted_code_line);
         line_data.insert("metrics_str", &metrics_str);
-        // Add dependent_lines to line_data
         line_data.insert(
             "dependent_lines",
             &line_metrics.map_or(vec![], |m| m.dependent_lines.clone()),

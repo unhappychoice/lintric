@@ -102,8 +102,7 @@ fn dfs_longest_path(
         return cached_depth;
     }
 
-    // 反復 DFS 用の補助構造
-    on_path.clear(); // 呼び出し元から渡される集合を使い回す
+    on_path.clear();
     let mut processed: HashSet<NodeIndex> = HashSet::new();
     let mut neighbor_idx: HashMap<NodeIndex, usize> = HashMap::new();
     let mut neighbors_map: HashMap<NodeIndex, Vec<NodeIndex>> = HashMap::new();
@@ -135,18 +134,14 @@ fn dfs_longest_path(
                 continue;
             }
             if on_path.contains(&nb) {
-                // サイクル辺は最長経路の延長には使わない
                 continue;
             }
             if memo.contains_key(&nb) {
-                // 既に深さ計算済み
                 continue;
             }
 
-            // 探索を更に深く進める
             stack.push(nb);
         } else {
-            // すべての隣接先を処理済み -> 深さを確定
             let mut max_depth = 0usize;
             for &nb in neighbors.iter() {
                 let dnb = *memo.get(&nb).unwrap_or(&0);

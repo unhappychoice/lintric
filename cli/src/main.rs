@@ -99,7 +99,6 @@ fn main() {
             },
         },
         None => {
-            // Existing logic for analysis
             let mut all_results: Vec<AnalysisResult> = Vec::new();
             let mut total_overall_complexity_score = 0.0;
             let mut total_files_analyzed = 0;

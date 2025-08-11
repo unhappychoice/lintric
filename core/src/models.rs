@@ -8,7 +8,6 @@ use tree_sitter_typescript;
 pub enum Language {
     Rust,
     TypeScript,
-    // Add other languages as needed
 }
 
 impl Language {

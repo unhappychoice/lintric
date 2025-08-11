@@ -27,8 +27,6 @@ pub trait DependencyCollector: Send + Sync {
         let mut defs = definitions.clone();
 
         while let Some(node) = stack.pop() {
-            // Do not perform language-specific node processing directly here.
-            // Instead, call the abstract method.
             self.process_node(node, content, &mut graph, &mut line_nodes, &mut defs);
 
             let mut cursor = node.walk();

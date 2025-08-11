@@ -97,7 +97,6 @@
                                 if (targetLineDiv) {
                                     const code = targetLineDiv.querySelector('.code').textContent;
                                     tooltipContent += `${depLineNum}: ${code}\n`;
-                                    // ハイライトを追加
                                     targetLineDiv.classList.add('highlighted-line');
                                 }
                             });
@@ -111,7 +110,6 @@
 
                 lineDiv.addEventListener('mouseleave', () => {
                     tooltip.style.display = 'none';
-                    // すべてのハイライトを削除
                     lines.forEach(l => l.classList.remove('highlighted-line'));
                 });
 

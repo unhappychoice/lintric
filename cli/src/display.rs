@@ -73,7 +73,6 @@ pub fn display_summary(overall_report: &OverallAnalysisReport) {
     table.load_preset(UTF8_FULL_CONDENSED);
     table.set_header(vec!["File", "Overall Complexity Score"]);
 
-    // Sort results by file_path before displaying
     let mut sorted_results = overall_report.results.clone();
     sorted_results.sort_by(|a, b| a.file_path.cmp(&b.file_path));
 

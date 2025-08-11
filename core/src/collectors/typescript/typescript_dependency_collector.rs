@@ -22,7 +22,6 @@ impl DependencyCollector for TypescriptDependencyCollector {
                 self.handle_call_expression(n, source_code, graph, line_nodes, definitions);
             }
             "property_identifier" => {
-                // TypeScript specific
                 self.handle_field_expression(n, source_code, graph, line_nodes, definitions);
             }
             _ => {
