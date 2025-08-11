@@ -1,7 +1,5 @@
 use crate::collectors::common::definition_collectors::{
-    find_identifiers_in_pattern,
-    DefinitionCollector,
-    DefinitionHandler, // Add DefinitionHandler here
+    find_identifiers_in_pattern, DefinitionCollector,
 };
 use std::collections::HashMap;
 use tree_sitter::Node;
@@ -9,30 +7,36 @@ use tree_sitter::Node;
 pub struct TypescriptDefinitionCollector;
 
 impl DefinitionCollector for TypescriptDefinitionCollector {
-    fn collect_definitions_from_root(
-        root: Node,
-        content: &str,
-    ) -> Result<HashMap<String, usize>, String> {
-        let mut definitions: HashMap<String, usize> = HashMap::new();
-
-        let mut kind_handlers: HashMap<&str, DefinitionHandler> = HashMap::new();
-        kind_handlers.insert("variable_declarator", Self::collect_variable_definitions);
-        kind_handlers.insert("arrow_function", Self::collect_function_definitions);
-        kind_handlers.insert("function", Self::collect_function_definitions);
-        kind_handlers.insert("function_declaration", Self::collect_function_definitions);
-        kind_handlers.insert("class_declaration", Self::collect_type_definitions);
-        kind_handlers.insert("interface_declaration", Self::collect_type_definitions);
-        kind_handlers.insert("type_alias_declaration", Self::collect_type_definitions);
-        kind_handlers.insert("enum_declaration", Self::collect_type_definitions);
-        kind_handlers.insert("import_statement", Self::collect_import_definitions);
-
-        Self::collect_definitions_recursive(root, content, &mut definitions, &kind_handlers);
-        Ok(definitions)
+    fn process_node<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        definitions: &mut HashMap<String, usize>,
+    ) {
+        match node.kind() {
+            "variable_declarator" => {
+                self.collect_variable_definitions(node, source_code, definitions);
+            }
+            "arrow_function" | "function" | "function_declaration" => {
+                self.collect_function_definitions(node, source_code, definitions);
+            }
+            "class_declaration"
+            | "interface_declaration"
+            | "type_alias_declaration"
+            | "enum_declaration" => {
+                self.collect_type_definitions(node, source_code, definitions);
+            }
+            "import_statement" => {
+                self.collect_import_definitions(node, source_code, definitions);
+            }
+            _ => {}
+        }
     }
 
-    fn collect_variable_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_variable_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -51,9 +55,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
         }
     }
 
-    fn collect_function_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_function_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -84,9 +89,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
         }
     }
 
-    fn collect_type_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_type_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -105,9 +111,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
         }
     }
 
-    fn collect_import_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_import_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -170,9 +177,10 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
         }
     }
 
-    fn collect_closure_definitions(
-        _node: Node,
-        _source_code: &str,
+    fn collect_closure_definitions<'a>(
+        &self,
+        _node: Node<'a>,
+        _source_code: &'a str,
         _definitions: &mut HashMap<String, usize>,
     ) {
         // Arrow functions are handled by collect_variable_definitions

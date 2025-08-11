@@ -1,4 +1,4 @@
-use lintric_core::{analyze_code, AnalysisResult};
+use lintric_core::{analyze_code, AnalysisResult, Language};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -32,15 +32,12 @@ pub fn process_directory(
         let entry = entry.map_err(|e| format!("Error reading directory entry: {e}"))?;
         let entry_path = entry.path();
 
-        if entry_path.is_file()
-            && entry_path.extension().is_some_and(|ext| {
-                let ext_str = ext.to_string_lossy();
-                ext_str == "rs" || ext_str == "ts" || ext_str == "tsx"
-            })
-        {
-            match process_file(&entry_path, base_path) {
-                Ok(result) => results.push(result),
-                Err(e) => eprintln!("Error processing file {}: {}", entry_path.display(), e),
+        if entry_path.is_file() {
+            if Language::from_extension(&entry_path).is_some() {
+                match process_file(&entry_path, base_path) {
+                    Ok(result) => results.push(result),
+                    Err(e) => eprintln!("Error processing file {}: {}", entry_path.display(), e),
+                }
             }
         } else if entry_path.is_dir() {
             match process_directory(&entry_path, base_path) {
@@ -66,13 +63,20 @@ pub fn process_path(path_str: &str) -> (Vec<AnalysisResult>, f64, usize) {
     let base_path = Some(&path as &Path);
 
     if path.is_file() {
-        match process_file(&path, None) {
-            Ok(result) => {
-                all_results.push(result.clone());
-                total_overall_complexity_score += result.overall_complexity_score;
-                total_files_analyzed += 1;
+        if Language::from_extension(&path).is_some() {
+            match process_file(&path, None) {
+                Ok(result) => {
+                    all_results.push(result.clone());
+                    total_overall_complexity_score += result.overall_complexity_score;
+                    total_files_analyzed += 1;
+                }
+                Err(e) => eprintln!("Error processing file {}: {}", path.display(), e),
             }
-            Err(e) => eprintln!("Error processing file {}: {}", path.display(), e),
+        } else {
+            eprintln!(
+                "Warning: Skipping unsupported file type: {}",
+                path.display()
+            );
         }
     } else if path.is_dir() {
         match process_directory(&path, base_path) {

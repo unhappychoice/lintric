@@ -1,6 +1,4 @@
-use crate::collectors::common::dependency_collectors::{
-    add_dependency, DependencyCollector, DependencyHandler,
-};
+use crate::collectors::common::dependency_collectors::{add_dependency, DependencyCollector};
 use petgraph::graph::{DiGraph, NodeIndex};
 use std::collections::HashMap;
 use tree_sitter::Node;
@@ -8,48 +6,35 @@ use tree_sitter::Node;
 pub struct TypescriptDependencyCollector;
 
 impl DependencyCollector for TypescriptDependencyCollector {
-    #[allow(clippy::type_complexity)]
-    fn collect_dependencies_from_root(
-        root: Node,
-        content: &str,
-        definitions: &HashMap<String, usize>,
-    ) -> Result<(DiGraph<usize, usize>, HashMap<usize, NodeIndex>), String> {
-        let mut graph: DiGraph<usize, usize> = DiGraph::new();
-        let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
-
-        // Add all lines to line_nodes before collecting dependencies
-        for line_num in 1..=content.lines().count() {
-            line_nodes
-                .entry(line_num)
-                .or_insert_with(|| graph.add_node(line_num));
+    fn process_node<'a>(
+        &self,
+        n: Node<'a>,
+        source_code: &'a str,
+        graph: &mut DiGraph<usize, usize>,
+        line_nodes: &mut HashMap<usize, NodeIndex>,
+        definitions: &mut HashMap<String, usize>,
+    ) {
+        match n.kind() {
+            "identifier" => {
+                self.handle_identifier(n, source_code, graph, line_nodes, definitions);
+            }
+            "call_expression" => {
+                self.handle_call_expression(n, source_code, graph, line_nodes, definitions);
+            }
+            "property_identifier" => {
+                // TypeScript specific
+                self.handle_field_expression(n, source_code, graph, line_nodes, definitions);
+            }
+            _ => {
+                // No equivalent to struct_expression in TypeScript, so not called here.
+            }
         }
-
-        let kind_handlers = <Self as crate::collectors::common::dependency_collectors::DependencyCollector>::kind_handlers();
-
-        let mut defs = definitions.clone();
-        <Self as crate::collectors::common::dependency_collectors::DependencyCollector>::collect_dependencies_recursive(
-            root,
-            content,
-            &mut graph,
-            &mut line_nodes,
-            &mut defs,
-            &kind_handlers,
-        );
-
-        Ok((graph, line_nodes))
     }
 
-    fn kind_handlers() -> HashMap<&'static str, DependencyHandler> {
-        let mut kind_handlers: HashMap<&'static str, DependencyHandler> = HashMap::new();
-        kind_handlers.insert("identifier", Self::handle_identifier);
-        kind_handlers.insert("call_expression", Self::handle_call_expression);
-        kind_handlers.insert("property_identifier", Self::handle_field_expression);
-        kind_handlers
-    }
-
-    fn handle_identifier(
-        n: Node,
-        source_code: &str,
+    fn handle_identifier<'a>(
+        &self,
+        n: Node<'a>,
+        source_code: &'a str,
         graph: &mut DiGraph<usize, usize>,
         line_nodes: &mut HashMap<usize, NodeIndex>,
         definitions: &mut HashMap<String, usize>,
@@ -84,9 +69,10 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_call_expression(
-        n: Node,
-        source_code: &str,
+    fn handle_call_expression<'a>(
+        &self,
+        n: Node<'a>,
+        source_code: &'a str,
         graph: &mut DiGraph<usize, usize>,
         line_nodes: &mut HashMap<usize, NodeIndex>,
         definitions: &mut HashMap<String, usize>,
@@ -126,9 +112,10 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_field_expression(
-        n: Node,
-        source_code: &str,
+    fn handle_field_expression<'a>(
+        &self,
+        n: Node<'a>,
+        source_code: &'a str,
         graph: &mut DiGraph<usize, usize>,
         line_nodes: &mut HashMap<usize, NodeIndex>,
         definitions: &mut HashMap<String, usize>,
@@ -152,12 +139,14 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_struct_expression(
-        _n: Node,
-        _source_code: &str,
+    fn handle_struct_expression<'a>(
+        &self,
+        _n: Node<'a>,
+        _source_code: &'a str,
         _graph: &mut DiGraph<usize, usize>,
         _line_nodes: &mut HashMap<usize, NodeIndex>,
         _definitions: &mut HashMap<String, usize>,
     ) {
+        // Empty implementation as there is no equivalent to struct_expression in TypeScript.
     }
 }

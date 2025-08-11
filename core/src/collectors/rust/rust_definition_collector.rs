@@ -4,41 +4,43 @@ use crate::collectors::common::definition_collectors::{
 use std::collections::HashMap;
 use tree_sitter::Node;
 
-// Define a type alias for the handler function signature
-type DefinitionHandler = fn(Node, &str, &mut HashMap<String, usize>);
-
 pub struct RustDefinitionCollector;
 
 impl DefinitionCollector for RustDefinitionCollector {
-    fn collect_definitions_from_root(
-        root: Node,
-        content: &str,
-    ) -> Result<HashMap<String, usize>, String> {
-        let mut definitions: HashMap<String, usize> = HashMap::new();
-
-        let mut kind_handlers: HashMap<&str, DefinitionHandler> = HashMap::new();
-        kind_handlers.insert("let_declaration", Self::collect_variable_definitions);
-        kind_handlers.insert("variable_declarator", Self::collect_variable_definitions);
-        kind_handlers.insert("function_item", Self::collect_function_definitions);
-        kind_handlers.insert("struct_item", Self::collect_type_definitions);
-        kind_handlers.insert("enum_item", Self::collect_type_definitions);
-        kind_handlers.insert("trait_item", Self::collect_type_definitions);
-        kind_handlers.insert("impl_item", Self::collect_type_definitions);
-        kind_handlers.insert("type_alias", Self::collect_type_definitions);
-        kind_handlers.insert("use_declaration", Self::collect_import_definitions);
-        kind_handlers.insert("closure_expression", Self::collect_closure_definitions);
-        kind_handlers.insert("for_expression", Self::collect_variable_definitions);
-        kind_handlers.insert("if_expression", Self::collect_variable_definitions);
-        kind_handlers.insert("while_expression", Self::collect_variable_definitions);
-
-        Self::collect_definitions_recursive(root, content, &mut definitions, &kind_handlers);
-
-        Ok(definitions)
+    fn process_node<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        definitions: &mut HashMap<String, usize>,
+    ) {
+        match node.kind() {
+            "let_declaration"
+            | "variable_declarator"
+            | "for_expression"
+            | "if_expression"
+            | "while_expression" => {
+                self.collect_variable_definitions(node, source_code, definitions);
+            }
+            "function_item" => {
+                self.collect_function_definitions(node, source_code, definitions);
+            }
+            "struct_item" | "enum_item" | "trait_item" | "impl_item" | "type_alias" => {
+                self.collect_type_definitions(node, source_code, definitions);
+            }
+            "use_declaration" => {
+                self.collect_import_definitions(node, source_code, definitions);
+            }
+            "closure_expression" => {
+                self.collect_closure_definitions(node, source_code, definitions);
+            }
+            _ => {}
+        }
     }
 
-    fn collect_variable_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_variable_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -90,9 +92,10 @@ impl DefinitionCollector for RustDefinitionCollector {
         }
     }
 
-    fn collect_function_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_function_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -119,9 +122,10 @@ impl DefinitionCollector for RustDefinitionCollector {
         }
     }
 
-    fn collect_type_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_type_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -140,9 +144,10 @@ impl DefinitionCollector for RustDefinitionCollector {
         }
     }
 
-    fn collect_import_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_import_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         let start_line = node.start_position().row + 1;
@@ -187,9 +192,10 @@ impl DefinitionCollector for RustDefinitionCollector {
         }
     }
 
-    fn collect_closure_definitions(
-        node: Node,
-        source_code: &str,
+    fn collect_closure_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
         definitions: &mut HashMap<String, usize>,
     ) {
         if let Some(parameters_node) = node.child_by_field_name("parameters") {
