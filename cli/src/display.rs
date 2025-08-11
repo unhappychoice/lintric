@@ -4,7 +4,32 @@ use lintric_core::models::OverallAnalysisReport;
 
 /// Display the analysis results in JSON format
 pub fn display_json(overall_report: &OverallAnalysisReport) {
-    println!("{}", serde_json::to_string_pretty(overall_report).unwrap());
+    #[derive(serde::Serialize)]
+    struct JsonReport {
+        results: Vec<lintric_core::models::AnalysisResult>,
+        total_files_analyzed: usize,
+        total_overall_complexity_score: f64,
+        average_complexity_score: f64,
+    }
+
+    let mut filtered_results = overall_report.results.clone();
+    for result in &mut filtered_results {
+        result
+            .line_metrics
+            .retain(|metrics| metrics.total_dependencies > 0);
+    }
+
+    let report_for_json = JsonReport {
+        results: filtered_results,
+        total_files_analyzed: overall_report.total_files_analyzed,
+        total_overall_complexity_score: overall_report.total_overall_complexity_score,
+        average_complexity_score: overall_report.average_complexity_score,
+    };
+
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&report_for_json).unwrap()
+    );
 }
 
 /// Display verbose analysis results with line-by-line metrics
