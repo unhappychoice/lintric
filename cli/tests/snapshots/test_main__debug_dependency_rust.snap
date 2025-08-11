@@ -1,0 +1,94 @@
+---
+source: cli/tests/test_main.rs
+expression: stdout
+---
+[
+  {
+    "source": 7,
+    "target": 6
+  },
+  {
+    "source": 7,
+    "target": 6
+  },
+  {
+    "source": 8,
+    "target": 7
+  },
+  {
+    "source": 16,
+    "target": 6
+  },
+  {
+    "source": 16,
+    "target": 6
+  },
+  {
+    "source": 16,
+    "target": 26
+  },
+  {
+    "source": 16,
+    "target": 12
+  },
+  {
+    "source": 16,
+    "target": 26
+  },
+  {
+    "source": 16,
+    "target": 13
+  },
+  {
+    "source": 17,
+    "target": 6
+  },
+  {
+    "source": 17,
+    "target": 6
+  },
+  {
+    "source": 17,
+    "target": 27
+  },
+  {
+    "source": 17,
+    "target": 12
+  },
+  {
+    "source": 17,
+    "target": 27
+  },
+  {
+    "source": 17,
+    "target": 13
+  },
+  {
+    "source": 22,
+    "target": 21
+  },
+  {
+    "source": 23,
+    "target": 22
+  },
+  {
+    "source": 27,
+    "target": 26
+  },
+  {
+    "source": 28,
+    "target": 27
+  },
+  {
+    "source": 28,
+    "target": 26
+  },
+  {
+    "source": 30,
+    "target": 15
+  },
+  {
+    "source": 31,
+    "target": 20
+  }
+]
