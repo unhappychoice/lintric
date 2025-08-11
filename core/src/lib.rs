@@ -7,13 +7,11 @@ use petgraph::visit::EdgeRef;
 use serde::Serialize;
 use std::fs;
 use std::path::PathBuf;
-use tree_sitter;
 
 use collectors::collector_factory;
 use dependency_graph_builder::build_graph;
 use metric_calculator::calculate_metrics;
 pub use models::{AnalysisResult, Language, LineMetrics};
-
 
 #[derive(Debug, Serialize)]
 pub struct DependencyEdge {
@@ -34,7 +32,7 @@ pub fn analyze_code(
 ) -> Result<AnalysisResult, String> {
     let path = std::path::PathBuf::from(&original_file_path);
     let language = Language::from_extension(&path)
-        .ok_or_else(|| format!("Unsupported file type for analysis: {}", original_file_path))?;
+        .ok_or_else(|| format!("Unsupported file type for analysis: {original_file_path}"))?;
 
     let (graph, _line_nodes) = build_graph(content, language)?;
 
@@ -51,7 +49,7 @@ pub fn get_definitions(path: String) -> Result<Vec<DefinitionEntry>, String> {
     let collector_instance = collector_factory::get_definition_collector(language)?;
     let definitions_map = collector_instance
         .collect_definitions_from_root(tree.root_node(), &file_content)
-        .map_err(|e| format!("Failed to collect definitions: {}", e))?;
+        .map_err(|e| format!("Failed to collect definitions: {e}"))?;
 
     let mut definitions: Vec<DefinitionEntry> = definitions_map
         .into_iter()
@@ -66,11 +64,11 @@ pub fn get_dependencies(path: String) -> Result<Vec<DependencyEdge>, String> {
     let def_collector_instance = collector_factory::get_definition_collector(language.clone())?;
     let defs = def_collector_instance
         .collect_definitions_from_root(tree.root_node(), &file_content)
-        .map_err(|e| format!("Failed to collect definitions: {}", e))?;
+        .map_err(|e| format!("Failed to collect definitions: {e}"))?;
     let dep_collector_instance = collector_factory::get_dependency_collector(language)?;
     let (graph, _) = dep_collector_instance
         .collect_dependencies_from_root(tree.root_node(), &file_content, &defs)
-        .map_err(|e| format!("Failed to collect dependencies: {}", e))?;
+        .map_err(|e| format!("Failed to collect dependencies: {e}"))?;
 
     let mut edges: Vec<DependencyEdge> = Vec::new();
     for edge_ref in graph.edge_references() {
@@ -87,13 +85,9 @@ fn prepare_analysis_data(
     context: &str,
 ) -> Result<(String, Language, tree_sitter::Tree), String> {
     let file_content =
-        fs::read_to_string(&path).map_err(|e| format!("Failed to read file {}: {}", path, e))?;
-    let language = Language::from_extension(&PathBuf::from(&path)).ok_or_else(|| {
-        format!(
-            "Unsupported file type for {}: {}",
-            context, path
-        )
-    })?;
+        fs::read_to_string(&path).map_err(|e| format!("Failed to read file {path}: {e}"))?;
+    let language = Language::from_extension(&PathBuf::from(&path))
+        .ok_or_else(|| format!("Unsupported file type for {context}: {path}"))?;
     let tree = dependency_graph_builder::parse_file(language.clone(), &file_content)?;
     Ok((file_content, language, tree))
 }
@@ -105,13 +99,13 @@ fn format_s_expression(node: tree_sitter::Node, depth: usize, file_content: &str
     let node_text = if node.kind() == "identifier" {
         format!(
             "identifier {}",
-            node.utf8_text(file_content.as_bytes()).unwrap().to_string()
+            node.utf8_text(file_content.as_bytes()).unwrap()
         )
     } else {
-        format!("{}", node.kind().to_string())
+        node.kind().to_string()
     };
 
-    s_expr.push_str(&format!("({}", node_text));
+    s_expr.push_str(&format!("({node_text}"));
 
     let mut children_s_exprs = Vec::new();
     for i in 0..node.named_child_count() {
@@ -124,7 +118,7 @@ fn format_s_expression(node: tree_sitter::Node, depth: usize, file_content: &str
         for child_s_expr in children_s_exprs {
             s_expr.push_str(&format!("\n{}{}", "  ".repeat(depth + 1), child_s_expr));
         }
-        s_expr.push_str(&format!("\n{})", indent));
+        s_expr.push_str(&format!("\n{indent})"));
     } else {
         s_expr.push(')');
     }

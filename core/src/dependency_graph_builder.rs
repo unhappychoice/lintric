@@ -5,10 +5,9 @@ use tree_sitter::{Parser as TreeSitterParser, Tree};
 use crate::collectors::collector_factory::{get_definition_collector, get_dependency_collector};
 use crate::models::Language;
 
-pub fn build_graph(
-    content: &str,
-    language: Language,
-) -> Result<(DiGraph<usize, usize>, HashMap<usize, NodeIndex>), String> {
+type GraphAndNodes = (DiGraph<usize, usize>, HashMap<usize, NodeIndex>);
+
+pub fn build_graph(content: &str, language: Language) -> Result<GraphAndNodes, String> {
     let tree = parse_file(language.clone(), content)?;
     let definition_collector = get_definition_collector(language.clone());
     let dependency_collector = get_dependency_collector(language);

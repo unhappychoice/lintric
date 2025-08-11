@@ -1,7 +1,6 @@
 use clap::{ArgAction, Parser, Subcommand};
 use lintric_core::models::OverallAnalysisReport;
 use lintric_core::AnalysisResult;
-use serde_json;
 
 mod display;
 mod file_processor;
@@ -66,44 +65,38 @@ fn main() {
 
     match args.command {
         Some(Commands::Debug { command }) => match command {
-            DebugCommands::Ast { path } => {
-                match lintric_core::parse_source_file(path) {
-                    Ok(s_expr_output) => {
-                        println!("{}", s_expr_output);
-                    }
-                    Err(e) => {
-                        eprintln!("Error: {}", e);
-                    }
+            DebugCommands::Ast { path } => match lintric_core::parse_source_file(path) {
+                Ok(s_expr_output) => {
+                    println!("{s_expr_output}");
                 }
-            }
-            DebugCommands::Definition { path } => {
-                match lintric_core::get_definitions(path) {
-                    Ok(definitions) => {
-                        println!(
-                            "{}",
-                            serde_json::to_string_pretty(&definitions)
-                                .expect("Failed to serialize definitions to JSON")
-                        );
-                    }
-                    Err(e) => {
-                        eprintln!("Error: {}", e);
-                    }
+                Err(e) => {
+                    eprintln!("Error: {e}");
                 }
-            }
-            DebugCommands::Dependency { path } => {
-                match lintric_core::get_dependencies(path) {
-                    Ok(edges) => {
-                        println!(
-                            "{}",
-                            serde_json::to_string_pretty(&edges)
-                                .expect("Failed to serialize dependencies to JSON")
-                        );
-                    }
-                    Err(e) => {
-                        eprintln!("Error: {}", e);
-                    }
+            },
+            DebugCommands::Definition { path } => match lintric_core::get_definitions(path) {
+                Ok(definitions) => {
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&definitions)
+                            .expect("Failed to serialize definitions to JSON")
+                    );
                 }
-            }
+                Err(e) => {
+                    eprintln!("Error: {e}");
+                }
+            },
+            DebugCommands::Dependency { path } => match lintric_core::get_dependencies(path) {
+                Ok(edges) => {
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&edges)
+                            .expect("Failed to serialize dependencies to JSON")
+                    );
+                }
+                Err(e) => {
+                    eprintln!("Error: {e}");
+                }
+            },
         },
         None => {
             // Existing logic for analysis
