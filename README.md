@@ -31,29 +31,7 @@ For more detailed installation and usage instructions for the CLI, see [cli/READ
 
 The core logic for metric calculation is provided by the `lintric-core` library. For details on the metrics and their explanations, see [core/README.md](core/README.md).
 
-## Development
 
-To contribute to Lintric, use the following commands:
+## Contributing
 
-```bash
-# Build
-cargo build --release
-
-# Testing & Quality: Run tests, check formatting, and analyze code quality
-cargo test --workspace
-cargo fmt -- --check
-cargo clippy --workspace -- -D warnings
-
-# Update Snapshots: Update snapshot files for tests
-INSTA_UPDATE=always cargo test --workspace
-
-# Coverage: Generate code coverage report
-# Install cargo-tarpaulin if not already installed
-# cargo install cargo-tarpaulin
-cargo tarpaulin --workspace --out Lcov
-
-# Security Audit: Perform a security audit of dependencies
-# Install cargo-audit if not already installed
-# cargo install cargo-audit
-cargo audit
-```
+For guidelines on how to contribute, please see our [CONTRIBUTING.md](CONTRIBUTING.md).
