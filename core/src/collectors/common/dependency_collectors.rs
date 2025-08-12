@@ -1,33 +1,21 @@
-use petgraph::graph::{DiGraph, NodeIndex};
-use std::collections::HashMap;
+use crate::models::{Definition, Dependency};
 use tree_sitter::Node;
 
-pub type Dependencies = (DiGraph<usize, usize>, HashMap<usize, NodeIndex>);
-
 pub trait DependencyCollector: Send + Sync {
-    #[allow(clippy::type_complexity)]
     fn collect_dependencies_from_root<'a>(
         &self,
         root: Node<'a>,
         content: &'a str,
-        definitions: &HashMap<String, usize>,
-    ) -> Result<Dependencies, String> {
-        let mut graph: DiGraph<usize, usize> = DiGraph::new();
-        let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
+        definitions: &[Definition],
+    ) -> Result<Vec<Dependency>, String> {
+        let mut dependencies: Vec<Dependency> = Vec::new();
+        let mut stack: Vec<(Node<'a>, Option<String>)> = Vec::new();
+        stack.push((root, None));
 
-        for line_num in 1..=content.lines().count() {
-            line_nodes
-                .entry(line_num)
-                .or_insert_with(|| graph.add_node(line_num));
-        }
+        while let Some((node, current_scope)) = stack.pop() {
+            let new_scope = self.determine_scope(&node, content, &current_scope);
 
-        let mut stack: Vec<Node<'a>> = Vec::new();
-        stack.push(root);
-
-        let mut defs = definitions.clone();
-
-        while let Some(node) = stack.pop() {
-            self.process_node(node, content, &mut graph, &mut line_nodes, &mut defs);
+            self.process_node(node, content, &mut dependencies, definitions, &new_scope);
 
             let mut cursor = node.walk();
             let mut children: Vec<Node<'a>> = Vec::new();
@@ -35,75 +23,62 @@ pub trait DependencyCollector: Send + Sync {
                 children.push(child);
             }
             for child in children.into_iter().rev() {
-                stack.push(child);
+                stack.push((child, new_scope.clone()));
             }
         }
 
-        Ok((graph, line_nodes))
+        Ok(dependencies)
     }
 
     fn process_node<'a>(
         &self,
-        n: Node<'a>,
+        node: Node<'a>,
         source_code: &'a str,
-        graph: &mut DiGraph<usize, usize>,
-        line_nodes: &mut HashMap<usize, NodeIndex>,
-        definitions: &mut HashMap<String, usize>,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
     );
+
+    fn determine_scope<'a>(
+        &self,
+        node: &Node<'a>,
+        source_code: &'a str,
+        parent_scope: &Option<String>,
+    ) -> Option<String>;
 
     fn handle_identifier<'a>(
         &self,
-        n: Node<'a>,
+        node: Node<'a>,
         source_code: &'a str,
-        graph: &mut DiGraph<usize, usize>,
-        line_nodes: &mut HashMap<usize, NodeIndex>,
-        definitions: &mut HashMap<String, usize>,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
     );
 
     fn handle_call_expression<'a>(
         &self,
-        n: Node<'a>,
+        node: Node<'a>,
         source_code: &'a str,
-        graph: &mut DiGraph<usize, usize>,
-        line_nodes: &mut HashMap<usize, NodeIndex>,
-        definitions: &mut HashMap<String, usize>,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
     );
 
     fn handle_field_expression<'a>(
         &self,
-        n: Node<'a>,
+        node: Node<'a>,
         source_code: &'a str,
-        graph: &mut DiGraph<usize, usize>,
-        line_nodes: &mut HashMap<usize, NodeIndex>,
-        definitions: &mut HashMap<String, usize>,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
     );
 
     fn handle_struct_expression<'a>(
         &self,
-        n: Node<'a>,
+        node: Node<'a>,
         source_code: &'a str,
-        graph: &mut DiGraph<usize, usize>,
-        line_nodes: &mut HashMap<usize, NodeIndex>,
-        definitions: &mut HashMap<String, usize>,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
     );
-}
-
-/// Common helper to add a dependency edge between two line nodes.
-/// - Creates an edge from `from_line` to `to_line` if both nodes exist and are different.
-/// - Edge weight is the absolute distance between the two lines.
-pub fn add_dependency(
-    from_line: usize,
-    to_line: usize,
-    graph: &mut DiGraph<usize, usize>,
-    line_nodes: &mut HashMap<usize, NodeIndex>,
-) {
-    let from_node_opt = line_nodes.get(&from_line);
-    let to_node_opt = line_nodes.get(&to_line);
-
-    if let (Some(&from_node), Some(&to_node)) = (from_node_opt, to_node_opt) {
-        if from_node != to_node {
-            let distance = from_line.abs_diff(to_line);
-            graph.add_edge(from_node, to_node, distance);
-        }
-    }
 }

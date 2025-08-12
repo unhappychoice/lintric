@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use crate::models::Definition;
 use tree_sitter::Node;
 
 pub trait DefinitionCollector: Send + Sync {
@@ -6,13 +6,15 @@ pub trait DefinitionCollector: Send + Sync {
         &self,
         root: Node<'a>,
         content: &'a str,
-    ) -> Result<HashMap<String, usize>, String> {
-        let mut definitions: HashMap<String, usize> = HashMap::new();
-        let mut stack: Vec<Node<'a>> = Vec::new();
-        stack.push(root);
+    ) -> Result<Vec<Definition>, String> {
+        let mut definitions: Vec<Definition> = Vec::new();
+        let mut stack: Vec<(Node<'a>, Option<String>)> = Vec::new();
+        stack.push((root, None));
 
-        while let Some(node) = stack.pop() {
-            self.process_node(node, content, &mut definitions);
+        while let Some((node, current_scope)) = stack.pop() {
+            let new_scope = self.determine_scope(&node, content, &current_scope);
+
+            self.process_node(node, content, &mut definitions, &new_scope);
 
             let mut cursor = node.walk();
             let mut children: Vec<Node<'a>> = Vec::new();
@@ -20,7 +22,7 @@ pub trait DefinitionCollector: Send + Sync {
                 children.push(child);
             }
             for child in children.into_iter().rev() {
-                stack.push(child);
+                stack.push((child, new_scope.clone()));
             }
         }
 
@@ -31,42 +33,55 @@ pub trait DefinitionCollector: Send + Sync {
         &self,
         node: Node<'a>,
         source_code: &'a str,
-        definitions: &mut HashMap<String, usize>,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
     );
+
+    fn determine_scope<'a>(
+        &self,
+        node: &Node<'a>,
+        source_code: &'a str,
+        parent_scope: &Option<String>,
+    ) -> Option<String>;
 
     fn collect_variable_definitions<'a>(
         &self,
         node: Node<'a>,
         source_code: &'a str,
-        definitions: &mut HashMap<String, usize>,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
     );
 
     fn collect_function_definitions<'a>(
         &self,
         node: Node<'a>,
         source_code: &'a str,
-        definitions: &mut HashMap<String, usize>,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
     );
 
     fn collect_type_definitions<'a>(
         &self,
         node: Node<'a>,
         source_code: &'a str,
-        definitions: &mut HashMap<String, usize>,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
     );
 
     fn collect_import_definitions<'a>(
         &self,
         node: Node<'a>,
         source_code: &'a str,
-        definitions: &mut HashMap<String, usize>,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
     );
 
     fn collect_closure_definitions<'a>(
         &self,
         node: Node<'a>,
         source_code: &'a str,
-        definitions: &mut HashMap<String, usize>,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
     );
 }
 

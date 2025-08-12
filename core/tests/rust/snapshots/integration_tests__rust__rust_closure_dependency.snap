@@ -7,67 +7,49 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
   "original_file_path": "fixtures/closure_dependency.rs",
   "line_metrics": [
     {
-      "line_number": 1,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
-      "transitive_dependencies": 0,
-      "dependent_lines": []
-    },
-    {
       "line_number": 2,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.0,
+      "depth": 1,
       "transitive_dependencies": 0,
-      "dependent_lines": []
+      "dependent_lines": [
+        2,
+        2
+      ]
     },
     {
       "line_number": 3,
       "total_dependencies": 1,
       "dependency_distance_cost": 0.14285714285714285,
-      "depth": 1,
+      "depth": 2,
       "transitive_dependencies": 1,
       "dependent_lines": [
         2
       ]
     },
     {
-      "line_number": 4,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
-      "transitive_dependencies": 0,
-      "dependent_lines": []
-    },
-    {
       "line_number": 5,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.0,
+      "depth": 1,
       "transitive_dependencies": 0,
-      "dependent_lines": []
+      "dependent_lines": [
+        5
+      ]
     },
     {
       "line_number": 6,
-      "total_dependencies": 3,
-      "dependency_distance_cost": 1.2857142857142856,
-      "depth": 1,
+      "total_dependencies": 4,
+      "dependency_distance_cost": 1.4285714285714284,
+      "depth": 2,
       "transitive_dependencies": 2,
       "dependent_lines": [
         5,
         2,
+        5,
         2
       ]
-    },
-    {
-      "line_number": 7,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
-      "transitive_dependencies": 0,
-      "dependent_lines": []
     }
   ],
-  "overall_complexity_score": 6.742857142857143
+  "overall_complexity_score": 14.75714285714286
 }

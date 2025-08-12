@@ -1,28 +1,43 @@
-use petgraph::graph::{DiGraph, NodeIndex};
-use std::collections::HashMap;
 use tree_sitter::{Parser as TreeSitterParser, Tree};
 
 use crate::collectors::collector_factory::{get_definition_collector, get_dependency_collector};
-use crate::models::Language;
+use crate::models::{IntermediateRepresentation, Language};
 
-type GraphAndNodes = (DiGraph<usize, usize>, HashMap<usize, NodeIndex>);
-
-pub fn build_graph(content: &str, language: Language) -> Result<GraphAndNodes, String> {
+pub fn build_ir(
+    content: &str,
+    language: Language,
+    file_path: String,
+) -> Result<IntermediateRepresentation, String> {
     let tree = parse_file(language.clone(), content)?;
     let definition_collector = get_definition_collector(language.clone());
-    let dependency_collector = get_dependency_collector(language);
+    let dependency_collector = get_dependency_collector(language.clone());
 
     let definition_collector_instance = definition_collector?;
-    let definitions =
+    let detailed_definitions =
         definition_collector_instance.collect_definitions_from_root(tree.root_node(), content)?;
 
     let dependency_collector_instance = dependency_collector?;
-    let dependencies = dependency_collector_instance.collect_dependencies_from_root(
+    let detailed_dependencies = dependency_collector_instance.collect_dependencies_from_root(
         tree.root_node(),
         content,
-        &definitions,
+        &detailed_definitions,
     )?;
-    Ok(dependencies)
+
+    let language_str = match language {
+        Language::Rust => "Rust",
+        Language::TypeScript => "TypeScript",
+    }
+    .to_string();
+
+    let total_lines = content.lines().count();
+
+    Ok(IntermediateRepresentation::new(
+        file_path,
+        detailed_definitions,
+        detailed_dependencies,
+        language_str,
+        total_lines,
+    ))
 }
 
 pub fn parse_file(language: Language, content: &str) -> Result<Tree, String> {

@@ -3,15 +3,16 @@ pub mod dependency_graph_builder;
 pub mod metric_calculator;
 pub mod models;
 
-use petgraph::visit::EdgeRef;
+use petgraph::graph::{DiGraph, NodeIndex};
 use serde::Serialize;
+use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
 use collectors::collector_factory;
-use dependency_graph_builder::build_graph;
+use dependency_graph_builder::build_ir;
 use metric_calculator::calculate_metrics;
-pub use models::{AnalysisResult, Language, LineMetrics};
+pub use models::{AnalysisResult, IntermediateRepresentation, Language, LineMetrics};
 
 #[derive(Debug, Serialize)]
 pub struct DependencyEdge {
@@ -34,8 +35,13 @@ pub fn analyze_code(
     let language = Language::from_extension(&path)
         .ok_or_else(|| format!("Unsupported file type for analysis: {original_file_path}"))?;
 
-    let (graph, _line_nodes) = build_graph(content, language)?;
+    // Build IR first
+    let ir = build_ir(content, language, file_path.clone())?;
 
+    // Convert IR to dependency graph for metrics calculation
+    let graph = ir_to_graph(&ir);
+
+    // Calculate metrics using the existing function
     calculate_metrics(graph, content, file_path, original_file_path)
 }
 
@@ -47,13 +53,16 @@ pub fn parse_source_file(path: String) -> Result<String, String> {
 pub fn get_definitions(path: String) -> Result<Vec<DefinitionEntry>, String> {
     let (file_content, language, tree) = prepare_analysis_data(path, "definitions")?;
     let collector_instance = collector_factory::get_definition_collector(language)?;
-    let definitions_map = collector_instance
+    let detailed_definitions = collector_instance
         .collect_definitions_from_root(tree.root_node(), &file_content)
         .map_err(|e| format!("Failed to collect definitions: {e}"))?;
 
-    let mut definitions: Vec<DefinitionEntry> = definitions_map
+    let mut definitions: Vec<DefinitionEntry> = detailed_definitions
         .into_iter()
-        .map(|(name, line)| DefinitionEntry { name, line })
+        .map(|def| DefinitionEntry {
+            name: def.name,
+            line: def.line_number,
+        })
         .collect();
     definitions.sort_by(|a, b| a.line.cmp(&b.line).then_with(|| a.name.cmp(&b.name)));
     Ok(definitions)
@@ -62,22 +71,48 @@ pub fn get_definitions(path: String) -> Result<Vec<DefinitionEntry>, String> {
 pub fn get_dependencies(path: String) -> Result<Vec<DependencyEdge>, String> {
     let (file_content, language, tree) = prepare_analysis_data(path, "dependencies")?;
     let def_collector_instance = collector_factory::get_definition_collector(language.clone())?;
-    let defs = def_collector_instance
+    let detailed_definitions = def_collector_instance
         .collect_definitions_from_root(tree.root_node(), &file_content)
         .map_err(|e| format!("Failed to collect definitions: {e}"))?;
+
     let dep_collector_instance = collector_factory::get_dependency_collector(language)?;
-    let (graph, _) = dep_collector_instance
-        .collect_dependencies_from_root(tree.root_node(), &file_content, &defs)
+    let detailed_dependencies = dep_collector_instance
+        .collect_dependencies_from_root(tree.root_node(), &file_content, &detailed_definitions)
         .map_err(|e| format!("Failed to collect dependencies: {e}"))?;
 
-    let mut edges: Vec<DependencyEdge> = Vec::new();
-    for edge_ref in graph.edge_references() {
-        edges.push(DependencyEdge {
-            source: graph[edge_ref.source()],
-            target: graph[edge_ref.target()],
-        });
-    }
+    let edges: Vec<DependencyEdge> = detailed_dependencies
+        .into_iter()
+        .map(|dep| DependencyEdge {
+            source: dep.source_line,
+            target: dep.target_line,
+        })
+        .collect();
     Ok(edges)
+}
+
+fn ir_to_graph(ir: &IntermediateRepresentation) -> DiGraph<usize, usize> {
+    let mut graph: DiGraph<usize, usize> = DiGraph::new();
+    let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
+
+    // Create nodes for all lines mentioned in dependencies
+    for dep in &ir.dependencies {
+        line_nodes
+            .entry(dep.source_line)
+            .or_insert_with(|| graph.add_node(dep.source_line));
+        line_nodes
+            .entry(dep.target_line)
+            .or_insert_with(|| graph.add_node(dep.target_line));
+    }
+
+    // Add edges for dependencies
+    for dep in &ir.dependencies {
+        let source_node = line_nodes[&dep.source_line];
+        let target_node = line_nodes[&dep.target_line];
+        let distance = dep.source_line.abs_diff(dep.target_line);
+        graph.add_edge(source_node, target_node, distance);
+    }
+
+    graph
 }
 
 fn prepare_analysis_data(

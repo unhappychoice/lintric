@@ -6,17 +6,17 @@ expression: stdout
 ┌──────┬────────────┬───────────┬───────┬─────────────────┐
 │ Line ┆ Total Deps ┆ Dist Cost ┆ Depth ┆ Transitive Deps │
 ╞══════╪════════════╪═══════════╪═══════╪═════════════════╡
-│ 1    ┆ 0          ┆ -0        ┆ 0     ┆ 0               │
-│ 2    ┆ 1          ┆ 0.5       ┆ 1     ┆ 1               │
+│ 1    ┆ 1          ┆ 0         ┆ 1     ┆ 0               │
+│ 2    ┆ 2          ┆ 0.5       ┆ 2     ┆ 1               │
 └──────┴────────────┴───────────┴───────┴─────────────────┘
-Overall Complexity Score: 2.25
+Overall Complexity Score: 6.25
 ┌───────────────────────┬──────────────────────────┐
 │ File                  ┆ Overall Complexity Score │
 ╞═══════════════════════╪══════════════════════════╡
-│ tmp/temp_test_file.rs ┆ 2.25                     │
+│ tmp/temp_test_file.rs ┆ 6.25                     │
 └───────────────────────┴──────────────────────────┘
 
 --- Overall Report ---
 Total Files Analyzed: 1
-Total Overall Complexity Score: 2.25
-Average Complexity Score: 2.25
+Total Overall Complexity Score: 6.25
+Average Complexity Score: 6.25

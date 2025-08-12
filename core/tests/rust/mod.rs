@@ -1,5 +1,6 @@
 use insta::assert_snapshot;
-use lintric_core::analyze_code;
+use lintric_core::dependency_graph_builder::build_ir;
+use lintric_core::{analyze_code, Language};
 use serde_json;
 
 #[test]
@@ -29,6 +30,7 @@ fn main() {
     let file_path = "test.rs".to_string();
     let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
 
+    println!("{:#?}", build_ir(code, Language::Rust, file_path.clone()));
     assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
 }
 
