@@ -5,12 +5,12 @@ expression: stdout
 ┌───────────────────┬──────────────────────────┐
 │ File              ┆ Overall Complexity Score │
 ╞═══════════════════╪══════════════════════════╡
-│ file1.rs          ┆ 2.25                     │
+│ file1.rs          ┆ 6.25                     │
 │ file2.ts          ┆ 2.25                     │
-│ temp_test_file.rs ┆ 2.25                     │
+│ temp_test_file.rs ┆ 6.25                     │
 └───────────────────┴──────────────────────────┘
 
 --- Overall Report ---
 Total Files Analyzed: 3
-Total Overall Complexity Score: 6.75
-Average Complexity Score: 2.25
+Total Overall Complexity Score: 14.75
+Average Complexity Score: 4.92
