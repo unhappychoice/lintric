@@ -1,5 +1,6 @@
 ---
 source: core/tests/typescript/mod.rs
+assertion_line: 26
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {
@@ -37,13 +38,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
     }
   ],
   "dependencies": [
-    {
-      "source_line": 2,
-      "target_line": 2,
-      "symbol": "value",
-      "dependency_type": "VariableUse",
-      "context": "required_parameter"
-    },
     {
       "source_line": 6,
       "target_line": 5,

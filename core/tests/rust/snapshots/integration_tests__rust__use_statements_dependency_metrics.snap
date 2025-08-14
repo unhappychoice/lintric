@@ -1,61 +1,31 @@
 ---
 source: core/tests/rust/mod.rs
+assertion_line: 58
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/use_statements_dependency.rs",
   "line_metrics": [
     {
-      "line_number": 4,
-      "total_dependencies": 1,
-      "dependency_distance_cost": 0.0,
-      "depth": 1,
-      "transitive_dependencies": 0,
-      "dependent_lines": [
-        4
-      ]
-    },
-    {
       "line_number": 8,
       "total_dependencies": 1,
       "dependency_distance_cost": 0.23529411764705882,
-      "depth": 2,
+      "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
         4
-      ]
-    },
-    {
-      "line_number": 13,
-      "total_dependencies": 1,
-      "dependency_distance_cost": 0.0,
-      "depth": 1,
-      "transitive_dependencies": 0,
-      "dependent_lines": [
-        13
       ]
     },
     {
       "line_number": 15,
-      "total_dependencies": 2,
+      "total_dependencies": 1,
       "dependency_distance_cost": 0.6470588235294118,
-      "depth": 2,
+      "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        4,
-        15
-      ]
-    },
-    {
-      "line_number": 16,
-      "total_dependencies": 1,
-      "dependency_distance_cost": 0.0,
-      "depth": 1,
-      "transitive_dependencies": 0,
-      "dependent_lines": [
-        16
+        4
       ]
     }
   ],
-  "overall_complexity_score": 13.488235294117647
+  "overall_complexity_score": 4.488235294117647
 }
