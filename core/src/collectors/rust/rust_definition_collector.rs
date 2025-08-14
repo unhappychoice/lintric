@@ -44,8 +44,15 @@ impl DefinitionCollector for RustDefinitionCollector {
         parent_scope: &Option<String>,
     ) -> Option<String> {
         let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item"
-            | "mod_item" => node.child_by_field_name("name").map(|n| {
+            "function_item" | "struct_item" | "enum_item" | "trait_item" | "mod_item" => {
+                node.child_by_field_name("name").map(|n| {
+                    n.utf8_text(source_code.as_bytes())
+                        .unwrap()
+                        .trim()
+                        .to_string()
+                })
+            }
+            "impl_item" => node.child_by_field_name("type").map(|n| {
                 n.utf8_text(source_code.as_bytes())
                     .unwrap()
                     .trim()

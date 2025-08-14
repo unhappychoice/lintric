@@ -55,7 +55,7 @@ impl DependencyCollector for RustDependencyCollector {
         parent_scope: &Option<String>,
     ) -> Option<String> {
         let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" => {
+            "function_item" | "struct_item" | "enum_item" | "trait_item" => {
                 node.child_by_field_name("name").map(|n| {
                     n.utf8_text(source_code.as_bytes())
                         .unwrap()
@@ -63,6 +63,12 @@ impl DependencyCollector for RustDependencyCollector {
                         .to_string()
                 })
             }
+            "impl_item" => node.child_by_field_name("type").map(|n| {
+                n.utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string()
+            }),
             _ => None,
         };
 
@@ -162,6 +168,24 @@ impl DependencyCollector for RustDependencyCollector {
                         }
                     }
                 }
+            } else if function_node.kind() == "field_expression" {
+                let method_node = function_node.child_by_field_name("field").unwrap();
+                let method_text = method_node.utf8_text(source_code.as_bytes()).unwrap();
+                let method_def = definitions.iter().find(|d| d.name == method_text);
+
+                if let Some(m_def) = method_def {
+                    let source_line = method_node.start_position().row + 1;
+                    let target_line = m_def.line_number;
+                    if source_line != target_line {
+                        dependencies.push(Dependency {
+                            source_line,
+                            target_line,
+                            symbol: method_text.to_string(),
+                            dependency_type: DependencyType::FunctionCall,
+                            context: Some("call_expression".to_string()),
+                        });
+                    }
+                }
             }
         }
 
@@ -191,11 +215,21 @@ impl DependencyCollector for RustDependencyCollector {
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        if let Some(operand_node) = node.child_by_field_name("operand") {
-            if operand_node.kind() == "identifier" {
+        if let Some(parent) = node.parent() {
+            if parent.kind() == "call_expression"
+                && parent.child_by_field_name("function") == Some(node)
+            {
+                // This field expression is the function part of a method call,
+                // so we let handle_call_expression deal with it.
+                return;
+            }
+        }
+
+        if let Some(value_node) = node.child_by_field_name("value") {
+            if value_node.kind() == "identifier" {
                 self.add_dependency_if_needed(
                     dependencies,
-                    operand_node,
+                    value_node,
                     source_code,
                     definitions,
                     current_scope,

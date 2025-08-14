@@ -1,7 +1,6 @@
 ---
 source: cli/tests/test_main.rs
-assertion_line: 184
-expression: stdout
+expression: out
 ---
 {
   "file_path": "tests/fixtures/complex_rust_code.rs",
@@ -121,6 +120,13 @@ expression: stdout
     },
     {
       "source_line": 16,
+      "target_line": 12,
+      "symbol": "p1",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 16,
       "target_line": 26,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
@@ -132,6 +138,13 @@ expression: stdout
       "symbol": "p1",
       "dependency_type": "VariableUse",
       "context": "field_expression"
+    },
+    {
+      "source_line": 16,
+      "target_line": 13,
+      "symbol": "p2",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
     },
     {
       "source_line": 16,
@@ -149,6 +162,13 @@ expression: stdout
     },
     {
       "source_line": 17,
+      "target_line": 12,
+      "symbol": "p1",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 17,
       "target_line": 27,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
@@ -160,6 +180,13 @@ expression: stdout
       "symbol": "p1",
       "dependency_type": "VariableUse",
       "context": "field_expression"
+    },
+    {
+      "source_line": 17,
+      "target_line": 13,
+      "symbol": "p2",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
     },
     {
       "source_line": 17,
