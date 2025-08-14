@@ -1,6 +1,4 @@
 use insta::assert_snapshot;
-use std::fs;
-use std::path::PathBuf;
 use lintric_cli::logger::Logger;
 use std::sync::{Arc, Mutex};
 
@@ -10,7 +8,12 @@ struct BufLogger {
 }
 
 impl BufLogger {
-    fn new() -> Self { Self { out: String::new(), err: String::new() } }
+    fn new() -> Self {
+        Self {
+            out: String::new(),
+            err: String::new(),
+        }
+    }
 }
 
 struct SharedLogger(Arc<Mutex<BufLogger>>);
@@ -35,18 +38,12 @@ impl Logger for SharedLogger {
 
 #[test]
 fn test_basic_analysis() {
-    let temp_dir = PathBuf::from("tmp");
-    fs::create_dir_all(&temp_dir).expect("Unable to create test directory");
-
-    let temp_file_path = temp_dir.join("temp_test_file.rs");
-    fs::write(&temp_file_path, "let a = 1;\nlet b = a + 1;\n").expect("Unable to write test file");
-
     let shared = SharedLogger(Arc::new(Mutex::new(BufLogger::new())));
     lintric_cli::run_from_iter(
         [
             "lintric-cli",
             "--verbose",
-            &temp_file_path.to_string_lossy().replace("\\", "/"),
+            "tests/fixtures/temp_test_file.rs",
         ],
         &shared,
     );
@@ -56,23 +53,8 @@ fn test_basic_analysis() {
 
 #[test]
 fn test_multiple_files_analysis() {
-    let temp_dir = PathBuf::from("tmp");
-    fs::create_dir_all(&temp_dir).expect("Unable to create test directory");
-
-    let file1_path = temp_dir.join("file1.rs");
-    fs::write(&file1_path, "let x = 1;\nlet y = x + 1;\n").expect("Unable to write file1.rs");
-
-    let file2_path = temp_dir.join("file2.ts");
-    fs::write(&file2_path, "const a = 1;\nlet b = a + 1;\n").expect("Unable to write file2.ts");
-
     let shared = SharedLogger(Arc::new(Mutex::new(BufLogger::new())));
-    lintric_cli::run_from_iter(
-        [
-            "lintric-cli",
-            &temp_dir.to_string_lossy().replace("\\", "/"),
-        ],
-        &shared,
-    );
+    lintric_cli::run_from_iter(["lintric-cli", "tests/fixtures/multiple"], &shared);
     let out = shared.0.lock().unwrap().out.clone();
     assert_snapshot!(out);
 }

@@ -1,6 +1,6 @@
 use crate::logger::Logger;
-use std::ffi::OsString;
 use clap::{ArgAction, Parser, Subcommand};
+use std::ffi::OsString;
 
 mod display;
 mod file_processor;

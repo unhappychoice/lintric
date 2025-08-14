@@ -1,7 +1,7 @@
+use crate::logger::Logger;
 use comfy_table::presets::UTF8_FULL_CONDENSED;
 use comfy_table::{Cell, Row, Table};
 use lintric_core::models::OverallAnalysisReport;
-use crate::logger::Logger;
 use std::path::Path;
 
 /// Display the analysis results in JSON format

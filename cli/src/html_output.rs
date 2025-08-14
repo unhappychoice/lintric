@@ -1,3 +1,4 @@
+use crate::logger::Logger;
 use lintric_core::models::{AnalysisResult, OverallAnalysisReport};
 use std::fs;
 use std::io::Write;
@@ -6,7 +7,6 @@ use syntect::highlighting::ThemeSet;
 use syntect::html::css_for_theme_with_class_style;
 use syntect::parsing::SyntaxSet;
 use tera::{Context, Tera};
-use crate::logger::Logger;
 
 pub fn generate_html_report(report: &OverallAnalysisReport, logger: &dyn Logger) {
     let output_dir = PathBuf::from(".lintric/output/html");
@@ -47,8 +47,7 @@ pub fn generate_html_report(report: &OverallAnalysisReport, logger: &dyn Logger)
         if let Err(e) = generate_file_html(&output_dir, result, &tera, &ps, theme) {
             logger.error(&format!(
                 "Error generating HTML for file {}: {}",
-                result.file_path,
-                e
+                result.file_path, e
             ));
         }
     }
@@ -205,8 +204,7 @@ fn generate_file_html(
         Err(e) => {
             return Err(format!(
                 "Error rendering file.html for {}: {}",
-                result.file_path,
-                e
+                result.file_path, e
             ));
         }
     };

@@ -11,15 +11,14 @@ pub struct StdIoLogger;
 
 impl Logger for StdIoLogger {
     fn info(&self, message: &str) {
-        println!("{}", message);
+        println!("{message}");
     }
 
     fn warn(&self, message: &str) {
-        eprintln!("{}", message);
+        eprintln!("{message}");
     }
 
     fn error(&self, message: &str) {
-        eprintln!("{}", message);
+        eprintln!("{message}");
     }
 }
-

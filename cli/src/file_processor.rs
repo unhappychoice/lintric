@@ -1,7 +1,7 @@
+use crate::logger::Logger;
 use lintric_core::{analyze_code, AnalysisResult, Language};
 use std::fs;
 use std::path::{Path, PathBuf};
-use crate::logger::Logger;
 
 /// Process a single file and return its analysis result
 pub fn process_file(file_path: &Path) -> Result<AnalysisResult, String> {
@@ -59,11 +59,7 @@ pub fn process_path(path_str: &str, logger: &dyn Logger) -> (Vec<AnalysisResult>
                     total_overall_complexity_score += result.overall_complexity_score;
                     total_files_analyzed += 1;
                 }
-                Err(e) => logger.error(&format!(
-                    "Error processing file {}: {}",
-                    path.display(),
-                    e
-                )),
+                Err(e) => logger.error(&format!("Error processing file {}: {}", path.display(), e)),
             }
         } else {
             logger.warn(&format!(
