@@ -105,3 +105,18 @@ fn test_rust_path_qualified_call_dependency() {
         serde_json::to_string_pretty(&result).unwrap()
     );
 }
+
+#[test]
+fn test_rust_method_call_dependency() {
+    let file_path = "tests/rust/fixtures/method_call_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "method_call_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "method_call_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}

@@ -8,14 +8,15 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
   "line_metrics": [
     {
       "line_number": 4,
-      "total_dependencies": 1,
-      "dependency_distance_cost": 0.2,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.4,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
+        3,
         3
       ]
     }
   ],
-  "overall_complexity_score": 2.22
+  "overall_complexity_score": 3.24
 }
