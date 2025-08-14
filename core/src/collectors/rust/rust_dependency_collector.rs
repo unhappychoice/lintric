@@ -135,6 +135,33 @@ impl DependencyCollector for RustDependencyCollector {
                     DependencyType::FunctionCall,
                     Some("call_expression".to_string()),
                 );
+            } else if function_node.kind() == "scoped_identifier" {
+                let path_node = function_node.child_by_field_name("path").unwrap();
+                let name_node = function_node.child_by_field_name("name").unwrap();
+
+                let path_text = path_node.utf8_text(source_code.as_bytes()).unwrap();
+                let name_text = name_node.utf8_text(source_code.as_bytes()).unwrap();
+
+                let f_definitions: Vec<&Definition> =
+                    definitions.iter().filter(|d| d.name == name_text).collect();
+
+                for def in f_definitions {
+                    if let Some(scope) = &def.scope {
+                        if scope.starts_with(path_text) {
+                            let source_line = name_node.start_position().row + 1;
+                            let target_line = def.line_number;
+                            if source_line != target_line {
+                                dependencies.push(Dependency {
+                                    source_line,
+                                    target_line,
+                                    symbol: name_text.to_string(),
+                                    dependency_type: DependencyType::FunctionCall,
+                                    context: Some("call_expression".to_string()),
+                                });
+                            }
+                        }
+                    }
+                }
             }
         }
 
