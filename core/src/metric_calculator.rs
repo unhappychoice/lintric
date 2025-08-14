@@ -2,14 +2,14 @@ use petgraph::graph::{DiGraph, NodeIndex};
 use petgraph::visit::Dfs;
 use std::collections::{HashMap, HashSet};
 
-use crate::models::{AnalysisResult, LineMetrics};
+use crate::models::{AnalysisResult, IntermediateRepresentation, LineMetrics};
 
 pub fn calculate_metrics(
-    graph: DiGraph<usize, usize>,
+    ir: &IntermediateRepresentation,
     content: &str,
-    file_path: String,
-    original_file_path: String,
 ) -> Result<AnalysisResult, String> {
+    let graph = ir_to_graph(ir);
+
     let mut overall_complexity_score = 0.0;
     let mut all_line_metrics: Vec<LineMetrics> = Vec::new();
 
@@ -25,8 +25,7 @@ pub fn calculate_metrics(
     }
 
     Ok(AnalysisResult {
-        file_path,
-        original_file_path,
+        file_path: ir.file_path.clone(),
         line_metrics: all_line_metrics,
         overall_complexity_score,
     })
@@ -158,4 +157,23 @@ fn dfs_longest_path(
     }
 
     *memo.get(&start_node).unwrap_or(&0)
+}
+
+fn ir_to_graph(ir: &IntermediateRepresentation) -> DiGraph<usize, usize> {
+    let mut graph: DiGraph<usize, usize> = DiGraph::new();
+    let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
+
+    for i in 1..=ir.analysis_metadata.total_lines {
+        line_nodes.insert(i, graph.add_node(i));
+    }
+
+    // Add edges for dependencies
+    for dep in &ir.dependencies {
+        let source_node = line_nodes[&dep.source_line];
+        let target_node = line_nodes[&dep.target_line];
+        let distance = dep.source_line.abs_diff(dep.target_line);
+        graph.add_edge(source_node, target_node, distance);
+    }
+
+    graph
 }
