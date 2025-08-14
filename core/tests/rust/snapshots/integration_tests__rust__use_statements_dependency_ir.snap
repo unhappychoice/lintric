@@ -1,28 +1,33 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 54
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/use_statements_dependency.rs",
   "definitions": [
     {
+      "name": "my_module",
+      "line_number": 1,
+      "definition_type": "ModuleDefinition",
+      "scope": null
+    },
+    {
       "name": "MyStruct",
       "line_number": 2,
       "definition_type": "StructDefinition",
-      "scope": "MyStruct"
+      "scope": "my_module.MyStruct"
     },
     {
       "name": "my_function",
       "line_number": 3,
       "definition_type": "FunctionDefinition",
-      "scope": "my_function"
+      "scope": "my_module.my_function"
     },
     {
       "name": "MY_CONST",
       "line_number": 4,
       "definition_type": "ConstDefinition",
-      "scope": null
+      "scope": "my_module"
     },
     {
       "name": "my_module::MyStruct",
@@ -57,18 +62,32 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "dependencies": [
     {
-      "source_line": 8,
-      "target_line": 4,
-      "symbol": "MY_CONST",
+      "source_line": 7,
+      "target_line": 1,
+      "symbol": "my_module",
       "dependency_type": "VariableUse",
-      "context": "use_list"
+      "context": "scoped_identifier"
     },
     {
-      "source_line": 15,
-      "target_line": 4,
-      "symbol": "MY_CONST",
+      "source_line": 8,
+      "target_line": 1,
+      "symbol": "my_module",
       "dependency_type": "VariableUse",
-      "context": "let_declaration"
+      "context": "scoped_use_list"
+    },
+    {
+      "source_line": 9,
+      "target_line": 1,
+      "symbol": "my_module",
+      "dependency_type": "VariableUse",
+      "context": "use_wildcard"
+    },
+    {
+      "source_line": 10,
+      "target_line": 1,
+      "symbol": "my_module",
+      "dependency_type": "VariableUse",
+      "context": "use_as_clause"
     }
   ],
   "analysis_metadata": {

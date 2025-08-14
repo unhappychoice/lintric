@@ -1,0 +1,43 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/path_qualified_call_dependency.rs",
+  "definitions": [
+    {
+      "name": "m",
+      "line_number": 1,
+      "definition_type": "ModuleDefinition",
+      "scope": null
+    },
+    {
+      "name": "f",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "m.f"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "f",
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
+    },
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "m",
+      "dependency_type": "VariableUse",
+      "context": "scoped_identifier"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 2,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

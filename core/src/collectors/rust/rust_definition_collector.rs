@@ -21,7 +21,7 @@ impl DefinitionCollector for RustDefinitionCollector {
             "let_declaration" | "for_expression" | "if_expression" | "while_expression" => {
                 self.collect_variable_definitions(node, source_code, definitions, current_scope);
             }
-            "struct_item" | "enum_item" | "type_item" | "trait_item" | "impl_item" => {
+            "struct_item" | "enum_item" | "type_item" | "trait_item" | "impl_item" | "mod_item" => {
                 self.collect_type_definitions(node, source_code, definitions, current_scope);
             }
             "use_declaration" => {
@@ -44,14 +44,13 @@ impl DefinitionCollector for RustDefinitionCollector {
         parent_scope: &Option<String>,
     ) -> Option<String> {
         let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" => {
-                node.child_by_field_name("name").map(|n| {
-                    n.utf8_text(source_code.as_bytes())
-                        .unwrap()
-                        .trim()
-                        .to_string()
-                })
-            }
+            "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item"
+            | "mod_item" => node.child_by_field_name("name").map(|n| {
+                n.utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string()
+            }),
             _ => None,
         };
 
@@ -204,14 +203,27 @@ impl DefinitionCollector for RustDefinitionCollector {
                 "struct_item" => DefinitionType::StructDefinition,
                 "enum_item" => DefinitionType::EnumDefinition,
                 "type_item" => DefinitionType::TypeDefinition,
+                "mod_item" => DefinitionType::ModuleDefinition,
                 _ => DefinitionType::Other(node.kind().to_string()),
+            };
+
+            let scope = if node.kind() == "mod_item" {
+                if let Some(scope_str) = current_scope {
+                    scope_str
+                        .rfind('.')
+                        .map(|last_dot| scope_str[..last_dot].to_string())
+                } else {
+                    None
+                }
+            } else {
+                current_scope.clone()
             };
 
             definitions.push(Definition {
                 name,
                 line_number: start_line,
                 definition_type: def_type,
-                scope: current_scope.clone(),
+                scope,
             });
         }
     }
