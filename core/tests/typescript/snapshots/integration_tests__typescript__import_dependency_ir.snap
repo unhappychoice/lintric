@@ -1,0 +1,50 @@
+---
+source: core/tests/typescript/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/typescript/fixtures/import_dependency.ts",
+  "definitions": [
+    {
+      "name": "someFunction",
+      "line_number": 1,
+      "definition_type": "ModuleDefinition",
+      "scope": null
+    },
+    {
+      "name": "result",
+      "line_number": 2,
+      "definition_type": "VariableDefinition",
+      "scope": null
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 1,
+      "target_line": 1,
+      "symbol": "someFunction",
+      "dependency_type": "VariableUse",
+      "context": "import_specifier"
+    },
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "someFunction",
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
+    },
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "someFunction",
+      "dependency_type": "VariableUse",
+      "context": "call_expression"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "TypeScript",
+    "total_lines": 2,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

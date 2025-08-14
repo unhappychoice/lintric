@@ -1,97 +1,92 @@
 use insta::assert_snapshot;
-use lintric_core::dependency_graph_builder::build_ir;
-use lintric_core::{analyze_code, Language};
+use lintric_core::analyze_code;
 use serde_json;
+use std::env;
 
 #[test]
 fn test_analyze_code_basic() {
-    let code = "
-let a = 1;
-let b = a + 1;
-"
-    .trim();
-    let file_path = "test.rs".to_string();
-    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+    let file_path = "tests/rust/fixtures/basic_rust_code.rs".to_string();
 
-    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+    let (ir, result) = analyze_code(file_path.clone()).unwrap();
+
+    assert_snapshot!("basic_ir", serde_json::to_string_pretty(&ir).unwrap());
+    assert_snapshot!(
+        "basic_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
 }
 
 #[test]
 fn test_rust_function_call_dependency() {
-    let code = "
-fn add(a: i32, b: i32) -> i32 {
-    a + b
-}
-fn main() {
-    let x = add(1, 2);
-}
-"
-    .trim();
-    let file_path = "test.rs".to_string();
-    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+    let file_path = "tests/rust/fixtures/function_call_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
 
-    println!("{:#?}", build_ir(code, Language::Rust, file_path.clone()));
-    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+    assert_snapshot!(
+        "function_call_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "function_call_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
 }
 
 #[test]
 fn test_rust_struct_field_access_dependency() {
-    let code = r#"
-struct Point { x: i32, y: i32 }
-fn main() {
-    let p = Point { x: 1, y: 2 };
-    let val = p.x;
-}
-"#
-    .trim();
-    let file_path = "test.rs".to_string();
-    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+    let file_path = "tests/rust/fixtures/struct_field_access_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
 
-    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+    assert_snapshot!(
+        "struct_field_access_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "struct_field_access_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
 }
 
 #[test]
 fn test_rust_use_statements_dependency() {
-    let code = r#"
-mod my_module {
-    pub struct MyStruct;
-    pub fn my_function() {}
-    pub const MY_CONST: i32 = 1;
-}
+    let file_path = "tests/rust/fixtures/use_statements_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
 
-use my_module::MyStruct;
-use my_module::{my_function, MY_CONST};
-use my_module::*;
-use my_module as mm;
-
-fn main() {
-    let s = MyStruct;
-    my_function();
-    let c = MY_CONST;
-    let s2 = mm::MyStruct;
-}
-"#
-    .trim();
-    let file_path = "test.rs".to_string();
-    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
-
-    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+    assert_snapshot!(
+        "use_statements_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "use_statements_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
 }
 
 #[test]
 fn test_rust_closure_dependency() {
-    let code = include_str!("fixtures/closure_dependency.rs");
-    let file_path = "fixtures/closure_dependency.rs".to_string();
-    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+    let file_path = "tests/rust/fixtures/closure_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
 
-    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+    assert_snapshot!(
+        "closure_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "closure_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
 }
 
 #[test]
 fn test_pattern_match_bindings_definitions() {
-    let code = include_str!("fixtures/pattern_match_bindings.rs");
-    let file_path = "fixtures/pattern_match_bindings.rs".to_string();
-    let result = analyze_code(code, file_path.clone(), file_path.clone()).unwrap();
+    let file_path = "tests/rust/fixtures/pattern_match_bindings.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
 
-    assert_snapshot!(serde_json::to_string_pretty(&result).unwrap());
+    assert_snapshot!(
+        "pattern_match_bindings_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "pattern_match_bindings_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
 }

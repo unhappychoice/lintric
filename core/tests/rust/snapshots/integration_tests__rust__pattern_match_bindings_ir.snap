@@ -1,0 +1,164 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/pattern_match_bindings.rs",
+  "definitions": [
+    {
+      "name": "main",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "option_value",
+      "line_number": 2,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "value",
+      "line_number": 3,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "numbers",
+      "line_number": 7,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "num",
+      "line_number": 8,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "iter",
+      "line_number": 12,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "i",
+      "line_number": 13,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 2,
+      "target_line": 2,
+      "symbol": "option_value",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 3,
+      "target_line": 3,
+      "symbol": "value",
+      "dependency_type": "VariableUse",
+      "context": "tuple_struct_pattern"
+    },
+    {
+      "source_line": 3,
+      "target_line": 2,
+      "symbol": "option_value",
+      "dependency_type": "VariableUse",
+      "context": "let_condition"
+    },
+    {
+      "source_line": 4,
+      "target_line": 3,
+      "symbol": "value",
+      "dependency_type": "VariableUse",
+      "context": "token_tree"
+    },
+    {
+      "source_line": 7,
+      "target_line": 7,
+      "symbol": "numbers",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 8,
+      "target_line": 8,
+      "symbol": "num",
+      "dependency_type": "VariableUse",
+      "context": "for_expression"
+    },
+    {
+      "source_line": 8,
+      "target_line": 7,
+      "symbol": "numbers",
+      "dependency_type": "VariableUse",
+      "context": "for_expression"
+    },
+    {
+      "source_line": 9,
+      "target_line": 8,
+      "symbol": "num",
+      "dependency_type": "VariableUse",
+      "context": "token_tree"
+    },
+    {
+      "source_line": 12,
+      "target_line": 12,
+      "symbol": "iter",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 13,
+      "target_line": 13,
+      "symbol": "i",
+      "dependency_type": "VariableUse",
+      "context": "tuple_struct_pattern"
+    },
+    {
+      "source_line": 13,
+      "target_line": 12,
+      "symbol": "iter",
+      "dependency_type": "VariableUse",
+      "context": "let_condition"
+    },
+    {
+      "source_line": 14,
+      "target_line": 13,
+      "symbol": "i",
+      "dependency_type": "VariableUse",
+      "context": "token_tree"
+    },
+    {
+      "source_line": 15,
+      "target_line": 12,
+      "symbol": "iter",
+      "dependency_type": "VariableUse",
+      "context": "assignment_expression"
+    },
+    {
+      "source_line": 15,
+      "target_line": 13,
+      "symbol": "i",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 15,
+      "target_line": 13,
+      "symbol": "i",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 17,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

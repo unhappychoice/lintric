@@ -2,4 +2,306 @@
 source: cli/tests/test_main.rs
 expression: stdout
 ---
-
+(program
+  (import_statement
+    (import_clause
+      (named_imports
+        (import_specifier
+          (identifier SomeClass)
+        )
+      )
+    )
+    (string
+      (string_fragment)
+    )
+  )
+  (import_statement
+    (import_clause
+      (namespace_import
+        (identifier Utils)
+      )
+    )
+    (string
+      (string_fragment)
+    )
+  )
+  (import_statement
+    (import_clause
+      (identifier DefaultExport)
+    )
+    (string
+      (string_fragment)
+    )
+  )
+  (interface_declaration
+    (type_identifier)
+    (interface_body
+      (property_signature
+        (property_identifier)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+      (property_signature
+        (property_identifier)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+    )
+  )
+  (function_declaration
+    (identifier add)
+    (formal_parameters
+      (required_parameter
+        (identifier a)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+      (required_parameter
+        (identifier b)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+    )
+    (type_annotation
+      (predefined_type)
+    )
+    (statement_block
+      (lexical_declaration
+        (variable_declarator
+          (identifier result)
+          (binary_expression
+            (identifier a)
+            (identifier b)
+          )
+        )
+      )
+      (return_statement
+        (identifier result)
+      )
+    )
+  )
+  (function_declaration
+    (identifier main)
+    (formal_parameters)
+    (statement_block
+      (lexical_declaration
+        (variable_declarator
+          (identifier p1)
+          (type_annotation
+            (type_identifier)
+          )
+          (object
+            (pair
+              (property_identifier)
+              (number)
+            )
+            (pair
+              (property_identifier)
+              (number)
+            )
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          (identifier p2)
+          (type_annotation
+            (type_identifier)
+          )
+          (object
+            (pair
+              (property_identifier)
+              (number)
+            )
+            (pair
+              (property_identifier)
+              (number)
+            )
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          (identifier p3)
+          (type_annotation
+            (type_identifier)
+          )
+          (object
+            (pair
+              (property_identifier)
+              (call_expression
+                (identifier add)
+                (arguments
+                  (member_expression
+                    (identifier p1)
+                    (property_identifier)
+                  )
+                  (member_expression
+                    (identifier p2)
+                    (property_identifier)
+                  )
+                )
+              )
+            )
+            (pair
+              (property_identifier)
+              (call_expression
+                (identifier add)
+                (arguments
+                  (member_expression
+                    (identifier p1)
+                    (property_identifier)
+                  )
+                  (member_expression
+                    (identifier p2)
+                    (property_identifier)
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          (identifier p4)
+          (call_expression
+            (parenthesized_expression
+              (arrow_function
+                (formal_parameters)
+                (statement_block
+                  (lexical_declaration
+                    (variable_declarator
+                      (identifier p5)
+                      (type_annotation
+                        (type_identifier)
+                      )
+                      (object
+                        (pair
+                          (property_identifier)
+                          (number)
+                        )
+                        (pair
+                          (property_identifier)
+                          (number)
+                        )
+                      )
+                    )
+                  )
+                  (lexical_declaration
+                    (variable_declarator
+                      (identifier p6)
+                      (identifier p5)
+                    )
+                  )
+                  (return_statement
+                    (identifier p6)
+                  )
+                )
+              )
+            )
+            (arguments)
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          (identifier x)
+          (number)
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          (identifier y)
+          (binary_expression
+            (identifier x)
+            (number)
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          (identifier z)
+          (binary_expression
+            (identifier y)
+            (identifier x)
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          (member_expression
+            (identifier console)
+            (property_identifier)
+          )
+          (arguments
+            (identifier p3)
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          (member_expression
+            (identifier console)
+            (property_identifier)
+          )
+          (arguments
+            (identifier p4)
+          )
+        )
+      )
+    )
+  )
+  (lexical_declaration
+    (variable_declarator
+      (identifier instance)
+      (new_expression
+        (identifier SomeClass)
+        (arguments)
+      )
+    )
+  )
+  (lexical_declaration
+    (variable_declarator
+      (identifier result)
+      (call_expression
+        (member_expression
+          (identifier Utils)
+          (property_identifier)
+        )
+        (arguments)
+      )
+    )
+  )
+  (expression_statement
+    (call_expression
+      (member_expression
+        (identifier DefaultExport)
+        (property_identifier)
+      )
+      (arguments)
+    )
+  )
+  (function_declaration
+    (identifier anotherFunction)
+    (formal_parameters)
+    (statement_block
+      (expression_statement
+        (call_expression
+          (member_expression
+            (identifier console)
+            (property_identifier)
+          )
+          (arguments
+            (identifier instance)
+            (identifier result)
+          )
+        )
+      )
+    )
+  )
+)

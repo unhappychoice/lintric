@@ -5,8 +5,7 @@ expression: stdout
 {
   "results": [
     {
-      "file_path": "../core/tests/rust/fixtures/complex_rust_code.rs",
-      "original_file_path": "../core/tests/rust/fixtures/complex_rust_code.rs",
+      "file_path": "complex_rust_code.rs",
       "line_metrics": [
         {
           "line_number": 7,
@@ -74,16 +73,6 @@ expression: stdout
           ]
         },
         {
-          "line_number": 26,
-          "total_dependencies": 1,
-          "dependency_distance_cost": 0.0,
-          "depth": 1,
-          "transitive_dependencies": 0,
-          "dependent_lines": [
-            26
-          ]
-        },
-        {
           "line_number": 17,
           "total_dependencies": 4,
           "dependency_distance_cost": 0.90625,
@@ -93,17 +82,6 @@ expression: stdout
             13,
             27,
             12,
-            27
-          ]
-        },
-        {
-          "line_number": 27,
-          "total_dependencies": 2,
-          "dependency_distance_cost": 0.03125,
-          "depth": 2,
-          "transitive_dependencies": 1,
-          "dependent_lines": [
-            26,
             27
           ]
         },
@@ -146,6 +124,27 @@ expression: stdout
           "transitive_dependencies": 2,
           "dependent_lines": [
             22
+          ]
+        },
+        {
+          "line_number": 26,
+          "total_dependencies": 1,
+          "dependency_distance_cost": 0.0,
+          "depth": 1,
+          "transitive_dependencies": 0,
+          "dependent_lines": [
+            26
+          ]
+        },
+        {
+          "line_number": 27,
+          "total_dependencies": 2,
+          "dependency_distance_cost": 0.03125,
+          "depth": 2,
+          "transitive_dependencies": 1,
+          "dependent_lines": [
+            26,
+            27
           ]
         },
         {

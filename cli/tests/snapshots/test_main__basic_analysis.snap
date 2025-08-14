@@ -2,7 +2,7 @@
 source: cli/tests/test_main.rs
 expression: stdout
 ---
---- Analysis for tmp/temp_test_file.rs ---
+--- Analysis for temp_test_file.rs ---
 ┌──────┬────────────┬───────────┬───────┬─────────────────┐
 │ Line ┆ Total Deps ┆ Dist Cost ┆ Depth ┆ Transitive Deps │
 ╞══════╪════════════╪═══════════╪═══════╪═════════════════╡
@@ -10,11 +10,11 @@ expression: stdout
 │ 2    ┆ 2          ┆ 0.5       ┆ 2     ┆ 1               │
 └──────┴────────────┴───────────┴───────┴─────────────────┘
 Overall Complexity Score: 6.25
-┌───────────────────────┬──────────────────────────┐
-│ File                  ┆ Overall Complexity Score │
-╞═══════════════════════╪══════════════════════════╡
-│ tmp/temp_test_file.rs ┆ 6.25                     │
-└───────────────────────┴──────────────────────────┘
+┌───────────────────┬──────────────────────────┐
+│ File              ┆ Overall Complexity Score │
+╞═══════════════════╪══════════════════════════╡
+│ temp_test_file.rs ┆ 6.25                     │
+└───────────────────┴──────────────────────────┘
 
 --- Overall Report ---
 Total Files Analyzed: 1

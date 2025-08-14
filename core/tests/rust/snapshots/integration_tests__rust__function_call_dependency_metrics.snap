@@ -3,8 +3,7 @@ source: core/tests/rust/mod.rs
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
-  "file_path": "test.rs",
-  "original_file_path": "test.rs",
+  "file_path": "tests/rust/fixtures/function_call_dependency.rs",
   "line_metrics": [
     {
       "line_number": 2,
@@ -16,14 +15,6 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
         1,
         1
       ]
-    },
-    {
-      "line_number": 1,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
-      "transitive_dependencies": 0,
-      "dependent_lines": []
     },
     {
       "line_number": 5,

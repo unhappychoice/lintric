@@ -1,0 +1,97 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/closure_dependency.rs",
+  "definitions": [
+    {
+      "name": "main",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "add_one",
+      "line_number": 2,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "x",
+      "line_number": 2,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "y",
+      "line_number": 5,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 2,
+      "target_line": 2,
+      "symbol": "add_one",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 2,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "VariableUse",
+      "context": "closure_parameters"
+    },
+    {
+      "source_line": 3,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 5,
+      "target_line": 5,
+      "symbol": "y",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 6,
+      "target_line": 2,
+      "symbol": "add_one",
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
+    },
+    {
+      "source_line": 6,
+      "target_line": 5,
+      "symbol": "y",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    },
+    {
+      "source_line": 6,
+      "target_line": 2,
+      "symbol": "add_one",
+      "dependency_type": "VariableUse",
+      "context": "call_expression"
+    },
+    {
+      "source_line": 6,
+      "target_line": 5,
+      "symbol": "y",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 7,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

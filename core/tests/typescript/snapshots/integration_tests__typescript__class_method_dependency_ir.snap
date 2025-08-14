@@ -1,0 +1,68 @@
+---
+source: core/tests/typescript/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/typescript/fixtures/class_method_dependency.ts",
+  "definitions": [
+    {
+      "name": "MyClass",
+      "line_number": 1,
+      "definition_type": "ClassDefinition",
+      "scope": "MyClass"
+    },
+    {
+      "name": "constructor",
+      "line_number": 2,
+      "definition_type": "FunctionDefinition",
+      "scope": "MyClass"
+    },
+    {
+      "name": "value",
+      "line_number": 2,
+      "definition_type": "VariableDefinition",
+      "scope": "MyClass"
+    },
+    {
+      "name": "greet",
+      "line_number": 3,
+      "definition_type": "FunctionDefinition",
+      "scope": "MyClass"
+    },
+    {
+      "name": "instance",
+      "line_number": 5,
+      "definition_type": "VariableDefinition",
+      "scope": null
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 2,
+      "target_line": 2,
+      "symbol": "value",
+      "dependency_type": "VariableUse",
+      "context": "required_parameter"
+    },
+    {
+      "source_line": 6,
+      "target_line": 5,
+      "symbol": "instance",
+      "dependency_type": "VariableUse",
+      "context": "member_expression"
+    },
+    {
+      "source_line": 6,
+      "target_line": 5,
+      "symbol": "instance",
+      "dependency_type": "StructFieldAccess",
+      "context": "member_access"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "TypeScript",
+    "total_lines": 6,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}
