@@ -1,25 +1,16 @@
 ---
 source: core/tests/typescript/mod.rs
+assertion_line: 75
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "tests/typescript/fixtures/arrow_function_parameter_dependency.ts",
   "line_metrics": [
     {
-      "line_number": 1,
-      "total_dependencies": 1,
-      "dependency_distance_cost": 0.0,
-      "depth": 1,
-      "transitive_dependencies": 0,
-      "dependent_lines": [
-        1
-      ]
-    },
-    {
       "line_number": 2,
       "total_dependencies": 2,
       "dependency_distance_cost": 0.6666666666666666,
-      "depth": 2,
+      "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
         1,
@@ -27,5 +18,5 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       ]
     }
   ],
-  "overall_complexity_score": 6.266666666666667
+  "overall_complexity_score": 3.266666666666667
 }

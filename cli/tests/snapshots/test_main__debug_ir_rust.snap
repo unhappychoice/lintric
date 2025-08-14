@@ -1,5 +1,6 @@
 ---
 source: cli/tests/test_main.rs
+assertion_line: 184
 expression: stdout
 ---
 {
@@ -99,13 +100,6 @@ expression: stdout
   "dependencies": [
     {
       "source_line": 7,
-      "target_line": 7,
-      "symbol": "result",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 7,
       "target_line": 6,
       "symbol": "a",
       "dependency_type": "VariableUse",
@@ -126,27 +120,6 @@ expression: stdout
       "context": "block"
     },
     {
-      "source_line": 12,
-      "target_line": 12,
-      "symbol": "p1",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 13,
-      "target_line": 13,
-      "symbol": "p2",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 15,
-      "target_line": 15,
-      "symbol": "p3",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
       "source_line": 16,
       "target_line": 26,
       "symbol": "x",
@@ -201,27 +174,6 @@ expression: stdout
       "symbol": "p2",
       "dependency_type": "VariableUse",
       "context": "field_expression"
-    },
-    {
-      "source_line": 20,
-      "target_line": 20,
-      "symbol": "p4",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 21,
-      "target_line": 21,
-      "symbol": "p5",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 22,
-      "target_line": 22,
-      "symbol": "p6",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
     },
     {
       "source_line": 22,
@@ -238,32 +190,11 @@ expression: stdout
       "context": "block"
     },
     {
-      "source_line": 26,
-      "target_line": 26,
-      "symbol": "x",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 27,
-      "target_line": 27,
-      "symbol": "y",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
       "source_line": 27,
       "target_line": 26,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "binary_expression"
-    },
-    {
-      "source_line": 28,
-      "target_line": 28,
-      "symbol": "z",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
     },
     {
       "source_line": 28,

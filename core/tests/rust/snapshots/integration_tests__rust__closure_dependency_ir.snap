@@ -1,5 +1,6 @@
 ---
 source: core/tests/rust/mod.rs
+assertion_line: 69
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {
@@ -32,32 +33,11 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "dependencies": [
     {
-      "source_line": 2,
-      "target_line": 2,
-      "symbol": "add_one",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
-    },
-    {
-      "source_line": 2,
-      "target_line": 2,
-      "symbol": "x",
-      "dependency_type": "VariableUse",
-      "context": "closure_parameters"
-    },
-    {
       "source_line": 3,
       "target_line": 2,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "binary_expression"
-    },
-    {
-      "source_line": 5,
-      "target_line": 5,
-      "symbol": "y",
-      "dependency_type": "VariableUse",
-      "context": "let_declaration"
     },
     {
       "source_line": 6,

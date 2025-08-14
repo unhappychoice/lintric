@@ -1,5 +1,6 @@
 ---
 source: cli/tests/test_main.rs
+assertion_line: 206
 expression: stdout
 ---
 {
@@ -127,34 +128,6 @@ expression: stdout
     }
   ],
   "dependencies": [
-    {
-      "source_line": 1,
-      "target_line": 1,
-      "symbol": "SomeClass",
-      "dependency_type": "VariableUse",
-      "context": "import_specifier"
-    },
-    {
-      "source_line": 3,
-      "target_line": 3,
-      "symbol": "DefaultExport",
-      "dependency_type": "VariableUse",
-      "context": "import_clause"
-    },
-    {
-      "source_line": 10,
-      "target_line": 10,
-      "symbol": "a",
-      "dependency_type": "VariableUse",
-      "context": "required_parameter"
-    },
-    {
-      "source_line": 10,
-      "target_line": 10,
-      "symbol": "b",
-      "dependency_type": "VariableUse",
-      "context": "required_parameter"
-    },
     {
       "source_line": 11,
       "target_line": 10,
