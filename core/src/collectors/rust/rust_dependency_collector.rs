@@ -85,13 +85,7 @@ impl DependencyCollector for RustDependencyCollector {
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        let start_line = node.start_position().row + 1;
         let parent_kind = node.parent().map(|p| p.kind());
-        let name = node
-            .utf8_text(source_code.as_bytes())
-            .unwrap()
-            .trim()
-            .to_string();
 
         let is_declaration_name = parent_kind == Some("function_item")
             && (node.parent().unwrap().child_by_field_name("name") == Some(node))
@@ -110,15 +104,15 @@ impl DependencyCollector for RustDependencyCollector {
             && parent_kind != Some("pattern")
             && !is_declaration_name
         {
-            if let Some(def) = find_definition_in_scope(definitions, &name, current_scope) {
-                dependencies.push(Dependency {
-                    source_line: start_line,
-                    target_line: def.line_number,
-                    symbol: name,
-                    dependency_type: DependencyType::VariableUse,
-                    context: parent_kind.map(|k| k.to_string()),
-                });
-            }
+            self.add_dependency_if_needed(
+                dependencies,
+                node,
+                source_code,
+                definitions,
+                current_scope,
+                DependencyType::VariableUse,
+                parent_kind.map(|k| k.to_string()),
+            );
         }
     }
 
@@ -130,23 +124,17 @@ impl DependencyCollector for RustDependencyCollector {
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        let start_line = node.start_position().row + 1;
         if let Some(function_node) = node.child_by_field_name("function") {
             if function_node.kind() == "identifier" {
-                let name = function_node
-                    .utf8_text(source_code.as_bytes())
-                    .unwrap()
-                    .trim()
-                    .to_string();
-                if let Some(def) = find_definition_in_scope(definitions, &name, current_scope) {
-                    dependencies.push(Dependency {
-                        source_line: start_line,
-                        target_line: def.line_number,
-                        symbol: name,
-                        dependency_type: DependencyType::FunctionCall,
-                        context: Some("call_expression".to_string()),
-                    });
-                }
+                self.add_dependency_if_needed(
+                    dependencies,
+                    function_node,
+                    source_code,
+                    definitions,
+                    current_scope,
+                    DependencyType::FunctionCall,
+                    Some("call_expression".to_string()),
+                );
             }
         }
 
@@ -154,22 +142,15 @@ impl DependencyCollector for RustDependencyCollector {
             let mut args_cursor = arguments_node.walk();
             for arg_child in arguments_node.children(&mut args_cursor) {
                 if arg_child.kind() == "identifier" {
-                    let arg_name = arg_child
-                        .utf8_text(source_code.as_bytes())
-                        .unwrap()
-                        .trim()
-                        .to_string();
-                    if let Some(def) =
-                        find_definition_in_scope(definitions, &arg_name, current_scope)
-                    {
-                        dependencies.push(Dependency {
-                            source_line: start_line,
-                            target_line: def.line_number,
-                            symbol: arg_name,
-                            dependency_type: DependencyType::VariableUse,
-                            context: Some("arguments".to_string()),
-                        });
-                    }
+                    self.add_dependency_if_needed(
+                        dependencies,
+                        arg_child,
+                        source_code,
+                        definitions,
+                        current_scope,
+                        DependencyType::VariableUse,
+                        Some("arguments".to_string()),
+                    );
                 }
             }
         }
@@ -183,41 +164,29 @@ impl DependencyCollector for RustDependencyCollector {
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        let start_line = node.start_position().row + 1;
         if let Some(operand_node) = node.child_by_field_name("operand") {
             if operand_node.kind() == "identifier" {
-                let name = operand_node
-                    .utf8_text(source_code.as_bytes())
-                    .unwrap()
-                    .trim()
-                    .to_string();
-                if let Some(def) = find_definition_in_scope(definitions, &name, current_scope) {
-                    dependencies.push(Dependency {
-                        source_line: start_line,
-                        target_line: def.line_number,
-                        symbol: name,
-                        dependency_type: DependencyType::StructFieldAccess,
-                        context: Some("field_access".to_string()),
-                    });
-                }
+                self.add_dependency_if_needed(
+                    dependencies,
+                    operand_node,
+                    source_code,
+                    definitions,
+                    current_scope,
+                    DependencyType::StructFieldAccess,
+                    Some("field_access".to_string()),
+                );
             }
         }
         if let Some(type_node) = node.child_by_field_name("field") {
-            let type_name = type_node
-                .utf8_text(source_code.as_bytes())
-                .unwrap()
-                .trim()
-                .to_string();
-            // Search for definition considering scope
-            if let Some(def) = find_definition_in_scope(definitions, &type_name, current_scope) {
-                dependencies.push(Dependency {
-                    source_line: start_line,
-                    target_line: def.line_number,
-                    symbol: type_name,
-                    dependency_type: DependencyType::StructFieldAccess,
-                    context: Some("field_access".to_string()),
-                });
-            }
+            self.add_dependency_if_needed(
+                dependencies,
+                type_node,
+                source_code,
+                definitions,
+                current_scope,
+                DependencyType::StructFieldAccess,
+                Some("field_access".to_string()),
+            );
         }
     }
 
@@ -229,62 +198,16 @@ impl DependencyCollector for RustDependencyCollector {
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        let start_line = node.start_position().row + 1;
         if let Some(type_node) = node.child_by_field_name("type") {
-            let type_name = type_node
-                .utf8_text(source_code.as_bytes())
-                .unwrap()
-                .trim()
-                .to_string();
-            // Search for definition considering scope
-            if let Some(def) = find_definition_in_scope(definitions, &type_name, current_scope) {
-                dependencies.push(Dependency {
-                    source_line: start_line,
-                    target_line: def.line_number,
-                    symbol: type_name,
-                    dependency_type: DependencyType::TypeReference,
-                    context: Some("struct_instantiation".to_string()),
-                });
-            }
+            self.add_dependency_if_needed(
+                dependencies,
+                type_node,
+                source_code,
+                definitions,
+                current_scope,
+                DependencyType::TypeReference,
+                Some("struct_instantiation".to_string()),
+            );
         }
     }
-}
-
-// Helper function to find a definition considering scope
-fn find_definition_in_scope<'a>(
-    definitions: &'a [Definition],
-    name: &str,
-    current_scope: &Option<String>,
-) -> Option<&'a Definition> {
-    // First, try to find a definition that exactly matches the current scope
-    if let Some(def) = definitions
-        .iter()
-        .find(|d| d.name == name && d.scope == *current_scope)
-    {
-        return Some(def);
-    }
-
-    // If current scope is Some, traverse up the ancestor scopes
-    if let Some(current_scope_str) = current_scope {
-        let mut parts: Vec<&str> = current_scope_str.split('.').collect();
-        while !parts.is_empty() {
-            parts.pop(); // Remove the innermost scope
-            let ancestor_scope = if parts.is_empty() {
-                None
-            } else {
-                Some(parts.join("."))
-            };
-            if let Some(def) = definitions
-                .iter()
-                .find(|d| d.name == name && d.scope == ancestor_scope)
-            {
-                return Some(def);
-            }
-        }
-    }
-
-    // If not found in any specific scope, look for global definitions (scope is None)
-    definitions
-        .iter()
-        .find(|d| d.name == name && d.scope.is_none())
 }
