@@ -1,6 +1,7 @@
 use lintric_core::{analyze_code, AnalysisResult, Language};
 use std::fs;
 use std::path::{Path, PathBuf};
+use crate::logger::Logger;
 
 /// Process a single file and return its analysis result
 pub fn process_file(file_path: &Path) -> Result<AnalysisResult, String> {
@@ -9,7 +10,7 @@ pub fn process_file(file_path: &Path) -> Result<AnalysisResult, String> {
 }
 
 /// Process a directory recursively and return analysis results for all supported files
-pub fn process_directory(path: &Path) -> Result<Vec<AnalysisResult>, String> {
+pub fn process_directory(path: &Path, logger: &dyn Logger) -> Result<Vec<AnalysisResult>, String> {
     let mut results = Vec::new();
     for entry in fs::read_dir(path)
         .map_err(|e| format!("Error reading directory {}: {}", path.display(), e))?
@@ -21,17 +22,21 @@ pub fn process_directory(path: &Path) -> Result<Vec<AnalysisResult>, String> {
             if Language::from_extension(&entry_path).is_some() {
                 match process_file(&entry_path) {
                     Ok(result) => results.push(result),
-                    Err(e) => eprintln!("Error processing file {}: {}", entry_path.display(), e),
+                    Err(e) => logger.error(&format!(
+                        "Error processing file {}: {}",
+                        entry_path.display(),
+                        e
+                    )),
                 }
             }
         } else if entry_path.is_dir() {
-            match process_directory(&entry_path) {
+            match process_directory(&entry_path, logger) {
                 Ok(mut sub_results) => results.append(&mut sub_results),
-                Err(e) => eprintln!(
+                Err(e) => logger.error(&format!(
                     "Error processing subdirectory {}: {}",
                     entry_path.display(),
                     e
-                ),
+                )),
             }
         }
     }
@@ -39,7 +44,7 @@ pub fn process_directory(path: &Path) -> Result<Vec<AnalysisResult>, String> {
 }
 
 /// Process a path (file or directory) and return analysis results
-pub fn process_path(path_str: &str) -> (Vec<AnalysisResult>, f64, usize) {
+pub fn process_path(path_str: &str, logger: &dyn Logger) -> (Vec<AnalysisResult>, f64, usize) {
     let mut all_results: Vec<AnalysisResult> = Vec::new();
     let mut total_overall_complexity_score = 0.0;
     let mut total_files_analyzed = 0;
@@ -54,16 +59,20 @@ pub fn process_path(path_str: &str) -> (Vec<AnalysisResult>, f64, usize) {
                     total_overall_complexity_score += result.overall_complexity_score;
                     total_files_analyzed += 1;
                 }
-                Err(e) => eprintln!("Error processing file {}: {}", path.display(), e),
+                Err(e) => logger.error(&format!(
+                    "Error processing file {}: {}",
+                    path.display(),
+                    e
+                )),
             }
         } else {
-            eprintln!(
+            logger.warn(&format!(
                 "Warning: Skipping unsupported file type: {}",
                 path.display()
-            );
+            ));
         }
     } else if path.is_dir() {
-        match process_directory(&path) {
+        match process_directory(&path, logger) {
             Ok(results) => {
                 for result in results {
                     all_results.push(result.clone());
@@ -71,13 +80,17 @@ pub fn process_path(path_str: &str) -> (Vec<AnalysisResult>, f64, usize) {
                     total_files_analyzed += 1;
                 }
             }
-            Err(e) => eprintln!("Error processing directory {}: {}", path.display(), e),
+            Err(e) => logger.error(&format!(
+                "Error processing directory {}: {}",
+                path.display(),
+                e
+            )),
         }
     } else {
-        eprintln!(
+        logger.error(&format!(
             "Error: Path {} is neither a file nor a directory.",
             path.display()
-        );
+        ));
     }
 
     (

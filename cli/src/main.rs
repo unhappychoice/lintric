@@ -1,10 +1,12 @@
 use clap::{ArgAction, Parser, Subcommand};
 use lintric_core::models::OverallAnalysisReport;
+use crate::logger::Logger;
 use lintric_core::AnalysisResult;
 
 mod display;
 mod file_processor;
 mod html_output;
+mod logger;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -57,28 +59,28 @@ enum DebugCommands {
 
 fn main() {
     let args = Args::parse();
+    let logger = logger::StdIoLogger;
 
     match args.command {
         Some(Commands::Debug { command }) => match command {
             DebugCommands::Ast { path } => match lintric_core::get_s_expression(path) {
                 Ok(s_expr_output) => {
-                    println!("{s_expr_output}");
+                    logger.info(&s_expr_output);
                 }
                 Err(e) => {
-                    eprintln!("Error: {e}");
+                    logger.error(&format!("Error: {e}"));
                 }
             },
             DebugCommands::IntermediateRepresentation { path } => {
                 match lintric_core::get_intermediate_representation(path) {
                     Ok(ir) => {
-                        println!(
-                            "{}",
-                            serde_json::to_string_pretty(&ir)
-                                .expect("Failed to serialize IR to JSON")
+                        logger.info(
+                            &serde_json::to_string_pretty(&ir)
+                                .expect("Failed to serialize IR to JSON"),
                         );
                     }
                     Err(e) => {
-                        eprintln!("Error: {e}");
+                        logger.error(&format!("Error: {e}"));
                     }
                 }
             }
@@ -89,7 +91,7 @@ fn main() {
             let mut total_files_analyzed = 0;
 
             for path_str in &args.paths {
-                let (results, score, count) = file_processor::process_path(path_str);
+                let (results, score, count) = file_processor::process_path(path_str, &logger);
                 all_results.extend(results);
                 total_overall_complexity_score += score;
                 total_files_analyzed += count;
@@ -107,13 +109,13 @@ fn main() {
             };
 
             if args.json {
-                display::display_json(&overall_report, &args.paths);
+                display::display_json(&overall_report, &args.paths, &logger);
             } else if args.verbose {
-                display::display_verbose(&overall_report, &args.paths);
+                display::display_verbose(&overall_report, &args.paths, &logger);
             } else if args.html {
-                html_output::generate_html_report(&overall_report);
+                html_output::generate_html_report(&overall_report, &logger);
             } else {
-                display::display_summary(&overall_report, &args.paths);
+                display::display_summary(&overall_report, &args.paths, &logger);
             }
         }
     }
