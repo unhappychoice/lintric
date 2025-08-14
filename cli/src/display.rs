@@ -1,10 +1,15 @@
+use crate::logger::Logger;
 use comfy_table::presets::UTF8_FULL_CONDENSED;
 use comfy_table::{Cell, Row, Table};
 use lintric_core::models::OverallAnalysisReport;
 use std::path::Path;
 
 /// Display the analysis results in JSON format
-pub fn display_json(overall_report: &OverallAnalysisReport, base_paths: &[String]) {
+pub fn display_json(
+    overall_report: &OverallAnalysisReport,
+    base_paths: &[String],
+    logger: &dyn Logger,
+) {
     #[derive(serde::Serialize)]
     struct JsonReport {
         results: Vec<lintric_core::models::AnalysisResult>,
@@ -28,22 +33,23 @@ pub fn display_json(overall_report: &OverallAnalysisReport, base_paths: &[String
         average_complexity_score: overall_report.average_complexity_score,
     };
 
-    println!(
-        "{}",
-        serde_json::to_string_pretty(&report_for_json).unwrap()
-    );
+    logger.info(&serde_json::to_string_pretty(&report_for_json).unwrap());
 }
 
 /// Display verbose analysis results with line-by-line metrics
-pub fn display_verbose(overall_report: &OverallAnalysisReport, base_paths: &[String]) {
+pub fn display_verbose(
+    overall_report: &OverallAnalysisReport,
+    base_paths: &[String],
+    logger: &dyn Logger,
+) {
     let mut sorted_results = overall_report.results.clone();
     sorted_results.sort_by(|a, b| a.file_path.cmp(&b.file_path));
 
     for result in &sorted_results {
-        println!(
+        logger.info(&format!(
             "\n--- Analysis for {} ---",
             format_file_path_for_display(&result.file_path, base_paths)
-        );
+        ));
         let mut table = Table::new();
         table.load_preset(UTF8_FULL_CONDENSED);
         table.set_header(vec![
@@ -62,18 +68,22 @@ pub fn display_verbose(overall_report: &OverallAnalysisReport, base_paths: &[Str
                 Cell::new(metrics.transitive_dependencies),
             ]));
         }
-        println!("{table}");
-        println!(
+        logger.info(&format!("{table}"));
+        logger.info(&format!(
             "Overall Complexity Score: {:.2}",
             result.overall_complexity_score
-        );
+        ));
     }
 
-    display_summary(overall_report, base_paths);
+    display_summary(overall_report, base_paths, logger);
 }
 
 /// Display summary analysis results with file-level metrics
-pub fn display_summary(overall_report: &OverallAnalysisReport, base_paths: &[String]) {
+pub fn display_summary(
+    overall_report: &OverallAnalysisReport,
+    base_paths: &[String],
+    logger: &dyn Logger,
+) {
     let mut table = Table::new();
     table.load_preset(UTF8_FULL_CONDENSED);
     table.set_header(vec!["File", "Overall Complexity Score"]);
@@ -87,26 +97,26 @@ pub fn display_summary(overall_report: &OverallAnalysisReport, base_paths: &[Str
             Cell::new(format!("{:.2}", result.overall_complexity_score)),
         ]));
     }
-    println!("{table}");
+    logger.info(&format!("{table}"));
 
-    display_overall_summary(overall_report);
+    display_overall_summary(overall_report, logger);
 }
 
 /// Display the overall summary of the analysis
-pub fn display_overall_summary(overall_report: &OverallAnalysisReport) {
-    println!("\n--- Overall Report ---");
-    println!(
+pub fn display_overall_summary(overall_report: &OverallAnalysisReport, logger: &dyn Logger) {
+    logger.info("\n--- Overall Report ---");
+    logger.info(&format!(
         "Total Files Analyzed: {}",
         overall_report.total_files_analyzed
-    );
-    println!(
+    ));
+    logger.info(&format!(
         "Total Overall Complexity Score: {:.2}",
         overall_report.total_overall_complexity_score
-    );
-    println!(
+    ));
+    logger.info(&format!(
         "Average Complexity Score: {:.2}",
         overall_report.average_complexity_score
-    );
+    ));
 }
 
 fn format_file_path_for_display(file_path: &str, base_paths: &[String]) -> String {

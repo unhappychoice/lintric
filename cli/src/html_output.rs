@@ -1,3 +1,4 @@
+use crate::logger::Logger;
 use lintric_core::models::{AnalysisResult, OverallAnalysisReport};
 use std::fs;
 use std::io::Write;
@@ -7,14 +8,14 @@ use syntect::html::css_for_theme_with_class_style;
 use syntect::parsing::SyntaxSet;
 use tera::{Context, Tera};
 
-pub fn generate_html_report(report: &OverallAnalysisReport) {
+pub fn generate_html_report(report: &OverallAnalysisReport, logger: &dyn Logger) {
     let output_dir = PathBuf::from(".lintric/output/html");
     if let Err(e) = fs::create_dir_all(&output_dir) {
-        eprintln!(
+        logger.error(&format!(
             "Error creating output directory {}: {}",
             output_dir.display(),
             e
-        );
+        ));
         return;
     }
 
@@ -44,7 +45,10 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
 
         // Generate individual file HTML
         if let Err(e) = generate_file_html(&output_dir, result, &tera, &ps, theme) {
-            eprintln!("Error generating HTML for file {}: {}", result.file_path, e);
+            logger.error(&format!(
+                "Error generating HTML for file {}: {}",
+                result.file_path, e
+            ));
         }
     }
     index_context.insert("results", &results_for_template);
@@ -52,16 +56,19 @@ pub fn generate_html_report(report: &OverallAnalysisReport) {
     let index_html_content = match tera.render("index.html", &index_context) {
         Ok(s) => s,
         Err(e) => {
-            eprintln!("Error rendering index.html: {e}");
+            logger.error(&format!("Error rendering index.html: {e}"));
             return;
         }
     };
 
     let index_file_path = output_dir.join("index.html");
     if let Err(e) = write_file(&index_file_path, &index_html_content) {
-        eprintln!("Error writing index.html: {e}");
+        logger.error(&format!("Error writing index.html: {e}"));
     } else {
-        println!("HTML report generated at: {}", index_file_path.display());
+        logger.info(&format!(
+            "HTML report generated at: {}",
+            index_file_path.display()
+        ));
     }
 }
 
@@ -195,8 +202,10 @@ fn generate_file_html(
     let file_html_content = match tera.render("file.html", &file_context) {
         Ok(s) => s,
         Err(e) => {
-            eprintln!("Error rendering file.html for {}: {}", result.file_path, e);
-            return Err(format!("Error rendering file.html: {e}"));
+            return Err(format!(
+                "Error rendering file.html for {}: {}",
+                result.file_path, e
+            ));
         }
     };
 
