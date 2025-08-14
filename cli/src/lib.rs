@@ -1,71 +1,11 @@
-// Public entry point for the CLI
 use crate::logger::Logger;
-
-pub fn run() {
-    let args = Args::parse();
-    let logger = logger::StdIoLogger;
-
-    match args.command {
-        Some(Commands::Debug { command }) => match command {
-            DebugCommands::Ast { path } => match lintric_core::get_s_expression(path) {
-                Ok(s_expr_output) => {
-                    logger.info(&s_expr_output);
-                }
-                Err(e) => {
-                    logger.error(&format!("Error: {e}"));
-                }
-            },
-            DebugCommands::IntermediateRepresentation { path } => {
-                match lintric_core::get_intermediate_representation(path) {
-                    Ok(ir) => {
-                        logger.info(
-                            &serde_json::to_string_pretty(&ir)
-                                .expect("Failed to serialize IR to JSON"),
-                        );
-                    }
-                    Err(e) => {
-                        logger.error(&format!("Error: {e}"));
-                    }
-                }
-            }
-        },
-        None => {
-            let mut all_results: Vec<lintric_core::AnalysisResult> = Vec::new();
-            let mut total_overall_complexity_score = 0.0;
-            let mut total_files_analyzed = 0;
-
-            for path_str in &args.paths {
-                let (results, score, count) = file_processor::process_path(path_str, &logger);
-                all_results.extend(results);
-                total_overall_complexity_score += score;
-                total_files_analyzed += count;
-            }
-
-            let overall_report = lintric_core::models::OverallAnalysisReport {
-                results: all_results,
-                total_files_analyzed,
-                total_overall_complexity_score,
-                average_complexity_score: if total_files_analyzed > 0 {
-                    total_overall_complexity_score / total_files_analyzed as f64
-                } else {
-                    0.0
-                },
-            };
-
-            if args.json {
-                display::display_json(&overall_report, &args.paths, &logger);
-            } else if args.verbose {
-                display::display_verbose(&overall_report, &args.paths, &logger);
-            } else if args.html {
-                html_output::generate_html_report(&overall_report, &logger);
-            } else {
-                display::display_summary(&overall_report, &args.paths, &logger);
-            }
-        }
-    }
-}
-
+use std::ffi::OsString;
 use clap::{ArgAction, Parser, Subcommand};
+
+mod display;
+mod file_processor;
+mod html_output;
+pub mod logger;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -116,7 +56,76 @@ enum DebugCommands {
     },
 }
 
-mod display;
-mod file_processor;
-mod html_output;
-pub mod logger;
+pub fn run() {
+    let logger = logger::StdIoLogger;
+    run_from_iter(std::env::args_os(), &logger);
+}
+
+/// Execute CLI with provided arguments and logger.
+/// The first arg should be the binary name (e.g., "lintric-cli").
+pub fn run_from_iter<I, T>(args: I, logger: &dyn Logger)
+where
+    I: IntoIterator<Item = T>,
+    T: Into<OsString> + Clone,
+{
+    let args = Args::parse_from(args);
+
+    match args.command {
+        Some(Commands::Debug { command }) => match command {
+            DebugCommands::Ast { path } => match lintric_core::get_s_expression(path) {
+                Ok(s_expr_output) => {
+                    logger.info(&s_expr_output);
+                }
+                Err(e) => {
+                    logger.error(&format!("Error: {e}"));
+                }
+            },
+            DebugCommands::IntermediateRepresentation { path } => {
+                match lintric_core::get_intermediate_representation(path) {
+                    Ok(ir) => {
+                        logger.info(
+                            &serde_json::to_string_pretty(&ir)
+                                .expect("Failed to serialize IR to JSON"),
+                        );
+                    }
+                    Err(e) => {
+                        logger.error(&format!("Error: {e}"));
+                    }
+                }
+            }
+        },
+        None => {
+            let mut all_results: Vec<lintric_core::AnalysisResult> = Vec::new();
+            let mut total_overall_complexity_score = 0.0;
+            let mut total_files_analyzed = 0;
+
+            for path_str in &args.paths {
+                let (results, score, count) = file_processor::process_path(path_str, logger);
+                all_results.extend(results);
+                total_overall_complexity_score += score;
+                total_files_analyzed += count;
+            }
+
+            let overall_report = lintric_core::models::OverallAnalysisReport {
+                results: all_results,
+                total_files_analyzed,
+                total_overall_complexity_score,
+                average_complexity_score: if total_files_analyzed > 0 {
+                    total_overall_complexity_score / total_files_analyzed as f64
+                } else {
+                    0.0
+                },
+            };
+
+            if args.json {
+                display::display_json(&overall_report, &args.paths, logger);
+            } else if args.verbose {
+                display::display_verbose(&overall_report, &args.paths, logger);
+            } else if args.html {
+                html_output::generate_html_report(&overall_report, logger);
+            } else {
+                display::display_summary(&overall_report, &args.paths, logger);
+            }
+        }
+    }
+}
