@@ -3,8 +3,7 @@ source: core/tests/typescript/mod.rs
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
-  "file_path": "test.ts",
-  "original_file_path": "test.ts",
+  "file_path": "tests/typescript/fixtures/function_parameter_dependency.ts",
   "line_metrics": [
     {
       "line_number": 1,
@@ -19,7 +18,7 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     {
       "line_number": 2,
       "total_dependencies": 2,
-      "dependency_distance_cost": 1.0,
+      "dependency_distance_cost": 0.6666666666666666,
       "depth": 2,
       "transitive_dependencies": 1,
       "dependent_lines": [
@@ -28,5 +27,5 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       ]
     }
   ],
-  "overall_complexity_score": 6.3
+  "overall_complexity_score": 6.266666666666667
 }

@@ -103,12 +103,8 @@ fn generate_file_html(
     ps: &SyntaxSet,
     theme: &syntect::highlighting::Theme,
 ) -> Result<(), String> {
-    let source_code = fs::read_to_string(&result.original_file_path).map_err(|e| {
-        format!(
-            "Error reading source file {}: {}",
-            result.original_file_path, e
-        )
-    })?;
+    let source_code = fs::read_to_string(&result.file_path)
+        .map_err(|e| format!("Error reading source file {}: {}", result.file_path, e))?;
 
     let file_extension = Path::new(&result.file_path)
         .extension()

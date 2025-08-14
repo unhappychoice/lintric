@@ -1,0 +1,62 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/struct_field_access_dependency.rs",
+  "definitions": [
+    {
+      "name": "Point",
+      "line_number": 1,
+      "definition_type": "StructDefinition",
+      "scope": "Point"
+    },
+    {
+      "name": "main",
+      "line_number": 2,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p",
+      "line_number": 3,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "val",
+      "line_number": 4,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 3,
+      "target_line": 3,
+      "symbol": "p",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 4,
+      "target_line": 4,
+      "symbol": "val",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 4,
+      "target_line": 3,
+      "symbol": "p",
+      "dependency_type": "VariableUse",
+      "context": "field_expression"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 5,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

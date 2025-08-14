@@ -3,8 +3,7 @@ source: core/tests/typescript/mod.rs
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
-  "file_path": "test.ts",
-  "original_file_path": "test.ts",
+  "file_path": "tests/typescript/fixtures/basic_typescript_code.ts",
   "line_metrics": [
     {
       "line_number": 2,
@@ -15,14 +14,6 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       "dependent_lines": [
         1
       ]
-    },
-    {
-      "line_number": 1,
-      "total_dependencies": 0,
-      "dependency_distance_cost": -0.0,
-      "depth": 0,
-      "transitive_dependencies": 0,
-      "dependent_lines": []
     },
     {
       "line_number": 4,

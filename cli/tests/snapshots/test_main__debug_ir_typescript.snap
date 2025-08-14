@@ -1,0 +1,347 @@
+---
+source: cli/tests/test_main.rs
+expression: stdout
+---
+{
+  "file_path": "tests/fixtures/complex_typescript_code.ts",
+  "definitions": [
+    {
+      "name": "SomeClass",
+      "line_number": 1,
+      "definition_type": "ModuleDefinition",
+      "scope": null
+    },
+    {
+      "name": "DefaultExport",
+      "line_number": 3,
+      "definition_type": "ModuleDefinition",
+      "scope": null
+    },
+    {
+      "name": "Point",
+      "line_number": 5,
+      "definition_type": "InterfaceDefinition",
+      "scope": "Point"
+    },
+    {
+      "name": "add",
+      "line_number": 10,
+      "definition_type": "FunctionDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "a",
+      "line_number": 10,
+      "definition_type": "VariableDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "b",
+      "line_number": 10,
+      "definition_type": "VariableDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "result",
+      "line_number": 11,
+      "definition_type": "VariableDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "main",
+      "line_number": 15,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p1",
+      "line_number": 16,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p2",
+      "line_number": 17,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p3",
+      "line_number": 19,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p4",
+      "line_number": 24,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p5",
+      "line_number": 25,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "p6",
+      "line_number": 26,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "x",
+      "line_number": 30,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "y",
+      "line_number": 31,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "z",
+      "line_number": 32,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "instance",
+      "line_number": 38,
+      "definition_type": "VariableDefinition",
+      "scope": null
+    },
+    {
+      "name": "result",
+      "line_number": 39,
+      "definition_type": "VariableDefinition",
+      "scope": null
+    },
+    {
+      "name": "anotherFunction",
+      "line_number": 42,
+      "definition_type": "FunctionDefinition",
+      "scope": "anotherFunction"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 1,
+      "target_line": 1,
+      "symbol": "SomeClass",
+      "dependency_type": "VariableUse",
+      "context": "import_specifier"
+    },
+    {
+      "source_line": 3,
+      "target_line": 3,
+      "symbol": "DefaultExport",
+      "dependency_type": "VariableUse",
+      "context": "import_clause"
+    },
+    {
+      "source_line": 10,
+      "target_line": 10,
+      "symbol": "a",
+      "dependency_type": "VariableUse",
+      "context": "required_parameter"
+    },
+    {
+      "source_line": 10,
+      "target_line": 10,
+      "symbol": "b",
+      "dependency_type": "VariableUse",
+      "context": "required_parameter"
+    },
+    {
+      "source_line": 11,
+      "target_line": 10,
+      "symbol": "a",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 11,
+      "target_line": 10,
+      "symbol": "b",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 12,
+      "target_line": 11,
+      "symbol": "result",
+      "dependency_type": "VariableUse",
+      "context": "return_statement"
+    },
+    {
+      "source_line": 20,
+      "target_line": 16,
+      "symbol": "p1",
+      "dependency_type": "VariableUse",
+      "context": "member_expression"
+    },
+    {
+      "source_line": 20,
+      "target_line": 16,
+      "symbol": "p1",
+      "dependency_type": "StructFieldAccess",
+      "context": "member_access"
+    },
+    {
+      "source_line": 20,
+      "target_line": 17,
+      "symbol": "p2",
+      "dependency_type": "VariableUse",
+      "context": "member_expression"
+    },
+    {
+      "source_line": 20,
+      "target_line": 17,
+      "symbol": "p2",
+      "dependency_type": "StructFieldAccess",
+      "context": "member_access"
+    },
+    {
+      "source_line": 21,
+      "target_line": 16,
+      "symbol": "p1",
+      "dependency_type": "VariableUse",
+      "context": "member_expression"
+    },
+    {
+      "source_line": 21,
+      "target_line": 16,
+      "symbol": "p1",
+      "dependency_type": "StructFieldAccess",
+      "context": "member_access"
+    },
+    {
+      "source_line": 21,
+      "target_line": 17,
+      "symbol": "p2",
+      "dependency_type": "VariableUse",
+      "context": "member_expression"
+    },
+    {
+      "source_line": 21,
+      "target_line": 17,
+      "symbol": "p2",
+      "dependency_type": "StructFieldAccess",
+      "context": "member_access"
+    },
+    {
+      "source_line": 27,
+      "target_line": 26,
+      "symbol": "p6",
+      "dependency_type": "VariableUse",
+      "context": "return_statement"
+    },
+    {
+      "source_line": 31,
+      "target_line": 30,
+      "symbol": "x",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 32,
+      "target_line": 31,
+      "symbol": "y",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 32,
+      "target_line": 30,
+      "symbol": "x",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 34,
+      "target_line": 19,
+      "symbol": "p3",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 34,
+      "target_line": 19,
+      "symbol": "p3",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    },
+    {
+      "source_line": 35,
+      "target_line": 24,
+      "symbol": "p4",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 35,
+      "target_line": 24,
+      "symbol": "p4",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    },
+    {
+      "source_line": 38,
+      "target_line": 1,
+      "symbol": "SomeClass",
+      "dependency_type": "VariableUse",
+      "context": "new_expression"
+    },
+    {
+      "source_line": 40,
+      "target_line": 3,
+      "symbol": "DefaultExport",
+      "dependency_type": "VariableUse",
+      "context": "member_expression"
+    },
+    {
+      "source_line": 40,
+      "target_line": 3,
+      "symbol": "DefaultExport",
+      "dependency_type": "StructFieldAccess",
+      "context": "member_access"
+    },
+    {
+      "source_line": 43,
+      "target_line": 38,
+      "symbol": "instance",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 43,
+      "target_line": 39,
+      "symbol": "result",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 43,
+      "target_line": 38,
+      "symbol": "instance",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    },
+    {
+      "source_line": 43,
+      "target_line": 39,
+      "symbol": "result",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "TypeScript",
+    "total_lines": 44,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

@@ -1,0 +1,107 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/use_statements_dependency.rs",
+  "definitions": [
+    {
+      "name": "MyStruct",
+      "line_number": 2,
+      "definition_type": "StructDefinition",
+      "scope": "MyStruct"
+    },
+    {
+      "name": "my_function",
+      "line_number": 3,
+      "definition_type": "FunctionDefinition",
+      "scope": "my_function"
+    },
+    {
+      "name": "MY_CONST",
+      "line_number": 4,
+      "definition_type": "ConstDefinition",
+      "scope": null
+    },
+    {
+      "name": "my_module::MyStruct",
+      "line_number": 7,
+      "definition_type": "ModuleDefinition",
+      "scope": null
+    },
+    {
+      "name": "main",
+      "line_number": 12,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "s",
+      "line_number": 13,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "c",
+      "line_number": 15,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "s2",
+      "line_number": 16,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 4,
+      "target_line": 4,
+      "symbol": "MY_CONST",
+      "dependency_type": "VariableUse",
+      "context": "const_item"
+    },
+    {
+      "source_line": 8,
+      "target_line": 4,
+      "symbol": "MY_CONST",
+      "dependency_type": "VariableUse",
+      "context": "use_list"
+    },
+    {
+      "source_line": 13,
+      "target_line": 13,
+      "symbol": "s",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 15,
+      "target_line": 15,
+      "symbol": "c",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 15,
+      "target_line": 4,
+      "symbol": "MY_CONST",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 16,
+      "target_line": 16,
+      "symbol": "s2",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 17,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

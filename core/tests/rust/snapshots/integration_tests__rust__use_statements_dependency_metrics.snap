@@ -3,8 +3,7 @@ source: core/tests/rust/mod.rs
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
-  "file_path": "test.rs",
-  "original_file_path": "test.rs",
+  "file_path": "tests/rust/fixtures/use_statements_dependency.rs",
   "line_metrics": [
     {
       "line_number": 4,

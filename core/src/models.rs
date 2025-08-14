@@ -29,6 +29,12 @@ impl Language {
     }
 }
 
+impl std::fmt::Display for Language {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct LineMetrics {
     pub line_number: usize,
@@ -42,7 +48,6 @@ pub struct LineMetrics {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct AnalysisResult {
     pub file_path: String,
-    pub original_file_path: String,
     pub line_metrics: Vec<LineMetrics>,
     pub overall_complexity_score: f64,
 }

@@ -1,0 +1,68 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/function_call_dependency.rs",
+  "definitions": [
+    {
+      "name": "add",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "a",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "b",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "add"
+    },
+    {
+      "name": "main",
+      "line_number": 4,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "x",
+      "line_number": 5,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "a",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "b",
+      "dependency_type": "VariableUse",
+      "context": "binary_expression"
+    },
+    {
+      "source_line": 5,
+      "target_line": 5,
+      "symbol": "x",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 6,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

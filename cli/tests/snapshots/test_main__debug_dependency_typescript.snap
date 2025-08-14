@@ -1,5 +1,0 @@
----
-source: cli/tests/test_main.rs
-expression: stdout
----
-

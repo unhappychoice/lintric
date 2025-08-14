@@ -3,8 +3,7 @@ source: core/tests/rust/mod.rs
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
-  "file_path": "fixtures/pattern_match_bindings.rs",
-  "original_file_path": "fixtures/pattern_match_bindings.rs",
+  "file_path": "tests/rust/fixtures/pattern_match_bindings.rs",
   "line_metrics": [
     {
       "line_number": 2,

@@ -1,10 +1,9 @@
 ---
-source: core/tests/rust/mod.rs
+source: core/tests/typescript/mod.rs
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
-  "file_path": "test.rs",
-  "original_file_path": "test.rs",
+  "file_path": "tests/typescript/fixtures/import_dependency.ts",
   "line_metrics": [
     {
       "line_number": 1,
@@ -19,14 +18,14 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     {
       "line_number": 2,
       "total_dependencies": 2,
-      "dependency_distance_cost": 0.5,
+      "dependency_distance_cost": 1.0,
       "depth": 2,
       "transitive_dependencies": 1,
       "dependent_lines": [
         1,
-        2
+        1
       ]
     }
   ],
-  "overall_complexity_score": 6.25
+  "overall_complexity_score": 6.3
 }

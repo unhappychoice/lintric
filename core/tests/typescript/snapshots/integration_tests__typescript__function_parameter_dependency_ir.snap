@@ -1,0 +1,50 @@
+---
+source: core/tests/typescript/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/typescript/fixtures/function_parameter_dependency.ts",
+  "definitions": [
+    {
+      "name": "a",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "a"
+    },
+    {
+      "name": "b",
+      "line_number": 1,
+      "definition_type": "VariableDefinition",
+      "scope": "a"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 1,
+      "target_line": 1,
+      "symbol": "b",
+      "dependency_type": "VariableUse",
+      "context": "required_parameter"
+    },
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "b",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 2,
+      "target_line": 1,
+      "symbol": "b",
+      "dependency_type": "VariableUse",
+      "context": "arguments"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "TypeScript",
+    "total_lines": 3,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

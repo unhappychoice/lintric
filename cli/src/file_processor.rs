@@ -3,28 +3,13 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 /// Process a single file and return its analysis result
-pub fn process_file(path: &Path, base_path: Option<&Path>) -> Result<AnalysisResult, String> {
-    let content = fs::read_to_string(path)
-        .map_err(|e| format!("Error reading file {}: {}", path.display(), e))?;
-
-    let display_path = if let Some(base) = base_path {
-        if let Ok(relative) = path.strip_prefix(base) {
-            relative.to_string_lossy().into_owned()
-        } else {
-            path.to_string_lossy().into_owned()
-        }
-    } else {
-        path.to_string_lossy().into_owned()
-    };
-
-    analyze_code(&content, display_path, path.to_string_lossy().into_owned())
+pub fn process_file(file_path: &Path) -> Result<AnalysisResult, String> {
+    let (_, result) = analyze_code(file_path.to_string_lossy().into_owned())?;
+    Ok(result)
 }
 
 /// Process a directory recursively and return analysis results for all supported files
-pub fn process_directory(
-    path: &Path,
-    base_path: Option<&Path>,
-) -> Result<Vec<AnalysisResult>, String> {
+pub fn process_directory(path: &Path) -> Result<Vec<AnalysisResult>, String> {
     let mut results = Vec::new();
     for entry in fs::read_dir(path)
         .map_err(|e| format!("Error reading directory {}: {}", path.display(), e))?
@@ -34,13 +19,13 @@ pub fn process_directory(
 
         if entry_path.is_file() {
             if Language::from_extension(&entry_path).is_some() {
-                match process_file(&entry_path, base_path) {
+                match process_file(&entry_path) {
                     Ok(result) => results.push(result),
                     Err(e) => eprintln!("Error processing file {}: {}", entry_path.display(), e),
                 }
             }
         } else if entry_path.is_dir() {
-            match process_directory(&entry_path, base_path) {
+            match process_directory(&entry_path) {
                 Ok(mut sub_results) => results.append(&mut sub_results),
                 Err(e) => eprintln!(
                     "Error processing subdirectory {}: {}",
@@ -60,11 +45,10 @@ pub fn process_path(path_str: &str) -> (Vec<AnalysisResult>, f64, usize) {
     let mut total_files_analyzed = 0;
 
     let path = PathBuf::from(path_str);
-    let base_path = Some(&path as &Path);
 
     if path.is_file() {
         if Language::from_extension(&path).is_some() {
-            match process_file(&path, None) {
+            match process_file(&path) {
                 Ok(result) => {
                     all_results.push(result.clone());
                     total_overall_complexity_score += result.overall_complexity_score;
@@ -79,7 +63,7 @@ pub fn process_path(path_str: &str) -> (Vec<AnalysisResult>, f64, usize) {
             );
         }
     } else if path.is_dir() {
-        match process_directory(&path, base_path) {
+        match process_directory(&path) {
             Ok(results) => {
                 for result in results {
                     all_results.push(result.clone());

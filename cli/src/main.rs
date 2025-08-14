@@ -46,14 +46,9 @@ enum DebugCommands {
         #[arg(required = true)]
         path: String,
     },
-    /// Outputs a list of definitions in the input file
-    Definition {
-        /// Path to the source code file to analyze
-        #[arg(required = true)]
-        path: String,
-    },
     /// Outputs a list of definitions and dependencies in the input file
-    Dependency {
+    #[command(name = "ir", about = "Outputs the IR of the input file")]
+    IntermediateRepresentation {
         /// Path to the source code file to analyze
         #[arg(required = true)]
         path: String,
@@ -65,7 +60,7 @@ fn main() {
 
     match args.command {
         Some(Commands::Debug { command }) => match command {
-            DebugCommands::Ast { path } => match lintric_core::parse_source_file(path) {
+            DebugCommands::Ast { path } => match lintric_core::get_s_expression(path) {
                 Ok(s_expr_output) => {
                     println!("{s_expr_output}");
                 }
@@ -73,30 +68,20 @@ fn main() {
                     eprintln!("Error: {e}");
                 }
             },
-            DebugCommands::Definition { path } => match lintric_core::get_definitions(path) {
-                Ok(definitions) => {
-                    println!(
-                        "{}",
-                        serde_json::to_string_pretty(&definitions)
-                            .expect("Failed to serialize definitions to JSON")
-                    );
+            DebugCommands::IntermediateRepresentation { path } => {
+                match lintric_core::get_intermediate_representation(path) {
+                    Ok(ir) => {
+                        println!(
+                            "{}",
+                            serde_json::to_string_pretty(&ir)
+                                .expect("Failed to serialize IR to JSON")
+                        );
+                    }
+                    Err(e) => {
+                        eprintln!("Error: {e}");
+                    }
                 }
-                Err(e) => {
-                    eprintln!("Error: {e}");
-                }
-            },
-            DebugCommands::Dependency { path } => match lintric_core::get_dependencies(path) {
-                Ok(edges) => {
-                    println!(
-                        "{}",
-                        serde_json::to_string_pretty(&edges)
-                            .expect("Failed to serialize dependencies to JSON")
-                    );
-                }
-                Err(e) => {
-                    eprintln!("Error: {e}");
-                }
-            },
+            }
         },
         None => {
             let mut all_results: Vec<AnalysisResult> = Vec::new();
@@ -122,13 +107,13 @@ fn main() {
             };
 
             if args.json {
-                display::display_json(&overall_report);
+                display::display_json(&overall_report, &args.paths);
             } else if args.verbose {
-                display::display_verbose(&overall_report);
+                display::display_verbose(&overall_report, &args.paths);
             } else if args.html {
                 html_output::generate_html_report(&overall_report);
             } else {
-                display::display_summary(&overall_report);
+                display::display_summary(&overall_report, &args.paths);
             }
         }
     }

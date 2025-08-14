@@ -1,21 +1,25 @@
 use lintric_core::metric_calculator::calculate_metrics;
-use petgraph::graph::DiGraph;
+use lintric_core::models::{Dependency, DependencyType, IntermediateRepresentation};
 
 #[test]
 fn test_simple_dependency() {
-    let mut graph = DiGraph::<usize, usize>::new();
-    let node1 = graph.add_node(1);
-    let node2 = graph.add_node(2);
-    graph.add_edge(node2, node1, 1);
+    let dependencies = vec![Dependency {
+        source_line: 2,
+        target_line: 1,
+        symbol: "a".to_string(),
+        dependency_type: DependencyType::VariableUse,
+        context: None,
+    }];
+    let ir = IntermediateRepresentation::new(
+        "test.rs".to_string(),
+        vec![],
+        dependencies,
+        "Rust".to_string(),
+        2,
+    );
 
     let code = "let a = 1;\nlet b = a;";
-    let result = calculate_metrics(
-        graph,
-        code,
-        "test.rs".to_string(),
-        "original_test.rs".to_string(),
-    )
-    .unwrap();
+    let result = calculate_metrics(&ir, code).unwrap();
 
     assert_eq!(result.line_metrics.len(), 2);
 
@@ -42,21 +46,32 @@ fn test_simple_dependency() {
 
 #[test]
 fn test_multiple_dependencies() {
-    let mut graph = DiGraph::<usize, usize>::new();
-    let node1 = graph.add_node(1);
-    let node2 = graph.add_node(2);
-    let node3 = graph.add_node(3);
-    graph.add_edge(node3, node1, 2);
-    graph.add_edge(node3, node2, 1);
+    let dependencies = vec![
+        Dependency {
+            source_line: 3,
+            target_line: 1,
+            symbol: "a".to_string(),
+            dependency_type: DependencyType::VariableUse,
+            context: None,
+        },
+        Dependency {
+            source_line: 3,
+            target_line: 2,
+            symbol: "b".to_string(),
+            dependency_type: DependencyType::VariableUse,
+            context: None,
+        },
+    ];
+    let ir = IntermediateRepresentation::new(
+        "test.rs".to_string(),
+        vec![],
+        dependencies,
+        "Rust".to_string(),
+        3,
+    );
 
     let code = "let a = 1;\nlet b = 2;\nlet c = a + b;";
-    let result = calculate_metrics(
-        graph,
-        code,
-        "test.rs".to_string(),
-        "original_test.rs".to_string(),
-    )
-    .unwrap();
+    let result = calculate_metrics(&ir, code).unwrap();
 
     let line3_metrics = result
         .line_metrics
@@ -68,21 +83,32 @@ fn test_multiple_dependencies() {
 
 #[test]
 fn test_transitive_dependencies() {
-    let mut graph = DiGraph::<usize, usize>::new();
-    let node1 = graph.add_node(1);
-    let node2 = graph.add_node(2);
-    let node3 = graph.add_node(3);
-    graph.add_edge(node2, node1, 1);
-    graph.add_edge(node3, node2, 1);
+    let dependencies = vec![
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "a".to_string(),
+            dependency_type: DependencyType::VariableUse,
+            context: None,
+        },
+        Dependency {
+            source_line: 3,
+            target_line: 2,
+            symbol: "b".to_string(),
+            dependency_type: DependencyType::VariableUse,
+            context: None,
+        },
+    ];
+    let ir = IntermediateRepresentation::new(
+        "test.rs".to_string(),
+        vec![],
+        dependencies,
+        "Rust".to_string(),
+        3,
+    );
 
     let code = "let a = 1;\nlet b = a;\nlet c = b;";
-    let result = calculate_metrics(
-        graph,
-        code,
-        "test.rs".to_string(),
-        "original_test.rs".to_string(),
-    )
-    .unwrap();
+    let result = calculate_metrics(&ir, code).unwrap();
 
     let line3_metrics = result
         .line_metrics
@@ -95,20 +121,32 @@ fn test_transitive_dependencies() {
 
 #[test]
 fn test_cyclic_dependencies() {
-    let mut graph = DiGraph::<usize, usize>::new();
-    let node1 = graph.add_node(1);
-    let node2 = graph.add_node(2);
-    graph.add_edge(node1, node2, 1);
-    graph.add_edge(node2, node1, 1);
+    let dependencies = vec![
+        Dependency {
+            source_line: 1,
+            target_line: 2,
+            symbol: "b".to_string(),
+            dependency_type: DependencyType::FunctionCall,
+            context: None,
+        },
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "a".to_string(),
+            dependency_type: DependencyType::FunctionCall,
+            context: None,
+        },
+    ];
+    let ir = IntermediateRepresentation::new(
+        "test.rs".to_string(),
+        vec![],
+        dependencies,
+        "Rust".to_string(),
+        2,
+    );
 
     let code = "fn a() { b() }\nfn b() { a() }";
-    let result = calculate_metrics(
-        graph,
-        code,
-        "test.rs".to_string(),
-        "original_test.rs".to_string(),
-    )
-    .unwrap();
+    let result = calculate_metrics(&ir, code).unwrap();
 
     let line1_metrics = result
         .line_metrics
@@ -120,18 +158,16 @@ fn test_cyclic_dependencies() {
 
 #[test]
 fn test_no_dependencies() {
-    let mut graph = DiGraph::<usize, usize>::new();
-    graph.add_node(1);
-    graph.add_node(2);
-
-    let code = "let a = 1;\nlet b = 2;".trim();
-    let result = calculate_metrics(
-        graph,
-        code,
+    let ir = IntermediateRepresentation::new(
         "test.rs".to_string(),
-        "original_test.rs".to_string(),
-    )
-    .unwrap();
+        vec![],
+        vec![],
+        "Rust".to_string(),
+        2,
+    );
+
+    let code = "let a = 1;\nlet b = 2;";
+    let result = calculate_metrics(&ir, code).unwrap();
 
     let line1_metrics = result
         .line_metrics
