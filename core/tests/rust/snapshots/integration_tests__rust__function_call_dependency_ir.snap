@@ -1,6 +1,5 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 24
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {
@@ -15,13 +14,13 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
     {
       "name": "a",
       "line_number": 1,
-      "definition_type": "FunctionDefinition",
+      "definition_type": "VariableDefinition",
       "scope": "add"
     },
     {
       "name": "b",
       "line_number": 1,
-      "definition_type": "FunctionDefinition",
+      "definition_type": "VariableDefinition",
       "scope": "add"
     },
     {

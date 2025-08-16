@@ -1,0 +1,20 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&result).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/use_macro_dependency.rs",
+  "line_metrics": [
+    {
+      "line_number": 3,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.25,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        2
+      ]
+    }
+  ],
+  "overall_complexity_score": 2.225
+}

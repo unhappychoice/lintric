@@ -44,6 +44,24 @@ impl DependencyCollector for RustDependencyCollector {
                     current_scope,
                 );
             }
+            "macro_invocation" => {
+                self.handle_macro_invocation(
+                    node,
+                    source_code,
+                    dependencies,
+                    definitions,
+                    current_scope,
+                );
+            }
+            "metavariable" => {
+                self.handle_metavariable(
+                    node,
+                    source_code,
+                    dependencies,
+                    definitions,
+                    current_scope,
+                );
+            }
             _ => {}
         }
     }
@@ -92,6 +110,10 @@ impl DependencyCollector for RustDependencyCollector {
         current_scope: &Option<String>,
     ) {
         let parent_kind = node.parent().map(|p| p.kind());
+
+        if parent_kind == Some("macro_invocation") {
+            return; // Do not create a VariableUse dependency for macro identifiers
+        }
 
         let is_declaration_name = parent_kind == Some("function_item")
             && (node.parent().unwrap().child_by_field_name("name") == Some(node))
@@ -270,5 +292,49 @@ impl DependencyCollector for RustDependencyCollector {
                 Some("struct_instantiation".to_string()),
             );
         }
+    }
+
+    fn handle_macro_invocation<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    ) {
+        if let Some(macro_name_node) = node.child_by_field_name("macro") {
+            if macro_name_node.kind() == "scoped_identifier"
+                || macro_name_node.kind() == "identifier"
+            {
+                self.add_dependency_if_needed(
+                    dependencies,
+                    macro_name_node,
+                    source_code,
+                    definitions,
+                    current_scope,
+                    DependencyType::MacroInvocation,
+                    Some("macro_invocation".to_string()),
+                );
+            }
+        }
+    }
+
+    fn handle_metavariable<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    ) {
+        self.add_dependency_if_needed(
+            dependencies,
+            node,
+            source_code,
+            definitions,
+            current_scope,
+            DependencyType::VariableUse,
+            Some("metavariable_use".to_string()),
+        );
     }
 }

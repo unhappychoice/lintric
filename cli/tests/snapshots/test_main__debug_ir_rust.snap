@@ -20,13 +20,13 @@ expression: out
     {
       "name": "a",
       "line_number": 6,
-      "definition_type": "FunctionDefinition",
+      "definition_type": "VariableDefinition",
       "scope": "add"
     },
     {
       "name": "b",
       "line_number": 6,
-      "definition_type": "FunctionDefinition",
+      "definition_type": "VariableDefinition",
       "scope": "add"
     },
     {

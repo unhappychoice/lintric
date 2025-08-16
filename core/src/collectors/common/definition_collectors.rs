@@ -83,6 +83,14 @@ pub trait DefinitionCollector: Send + Sync {
         definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
     );
+
+    fn collect_macro_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
+    );
 }
 
 pub fn find_identifiers_in_pattern(node: Node, source_code: &str) -> Vec<(String, usize)> {
