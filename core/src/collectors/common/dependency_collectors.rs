@@ -82,6 +82,24 @@ pub trait DependencyCollector: Send + Sync {
         current_scope: &Option<String>,
     );
 
+    fn handle_macro_invocation<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    );
+
+    fn handle_metavariable<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    );
+
     #[allow(clippy::too_many_arguments)]
     fn add_dependency_if_needed<'a>(
         &self,
@@ -99,6 +117,7 @@ pub trait DependencyCollector: Send + Sync {
             .unwrap()
             .trim()
             .to_string();
+
         if let Some(def) = find_definition_in_scope(definitions, &symbol, current_scope) {
             let target_line = def.line_number;
             if source_line != target_line {

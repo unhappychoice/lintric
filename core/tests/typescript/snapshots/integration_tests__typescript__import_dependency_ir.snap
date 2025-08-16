@@ -1,6 +1,5 @@
 ---
 source: core/tests/typescript/mod.rs
-assertion_line: 41
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {

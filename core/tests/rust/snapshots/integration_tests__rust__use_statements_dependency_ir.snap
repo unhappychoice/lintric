@@ -30,7 +30,7 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "scope": "my_module"
     },
     {
-      "name": "my_module::MyStruct",
+      "name": "MyStruct",
       "line_number": 7,
       "definition_type": "ModuleDefinition",
       "scope": null
@@ -88,6 +88,20 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "symbol": "my_module",
       "dependency_type": "VariableUse",
       "context": "use_as_clause"
+    },
+    {
+      "source_line": 13,
+      "target_line": 7,
+      "symbol": "MyStruct",
+      "dependency_type": "VariableUse",
+      "context": "let_declaration"
+    },
+    {
+      "source_line": 16,
+      "target_line": 7,
+      "symbol": "MyStruct",
+      "dependency_type": "VariableUse",
+      "context": "scoped_identifier"
     }
   ],
   "analysis_metadata": {

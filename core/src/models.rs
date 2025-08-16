@@ -73,6 +73,8 @@ pub enum DefinitionType {
     ClassDefinition,
     InterfaceDefinition,
     ConstDefinition,
+    MacroDefinition,
+    MacroVariableDefinition,
     Other(String),
 }
 
@@ -84,6 +86,7 @@ pub enum DependencyType {
     StructFieldAccess,
     TypeReference,
     ModuleReference,
+    MacroInvocation,
     Other(String),
 }
 

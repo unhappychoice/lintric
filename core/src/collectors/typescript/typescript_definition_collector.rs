@@ -252,4 +252,14 @@ impl DefinitionCollector for TypescriptDefinitionCollector {
         _current_scope: &Option<String>,
     ) {
     }
+
+    fn collect_macro_definitions<'a>(
+        &self,
+        _node: Node<'a>,
+        _source_code: &'a str,
+        _definitions: &mut Vec<Definition>,
+        _current_scope: &Option<String>,
+    ) {
+        // No direct equivalent to Rust macros in TypeScript for definition collection.
+    }
 }

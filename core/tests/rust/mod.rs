@@ -1,6 +1,5 @@
 use insta::assert_snapshot;
 use lintric_core::analyze_code;
-use serde_json;
 use std::env;
 
 #[test]
@@ -57,6 +56,36 @@ fn test_rust_use_statements_dependency() {
     );
     assert_snapshot!(
         "use_statements_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
+fn test_rust_macro_invocation_dependency() {
+    let file_path = "tests/rust/fixtures/macro_invocation_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "macro_invocation_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "macro_invocation_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
+fn test_rust_use_macro_dependency() {
+    let file_path = "tests/rust/fixtures/use_macro_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "use_macro_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "use_macro_dependency_metrics",
         serde_json::to_string_pretty(&result).unwrap()
     );
 }
