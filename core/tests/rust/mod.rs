@@ -149,3 +149,18 @@ fn test_rust_method_call_dependency() {
         serde_json::to_string_pretty(&result).unwrap()
     );
 }
+
+#[test]
+fn test_rust_associated_function_and_ufcs_dependency() {
+    let file_path = "tests/rust/fixtures/associated_function_and_ufcs.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "associated_function_and_ufcs_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "associated_function_and_ufcs_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}

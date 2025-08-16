@@ -1,0 +1,95 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/associated_function_and_ufcs.rs",
+  "definitions": [
+    {
+      "name": "MyStruct",
+      "line_number": 1,
+      "definition_type": "StructDefinition",
+      "scope": "MyStruct"
+    },
+    {
+      "name": "new",
+      "line_number": 4,
+      "definition_type": "FunctionDefinition",
+      "scope": "MyStruct.new"
+    },
+    {
+      "name": "MyTrait",
+      "line_number": 9,
+      "definition_type": {
+        "Other": "trait_item"
+      },
+      "scope": "MyTrait"
+    },
+    {
+      "name": "my_function",
+      "line_number": 10,
+      "definition_type": "FunctionDefinition",
+      "scope": "MyTrait"
+    },
+    {
+      "name": "MyType",
+      "line_number": 13,
+      "definition_type": "StructDefinition",
+      "scope": "MyType"
+    },
+    {
+      "name": "my_function",
+      "line_number": 16,
+      "definition_type": "FunctionDefinition",
+      "scope": "MyType.my_function"
+    },
+    {
+      "name": "main",
+      "line_number": 21,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "_s",
+      "line_number": 22,
+      "definition_type": "VariableDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 5,
+      "target_line": 1,
+      "symbol": "MyStruct",
+      "dependency_type": "VariableUse",
+      "context": "block"
+    },
+    {
+      "source_line": 22,
+      "target_line": 4,
+      "symbol": "new",
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
+    },
+    {
+      "source_line": 23,
+      "target_line": 16,
+      "symbol": "my_function",
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
+    },
+    {
+      "source_line": 24,
+      "target_line": 16,
+      "symbol": "my_function",
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 25,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}
