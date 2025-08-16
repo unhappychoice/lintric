@@ -175,4 +175,25 @@ impl DependencyCollector for TypescriptDependencyCollector {
     ) {
         // Empty implementation as there is no equivalent to struct_expression in TypeScript.
     }
+
+    fn handle_macro_invocation<'a>(
+        &self,
+        _node: Node<'a>,
+        _source_code: &'a str,
+        _dependencies: &mut Vec<Dependency>,
+        _definitions: &[Definition],
+        _current_scope: &Option<String>,
+    ) {
+        // No direct equivalent to Rust macros in TypeScript for dependency collection.
+    }
+
+    fn handle_metavariable<'a>(
+        &self,
+        _node: Node<'a>,
+        _source_code: &'a str,
+        _dependencies: &mut Vec<Dependency>,
+        _definitions: &[Definition],
+        _current_scope: &Option<String>,
+    ) {
+    }
 }

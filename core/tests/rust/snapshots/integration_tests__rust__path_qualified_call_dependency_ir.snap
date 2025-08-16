@@ -1,41 +1,41 @@
 ---
-source: core/tests/typescript/mod.rs
+source: core/tests/rust/mod.rs
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {
-  "file_path": "tests/typescript/fixtures/import_dependency.ts",
+  "file_path": "tests/rust/fixtures/path_qualified_call_dependency.rs",
   "definitions": [
     {
-      "name": "someFunction",
+      "name": "m",
       "line_number": 1,
       "definition_type": "ModuleDefinition",
       "scope": null
     },
     {
-      "name": "result",
-      "line_number": 2,
-      "definition_type": "VariableDefinition",
-      "scope": null
+      "name": "f",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "m.f"
     }
   ],
   "dependencies": [
     {
       "source_line": 2,
       "target_line": 1,
-      "symbol": "someFunction",
+      "symbol": "f",
       "dependency_type": "FunctionCall",
       "context": "call_expression"
     },
     {
       "source_line": 2,
       "target_line": 1,
-      "symbol": "someFunction",
+      "symbol": "m",
       "dependency_type": "VariableUse",
-      "context": "call_expression"
+      "context": "scoped_identifier"
     }
   ],
   "analysis_metadata": {
-    "language": "TypeScript",
+    "language": "Rust",
     "total_lines": 2,
     "analysis_timestamp": "now",
     "lintric_version": "0.1.0"

@@ -2,7 +2,7 @@ use crate::collectors::common::definition_collectors::{
     find_identifiers_in_pattern, DefinitionCollector,
 };
 use crate::models::{Definition, DefinitionType};
-use tree_sitter::Node;
+use tree_sitter::{Node, Query, QueryCursor};
 
 pub struct RustDefinitionCollector;
 
@@ -21,7 +21,7 @@ impl DefinitionCollector for RustDefinitionCollector {
             "let_declaration" | "for_expression" | "if_expression" | "while_expression" => {
                 self.collect_variable_definitions(node, source_code, definitions, current_scope);
             }
-            "struct_item" | "enum_item" | "type_item" | "trait_item" | "impl_item" => {
+            "struct_item" | "enum_item" | "type_item" | "trait_item" | "impl_item" | "mod_item" => {
                 self.collect_type_definitions(node, source_code, definitions, current_scope);
             }
             "use_declaration" => {
@@ -32,6 +32,9 @@ impl DefinitionCollector for RustDefinitionCollector {
             }
             "const_item" | "static_item" => {
                 self.collect_variable_definitions(node, source_code, definitions, current_scope);
+            }
+            "macro_definition" => {
+                self.collect_macro_definitions(node, source_code, definitions, current_scope);
             }
             _ => {}
         }
@@ -44,7 +47,7 @@ impl DefinitionCollector for RustDefinitionCollector {
         parent_scope: &Option<String>,
     ) -> Option<String> {
         let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" => {
+            "function_item" | "struct_item" | "enum_item" | "trait_item" | "mod_item" => {
                 node.child_by_field_name("name").map(|n| {
                     n.utf8_text(source_code.as_bytes())
                         .unwrap()
@@ -52,6 +55,12 @@ impl DefinitionCollector for RustDefinitionCollector {
                         .to_string()
                 })
             }
+            "impl_item" => node.child_by_field_name("type").map(|n| {
+                n.utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string()
+            }),
             _ => None,
         };
 
@@ -175,7 +184,7 @@ impl DefinitionCollector for RustDefinitionCollector {
                             definitions.push(Definition {
                                 name,
                                 line_number: line,
-                                definition_type: DefinitionType::FunctionDefinition,
+                                definition_type: DefinitionType::VariableDefinition,
                                 scope: current_scope.clone(),
                             });
                         }
@@ -204,14 +213,27 @@ impl DefinitionCollector for RustDefinitionCollector {
                 "struct_item" => DefinitionType::StructDefinition,
                 "enum_item" => DefinitionType::EnumDefinition,
                 "type_item" => DefinitionType::TypeDefinition,
+                "mod_item" => DefinitionType::ModuleDefinition,
                 _ => DefinitionType::Other(node.kind().to_string()),
+            };
+
+            let scope = if node.kind() == "mod_item" {
+                if let Some(scope_str) = current_scope {
+                    scope_str
+                        .rfind('.')
+                        .map(|last_dot| scope_str[..last_dot].to_string())
+                } else {
+                    None
+                }
+            } else {
+                current_scope.clone()
             };
 
             definitions.push(Definition {
                 name,
                 line_number: start_line,
                 definition_type: def_type,
-                scope: current_scope.clone(),
+                scope,
             });
         }
     }
@@ -228,10 +250,15 @@ impl DefinitionCollector for RustDefinitionCollector {
         for use_child in node.children(&mut use_cursor) {
             match use_child.kind() {
                 "scoped_identifier" | "identifier" => {
-                    let name = use_child
+                    let full_name = use_child
                         .utf8_text(source_code.as_bytes())
                         .unwrap()
                         .trim()
+                        .to_string();
+                    let name = full_name
+                        .split("::")
+                        .last()
+                        .unwrap_or(&full_name)
                         .to_string();
                     definitions.push(Definition {
                         name,
@@ -246,10 +273,15 @@ impl DefinitionCollector for RustDefinitionCollector {
                         if clause_child_node.kind() == "identifier"
                             || clause_child_node.kind() == "scoped_identifier"
                         {
-                            let name = clause_child_node
+                            let full_name = clause_child_node
                                 .utf8_text(source_code.as_bytes())
                                 .unwrap()
                                 .trim()
+                                .to_string();
+                            let name = full_name
+                                .split("::")
+                                .last()
+                                .unwrap_or(&full_name)
                                 .to_string();
                             definitions.push(Definition {
                                 name,
@@ -302,4 +334,62 @@ impl DefinitionCollector for RustDefinitionCollector {
             }
         }
     }
+
+    fn collect_macro_definitions<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        definitions: &mut Vec<Definition>,
+        current_scope: &Option<String>,
+    ) {
+        let start_line = node.start_position().row + 1;
+        if let Some(name_node) = node.child_by_field_name("name") {
+            let name = name_node
+                .utf8_text(source_code.as_bytes())
+                .unwrap()
+                .trim()
+                .to_string();
+            definitions.push(Definition {
+                name,
+                line_number: start_line,
+                definition_type: DefinitionType::MacroDefinition,
+                scope: current_scope.clone(),
+            });
+        }
+
+        if let Some(macro_node) =
+            run_query("(token_binding_pattern) @rule", node, source_code).first()
+        {
+            let nodes = run_query("(metavariable) @meta", *macro_node, source_code);
+
+            for node in nodes {
+                let name = node
+                    .utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string();
+                definitions.push(Definition {
+                    name,
+                    line_number: node.start_position().row + 1,
+                    definition_type: DefinitionType::MacroVariableDefinition,
+                    scope: current_scope.clone(),
+                });
+            }
+        }
+    }
+}
+
+fn run_query<'a>(query: &str, node: Node<'a>, source_code: &str) -> Vec<Node<'a>> {
+    let mut result: Vec<Node<'a>> = vec![];
+
+    let query = Query::new(&tree_sitter_rust::language(), query).unwrap();
+    let mut query_cursor = QueryCursor::new();
+
+    for m in query_cursor.matches(&query, node, source_code.as_bytes()) {
+        for capture in m.captures {
+            result.push(capture.node);
+        }
+    }
+
+    result
 }

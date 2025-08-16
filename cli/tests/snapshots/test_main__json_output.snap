@@ -1,7 +1,6 @@
 ---
 source: cli/tests/test_main.rs
-assertion_line: 76
-expression: stdout
+expression: out
 ---
 {
   "results": [
@@ -31,28 +30,32 @@ expression: stdout
         },
         {
           "line_number": 16,
-          "total_dependencies": 4,
-          "dependency_distance_cost": 0.84375,
+          "total_dependencies": 6,
+          "dependency_distance_cost": 1.0625,
           "depth": 1,
           "transitive_dependencies": 3,
           "dependent_lines": [
             13,
             26,
+            13,
             12,
-            26
+            26,
+            12
           ]
         },
         {
           "line_number": 17,
-          "total_dependencies": 4,
-          "dependency_distance_cost": 0.90625,
+          "total_dependencies": 6,
+          "dependency_distance_cost": 1.1875,
           "depth": 2,
           "transitive_dependencies": 4,
           "dependent_lines": [
             13,
             27,
+            13,
             12,
-            27
+            27,
+            12
           ]
         },
         {
@@ -117,10 +120,10 @@ expression: stdout
           ]
         }
       ],
-      "overall_complexity_score": 35.884375
+      "overall_complexity_score": 39.934375
     }
   ],
   "total_files_analyzed": 1,
-  "total_overall_complexity_score": 35.884375,
-  "average_complexity_score": 35.884375
+  "total_overall_complexity_score": 39.934375,
+  "average_complexity_score": 39.934375
 }

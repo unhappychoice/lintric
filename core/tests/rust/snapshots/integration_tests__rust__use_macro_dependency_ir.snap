@@ -1,0 +1,36 @@
+---
+source: core/tests/rust/mod.rs
+expression: "serde_json::to_string_pretty(&ir).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/use_macro_dependency.rs",
+  "definitions": [
+    {
+      "name": "main",
+      "line_number": 1,
+      "definition_type": "FunctionDefinition",
+      "scope": "main"
+    },
+    {
+      "name": "some_macro",
+      "line_number": 2,
+      "definition_type": "ModuleDefinition",
+      "scope": "main"
+    }
+  ],
+  "dependencies": [
+    {
+      "source_line": 3,
+      "target_line": 2,
+      "symbol": "some_macro",
+      "dependency_type": "MacroInvocation",
+      "context": "macro_invocation"
+    }
+  ],
+  "analysis_metadata": {
+    "language": "Rust",
+    "total_lines": 4,
+    "analysis_timestamp": "now",
+    "lintric_version": "0.1.0"
+  }
+}

@@ -1,6 +1,5 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 69
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {

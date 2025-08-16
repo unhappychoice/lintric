@@ -44,6 +44,24 @@ impl DependencyCollector for RustDependencyCollector {
                     current_scope,
                 );
             }
+            "macro_invocation" => {
+                self.handle_macro_invocation(
+                    node,
+                    source_code,
+                    dependencies,
+                    definitions,
+                    current_scope,
+                );
+            }
+            "metavariable" => {
+                self.handle_metavariable(
+                    node,
+                    source_code,
+                    dependencies,
+                    definitions,
+                    current_scope,
+                );
+            }
             _ => {}
         }
     }
@@ -55,7 +73,7 @@ impl DependencyCollector for RustDependencyCollector {
         parent_scope: &Option<String>,
     ) -> Option<String> {
         let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" | "impl_item" => {
+            "function_item" | "struct_item" | "enum_item" | "trait_item" => {
                 node.child_by_field_name("name").map(|n| {
                     n.utf8_text(source_code.as_bytes())
                         .unwrap()
@@ -63,6 +81,12 @@ impl DependencyCollector for RustDependencyCollector {
                         .to_string()
                 })
             }
+            "impl_item" => node.child_by_field_name("type").map(|n| {
+                n.utf8_text(source_code.as_bytes())
+                    .unwrap()
+                    .trim()
+                    .to_string()
+            }),
             _ => None,
         };
 
@@ -86,6 +110,10 @@ impl DependencyCollector for RustDependencyCollector {
         current_scope: &Option<String>,
     ) {
         let parent_kind = node.parent().map(|p| p.kind());
+
+        if parent_kind == Some("macro_invocation") {
+            return; // Do not create a VariableUse dependency for macro identifiers
+        }
 
         let is_declaration_name = parent_kind == Some("function_item")
             && (node.parent().unwrap().child_by_field_name("name") == Some(node))
@@ -135,6 +163,51 @@ impl DependencyCollector for RustDependencyCollector {
                     DependencyType::FunctionCall,
                     Some("call_expression".to_string()),
                 );
+            } else if function_node.kind() == "scoped_identifier" {
+                let path_node = function_node.child_by_field_name("path").unwrap();
+                let name_node = function_node.child_by_field_name("name").unwrap();
+
+                let path_text = path_node.utf8_text(source_code.as_bytes()).unwrap();
+                let name_text = name_node.utf8_text(source_code.as_bytes()).unwrap();
+
+                let f_definitions: Vec<&Definition> =
+                    definitions.iter().filter(|d| d.name == name_text).collect();
+
+                for def in f_definitions {
+                    if let Some(scope) = &def.scope {
+                        if scope.starts_with(path_text) {
+                            let source_line = name_node.start_position().row + 1;
+                            let target_line = def.line_number;
+                            if source_line != target_line {
+                                dependencies.push(Dependency {
+                                    source_line,
+                                    target_line,
+                                    symbol: name_text.to_string(),
+                                    dependency_type: DependencyType::FunctionCall,
+                                    context: Some("call_expression".to_string()),
+                                });
+                            }
+                        }
+                    }
+                }
+            } else if function_node.kind() == "field_expression" {
+                let method_node = function_node.child_by_field_name("field").unwrap();
+                let method_text = method_node.utf8_text(source_code.as_bytes()).unwrap();
+                let method_def = definitions.iter().find(|d| d.name == method_text);
+
+                if let Some(m_def) = method_def {
+                    let source_line = method_node.start_position().row + 1;
+                    let target_line = m_def.line_number;
+                    if source_line != target_line {
+                        dependencies.push(Dependency {
+                            source_line,
+                            target_line,
+                            symbol: method_text.to_string(),
+                            dependency_type: DependencyType::FunctionCall,
+                            context: Some("call_expression".to_string()),
+                        });
+                    }
+                }
             }
         }
 
@@ -164,11 +237,21 @@ impl DependencyCollector for RustDependencyCollector {
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        if let Some(operand_node) = node.child_by_field_name("operand") {
-            if operand_node.kind() == "identifier" {
+        if let Some(parent) = node.parent() {
+            if parent.kind() == "call_expression"
+                && parent.child_by_field_name("function") == Some(node)
+            {
+                // This field expression is the function part of a method call,
+                // so we let handle_call_expression deal with it.
+                return;
+            }
+        }
+
+        if let Some(value_node) = node.child_by_field_name("value") {
+            if value_node.kind() == "identifier" {
                 self.add_dependency_if_needed(
                     dependencies,
-                    operand_node,
+                    value_node,
                     source_code,
                     definitions,
                     current_scope,
@@ -209,5 +292,49 @@ impl DependencyCollector for RustDependencyCollector {
                 Some("struct_instantiation".to_string()),
             );
         }
+    }
+
+    fn handle_macro_invocation<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    ) {
+        if let Some(macro_name_node) = node.child_by_field_name("macro") {
+            if macro_name_node.kind() == "scoped_identifier"
+                || macro_name_node.kind() == "identifier"
+            {
+                self.add_dependency_if_needed(
+                    dependencies,
+                    macro_name_node,
+                    source_code,
+                    definitions,
+                    current_scope,
+                    DependencyType::MacroInvocation,
+                    Some("macro_invocation".to_string()),
+                );
+            }
+        }
+    }
+
+    fn handle_metavariable<'a>(
+        &self,
+        node: Node<'a>,
+        source_code: &'a str,
+        dependencies: &mut Vec<Dependency>,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    ) {
+        self.add_dependency_if_needed(
+            dependencies,
+            node,
+            source_code,
+            definitions,
+            current_scope,
+            DependencyType::VariableUse,
+            Some("metavariable_use".to_string()),
+        );
     }
 }
