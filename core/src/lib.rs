@@ -65,9 +65,10 @@ fn _get_intermediate_representation(
         .collect_definitions_from_root(tree.root_node())
         .map_err(|e| format!("Failed to collect definitions: {e}"))?;
 
-    let dep_collector_instance = collector_factory::get_dependency_collector(language.clone())?;
+    let dep_collector_instance =
+        collector_factory::get_dependency_collector(language.clone(), file_content)?;
     let dependencies = dep_collector_instance
-        .collect_dependencies_from_root(tree.root_node(), file_content, &definitions)
+        .collect_dependencies_from_root(tree.root_node(), &definitions)
         .map_err(|e| format!("Failed to collect dependencies: {e}"))?;
 
     Ok(IntermediateRepresentation::new(

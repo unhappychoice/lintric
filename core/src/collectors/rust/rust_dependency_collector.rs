@@ -2,87 +2,57 @@ use crate::collectors::common::dependency_collectors::DependencyCollector;
 use crate::models::{Definition, Dependency, DependencyType};
 use tree_sitter::Node;
 
-pub struct RustDependencyCollector;
+pub struct RustDependencyCollector<'a> {
+    source_code: &'a str,
+}
 
-impl DependencyCollector for RustDependencyCollector {
-    fn process_node<'a>(
+impl<'a> RustDependencyCollector<'a> {
+    pub fn new(source_code: &'a str) -> Self {
+        Self { source_code }
+    }
+}
+
+impl<'a> DependencyCollector<'a> for RustDependencyCollector<'a> {
+    fn process_node(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
-    ) {
+    ) -> Vec<Dependency> {
+        let mut dependencies = Vec::new();
         match node.kind() {
             "identifier" => {
-                self.handle_identifier(node, source_code, dependencies, definitions, current_scope);
+                self.handle_identifier(node, &mut dependencies, definitions, current_scope);
             }
             "call_expression" => {
-                self.handle_call_expression(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
+                self.handle_call_expression(node, &mut dependencies, definitions, current_scope);
             }
             "field_expression" => {
-                self.handle_field_expression(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
+                self.handle_field_expression(node, &mut dependencies, definitions, current_scope);
             }
             "struct_expression" => {
-                self.handle_struct_expression(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
-            }
-            "macro_invocation" => {
-                self.handle_macro_invocation(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
+                self.handle_struct_expression(node, &mut dependencies, definitions, current_scope);
             }
             "metavariable" => {
-                self.handle_metavariable(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
+                self.handle_metavariable(node, &mut dependencies, definitions, current_scope);
             }
             _ => {}
         }
+        dependencies
     }
 
-    fn determine_scope<'a>(
-        &self,
-        node: &Node<'a>,
-        source_code: &'a str,
-        parent_scope: &Option<String>,
-    ) -> Option<String> {
+    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String> {
         let new_scope_name = match node.kind() {
             "function_item" | "struct_item" | "enum_item" | "trait_item" => {
                 node.child_by_field_name("name").map(|n| {
-                    n.utf8_text(source_code.as_bytes())
+                    n.utf8_text(self.source_code.as_bytes())
                         .unwrap()
                         .trim()
                         .to_string()
                 })
             }
             "impl_item" => node.child_by_field_name("type").map(|n| {
-                n.utf8_text(source_code.as_bytes())
+                n.utf8_text(self.source_code.as_bytes())
                     .unwrap()
                     .trim()
                     .to_string()
@@ -101,53 +71,48 @@ impl DependencyCollector for RustDependencyCollector {
         }
     }
 
-    fn handle_identifier<'a>(
+    fn handle_identifier(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
     ) {
-        let parent_kind = node.parent().map(|p| p.kind());
+        let is_definition = definitions
+            .iter()
+            .filter(|d| d.name == node.utf8_text(self.source_code.as_bytes()).unwrap())
+            .filter(|d| d.line_number == node.start_position().row + 1)
+            .count()
+            > 0;
 
-        if parent_kind == Some("macro_invocation") {
-            return; // Do not create a VariableUse dependency for macro identifiers
+        if is_definition {
+            return;
         }
 
-        let is_declaration_name = parent_kind == Some("function_item")
-            && (node.parent().unwrap().child_by_field_name("name") == Some(node))
-            || parent_kind == Some("struct_item")
-                && (node.parent().unwrap().child_by_field_name("name") == Some(node))
-            || parent_kind == Some("enum_item")
-                && (node.parent().unwrap().child_by_field_name("name") == Some(node))
-            || parent_kind == Some("trait_item")
-                && (node.parent().unwrap().child_by_field_name("name") == Some(node))
-            || parent_kind == Some("impl_item")
-                && (node.parent().unwrap().child_by_field_name("name") == Some(node))
-            || parent_kind == Some("type_alias")
-                && (node.parent().unwrap().child_by_field_name("name") == Some(node));
+        let parent_kind = node.parent().map(|p| p.kind()).map(|k| k.to_string());
 
-        if parent_kind != Some("parameter")
-            && parent_kind != Some("pattern")
-            && !is_declaration_name
-        {
-            self.add_dependency_if_needed(
-                dependencies,
-                node,
-                source_code,
-                definitions,
-                current_scope,
-                DependencyType::VariableUse,
-                parent_kind.map(|k| k.to_string()),
-            );
-        }
+        let dependency_type = match &parent_kind {
+            Some(parent_kind) if parent_kind == "call_expression" => DependencyType::FunctionCall,
+            Some(parent_kind) if parent_kind == "macro_invocation" => {
+                DependencyType::MacroInvocation
+            }
+            _ => DependencyType::VariableUse,
+        };
+
+        self.add_dependency_if_needed(
+            dependencies,
+            node,
+            self.source_code,
+            definitions,
+            current_scope,
+            dependency_type,
+            parent_kind,
+        );
     }
 
-    fn handle_call_expression<'a>(
+    fn handle_call_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -157,7 +122,7 @@ impl DependencyCollector for RustDependencyCollector {
                 self.add_dependency_if_needed(
                     dependencies,
                     function_node,
-                    source_code,
+                    self.source_code,
                     definitions,
                     current_scope,
                     DependencyType::FunctionCall,
@@ -165,16 +130,18 @@ impl DependencyCollector for RustDependencyCollector {
                 );
             } else if function_node.kind() == "scoped_identifier" {
                 let path_node = function_node.child_by_field_name("path").unwrap();
+                let path_text = path_node.utf8_text(self.source_code.as_bytes()).unwrap();
+
                 let name_node = function_node.child_by_field_name("name").unwrap();
+                let name_text = name_node.utf8_text(self.source_code.as_bytes()).unwrap();
 
-                let path_text = path_node.utf8_text(source_code.as_bytes()).unwrap();
-                let name_text = name_node.utf8_text(source_code.as_bytes()).unwrap();
-
-                // Match definitions by path. If UFCS, consider both `<Type as Trait>` sides via AST.
+                // Match definitions by path. If UFCS, consider both <Type as Trait> sides via AST.
                 let f_definitions: Vec<&Definition> =
                     definitions.iter().filter(|d| d.name == name_text).collect();
 
-                if let Some(candidates) = ufcs_scope_candidates_from_path(&path_node, source_code) {
+                if let Some(candidates) =
+                    ufcs_scope_candidates_from_path(&path_node, self.source_code)
+                {
                     // Prefer impl for Type, then fallback to Trait
                     let mut pushed = false;
                     for cand in candidates {
@@ -219,7 +186,7 @@ impl DependencyCollector for RustDependencyCollector {
                 }
             } else if function_node.kind() == "field_expression" {
                 let method_node = function_node.child_by_field_name("field").unwrap();
-                let method_text = method_node.utf8_text(source_code.as_bytes()).unwrap();
+                let method_text = method_node.utf8_text(self.source_code.as_bytes()).unwrap();
                 let method_def = definitions.iter().find(|d| d.name == method_text);
 
                 if let Some(m_def) = method_def {
@@ -242,13 +209,13 @@ impl DependencyCollector for RustDependencyCollector {
                     function_node.child_by_field_name("path"),
                     function_node.child_by_field_name("name"),
                 ) {
-                    let name_text = name_node.utf8_text(source_code.as_bytes()).unwrap();
+                    let name_text = name_node.utf8_text(self.source_code.as_bytes()).unwrap();
 
                     let f_definitions: Vec<&Definition> =
                         definitions.iter().filter(|d| d.name == name_text).collect();
 
                     if let Some(candidates) =
-                        ufcs_scope_candidates_from_path(&path_node, source_code)
+                        ufcs_scope_candidates_from_path(&path_node, self.source_code)
                     {
                         // Prefer impl for Type, then fallback to Trait
                         for cand in candidates {
@@ -281,7 +248,7 @@ impl DependencyCollector for RustDependencyCollector {
                     self.add_dependency_if_needed(
                         dependencies,
                         arg_child,
-                        source_code,
+                        self.source_code,
                         definitions,
                         current_scope,
                         DependencyType::VariableUse,
@@ -292,10 +259,9 @@ impl DependencyCollector for RustDependencyCollector {
         }
     }
 
-    fn handle_field_expression<'a>(
+    fn handle_field_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -315,7 +281,7 @@ impl DependencyCollector for RustDependencyCollector {
                 self.add_dependency_if_needed(
                     dependencies,
                     value_node,
-                    source_code,
+                    self.source_code,
                     definitions,
                     current_scope,
                     DependencyType::StructFieldAccess,
@@ -327,7 +293,7 @@ impl DependencyCollector for RustDependencyCollector {
             self.add_dependency_if_needed(
                 dependencies,
                 type_node,
-                source_code,
+                self.source_code,
                 definitions,
                 current_scope,
                 DependencyType::StructFieldAccess,
@@ -336,10 +302,9 @@ impl DependencyCollector for RustDependencyCollector {
         }
     }
 
-    fn handle_struct_expression<'a>(
+    fn handle_struct_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -348,7 +313,7 @@ impl DependencyCollector for RustDependencyCollector {
             self.add_dependency_if_needed(
                 dependencies,
                 type_node,
-                source_code,
+                self.source_code,
                 definitions,
                 current_scope,
                 DependencyType::TypeReference,
@@ -357,35 +322,9 @@ impl DependencyCollector for RustDependencyCollector {
         }
     }
 
-    fn handle_macro_invocation<'a>(
+    fn handle_metavariable(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        dependencies: &mut Vec<Dependency>,
-        definitions: &[Definition],
-        current_scope: &Option<String>,
-    ) {
-        if let Some(macro_name_node) = node.child_by_field_name("macro") {
-            if macro_name_node.kind() == "scoped_identifier"
-                || macro_name_node.kind() == "identifier"
-            {
-                self.add_dependency_if_needed(
-                    dependencies,
-                    macro_name_node,
-                    source_code,
-                    definitions,
-                    current_scope,
-                    DependencyType::MacroInvocation,
-                    Some("macro_invocation".to_string()),
-                );
-            }
-        }
-    }
-
-    fn handle_metavariable<'a>(
-        &self,
-        node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -393,7 +332,7 @@ impl DependencyCollector for RustDependencyCollector {
         self.add_dependency_if_needed(
             dependencies,
             node,
-            source_code,
+            self.source_code,
             definitions,
             current_scope,
             DependencyType::VariableUse,

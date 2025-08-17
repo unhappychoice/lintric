@@ -1,11 +1,10 @@
 use crate::models::{Definition, Dependency, DependencyType};
 use tree_sitter::Node;
 
-pub trait DependencyCollector: Send + Sync {
-    fn collect_dependencies_from_root<'a>(
+pub trait DependencyCollector<'a>: Send + Sync {
+    fn collect_dependencies_from_root(
         &self,
         root: Node<'a>,
-        content: &'a str,
         definitions: &[Definition],
     ) -> Result<Vec<Dependency>, String> {
         let mut dependencies: Vec<Dependency> = Vec::new();
@@ -13,9 +12,9 @@ pub trait DependencyCollector: Send + Sync {
         stack.push((root, None));
 
         while let Some((node, current_scope)) = stack.pop() {
-            let new_scope = self.determine_scope(&node, content, &current_scope);
+            let new_scope = self.determine_scope(&node, &current_scope);
 
-            self.process_node(node, content, &mut dependencies, definitions, &new_scope);
+            dependencies.extend(self.process_node(node, definitions, &new_scope));
 
             let mut cursor = node.walk();
             let mut children: Vec<Node<'a>> = Vec::new();
@@ -30,78 +29,57 @@ pub trait DependencyCollector: Send + Sync {
         Ok(dependencies)
     }
 
-    fn process_node<'a>(
+    fn process_node(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
+        definitions: &[Definition],
+        current_scope: &Option<String>,
+    ) -> Vec<Dependency>;
+
+    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String>;
+
+    fn handle_identifier(
+        &self,
+        node: Node<'a>,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
     );
 
-    fn determine_scope<'a>(
-        &self,
-        node: &Node<'a>,
-        source_code: &'a str,
-        parent_scope: &Option<String>,
-    ) -> Option<String>;
-
-    fn handle_identifier<'a>(
+    fn handle_call_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
     );
 
-    fn handle_call_expression<'a>(
+    fn handle_field_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
     );
 
-    fn handle_field_expression<'a>(
+    fn handle_struct_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
     );
 
-    fn handle_struct_expression<'a>(
+    fn handle_metavariable(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        dependencies: &mut Vec<Dependency>,
-        definitions: &[Definition],
-        current_scope: &Option<String>,
-    );
-
-    fn handle_macro_invocation<'a>(
-        &self,
-        node: Node<'a>,
-        source_code: &'a str,
-        dependencies: &mut Vec<Dependency>,
-        definitions: &[Definition],
-        current_scope: &Option<String>,
-    );
-
-    fn handle_metavariable<'a>(
-        &self,
-        node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
     );
 
     #[allow(clippy::too_many_arguments)]
-    fn add_dependency_if_needed<'a>(
+    fn add_dependency_if_needed(
         &self,
         dependencies: &mut Vec<Dependency>,
         node: Node<'a>,

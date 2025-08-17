@@ -16,11 +16,12 @@ pub fn get_definition_collector<'a>(
     }
 }
 
-pub fn get_dependency_collector(
+pub fn get_dependency_collector<'a>(
     language: Language,
-) -> Result<Box<dyn DependencyCollector>, String> {
+    source_code: &'a str,
+) -> Result<Box<dyn DependencyCollector<'a> + 'a>, String> {
     match language {
-        Language::Rust => Ok(Box::new(RustDependencyCollector)),
-        Language::TypeScript => Ok(Box::new(TypescriptDependencyCollector)),
+        Language::Rust => Ok(Box::new(RustDependencyCollector::new(source_code))),
+        Language::TypeScript => Ok(Box::new(TypescriptDependencyCollector::new(source_code))),
     }
 }
