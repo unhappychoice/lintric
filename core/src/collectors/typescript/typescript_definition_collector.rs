@@ -100,7 +100,7 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
                             .iter()
                             .for_each(|node| {
                                 definitions.push(Definition::new(
-                                    &node,
+                                    node,
                                     self.source_code,
                                     DefinitionType::VariableDefinition,
                                     current_scope.clone(),

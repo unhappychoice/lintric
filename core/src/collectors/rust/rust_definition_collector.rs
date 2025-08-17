@@ -76,7 +76,7 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                         .iter()
                         .map(|node| {
                             Definition::new(
-                                &node,
+                                node,
                                 self.source_code,
                                 DefinitionType::VariableDefinition,
                                 current_scope.clone(),
@@ -93,7 +93,7 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                         .iter()
                         .map(|node| {
                             Definition::new(
-                                &node,
+                                node,
                                 self.source_code,
                                 DefinitionType::VariableDefinition,
                                 current_scope.clone(),
@@ -168,7 +168,7 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                             .iter()
                             .for_each(|node| {
                                 definitions.push(Definition::new(
-                                    &node,
+                                    node,
                                     self.source_code,
                                     DefinitionType::VariableDefinition,
                                     current_scope.clone(),
@@ -302,7 +302,7 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                     .iter()
                     .for_each(|node| {
                         definitions.push(Definition::new(
-                            &node,
+                            node,
                             self.source_code,
                             DefinitionType::VariableDefinition,
                             current_scope.clone(),
