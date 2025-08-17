@@ -1,6 +1,5 @@
 use insta::assert_snapshot;
 use lintric_core::analyze_code;
-use serde_json;
 use std::env;
 
 #[test]
@@ -62,6 +61,36 @@ fn test_rust_use_statements_dependency() {
 }
 
 #[test]
+fn test_rust_macro_invocation_dependency() {
+    let file_path = "tests/rust/fixtures/macro_invocation_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "macro_invocation_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "macro_invocation_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
+fn test_rust_use_macro_dependency() {
+    let file_path = "tests/rust/fixtures/use_macro_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "use_macro_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "use_macro_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
 fn test_rust_closure_dependency() {
     let file_path = "tests/rust/fixtures/closure_dependency.rs".to_string();
     let (ir, result) = analyze_code(file_path).unwrap();
@@ -87,6 +116,51 @@ fn test_pattern_match_bindings_definitions() {
     );
     assert_snapshot!(
         "pattern_match_bindings_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
+fn test_rust_path_qualified_call_dependency() {
+    let file_path = "tests/rust/fixtures/path_qualified_call_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "path_qualified_call_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "path_qualified_call_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
+fn test_rust_method_call_dependency() {
+    let file_path = "tests/rust/fixtures/method_call_dependency.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "method_call_dependency_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "method_call_dependency_metrics",
+        serde_json::to_string_pretty(&result).unwrap()
+    );
+}
+
+#[test]
+fn test_rust_associated_function_and_ufcs_dependency() {
+    let file_path = "tests/rust/fixtures/associated_function_and_ufcs.rs".to_string();
+    let (ir, result) = analyze_code(file_path).unwrap();
+
+    assert_snapshot!(
+        "associated_function_and_ufcs_ir",
+        serde_json::to_string_pretty(&ir).unwrap()
+    );
+    assert_snapshot!(
+        "associated_function_and_ufcs_metrics",
         serde_json::to_string_pretty(&result).unwrap()
     );
 }

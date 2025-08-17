@@ -3,53 +3,44 @@ use crate::models::{Definition, Dependency, DependencyType};
 
 use tree_sitter::Node;
 
-pub struct TypescriptDependencyCollector;
+pub struct TypescriptDependencyCollector<'a> {
+    source_code: &'a str,
+}
 
-impl DependencyCollector for TypescriptDependencyCollector {
-    fn process_node<'a>(
+impl<'a> TypescriptDependencyCollector<'a> {
+    pub fn new(source_code: &'a str) -> Self {
+        Self { source_code }
+    }
+}
+
+impl<'a> DependencyCollector<'a> for TypescriptDependencyCollector<'a> {
+    fn process_node(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
-    ) {
+    ) -> Vec<Dependency> {
+        let mut dependencies = Vec::new();
         match node.kind() {
             "identifier" => {
-                self.handle_identifier(node, source_code, dependencies, definitions, current_scope);
+                self.handle_identifier(node, &mut dependencies, definitions, current_scope);
             }
             "call_expression" => {
-                self.handle_call_expression(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
+                self.handle_call_expression(node, &mut dependencies, definitions, current_scope);
             }
             "property_identifier" => {
-                self.handle_field_expression(
-                    node,
-                    source_code,
-                    dependencies,
-                    definitions,
-                    current_scope,
-                );
+                self.handle_field_expression(node, &mut dependencies, definitions, current_scope);
             }
             _ => {}
         }
+        dependencies
     }
 
-    fn determine_scope<'a>(
-        &self,
-        node: &Node<'a>,
-        source_code: &'a str,
-        parent_scope: &Option<String>,
-    ) -> Option<String> {
+    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String> {
         let new_scope_name = match node.kind() {
             "function_declaration" | "class_declaration" | "interface_declaration" | "module" => {
                 node.child_by_field_name("name").map(|n| {
-                    n.utf8_text(source_code.as_bytes())
+                    n.utf8_text(self.source_code.as_bytes())
                         .unwrap()
                         .trim()
                         .to_string()
@@ -69,10 +60,9 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_identifier<'a>(
+    fn handle_identifier(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -90,7 +80,7 @@ impl DependencyCollector for TypescriptDependencyCollector {
             self.add_dependency_if_needed(
                 dependencies,
                 node,
-                source_code,
+                self.source_code,
                 definitions,
                 current_scope,
                 DependencyType::VariableUse,
@@ -99,10 +89,9 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_call_expression<'a>(
+    fn handle_call_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -112,7 +101,7 @@ impl DependencyCollector for TypescriptDependencyCollector {
                 self.add_dependency_if_needed(
                     dependencies,
                     function_node,
-                    source_code,
+                    self.source_code,
                     definitions,
                     current_scope,
                     DependencyType::FunctionCall,
@@ -127,7 +116,7 @@ impl DependencyCollector for TypescriptDependencyCollector {
                     self.add_dependency_if_needed(
                         dependencies,
                         arg_child,
-                        source_code,
+                        self.source_code,
                         definitions,
                         current_scope,
                         DependencyType::VariableUse,
@@ -138,10 +127,9 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_field_expression<'a>(
+    fn handle_field_expression(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
         dependencies: &mut Vec<Dependency>,
         definitions: &[Definition],
         current_scope: &Option<String>,
@@ -153,7 +141,7 @@ impl DependencyCollector for TypescriptDependencyCollector {
                         self.add_dependency_if_needed(
                             dependencies,
                             object_node,
-                            source_code,
+                            self.source_code,
                             definitions,
                             current_scope,
                             DependencyType::StructFieldAccess,
@@ -165,14 +153,22 @@ impl DependencyCollector for TypescriptDependencyCollector {
         }
     }
 
-    fn handle_struct_expression<'a>(
+    fn handle_struct_expression(
         &self,
         _node: Node<'a>,
-        _source_code: &'a str,
         _dependencies: &mut Vec<Dependency>,
         _definitions: &[Definition],
         _current_scope: &Option<String>,
     ) {
         // Empty implementation as there is no equivalent to struct_expression in TypeScript.
+    }
+
+    fn handle_metavariable(
+        &self,
+        _node: Node<'a>,
+        _dependencies: &mut Vec<Dependency>,
+        _definitions: &[Definition],
+        _current_scope: &Option<String>,
+    ) {
     }
 }

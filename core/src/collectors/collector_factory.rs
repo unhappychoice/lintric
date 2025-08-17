@@ -6,20 +6,22 @@ use super::typescript::typescript_definition_collector::TypescriptDefinitionColl
 use super::typescript::typescript_dependency_collector::TypescriptDependencyCollector;
 use crate::models::Language;
 
-pub fn get_definition_collector(
+pub fn get_definition_collector<'a>(
     language: Language,
-) -> Result<Box<dyn DefinitionCollector>, String> {
+    source_code: &'a str,
+) -> Result<Box<dyn DefinitionCollector<'a> + 'a>, String> {
     match language {
-        Language::Rust => Ok(Box::new(RustDefinitionCollector)),
-        Language::TypeScript => Ok(Box::new(TypescriptDefinitionCollector)),
+        Language::Rust => Ok(Box::new(RustDefinitionCollector::new(source_code))),
+        Language::TypeScript => Ok(Box::new(TypescriptDefinitionCollector::new(source_code))),
     }
 }
 
-pub fn get_dependency_collector(
+pub fn get_dependency_collector<'a>(
     language: Language,
-) -> Result<Box<dyn DependencyCollector>, String> {
+    source_code: &'a str,
+) -> Result<Box<dyn DependencyCollector<'a> + 'a>, String> {
     match language {
-        Language::Rust => Ok(Box::new(RustDependencyCollector)),
-        Language::TypeScript => Ok(Box::new(TypescriptDependencyCollector)),
+        Language::Rust => Ok(Box::new(RustDependencyCollector::new(source_code))),
+        Language::TypeScript => Ok(Box::new(TypescriptDependencyCollector::new(source_code))),
     }
 }

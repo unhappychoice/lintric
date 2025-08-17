@@ -1,20 +1,16 @@
 use crate::models::Definition;
 use tree_sitter::Node;
 
-pub trait DefinitionCollector: Send + Sync {
-    fn collect_definitions_from_root<'a>(
-        &self,
-        root: Node<'a>,
-        content: &'a str,
-    ) -> Result<Vec<Definition>, String> {
-        let mut definitions: Vec<Definition> = Vec::new();
+pub trait DefinitionCollector<'a>: Send + Sync {
+    fn collect_definitions_from_root(&self, root: Node<'a>) -> Result<Vec<Definition>, String> {
+        let mut definitions = vec![];
         let mut stack: Vec<(Node<'a>, Option<String>)> = Vec::new();
         stack.push((root, None));
 
         while let Some((node, current_scope)) = stack.pop() {
-            let new_scope = self.determine_scope(&node, content, &current_scope);
+            let new_scope = self.determine_scope(&node, &current_scope);
 
-            self.process_node(node, content, &mut definitions, &new_scope);
+            definitions.extend(self.process_node(node, &new_scope));
 
             let mut cursor = node.walk();
             let mut children: Vec<Node<'a>> = Vec::new();
@@ -29,79 +25,59 @@ pub trait DefinitionCollector: Send + Sync {
         Ok(definitions)
     }
 
-    fn process_node<'a>(
+    fn process_node(&self, node: Node<'a>, current_scope: &Option<String>) -> Vec<Definition>;
+
+    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String>;
+
+    fn collect_variable_definitions(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
-    );
+    ) -> Vec<Definition>;
 
-    fn determine_scope<'a>(
-        &self,
-        node: &Node<'a>,
-        source_code: &'a str,
-        parent_scope: &Option<String>,
-    ) -> Option<String>;
-
-    fn collect_variable_definitions<'a>(
+    fn collect_function_definitions(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
-    );
+    ) -> Vec<Definition>;
 
-    fn collect_function_definitions<'a>(
+    fn collect_type_definitions(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
-    );
+    ) -> Vec<Definition>;
 
-    fn collect_type_definitions<'a>(
+    fn collect_import_definitions(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
-    );
+    ) -> Vec<Definition>;
 
-    fn collect_import_definitions<'a>(
+    fn collect_closure_definitions(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
-    );
+    ) -> Vec<Definition>;
 
-    fn collect_closure_definitions<'a>(
+    fn collect_macro_definitions(
         &self,
         node: Node<'a>,
-        source_code: &'a str,
-        definitions: &mut Vec<Definition>,
         current_scope: &Option<String>,
-    );
+    ) -> Vec<Definition>;
 }
 
-pub fn find_identifiers_in_pattern(node: Node, source_code: &str) -> Vec<(String, usize)> {
-    let mut identifiers = Vec::new();
-    let mut stack: Vec<Node> = Vec::new();
+pub fn find_identifier_nodes_in_node(node: Node) -> Vec<Node> {
+    let mut identifiers = vec![];
+    let mut stack: Vec<Node> = vec![];
     stack.push(node);
 
     while let Some(n) = stack.pop() {
         if n.kind() == "identifier" {
-            let name = n
-                .utf8_text(source_code.as_bytes())
-                .unwrap()
-                .trim()
-                .to_string();
-            identifiers.push((name.clone(), n.start_position().row + 1));
+            identifiers.push(n);
         }
 
         let mut cursor = n.walk();
-        let mut children: Vec<Node> = Vec::new();
+        let mut children: Vec<Node> = vec![];
         for child in n.children(&mut cursor) {
             children.push(child);
         }

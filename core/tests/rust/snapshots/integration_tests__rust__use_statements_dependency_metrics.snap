@@ -1,31 +1,70 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 58
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/use_statements_dependency.rs",
   "line_metrics": [
     {
-      "line_number": 8,
+      "line_number": 7,
       "total_dependencies": 1,
-      "dependency_distance_cost": 0.23529411764705882,
+      "dependency_distance_cost": 0.35294117647058826,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        4
+        1
       ]
     },
     {
-      "line_number": 15,
+      "line_number": 8,
       "total_dependencies": 1,
-      "dependency_distance_cost": 0.6470588235294118,
+      "dependency_distance_cost": 0.4117647058823529,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        4
+        1
+      ]
+    },
+    {
+      "line_number": 9,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.47058823529411764,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 10,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.5294117647058824,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 13,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.35294117647058826,
+      "depth": 2,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        7
+      ]
+    },
+    {
+      "line_number": 16,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.5294117647058824,
+      "depth": 2,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        7
       ]
     }
   ],
-  "overall_complexity_score": 4.488235294117647
+  "overall_complexity_score": 15.864705882352942
 }

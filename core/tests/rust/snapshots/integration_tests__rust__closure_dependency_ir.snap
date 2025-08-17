@@ -1,6 +1,5 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 69
 expression: "serde_json::to_string_pretty(&ir).unwrap()"
 ---
 {
@@ -57,7 +56,7 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "source_line": 6,
       "target_line": 2,
       "symbol": "add_one",
-      "dependency_type": "VariableUse",
+      "dependency_type": "FunctionCall",
       "context": "call_expression"
     },
     {

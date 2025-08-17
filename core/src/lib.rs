@@ -59,14 +59,16 @@ fn _get_intermediate_representation(
 ) -> Result<IntermediateRepresentation, String> {
     let total_lines = file_content.lines().count();
 
-    let def_collector_instance = collector_factory::get_definition_collector(language.clone())?;
+    let def_collector_instance =
+        collector_factory::get_definition_collector(language.clone(), file_content)?;
     let definitions = def_collector_instance
-        .collect_definitions_from_root(tree.root_node(), file_content)
+        .collect_definitions_from_root(tree.root_node())
         .map_err(|e| format!("Failed to collect definitions: {e}"))?;
 
-    let dep_collector_instance = collector_factory::get_dependency_collector(language.clone())?;
+    let dep_collector_instance =
+        collector_factory::get_dependency_collector(language.clone(), file_content)?;
     let dependencies = dep_collector_instance
-        .collect_dependencies_from_root(tree.root_node(), file_content, &definitions)
+        .collect_dependencies_from_root(tree.root_node(), &definitions)
         .map_err(|e| format!("Failed to collect dependencies: {e}"))?;
 
     Ok(IntermediateRepresentation::new(
