@@ -65,11 +65,18 @@ fn _get_intermediate_representation(
         .collect_definitions_from_root(tree.root_node())
         .map_err(|e| format!("Failed to collect definitions: {e}"))?;
 
-    let dep_collector_instance =
-        collector_factory::get_dependency_collector(language.clone(), file_content)?;
-    let dependencies = dep_collector_instance
-        .collect_dependencies_from_root(tree.root_node(), &definitions)
-        .map_err(|e| format!("Failed to collect dependencies: {e}"))?;
+    let usage_collector_instance =
+        collector_factory::get_usage_node_collector(language.clone(), file_content)
+            .map_err(|e| format!("Failed to get usage node collector: {e}"))?;
+    let usage_nodes = usage_collector_instance
+        .collect_usage_nodes(tree.root_node())
+        .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
+
+    let dependency_resolver_instance = collector_factory::get_dependency_resolver(language.clone())
+        .map_err(|e| format!("Failed to get dependency resolver: {e}"))?;
+    let dependencies = dependency_resolver_instance
+        .resolve_dependencies(file_content, &usage_nodes, &definitions)
+        .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
     Ok(IntermediateRepresentation::new(
         file_path,
