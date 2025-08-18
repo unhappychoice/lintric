@@ -30,7 +30,7 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "source_line": 2,
       "target_line": 1,
       "symbol": "someFunction",
-      "dependency_type": "VariableUse",
+      "dependency_type": "FunctionCall",
       "context": "call_expression"
     }
   ],

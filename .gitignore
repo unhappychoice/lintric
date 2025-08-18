@@ -8,3 +8,4 @@ target/
 # Custom
 /cli/tmp/
 .lintric/output/
+.claude/
