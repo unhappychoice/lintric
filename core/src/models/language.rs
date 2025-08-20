@@ -7,6 +7,7 @@ use tree_sitter_typescript;
 pub enum Language {
     Rust,
     TypeScript,
+    TSX,
 }
 
 impl Language {
@@ -15,7 +16,8 @@ impl Language {
             .and_then(|ext| ext.to_str())
             .and_then(|ext_str| match ext_str {
                 "rs" => Some(Language::Rust),
-                "ts" | "tsx" | "js" | "jsx" => Some(Language::TypeScript),
+                "ts" | "js" => Some(Language::TypeScript),
+                "tsx" | "jsx" => Some(Language::TSX),
                 _ => None,
             })
     }
@@ -24,6 +26,7 @@ impl Language {
         match self {
             Language::Rust => tree_sitter_rust::language(),
             Language::TypeScript => tree_sitter_typescript::language_typescript(),
+            Language::TSX => tree_sitter_typescript::language_tsx(),
         }
     }
 }
