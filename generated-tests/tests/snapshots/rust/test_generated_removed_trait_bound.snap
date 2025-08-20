@@ -35,7 +35,19 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
-    usage: [],
+    usage: [
+        SerializableUsage {
+            name: "T",
+            kind: TypeIdentifier,
+            scope: Some(
+                "test_fn9",
+            ),
+            start_line: 1,
+            start_column: 19,
+            end_line: 1,
+            end_column: 20,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

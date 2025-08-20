@@ -31,6 +31,15 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
+            name: "Type",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 8,
+            end_line: 1,
+            end_column: 12,
+        },
+        SerializableUsage {
             name: "x4",
             kind: Identifier,
             scope: None,

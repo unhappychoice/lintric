@@ -62,6 +62,17 @@ IntermediateRepresentation {
             end_line: 1,
             end_column: 30,
         },
+        SerializableUsage {
+            name: "Debug",
+            kind: TypeIdentifier,
+            scope: Some(
+                "test_fn",
+            ),
+            start_line: 1,
+            start_column: 32,
+            end_line: 1,
+            end_column: 37,
+        },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

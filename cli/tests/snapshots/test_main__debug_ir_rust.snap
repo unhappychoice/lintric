@@ -290,6 +290,15 @@ expression: out
       "end_column": 34
     },
     {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 12,
+      "start_column": 14,
+      "end_line": 12,
+      "end_column": 19
+    },
+    {
       "name": "Point { x: 3, y: 4 }",
       "kind": "StructExpression",
       "scope": "main",
@@ -299,6 +308,15 @@ expression: out
       "end_column": 34
     },
     {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 13,
+      "start_column": 14,
+      "end_line": 13,
+      "end_column": 19
+    },
+    {
       "name": "Point {\n        x: add(p1.x, p2.x),\n        y: add(p1.y, p2.y),\n    }",
       "kind": "StructExpression",
       "scope": "main",
@@ -306,6 +324,15 @@ expression: out
       "start_column": 14,
       "end_line": 18,
       "end_column": 6
+    },
+    {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 15,
+      "start_column": 14,
+      "end_line": 15,
+      "end_column": 19
     },
     {
       "name": "add(p1.x, p2.x)",
@@ -423,6 +450,15 @@ expression: out
       "start_column": 18,
       "end_line": 21,
       "end_column": 38
+    },
+    {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 18,
+      "end_line": 21,
+      "end_column": 23
     },
     {
       "name": "p5",

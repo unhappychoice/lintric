@@ -4,6 +4,7 @@ use tree_sitter::Node;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum UsageKind {
     Identifier,
+    TypeIdentifier,
     CallExpression,
     FieldExpression,
     StructExpression,

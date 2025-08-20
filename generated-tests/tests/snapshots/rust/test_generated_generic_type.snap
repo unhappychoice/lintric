@@ -40,6 +40,15 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
+            name: "Vec",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 11,
+            end_line: 1,
+            end_column: 14,
+        },
+        SerializableUsage {
             name: "vec",
             kind: Identifier,
             scope: None,

@@ -52,6 +52,14 @@ impl<'a> DependencyResolver<'a> for RustDependencyResolver {
                     &mut dependencies,
                 );
             }
+            UsageKind::TypeIdentifier => {
+                self.resolve_type_identifier_dependency(
+                    source_code,
+                    usage_node,
+                    definitions,
+                    &mut dependencies,
+                );
+            }
             UsageKind::CallExpression => {
                 self.resolve_call_expression_dependency(
                     source_code,
@@ -111,6 +119,17 @@ impl RustDependencyResolver {
             return;
         }
 
+        self.add_dependency_if_needed(dependencies, source_code, usage_node, definitions);
+    }
+
+    fn resolve_type_identifier_dependency(
+        &self,
+        source_code: &str,
+        usage_node: &Usage,
+        definitions: &[Definition],
+        dependencies: &mut Vec<Dependency>,
+    ) {
+        // Type identifiers are always references to custom types, not definitions
         self.add_dependency_if_needed(dependencies, source_code, usage_node, definitions);
     }
 

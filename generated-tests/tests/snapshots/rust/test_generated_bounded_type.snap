@@ -69,6 +69,39 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
+            name: "T",
+            kind: TypeIdentifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 29,
+            end_line: 1,
+            end_column: 30,
+        },
+        SerializableUsage {
+            name: "T",
+            kind: TypeIdentifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 35,
+            end_line: 1,
+            end_column: 36,
+        },
+        SerializableUsage {
+            name: "T",
+            kind: TypeIdentifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 43,
+            end_line: 1,
+            end_column: 44,
+        },
+        SerializableUsage {
             name: "std",
             kind: Identifier,
             scope: Some(
@@ -89,6 +122,17 @@ IntermediateRepresentation {
             start_column: 51,
             end_line: 1,
             end_column: 54,
+        },
+        SerializableUsage {
+            name: "Debug",
+            kind: TypeIdentifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 56,
+            end_line: 1,
+            end_column: 61,
         },
         SerializableUsage {
             name: "x",

@@ -16,6 +16,9 @@ impl<'a> RustUsageNodeCollector<'a> {
             DefinitionPattern::new("parameter", "pattern"),
             DefinitionPattern::new("for_expression", "pattern"),
             DefinitionPattern::with_any_field("closure_parameters"),
+            // Type and lifetime parameters
+            DefinitionPattern::with_any_field("type_parameters"),
+            DefinitionPattern::with_any_field("lifetime"),
             // Named items
             DefinitionPattern::new("function_item", "name"),
             DefinitionPattern::new("struct_item", "name"),
@@ -24,6 +27,8 @@ impl<'a> RustUsageNodeCollector<'a> {
             DefinitionPattern::new("mod_item", "name"),
             DefinitionPattern::new("const_item", "name"),
             DefinitionPattern::new("static_item", "name"),
+            DefinitionPattern::new("type_item", "name"),
+            DefinitionPattern::new("associated_type", "name"),
         ];
 
         Self {
@@ -49,6 +54,17 @@ impl<'a> UsageNodeCollector<'a> for RustUsageNodeCollector<'a> {
                     None
                 } else {
                     Some(UsageKind::Identifier)
+                }
+            }
+            "type_identifier" => {
+                // Only treat type_identifier as usage if it's not in a definition context
+                if self
+                    .definition_checker
+                    .is_identifier_in_definition_context(node)
+                {
+                    None
+                } else {
+                    Some(UsageKind::TypeIdentifier)
                 }
             }
             "call_expression" => Some(UsageKind::CallExpression),

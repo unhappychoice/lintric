@@ -30,6 +30,15 @@ IntermediateRepresentation {
             end_line: 1,
             end_column: 7,
         },
+        SerializableUsage {
+            name: "Type1",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 11,
+            end_line: 1,
+            end_column: 16,
+        },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

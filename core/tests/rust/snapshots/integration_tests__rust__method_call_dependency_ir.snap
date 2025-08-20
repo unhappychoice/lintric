@@ -32,6 +32,13 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "dependencies": [
     {
+      "source_line": 5,
+      "target_line": 1,
+      "symbol": "MyStruct",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
       "source_line": 13,
       "target_line": 6,
       "symbol": "my_method",
@@ -47,6 +54,15 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
     }
   ],
   "usage": [
+    {
+      "name": "MyStruct",
+      "kind": "TypeIdentifier",
+      "scope": "MyStruct",
+      "start_line": 5,
+      "start_column": 6,
+      "end_line": 5,
+      "end_column": 14
+    },
     {
       "name": "self.value",
       "kind": "FieldExpression",
@@ -64,6 +80,15 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 13,
       "end_line": 12,
       "end_column": 35
+    },
+    {
+      "name": "MyStruct",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 12,
+      "start_column": 13,
+      "end_line": 12,
+      "end_column": 21
     },
     {
       "name": "s.my_method()",

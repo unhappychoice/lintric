@@ -42,6 +42,15 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
+            name: "String",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 18,
+            end_line: 1,
+            end_column: 24,
+        },
+        SerializableUsage {
             name: "\"test\".to_string()",
             kind: CallExpression,
             scope: None,
