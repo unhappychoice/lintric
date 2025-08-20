@@ -1,0 +1,42 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+import { Item } from './module'
+
+AST:
+(program
+  (import_statement
+    (import_clause
+      (named_imports
+        (import_specifier
+          (identifier Item)
+        )
+      )
+    )
+    (string
+      (string_fragment)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "Item",
+            line_number: 1,
+            definition_type: ModuleDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

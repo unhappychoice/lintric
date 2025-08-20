@@ -1,0 +1,31 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+while (condition2) { break; }
+
+AST:
+(program
+  (while_statement
+    (parenthesized_expression
+      (identifier condition2)
+    )
+    (statement_block
+      (break_statement)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

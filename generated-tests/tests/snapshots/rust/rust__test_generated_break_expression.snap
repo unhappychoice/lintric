@@ -1,0 +1,39 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+'label: loop { break 'label; }
+
+AST:
+(source_file
+  (expression_statement
+    (loop_expression
+      (label
+        (identifier label)
+      )
+      (block
+        (expression_statement
+          (break_expression
+            (label
+              (identifier label)
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

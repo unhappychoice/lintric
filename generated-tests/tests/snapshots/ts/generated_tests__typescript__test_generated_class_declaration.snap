@@ -1,0 +1,69 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+class TestClass1 { private field: number = 42; public method1(): number { return this.field; } }
+
+AST:
+(program
+  (class_declaration
+    (type_identifier)
+    (class_body
+      (public_field_definition
+        (accessibility_modifier)
+        (property_identifier)
+        (type_annotation
+          (predefined_type)
+        )
+        (number)
+      )
+      (method_definition
+        (accessibility_modifier)
+        (property_identifier)
+        (formal_parameters)
+        (type_annotation
+          (predefined_type)
+        )
+        (statement_block
+          (return_statement
+            (member_expression
+              (this)
+              (property_identifier)
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "TestClass1",
+            line_number: 1,
+            definition_type: ClassDefinition,
+            scope: Some(
+                "TestClass1",
+            ),
+        },
+        Definition {
+            name: "method1",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "TestClass1",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

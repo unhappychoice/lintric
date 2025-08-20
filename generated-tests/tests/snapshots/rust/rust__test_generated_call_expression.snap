@@ -1,0 +1,32 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+test_fn2(a1, b1)
+
+AST:
+(source_file
+  (expression_statement
+    (call_expression
+      (identifier test_fn2)
+      (arguments
+        (identifier a1)
+        (identifier b1)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

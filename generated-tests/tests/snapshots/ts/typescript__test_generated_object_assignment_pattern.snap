@@ -1,0 +1,41 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+const { prop3 = defaultVal } = obj2;
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (object_pattern
+        (object_assignment_pattern
+          (shorthand_property_identifier_pattern)
+          (identifier defaultVal)
+        )
+      )
+      (identifier obj2)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "{ prop3 = defaultVal }",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

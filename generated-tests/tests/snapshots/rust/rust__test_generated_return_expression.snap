@@ -1,0 +1,44 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+fn f() -> i32 { return 1; }
+
+AST:
+(source_file
+  (function_item
+    (identifier f)
+    (parameters)
+    (primitive_type)
+    (block
+      (expression_statement
+        (return_expression
+          (integer_literal)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "f",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "f",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

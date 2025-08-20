@@ -1,0 +1,41 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+function test() { return value24; }
+
+AST:
+(program
+  (function_declaration
+    (identifier test)
+    (formal_parameters)
+    (statement_block
+      (return_statement
+        (identifier value24)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "test",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "test",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

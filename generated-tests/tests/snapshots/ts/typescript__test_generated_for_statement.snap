@@ -1,0 +1,67 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+for (let i1 = 0; i1 < arr1.length; i1++) { const item = arr1[i1]; }
+
+AST:
+(program
+  (for_statement
+    (lexical_declaration
+      (variable_declarator
+        (identifier i1)
+        (number)
+      )
+    )
+    (expression_statement
+      (binary_expression
+        (identifier i1)
+        (member_expression
+          (identifier arr1)
+          (property_identifier)
+        )
+      )
+    )
+    (update_expression
+      (identifier i1)
+    )
+    (statement_block
+      (lexical_declaration
+        (variable_declarator
+          (identifier item)
+          (subscript_expression
+            (identifier arr1)
+            (identifier i1)
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "i1",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "item",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

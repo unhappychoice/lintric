@@ -1,0 +1,56 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+let var3: Box<dyn std::fmt::Display> = Box::new(42);
+
+AST:
+(source_file
+  (let_declaration
+    (identifier var3)
+    (generic_type
+      (type_identifier)
+      (type_arguments
+        (dynamic_type
+          (scoped_type_identifier
+            (scoped_identifier
+              (identifier std)
+              (identifier fmt)
+            )
+            (type_identifier)
+          )
+        )
+      )
+    )
+    (call_expression
+      (scoped_identifier
+        (identifier Box)
+        (identifier new)
+      )
+      (arguments
+        (integer_literal)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "var3",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

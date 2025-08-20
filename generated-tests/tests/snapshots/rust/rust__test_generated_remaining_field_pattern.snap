@@ -1,0 +1,35 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+if let Type1 { .. } = value6 { }
+
+AST:
+(source_file
+  (expression_statement
+    (if_expression
+      (let_condition
+        (struct_pattern
+          (type_identifier)
+          (remaining_field_pattern)
+        )
+        (identifier value6)
+      )
+      (block)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

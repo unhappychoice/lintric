@@ -1,0 +1,62 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+#[derive(Debug)]
+struct TestStruct;
+
+fn test_fn1() -> i32 { 42 }
+
+AST:
+(source_file
+  (attribute_item
+    (attribute
+      (identifier derive)
+      (token_tree
+        (identifier Debug)
+      )
+    )
+  )
+  (struct_item
+    (type_identifier)
+  )
+  (function_item
+    (identifier test_fn1)
+    (parameters)
+    (primitive_type)
+    (block
+      (integer_literal)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "TestStruct",
+            line_number: 2,
+            definition_type: StructDefinition,
+            scope: Some(
+                "TestStruct",
+            ),
+        },
+        Definition {
+            name: "test_fn1",
+            line_number: 4,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "test_fn1",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 4,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

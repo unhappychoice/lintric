@@ -1,0 +1,68 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+type Test<T2> = T2 extends infer U ? U : never; const value11: Test<string> = 'test';
+
+AST:
+(program
+  (type_alias_declaration
+    (type_identifier)
+    (type_parameters
+      (type_parameter
+        (type_identifier)
+      )
+    )
+    (conditional_type
+      (type_identifier)
+      (infer_type
+        (type_identifier)
+      )
+      (type_identifier)
+      (predefined_type)
+    )
+  )
+  (lexical_declaration
+    (variable_declarator
+      (identifier value11)
+      (type_annotation
+        (generic_type
+          (type_identifier)
+          (type_arguments
+            (predefined_type)
+          )
+        )
+      )
+      (string
+        (string_fragment)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "Test",
+            line_number: 1,
+            definition_type: TypeDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "value11",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

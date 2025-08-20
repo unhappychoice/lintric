@@ -1,0 +1,46 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+while let Some(val4) = opt2 { break; }
+
+AST:
+(source_file
+  (expression_statement
+    (while_expression
+      (let_condition
+        (tuple_struct_pattern
+          (identifier Some)
+          (identifier val4)
+        )
+        (identifier opt2)
+      )
+      (block
+        (expression_statement
+          (break_expression)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "val4",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

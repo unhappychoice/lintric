@@ -1,0 +1,74 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+function test([first = 1, second = 2] = []) { return first + second; }
+
+AST:
+(program
+  (function_declaration
+    (identifier test)
+    (formal_parameters
+      (required_parameter
+        (array_pattern
+          (assignment_pattern
+            (identifier first)
+            (number)
+          )
+          (assignment_pattern
+            (identifier second)
+            (number)
+          )
+        )
+        (array)
+      )
+    )
+    (statement_block
+      (return_statement
+        (binary_expression
+          (identifier first)
+          (identifier second)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "test",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "test",
+            ),
+        },
+        Definition {
+            name: "first",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: Some(
+                "test",
+            ),
+        },
+        Definition {
+            name: "second",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: Some(
+                "test",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

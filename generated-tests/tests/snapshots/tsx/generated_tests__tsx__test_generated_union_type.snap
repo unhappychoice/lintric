@@ -1,0 +1,44 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+const value34: string | number = 'test';
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier value34)
+      (type_annotation
+        (union_type
+          (predefined_type)
+          (predefined_type)
+        )
+      )
+      (string
+        (string_fragment)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "value34",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

@@ -1,0 +1,43 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+if (condition) { const result = 42; }
+
+AST:
+(program
+  (if_statement
+    (parenthesized_expression
+      (identifier condition)
+    )
+    (statement_block
+      (lexical_declaration
+        (variable_declarator
+          (identifier result)
+          (number)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "result",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}
