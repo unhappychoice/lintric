@@ -72,15 +72,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "name": "x",
       "kind": "Identifier",
       "scope": "main",
-      "start_line": 2,
-      "start_column": 20,
-      "end_line": 2,
-      "end_column": 21
-    },
-    {
-      "name": "x",
-      "kind": "Identifier",
-      "scope": "main",
       "start_line": 3,
       "start_column": 9,
       "end_line": 3,

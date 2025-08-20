@@ -15,6 +15,7 @@ impl<'a> RustUsageNodeCollector<'a> {
             DefinitionPattern::new("let_declaration", "pattern"),
             DefinitionPattern::new("parameter", "pattern"),
             DefinitionPattern::new("for_expression", "pattern"),
+            DefinitionPattern::with_any_field("closure_parameters"),
             // Named items
             DefinitionPattern::new("function_item", "name"),
             DefinitionPattern::new("struct_item", "name"),
