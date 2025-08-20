@@ -55,6 +55,17 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "value5",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 59,
+            end_line: 1,
+            end_column: 65,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

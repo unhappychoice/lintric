@@ -41,6 +41,30 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "prop",
+            kind: FieldExpression,
+            scope: Some(
+                "TestInterface",
+            ),
+            start_line: 1,
+            start_column: 27,
+            end_line: 1,
+            end_column: 31,
+        },
+        SerializableUsage {
+            name: "method2",
+            kind: FieldExpression,
+            scope: Some(
+                "TestInterface",
+            ),
+            start_line: 1,
+            start_column: 41,
+            end_line: 1,
+            end_column: 48,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

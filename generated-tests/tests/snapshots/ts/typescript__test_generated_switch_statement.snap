@@ -28,6 +28,17 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "value26",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 9,
+            end_line: 1,
+            end_column: 16,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

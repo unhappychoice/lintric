@@ -24,6 +24,26 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "obj4",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 7,
+            end_line: 1,
+            end_column: 11,
+        },
+        SerializableUsage {
+            name: "prop5",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 15,
+            end_line: 1,
+            end_column: 20,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

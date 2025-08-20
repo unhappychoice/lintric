@@ -65,6 +65,63 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "test",
+            kind: Identifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 10,
+            end_line: 1,
+            end_column: 14,
+        },
+        SerializableUsage {
+            name: "first",
+            kind: Identifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 16,
+            end_line: 1,
+            end_column: 21,
+        },
+        SerializableUsage {
+            name: "second",
+            kind: Identifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 27,
+            end_line: 1,
+            end_column: 33,
+        },
+        SerializableUsage {
+            name: "first",
+            kind: Identifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 54,
+            end_line: 1,
+            end_column: 59,
+        },
+        SerializableUsage {
+            name: "second",
+            kind: Identifier,
+            scope: Some(
+                "test",
+            ),
+            start_line: 1,
+            start_column: 62,
+            end_line: 1,
+            end_column: 68,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

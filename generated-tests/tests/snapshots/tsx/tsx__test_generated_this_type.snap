@@ -48,6 +48,19 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "method3",
+            kind: FieldExpression,
+            scope: Some(
+                "TestClass3",
+            ),
+            start_line: 1,
+            start_column: 20,
+            end_line: 1,
+            end_column: 27,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

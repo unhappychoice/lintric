@@ -30,6 +30,17 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "object",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 28,
+            end_line: 1,
+            end_column: 34,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

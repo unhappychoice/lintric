@@ -34,6 +34,19 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "Variant",
+            kind: Identifier,
+            scope: Some(
+                "TestEnum",
+            ),
+            start_line: 1,
+            start_column: 17,
+            end_line: 1,
+            end_column: 24,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

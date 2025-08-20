@@ -60,6 +60,41 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "field",
+            kind: FieldExpression,
+            scope: Some(
+                "TestClass1",
+            ),
+            start_line: 1,
+            start_column: 28,
+            end_line: 1,
+            end_column: 33,
+        },
+        SerializableUsage {
+            name: "method1",
+            kind: FieldExpression,
+            scope: Some(
+                "TestClass1",
+            ),
+            start_line: 1,
+            start_column: 55,
+            end_line: 1,
+            end_column: 62,
+        },
+        SerializableUsage {
+            name: "field",
+            kind: FieldExpression,
+            scope: Some(
+                "TestClass1",
+            ),
+            start_line: 1,
+            start_column: 87,
+            end_line: 1,
+            end_column: 92,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

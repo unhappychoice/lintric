@@ -35,6 +35,17 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "ctor",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 7,
+            end_line: 1,
+            end_column: 11,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

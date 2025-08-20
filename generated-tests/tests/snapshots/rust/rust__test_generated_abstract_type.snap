@@ -39,6 +39,41 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "test_fn",
+            kind: Identifier,
+            scope: Some(
+                "test_fn",
+            ),
+            start_line: 1,
+            start_column: 4,
+            end_line: 1,
+            end_column: 11,
+        },
+        SerializableUsage {
+            name: "std",
+            kind: Identifier,
+            scope: Some(
+                "test_fn",
+            ),
+            start_line: 1,
+            start_column: 22,
+            end_line: 1,
+            end_column: 25,
+        },
+        SerializableUsage {
+            name: "fmt",
+            kind: Identifier,
+            scope: Some(
+                "test_fn",
+            ),
+            start_line: 1,
+            start_column: 27,
+            end_line: 1,
+            end_column: 30,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

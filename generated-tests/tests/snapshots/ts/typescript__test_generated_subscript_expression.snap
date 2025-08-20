@@ -20,6 +20,26 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "arr3",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 1,
+            end_line: 1,
+            end_column: 5,
+        },
+        SerializableUsage {
+            name: "i2",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 6,
+            end_line: 1,
+            end_column: 8,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

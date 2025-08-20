@@ -1,7 +1,6 @@
 ---
 source: cli/tests/test_main.rs
-assertion_line: 206
-expression: stdout
+expression: out
 ---
 {
   "file_path": "tests/fixtures/complex_typescript_code.ts",
@@ -309,6 +308,647 @@ expression: stdout
       "symbol": "result",
       "dependency_type": "VariableUse",
       "context": "arguments"
+    }
+  ],
+  "usage": [
+    {
+      "name": "SomeClass",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 1,
+      "start_column": 10,
+      "end_line": 1,
+      "end_column": 19
+    },
+    {
+      "name": "Utils",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 2,
+      "start_column": 13,
+      "end_line": 2,
+      "end_column": 18
+    },
+    {
+      "name": "DefaultExport",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 3,
+      "start_column": 8,
+      "end_line": 3,
+      "end_column": 21
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "Point",
+      "start_line": 6,
+      "start_column": 5,
+      "end_line": 6,
+      "end_column": 6
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "Point",
+      "start_line": 7,
+      "start_column": 5,
+      "end_line": 7,
+      "end_column": 6
+    },
+    {
+      "name": "add",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 10,
+      "start_column": 10,
+      "end_line": 10,
+      "end_column": 13
+    },
+    {
+      "name": "a",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 10,
+      "start_column": 14,
+      "end_line": 10,
+      "end_column": 15
+    },
+    {
+      "name": "b",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 10,
+      "start_column": 25,
+      "end_line": 10,
+      "end_column": 26
+    },
+    {
+      "name": "result",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 11,
+      "start_column": 11,
+      "end_line": 11,
+      "end_column": 17
+    },
+    {
+      "name": "a",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 11,
+      "start_column": 20,
+      "end_line": 11,
+      "end_column": 21
+    },
+    {
+      "name": "b",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 11,
+      "start_column": 24,
+      "end_line": 11,
+      "end_column": 25
+    },
+    {
+      "name": "result",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 12,
+      "start_column": 12,
+      "end_line": 12,
+      "end_column": 18
+    },
+    {
+      "name": "main",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 15,
+      "start_column": 10,
+      "end_line": 15,
+      "end_column": 14
+    },
+    {
+      "name": "p1",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 11,
+      "end_line": 16,
+      "end_column": 13
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 25,
+      "end_line": 16,
+      "end_column": 26
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 31,
+      "end_line": 16,
+      "end_column": 32
+    },
+    {
+      "name": "p2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 11,
+      "end_line": 17,
+      "end_column": 13
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 25,
+      "end_line": 17,
+      "end_column": 26
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 31,
+      "end_line": 17,
+      "end_column": 32
+    },
+    {
+      "name": "p3",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 19,
+      "start_column": 11,
+      "end_line": 19,
+      "end_column": 13
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 9,
+      "end_line": 20,
+      "end_column": 10
+    },
+    {
+      "name": "add(p1.x, p2.x)",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 12,
+      "end_line": 20,
+      "end_column": 27
+    },
+    {
+      "name": "add",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 12,
+      "end_line": 20,
+      "end_column": 15
+    },
+    {
+      "name": "p1",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 16,
+      "end_line": 20,
+      "end_column": 18
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 19,
+      "end_line": 20,
+      "end_column": 20
+    },
+    {
+      "name": "p2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 22,
+      "end_line": 20,
+      "end_column": 24
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 25,
+      "end_line": 20,
+      "end_column": 26
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 9,
+      "end_line": 21,
+      "end_column": 10
+    },
+    {
+      "name": "add(p1.y, p2.y)",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 12,
+      "end_line": 21,
+      "end_column": 27
+    },
+    {
+      "name": "add",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 12,
+      "end_line": 21,
+      "end_column": 15
+    },
+    {
+      "name": "p1",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 16,
+      "end_line": 21,
+      "end_column": 18
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 19,
+      "end_line": 21,
+      "end_column": 20
+    },
+    {
+      "name": "p2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 22,
+      "end_line": 21,
+      "end_column": 24
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 25,
+      "end_line": 21,
+      "end_column": 26
+    },
+    {
+      "name": "p4",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 24,
+      "start_column": 11,
+      "end_line": 24,
+      "end_column": 13
+    },
+    {
+      "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })()",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 24,
+      "start_column": 16,
+      "end_line": 28,
+      "end_column": 9
+    },
+    {
+      "name": "p5",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 25,
+      "start_column": 15,
+      "end_line": 25,
+      "end_column": 17
+    },
+    {
+      "name": "x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 25,
+      "start_column": 29,
+      "end_line": 25,
+      "end_column": 30
+    },
+    {
+      "name": "y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 25,
+      "start_column": 35,
+      "end_line": 25,
+      "end_column": 36
+    },
+    {
+      "name": "p6",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 26,
+      "start_column": 15,
+      "end_line": 26,
+      "end_column": 17
+    },
+    {
+      "name": "p5",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 26,
+      "start_column": 20,
+      "end_line": 26,
+      "end_column": 22
+    },
+    {
+      "name": "p6",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 27,
+      "start_column": 16,
+      "end_line": 27,
+      "end_column": 18
+    },
+    {
+      "name": "x",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 30,
+      "start_column": 9,
+      "end_line": 30,
+      "end_column": 10
+    },
+    {
+      "name": "y",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 31,
+      "start_column": 9,
+      "end_line": 31,
+      "end_column": 10
+    },
+    {
+      "name": "x",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 31,
+      "start_column": 13,
+      "end_line": 31,
+      "end_column": 14
+    },
+    {
+      "name": "z",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 32,
+      "start_column": 9,
+      "end_line": 32,
+      "end_column": 10
+    },
+    {
+      "name": "y",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 32,
+      "start_column": 13,
+      "end_line": 32,
+      "end_column": 14
+    },
+    {
+      "name": "x",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 32,
+      "start_column": 17,
+      "end_line": 32,
+      "end_column": 18
+    },
+    {
+      "name": "console.log(p3)",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 34,
+      "start_column": 5,
+      "end_line": 34,
+      "end_column": 20
+    },
+    {
+      "name": "console",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 34,
+      "start_column": 5,
+      "end_line": 34,
+      "end_column": 12
+    },
+    {
+      "name": "log",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 34,
+      "start_column": 13,
+      "end_line": 34,
+      "end_column": 16
+    },
+    {
+      "name": "p3",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 34,
+      "start_column": 17,
+      "end_line": 34,
+      "end_column": 19
+    },
+    {
+      "name": "console.log(p4)",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 35,
+      "start_column": 5,
+      "end_line": 35,
+      "end_column": 20
+    },
+    {
+      "name": "console",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 35,
+      "start_column": 5,
+      "end_line": 35,
+      "end_column": 12
+    },
+    {
+      "name": "log",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 35,
+      "start_column": 13,
+      "end_line": 35,
+      "end_column": 16
+    },
+    {
+      "name": "p4",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 35,
+      "start_column": 17,
+      "end_line": 35,
+      "end_column": 19
+    },
+    {
+      "name": "instance",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 38,
+      "start_column": 7,
+      "end_line": 38,
+      "end_column": 15
+    },
+    {
+      "name": "SomeClass",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 38,
+      "start_column": 22,
+      "end_line": 38,
+      "end_column": 31
+    },
+    {
+      "name": "result",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 39,
+      "start_column": 7,
+      "end_line": 39,
+      "end_column": 13
+    },
+    {
+      "name": "Utils.helperFunction()",
+      "kind": "CallExpression",
+      "scope": null,
+      "start_line": 39,
+      "start_column": 16,
+      "end_line": 39,
+      "end_column": 38
+    },
+    {
+      "name": "Utils",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 39,
+      "start_column": 16,
+      "end_line": 39,
+      "end_column": 21
+    },
+    {
+      "name": "helperFunction",
+      "kind": "FieldExpression",
+      "scope": null,
+      "start_line": 39,
+      "start_column": 22,
+      "end_line": 39,
+      "end_column": 36
+    },
+    {
+      "name": "DefaultExport.init()",
+      "kind": "CallExpression",
+      "scope": null,
+      "start_line": 40,
+      "start_column": 1,
+      "end_line": 40,
+      "end_column": 21
+    },
+    {
+      "name": "DefaultExport",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 40,
+      "start_column": 1,
+      "end_line": 40,
+      "end_column": 14
+    },
+    {
+      "name": "init",
+      "kind": "FieldExpression",
+      "scope": null,
+      "start_line": 40,
+      "start_column": 15,
+      "end_line": 40,
+      "end_column": 19
+    },
+    {
+      "name": "anotherFunction",
+      "kind": "Identifier",
+      "scope": "anotherFunction",
+      "start_line": 42,
+      "start_column": 10,
+      "end_line": 42,
+      "end_column": 25
+    },
+    {
+      "name": "console.log(instance, result)",
+      "kind": "CallExpression",
+      "scope": "anotherFunction",
+      "start_line": 43,
+      "start_column": 5,
+      "end_line": 43,
+      "end_column": 34
+    },
+    {
+      "name": "console",
+      "kind": "Identifier",
+      "scope": "anotherFunction",
+      "start_line": 43,
+      "start_column": 5,
+      "end_line": 43,
+      "end_column": 12
+    },
+    {
+      "name": "log",
+      "kind": "FieldExpression",
+      "scope": "anotherFunction",
+      "start_line": 43,
+      "start_column": 13,
+      "end_line": 43,
+      "end_column": 16
+    },
+    {
+      "name": "instance",
+      "kind": "Identifier",
+      "scope": "anotherFunction",
+      "start_line": 43,
+      "start_column": 17,
+      "end_line": 43,
+      "end_column": 25
+    },
+    {
+      "name": "result",
+      "kind": "Identifier",
+      "scope": "anotherFunction",
+      "start_line": 43,
+      "start_column": 27,
+      "end_line": 43,
+      "end_column": 33
     }
   ],
   "analysis_metadata": {

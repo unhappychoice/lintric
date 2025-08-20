@@ -252,6 +252,386 @@ expression: out
       "context": "token_tree"
     }
   ],
+  "usage": [
+    {
+      "name": "add",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 6,
+      "start_column": 4,
+      "end_line": 6,
+      "end_column": 7
+    },
+    {
+      "name": "a",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 6,
+      "start_column": 8,
+      "end_line": 6,
+      "end_column": 9
+    },
+    {
+      "name": "b",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 6,
+      "start_column": 16,
+      "end_line": 6,
+      "end_column": 17
+    },
+    {
+      "name": "result",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 7,
+      "start_column": 9,
+      "end_line": 7,
+      "end_column": 15
+    },
+    {
+      "name": "a",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 7,
+      "start_column": 18,
+      "end_line": 7,
+      "end_column": 19
+    },
+    {
+      "name": "b",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 7,
+      "start_column": 22,
+      "end_line": 7,
+      "end_column": 23
+    },
+    {
+      "name": "result",
+      "kind": "Identifier",
+      "scope": "add",
+      "start_line": 8,
+      "start_column": 5,
+      "end_line": 8,
+      "end_column": 11
+    },
+    {
+      "name": "main",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 11,
+      "start_column": 4,
+      "end_line": 11,
+      "end_column": 8
+    },
+    {
+      "name": "p1",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 12,
+      "start_column": 9,
+      "end_line": 12,
+      "end_column": 11
+    },
+    {
+      "name": "Point { x: 1, y: 2 }",
+      "kind": "StructExpression",
+      "scope": "main",
+      "start_line": 12,
+      "start_column": 14,
+      "end_line": 12,
+      "end_column": 34
+    },
+    {
+      "name": "p2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 13,
+      "start_column": 9,
+      "end_line": 13,
+      "end_column": 11
+    },
+    {
+      "name": "Point { x: 3, y: 4 }",
+      "kind": "StructExpression",
+      "scope": "main",
+      "start_line": 13,
+      "start_column": 14,
+      "end_line": 13,
+      "end_column": 34
+    },
+    {
+      "name": "p3",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 15,
+      "start_column": 9,
+      "end_line": 15,
+      "end_column": 11
+    },
+    {
+      "name": "Point {\n        x: add(p1.x, p2.x),\n        y: add(p1.y, p2.y),\n    }",
+      "kind": "StructExpression",
+      "scope": "main",
+      "start_line": 15,
+      "start_column": 14,
+      "end_line": 18,
+      "end_column": 6
+    },
+    {
+      "name": "add(p1.x, p2.x)",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 12,
+      "end_line": 16,
+      "end_column": 27
+    },
+    {
+      "name": "add",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 12,
+      "end_line": 16,
+      "end_column": 15
+    },
+    {
+      "name": "p1.x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 16,
+      "end_line": 16,
+      "end_column": 20
+    },
+    {
+      "name": "p1",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 16,
+      "end_line": 16,
+      "end_column": 18
+    },
+    {
+      "name": "p2.x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 22,
+      "end_line": 16,
+      "end_column": 26
+    },
+    {
+      "name": "p2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 22,
+      "end_line": 16,
+      "end_column": 24
+    },
+    {
+      "name": "add(p1.y, p2.y)",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 12,
+      "end_line": 17,
+      "end_column": 27
+    },
+    {
+      "name": "add",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 12,
+      "end_line": 17,
+      "end_column": 15
+    },
+    {
+      "name": "p1.y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 16,
+      "end_line": 17,
+      "end_column": 20
+    },
+    {
+      "name": "p1",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 16,
+      "end_line": 17,
+      "end_column": 18
+    },
+    {
+      "name": "p2.y",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 22,
+      "end_line": 17,
+      "end_column": 26
+    },
+    {
+      "name": "p2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 22,
+      "end_line": 17,
+      "end_column": 24
+    },
+    {
+      "name": "p4",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 20,
+      "start_column": 9,
+      "end_line": 20,
+      "end_column": 11
+    },
+    {
+      "name": "p5",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 13,
+      "end_line": 21,
+      "end_column": 15
+    },
+    {
+      "name": "Point { x: 5, y: 6 }",
+      "kind": "StructExpression",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 18,
+      "end_line": 21,
+      "end_column": 38
+    },
+    {
+      "name": "p6",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 22,
+      "start_column": 13,
+      "end_line": 22,
+      "end_column": 15
+    },
+    {
+      "name": "p5",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 22,
+      "start_column": 18,
+      "end_line": 22,
+      "end_column": 20
+    },
+    {
+      "name": "p6",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 23,
+      "start_column": 9,
+      "end_line": 23,
+      "end_column": 11
+    },
+    {
+      "name": "x",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 26,
+      "start_column": 9,
+      "end_line": 26,
+      "end_column": 10
+    },
+    {
+      "name": "y",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 27,
+      "start_column": 9,
+      "end_line": 27,
+      "end_column": 10
+    },
+    {
+      "name": "x",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 27,
+      "start_column": 13,
+      "end_line": 27,
+      "end_column": 14
+    },
+    {
+      "name": "z",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 28,
+      "start_column": 9,
+      "end_line": 28,
+      "end_column": 10
+    },
+    {
+      "name": "y",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 28,
+      "start_column": 13,
+      "end_line": 28,
+      "end_column": 14
+    },
+    {
+      "name": "x",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 28,
+      "start_column": 17,
+      "end_line": 28,
+      "end_column": 18
+    },
+    {
+      "name": "println",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 30,
+      "start_column": 5,
+      "end_line": 30,
+      "end_column": 12
+    },
+    {
+      "name": "p3",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 30,
+      "start_column": 22,
+      "end_line": 30,
+      "end_column": 24
+    },
+    {
+      "name": "println",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 31,
+      "start_column": 5,
+      "end_line": 31,
+      "end_column": 12
+    },
+    {
+      "name": "p4",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 31,
+      "start_column": 22,
+      "end_line": 31,
+      "end_column": 24
+    }
+  ],
   "analysis_metadata": {
     "language": "Rust",
     "total_lines": 32,

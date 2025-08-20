@@ -26,6 +26,17 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "var9",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 5,
+            end_line: 1,
+            end_column: 9,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

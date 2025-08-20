@@ -29,6 +29,26 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "exported",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 14,
+            end_line: 1,
+            end_column: 22,
+        },
+        SerializableUsage {
+            name: "value7",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 25,
+            end_line: 1,
+            end_column: 31,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,
