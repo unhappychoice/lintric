@@ -1,0 +1,51 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+const value20: { prop6: number } = { prop6: 42 };
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier value20)
+      (type_annotation
+        (object_type
+          (property_signature
+            (property_identifier)
+            (type_annotation
+              (predefined_type)
+            )
+          )
+        )
+      )
+      (object
+        (pair
+          (property_identifier)
+          (number)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "value20",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

@@ -606,6 +606,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "lintric-generated-tests"
+version = "0.1.0"
+dependencies = [
+ "insta",
+ "lintric-core",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "lintric-workspace"
 version = "0.1.0"
 

@@ -1,0 +1,45 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+const value17: 'hello' = 'hello';
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier value17)
+      (type_annotation
+        (literal_type
+          (string
+            (string_fragment)
+          )
+        )
+      )
+      (string
+        (string_fragment)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "value17",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

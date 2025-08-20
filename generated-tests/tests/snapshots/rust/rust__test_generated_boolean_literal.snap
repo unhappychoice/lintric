@@ -1,0 +1,34 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+let flag = true;
+
+AST:
+(source_file
+  (let_declaration
+    (identifier flag)
+    (boolean_literal)
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "flag",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

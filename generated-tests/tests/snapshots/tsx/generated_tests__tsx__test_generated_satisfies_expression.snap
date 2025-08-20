@@ -1,0 +1,29 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+value28 satisfies string
+
+AST:
+(program
+  (expression_statement
+    (satisfies_expression
+      (identifier value28)
+      (predefined_type)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

@@ -1,0 +1,41 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+const { key1: value22 } = obj3;
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (object_pattern
+        (pair_pattern
+          (property_identifier)
+          (identifier value22)
+        )
+      )
+      (identifier obj3)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "{ key1: value22 }",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

@@ -1,0 +1,40 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+declare const value3: string;
+
+AST:
+(program
+  (ambient_declaration
+    (lexical_declaration
+      (variable_declarator
+        (identifier value3)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "value3",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

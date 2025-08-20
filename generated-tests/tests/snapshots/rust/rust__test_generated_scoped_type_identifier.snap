@@ -1,0 +1,49 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+let var8: std::vec::Vec<i32> = vec![];
+
+AST:
+(source_file
+  (let_declaration
+    (identifier var8)
+    (generic_type
+      (scoped_type_identifier
+        (scoped_identifier
+          (identifier std)
+          (identifier vec)
+        )
+        (type_identifier)
+      )
+      (type_arguments
+        (primitive_type)
+      )
+    )
+    (macro_invocation
+      (identifier vec)
+      (token_tree)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "var8",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

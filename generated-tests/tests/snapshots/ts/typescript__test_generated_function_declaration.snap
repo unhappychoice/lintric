@@ -1,0 +1,76 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+function testFn1(param: number): number { const local = param; return local + 1; }
+
+AST:
+(program
+  (function_declaration
+    (identifier testFn1)
+    (formal_parameters
+      (required_parameter
+        (identifier param)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+    )
+    (type_annotation
+      (predefined_type)
+    )
+    (statement_block
+      (lexical_declaration
+        (variable_declarator
+          (identifier local)
+          (identifier param)
+        )
+      )
+      (return_statement
+        (binary_expression
+          (identifier local)
+          (number)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "testFn1",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "testFn1",
+            ),
+        },
+        Definition {
+            name: "param",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: Some(
+                "testFn1",
+            ),
+        },
+        Definition {
+            name: "local",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: Some(
+                "testFn1",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

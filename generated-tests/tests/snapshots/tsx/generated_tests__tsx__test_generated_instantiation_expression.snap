@@ -1,0 +1,34 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+genericFn<string>(arg)
+
+AST:
+(program
+  (expression_statement
+    (call_expression
+      (identifier genericFn)
+      (type_arguments
+        (predefined_type)
+      )
+      (arguments
+        (identifier arg)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

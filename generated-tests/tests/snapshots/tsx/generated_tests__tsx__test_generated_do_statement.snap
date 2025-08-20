@@ -1,0 +1,51 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+let i = 0; do { i++; } while (i < 5);
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier i)
+      (number)
+    )
+  )
+  (do_statement
+    (statement_block
+      (expression_statement
+        (update_expression
+          (identifier i)
+        )
+      )
+    )
+    (parenthesized_expression
+      (binary_expression
+        (identifier i)
+        (number)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "i",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

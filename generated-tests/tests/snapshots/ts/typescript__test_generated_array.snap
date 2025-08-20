@@ -1,0 +1,29 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+[item1, item2]
+
+AST:
+(program
+  (expression_statement
+    (array
+      (identifier item1)
+      (identifier item2)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

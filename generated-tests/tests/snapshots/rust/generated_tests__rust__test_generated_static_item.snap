@@ -1,0 +1,35 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+static STATIC: i32 = 42;
+
+AST:
+(source_file
+  (static_item
+    (identifier STATIC)
+    (primitive_type)
+    (integer_literal)
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "STATIC",
+            line_number: 1,
+            definition_type: ConstDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

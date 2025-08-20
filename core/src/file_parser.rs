@@ -21,6 +21,13 @@ impl FileParser {
         })
     }
 
+    pub fn from_content(file_content: String, language: Language) -> Self {
+        FileParser {
+            file_content,
+            language,
+        }
+    }
+
     pub fn parse(&self) -> Result<(String, Language, tree_sitter::Tree), String> {
         let tree = self.parse_file()?;
         Ok((self.file_content.clone(), self.language.clone(), tree))

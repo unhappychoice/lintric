@@ -1,0 +1,44 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+const value22: string | undefined = undefined;
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier value22)
+      (type_annotation
+        (union_type
+          (predefined_type)
+          (literal_type
+            (undefined)
+          )
+        )
+      )
+      (undefined)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "value22",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

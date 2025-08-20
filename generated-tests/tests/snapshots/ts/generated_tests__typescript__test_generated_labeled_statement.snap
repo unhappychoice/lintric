@@ -1,0 +1,55 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+label: for (let i = 0; i < 10; i++) { break label; }
+
+AST:
+(program
+  (labeled_statement
+    (statement_identifier)
+    (for_statement
+      (lexical_declaration
+        (variable_declarator
+          (identifier i)
+          (number)
+        )
+      )
+      (expression_statement
+        (binary_expression
+          (identifier i)
+          (number)
+        )
+      )
+      (update_expression
+        (identifier i)
+      )
+      (statement_block
+        (break_statement
+          (statement_identifier)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "i",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

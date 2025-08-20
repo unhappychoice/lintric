@@ -1,0 +1,36 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+var variable1 = source2;
+
+AST:
+(program
+  (variable_declaration
+    (variable_declarator
+      (identifier variable1)
+      (identifier source2)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "variable1",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

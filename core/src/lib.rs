@@ -51,6 +51,32 @@ pub fn get_s_expression(path: String) -> Result<String, String> {
     FileParser::new(path)?.parse_as_s_expression()
 }
 
+pub fn analyze_content(
+    content: String,
+    language: Language,
+) -> Result<(IntermediateRepresentation, AnalysisResult), String> {
+    let file_parser = FileParser::from_content(content.clone(), language);
+    let (file_content, language, tree) = file_parser.parse()?;
+
+    let ir =
+        _get_intermediate_representation("<memory>".to_string(), &file_content, language, tree)?;
+    let mut result = calculate_metrics(&ir, &file_content)?;
+
+    result
+        .line_metrics
+        .retain(|line_metrics| line_metrics.total_dependencies > 0);
+
+    Ok((ir, result))
+}
+
+pub fn get_s_expression_from_content(
+    content: String,
+    language: Language,
+) -> Result<String, String> {
+    let file_parser = FileParser::from_content(content, language);
+    file_parser.parse_as_s_expression()
+}
+
 fn _get_intermediate_representation(
     file_path: String,
     file_content: &str,

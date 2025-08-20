@@ -1,0 +1,37 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+switch (value26) { case 1: break; default: break; }
+
+AST:
+(program
+  (switch_statement
+    (parenthesized_expression
+      (identifier value26)
+    )
+    (switch_body
+      (switch_case
+        (number)
+        (break_statement)
+      )
+      (switch_default
+        (break_statement)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

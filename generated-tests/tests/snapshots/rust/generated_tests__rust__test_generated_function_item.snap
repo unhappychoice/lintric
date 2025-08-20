@@ -1,0 +1,55 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+fn test_fn3() -> i32 { let x5 = 42; x5 + 1 }
+
+AST:
+(source_file
+  (function_item
+    (identifier test_fn3)
+    (parameters)
+    (primitive_type)
+    (block
+      (let_declaration
+        (identifier x5)
+        (integer_literal)
+      )
+      (binary_expression
+        (identifier x5)
+        (integer_literal)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "test_fn3",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "test_fn3",
+            ),
+        },
+        Definition {
+            name: "x5",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: Some(
+                "test_fn3",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

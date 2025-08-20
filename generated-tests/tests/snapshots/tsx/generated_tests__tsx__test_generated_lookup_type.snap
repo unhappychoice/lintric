@@ -1,0 +1,65 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+type Obj = { key: string }; const value18: Obj['key'] = 'test';
+
+AST:
+(program
+  (type_alias_declaration
+    (type_identifier)
+    (object_type
+      (property_signature
+        (property_identifier)
+        (type_annotation
+          (predefined_type)
+        )
+      )
+    )
+  )
+  (lexical_declaration
+    (variable_declarator
+      (identifier value18)
+      (type_annotation
+        (lookup_type
+          (type_identifier)
+          (literal_type
+            (string
+              (string_fragment)
+            )
+          )
+        )
+      )
+      (string
+        (string_fragment)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "Obj",
+            line_number: 1,
+            definition_type: TypeDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "value18",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

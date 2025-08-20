@@ -1,0 +1,47 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+const value29: [string, number] = ['hello', 42];
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier value29)
+      (type_annotation
+        (tuple_type
+          (predefined_type)
+          (predefined_type)
+        )
+      )
+      (array
+        (string
+          (string_fragment)
+        )
+        (number)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "value29",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

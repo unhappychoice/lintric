@@ -1,0 +1,34 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+TestStruct { field2: value7 }
+
+AST:
+(source_file
+  (expression_statement
+    (struct_expression
+      (type_identifier)
+      (field_initializer_list
+        (field_initializer
+          (field_identifier)
+          (identifier value7)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

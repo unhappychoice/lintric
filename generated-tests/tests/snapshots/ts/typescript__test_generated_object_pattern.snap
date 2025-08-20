@@ -1,0 +1,39 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+const { prop12, prop21 } = object;
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (object_pattern
+        (shorthand_property_identifier_pattern)
+        (shorthand_property_identifier_pattern)
+      )
+      (identifier object)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "{ prop12, prop21 }",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

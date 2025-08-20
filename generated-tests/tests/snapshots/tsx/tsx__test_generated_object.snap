@@ -1,0 +1,35 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+{ prop11: value110, prop21: value21 }
+
+AST:
+(program
+  (expression_statement
+    (object
+      (pair
+        (property_identifier)
+        (identifier value110)
+      )
+      (pair
+        (property_identifier)
+        (identifier value21)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

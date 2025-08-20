@@ -1,0 +1,71 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+type Test<T3> = `hello ${T3}!`; const value30: Test<'world'> = 'hello world!';
+
+AST:
+(program
+  (type_alias_declaration
+    (type_identifier)
+    (type_parameters
+      (type_parameter
+        (type_identifier)
+      )
+    )
+    (template_literal_type
+      (string_fragment)
+      (template_type
+        (type_identifier)
+      )
+      (string_fragment)
+    )
+  )
+  (lexical_declaration
+    (variable_declarator
+      (identifier value30)
+      (type_annotation
+        (generic_type
+          (type_identifier)
+          (type_arguments
+            (literal_type
+              (string
+                (string_fragment)
+              )
+            )
+          )
+        )
+      )
+      (string
+        (string_fragment)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "Test",
+            line_number: 1,
+            definition_type: TypeDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "value30",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

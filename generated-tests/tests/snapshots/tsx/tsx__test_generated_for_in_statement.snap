@@ -1,0 +1,40 @@
+---
+source: generated-tests/tests/tsx.rs
+expression: snapshot_content
+---
+Source Code:
+for (const key in obj) { console.log(key); }
+
+AST:
+(program
+  (for_in_statement
+    (identifier key)
+    (identifier obj)
+    (statement_block
+      (expression_statement
+        (call_expression
+          (member_expression
+            (identifier console)
+            (property_identifier)
+          )
+          (arguments
+            (identifier key)
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TSX",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

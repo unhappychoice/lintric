@@ -1,0 +1,30 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+condition1 ? trueVal : falseVal
+
+AST:
+(program
+  (expression_statement
+    (ternary_expression
+      (identifier condition1)
+      (identifier trueVal)
+      (identifier falseVal)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

@@ -1,0 +1,48 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+let closure = |x3| x3 + y2;
+
+AST:
+(source_file
+  (let_declaration
+    (identifier closure)
+    (closure_expression
+      (closure_parameters
+        (identifier x3)
+      )
+      (binary_expression
+        (identifier x3)
+        (identifier y2)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "closure",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "x3",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

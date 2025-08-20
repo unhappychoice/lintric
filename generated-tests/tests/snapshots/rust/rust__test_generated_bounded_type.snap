@@ -1,0 +1,76 @@
+---
+source: generated-tests/tests/rust.rs
+expression: snapshot_content
+---
+Source Code:
+fn test<T: Clone + Send>(x: T) -> T where T: std::fmt::Debug { x }
+
+AST:
+(source_file
+  (function_item
+    (identifier test)
+    (type_parameters
+      (constrained_type_parameter
+        (type_identifier)
+        (trait_bounds
+          (type_identifier)
+          (type_identifier)
+        )
+      )
+    )
+    (parameters
+      (parameter
+        (identifier x)
+        (type_identifier)
+      )
+    )
+    (type_identifier)
+    (where_clause
+      (where_predicate
+        (type_identifier)
+        (trait_bounds
+          (scoped_type_identifier
+            (scoped_identifier
+              (identifier std)
+              (identifier fmt)
+            )
+            (type_identifier)
+          )
+        )
+      )
+    )
+    (block
+      (identifier x)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "test",
+            line_number: 1,
+            definition_type: FunctionDefinition,
+            scope: Some(
+                "test",
+            ),
+        },
+        Definition {
+            name: "x",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: Some(
+                "test",
+            ),
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

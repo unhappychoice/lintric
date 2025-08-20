@@ -1,0 +1,44 @@
+---
+source: generated-tests/tests/typescript.rs
+expression: snapshot_content
+---
+Source Code:
+const ctor: new () => object = class {};
+
+AST:
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier ctor)
+      (type_annotation
+        (constructor_type
+          (formal_parameters)
+          (predefined_type)
+        )
+      )
+      (class
+        (class_body)
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "<memory>",
+    definitions: [
+        Definition {
+            name: "ctor",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
+    dependencies: [],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 1,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}
