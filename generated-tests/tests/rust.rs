@@ -198,6 +198,8 @@ fn assert_code_analysis_and_snapshot(
 ) {
     let mut settings = insta::Settings::clone_current();
     settings.set_snapshot_path(format!("snapshots/{}", snapshot_folder));
+    settings.set_prepend_module_to_snapshot(false);
+    settings.set_snapshot_suffix("");
     let _guard = settings.bind_to_scope();
 
     let result = std::panic::catch_unwind(|| {
