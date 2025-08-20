@@ -29,15 +29,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "variable",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 15,
-        },
-        SerializableUsage {
             name: "source1",
             kind: Identifier,
             scope: None,

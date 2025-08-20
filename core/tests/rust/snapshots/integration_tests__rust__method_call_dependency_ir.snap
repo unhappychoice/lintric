@@ -48,15 +48,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "usage": [
     {
-      "name": "my_method",
-      "kind": "Identifier",
-      "scope": "MyStruct.my_method",
-      "start_line": 6,
-      "start_column": 8,
-      "end_line": 6,
-      "end_column": 17
-    },
-    {
       "name": "self.value",
       "kind": "FieldExpression",
       "scope": "MyStruct.my_method",
@@ -64,24 +55,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 9,
       "end_line": 7,
       "end_column": 19
-    },
-    {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 11,
-      "start_column": 4,
-      "end_line": 11,
-      "end_column": 8
-    },
-    {
-      "name": "s",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 12,
-      "start_column": 9,
-      "end_line": 12,
-      "end_column": 10
     },
     {
       "name": "MyStruct { value: 10 }",

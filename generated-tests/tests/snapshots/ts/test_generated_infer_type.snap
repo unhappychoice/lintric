@@ -59,17 +59,7 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
-    usage: [
-        SerializableUsage {
-            name: "value11",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 55,
-            end_line: 1,
-            end_column: 62,
-        },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

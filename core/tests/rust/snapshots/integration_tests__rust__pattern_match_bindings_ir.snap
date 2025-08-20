@@ -115,24 +115,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "usage": [
     {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 1,
-      "start_column": 4,
-      "end_line": 1,
-      "end_column": 8
-    },
-    {
-      "name": "option_value",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 2,
-      "start_column": 9,
-      "end_line": 2,
-      "end_column": 21
-    },
-    {
       "name": "Some(10)",
       "kind": "CallExpression",
       "scope": "main",
@@ -196,15 +178,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "end_column": 36
     },
     {
-      "name": "numbers",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 7,
-      "start_column": 9,
-      "end_line": 7,
-      "end_column": 16
-    },
-    {
       "name": "vec",
       "kind": "Identifier",
       "scope": "main",
@@ -212,15 +185,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 19,
       "end_line": 7,
       "end_column": 22
-    },
-    {
-      "name": "num",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 8,
-      "start_column": 9,
-      "end_line": 8,
-      "end_column": 12
     },
     {
       "name": "numbers",
@@ -248,15 +212,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 32,
       "end_line": 9,
       "end_column": 35
-    },
-    {
-      "name": "iter",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 12,
-      "start_column": 13,
-      "end_line": 12,
-      "end_column": 17
     },
     {
       "name": "Some(5)",

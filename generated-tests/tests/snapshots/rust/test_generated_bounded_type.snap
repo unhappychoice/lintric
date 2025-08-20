@@ -69,28 +69,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "test",
-            kind: Identifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 4,
-            end_line: 1,
-            end_column: 8,
-        },
-        SerializableUsage {
-            name: "x",
-            kind: Identifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 27,
-        },
-        SerializableUsage {
             name: "std",
             kind: Identifier,
             scope: Some(

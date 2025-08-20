@@ -357,42 +357,6 @@ expression: out
       "end_column": 6
     },
     {
-      "name": "add",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 10,
-      "start_column": 10,
-      "end_line": 10,
-      "end_column": 13
-    },
-    {
-      "name": "a",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 10,
-      "start_column": 14,
-      "end_line": 10,
-      "end_column": 15
-    },
-    {
-      "name": "b",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 10,
-      "start_column": 25,
-      "end_line": 10,
-      "end_column": 26
-    },
-    {
-      "name": "result",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 11,
-      "start_column": 11,
-      "end_line": 11,
-      "end_column": 17
-    },
-    {
       "name": "a",
       "kind": "Identifier",
       "scope": "add",
@@ -420,24 +384,6 @@ expression: out
       "end_column": 18
     },
     {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 10,
-      "end_line": 15,
-      "end_column": 14
-    },
-    {
-      "name": "p1",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 16,
-      "start_column": 11,
-      "end_line": 16,
-      "end_column": 13
-    },
-    {
       "name": "x",
       "kind": "FieldExpression",
       "scope": "main",
@@ -456,15 +402,6 @@ expression: out
       "end_column": 32
     },
     {
-      "name": "p2",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 17,
-      "start_column": 11,
-      "end_line": 17,
-      "end_column": 13
-    },
-    {
       "name": "x",
       "kind": "FieldExpression",
       "scope": "main",
@@ -481,15 +418,6 @@ expression: out
       "start_column": 31,
       "end_line": 17,
       "end_column": 32
-    },
-    {
-      "name": "p3",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 19,
-      "start_column": 11,
-      "end_line": 19,
-      "end_column": 13
     },
     {
       "name": "x",
@@ -618,15 +546,6 @@ expression: out
       "end_column": 26
     },
     {
-      "name": "p4",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 24,
-      "start_column": 11,
-      "end_line": 24,
-      "end_column": 13
-    },
-    {
       "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })()",
       "kind": "CallExpression",
       "scope": "main",
@@ -634,15 +553,6 @@ expression: out
       "start_column": 16,
       "end_line": 28,
       "end_column": 9
-    },
-    {
-      "name": "p5",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 25,
-      "start_column": 15,
-      "end_line": 25,
-      "end_column": 17
     },
     {
       "name": "x",
@@ -661,15 +571,6 @@ expression: out
       "start_column": 35,
       "end_line": 25,
       "end_column": 36
-    },
-    {
-      "name": "p6",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 26,
-      "start_column": 15,
-      "end_line": 26,
-      "end_column": 17
     },
     {
       "name": "p5",
@@ -693,37 +594,10 @@ expression: out
       "name": "x",
       "kind": "Identifier",
       "scope": "main",
-      "start_line": 30,
-      "start_column": 9,
-      "end_line": 30,
-      "end_column": 10
-    },
-    {
-      "name": "y",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 31,
-      "start_column": 9,
-      "end_line": 31,
-      "end_column": 10
-    },
-    {
-      "name": "x",
-      "kind": "Identifier",
-      "scope": "main",
       "start_line": 31,
       "start_column": 13,
       "end_line": 31,
       "end_column": 14
-    },
-    {
-      "name": "z",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 32,
-      "start_column": 9,
-      "end_line": 32,
-      "end_column": 10
     },
     {
       "name": "y",
@@ -816,15 +690,6 @@ expression: out
       "end_column": 19
     },
     {
-      "name": "instance",
-      "kind": "Identifier",
-      "scope": null,
-      "start_line": 38,
-      "start_column": 7,
-      "end_line": 38,
-      "end_column": 15
-    },
-    {
       "name": "SomeClass",
       "kind": "Identifier",
       "scope": null,
@@ -832,15 +697,6 @@ expression: out
       "start_column": 22,
       "end_line": 38,
       "end_column": 31
-    },
-    {
-      "name": "result",
-      "kind": "Identifier",
-      "scope": null,
-      "start_line": 39,
-      "start_column": 7,
-      "end_line": 39,
-      "end_column": 13
     },
     {
       "name": "Utils.helperFunction()",
@@ -895,15 +751,6 @@ expression: out
       "start_column": 15,
       "end_line": 40,
       "end_column": 19
-    },
-    {
-      "name": "anotherFunction",
-      "kind": "Identifier",
-      "scope": "anotherFunction",
-      "start_line": 42,
-      "start_column": 10,
-      "end_line": 42,
-      "end_column": 25
     },
     {
       "name": "console.log(instance, result)",

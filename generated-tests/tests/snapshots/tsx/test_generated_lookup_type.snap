@@ -66,15 +66,6 @@ IntermediateRepresentation {
             end_line: 1,
             end_column: 17,
         },
-        SerializableUsage {
-            name: "value18",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 35,
-            end_line: 1,
-            end_column: 42,
-        },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

@@ -42,15 +42,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "item",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 5,
-            end_line: 1,
-            end_column: 9,
-        },
-        SerializableUsage {
             name: "vec",
             kind: Identifier,
             scope: None,

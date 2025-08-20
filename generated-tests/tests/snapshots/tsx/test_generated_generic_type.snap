@@ -39,17 +39,7 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
-    usage: [
-        SerializableUsage {
-            name: "value10",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 14,
-        },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

@@ -77,28 +77,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "test_fn5",
-            kind: Identifier,
-            scope: Some(
-                "test_fn5",
-            ),
-            start_line: 1,
-            start_column: 4,
-            end_line: 1,
-            end_column: 12,
-        },
-        SerializableUsage {
-            name: "f",
-            kind: Identifier,
-            scope: Some(
-                "test_fn5",
-            ),
-            start_line: 1,
-            start_column: 16,
-            end_line: 1,
-            end_column: 17,
-        },
-        SerializableUsage {
             name: "a",
             kind: Identifier,
             scope: Some(
