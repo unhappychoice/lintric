@@ -25,6 +25,7 @@ pub trait DependencyResolver<'a>: Send + Sync {
                     _ => DependencyType::VariableUse,
                 }
             }
+            UsageKind::TypeIdentifier => DependencyType::TypeReference,
             UsageKind::CallExpression => DependencyType::FunctionCall,
             UsageKind::FieldExpression => DependencyType::StructFieldAccess,
             UsageKind::StructExpression => DependencyType::TypeReference,
@@ -38,6 +39,7 @@ pub trait DependencyResolver<'a>: Send + Sync {
             UsageKind::FieldExpression => Some("field_access".to_string()),
             UsageKind::StructExpression => Some("struct_instantiation".to_string()),
             UsageKind::Metavariable => Some("metavariable_use".to_string()),
+            UsageKind::TypeIdentifier => Some("type_reference".to_string()),
             UsageKind::Identifier => usage_node.node.parent().map(|p| p.kind().to_string()),
         }
     }

@@ -49,6 +49,15 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
+            name: "Box",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 11,
+            end_line: 1,
+            end_column: 14,
+        },
+        SerializableUsage {
             name: "std",
             kind: Identifier,
             scope: None,
@@ -65,6 +74,15 @@ IntermediateRepresentation {
             start_column: 24,
             end_line: 1,
             end_column: 27,
+        },
+        SerializableUsage {
+            name: "Display",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 29,
+            end_line: 1,
+            end_column: 36,
         },
         SerializableUsage {
             name: "Box::new(42)",

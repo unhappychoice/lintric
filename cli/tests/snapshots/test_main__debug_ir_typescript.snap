@@ -384,6 +384,15 @@ expression: out
       "end_column": 18
     },
     {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 15,
+      "end_line": 16,
+      "end_column": 20
+    },
+    {
       "name": "x",
       "kind": "FieldExpression",
       "scope": "main",
@@ -402,6 +411,15 @@ expression: out
       "end_column": 32
     },
     {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 17,
+      "start_column": 15,
+      "end_line": 17,
+      "end_column": 20
+    },
+    {
       "name": "x",
       "kind": "FieldExpression",
       "scope": "main",
@@ -418,6 +436,15 @@ expression: out
       "start_column": 31,
       "end_line": 17,
       "end_column": 32
+    },
+    {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 19,
+      "start_column": 15,
+      "end_line": 19,
+      "end_column": 20
     },
     {
       "name": "x",
@@ -553,6 +580,15 @@ expression: out
       "start_column": 16,
       "end_line": 28,
       "end_column": 9
+    },
+    {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 25,
+      "start_column": 19,
+      "end_line": 25,
+      "end_column": 24
     },
     {
       "name": "x",

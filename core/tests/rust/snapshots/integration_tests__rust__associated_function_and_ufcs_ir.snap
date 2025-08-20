@@ -58,11 +58,32 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "dependencies": [
     {
+      "source_line": 3,
+      "target_line": 1,
+      "symbol": "MyStruct",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
+      "source_line": 4,
+      "target_line": 1,
+      "symbol": "MyStruct",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
       "source_line": 5,
       "target_line": 1,
       "symbol": "MyStruct",
       "dependency_type": "VariableUse",
       "context": "block"
+    },
+    {
+      "source_line": 15,
+      "target_line": 13,
+      "symbol": "MyType",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
     },
     {
       "source_line": 22,
@@ -89,6 +110,24 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   "usage": [
     {
       "name": "MyStruct",
+      "kind": "TypeIdentifier",
+      "scope": "MyStruct",
+      "start_line": 3,
+      "start_column": 6,
+      "end_line": 3,
+      "end_column": 14
+    },
+    {
+      "name": "MyStruct",
+      "kind": "TypeIdentifier",
+      "scope": "MyStruct.new",
+      "start_line": 4,
+      "start_column": 17,
+      "end_line": 4,
+      "end_column": 25
+    },
+    {
+      "name": "MyStruct",
       "kind": "Identifier",
       "scope": "MyStruct.new",
       "start_line": 5,
@@ -104,6 +143,24 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 8,
       "end_line": 10,
       "end_column": 19
+    },
+    {
+      "name": "MyTrait",
+      "kind": "TypeIdentifier",
+      "scope": "MyType",
+      "start_line": 15,
+      "start_column": 6,
+      "end_line": 15,
+      "end_column": 13
+    },
+    {
+      "name": "MyType",
+      "kind": "TypeIdentifier",
+      "scope": "MyType",
+      "start_line": 15,
+      "start_column": 18,
+      "end_line": 15,
+      "end_column": 24
     },
     {
       "name": "println",
@@ -176,6 +233,24 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 5,
       "end_line": 24,
       "end_column": 39
+    },
+    {
+      "name": "MyType",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 24,
+      "start_column": 6,
+      "end_line": 24,
+      "end_column": 12
+    },
+    {
+      "name": "MyTrait",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 24,
+      "start_column": 16,
+      "end_line": 24,
+      "end_column": 23
     },
     {
       "name": "my_function",

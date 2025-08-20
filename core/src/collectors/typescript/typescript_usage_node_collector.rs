@@ -18,6 +18,7 @@ impl<'a> TypescriptUsageNodeCollector<'a> {
             // Named declarations
             DefinitionPattern::new("function_declaration", "name"),
             DefinitionPattern::new("class_declaration", "name"),
+            DefinitionPattern::new("abstract_class_declaration", "name"),
             DefinitionPattern::new("interface_declaration", "name"),
             DefinitionPattern::new("type_alias_declaration", "name"),
         ];
@@ -45,6 +46,17 @@ impl<'a> UsageNodeCollector<'a> for TypescriptUsageNodeCollector<'a> {
                     None
                 } else {
                     Some(UsageKind::Identifier)
+                }
+            }
+            "type_identifier" => {
+                // Only treat type_identifier as usage if it's not in a definition context
+                if self
+                    .definition_checker
+                    .is_identifier_in_definition_context(node)
+                {
+                    None
+                } else {
+                    Some(UsageKind::TypeIdentifier)
                 }
             }
             "call_expression" => Some(UsageKind::CallExpression),

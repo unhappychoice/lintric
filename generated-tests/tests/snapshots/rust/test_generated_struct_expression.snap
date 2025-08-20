@@ -36,6 +36,15 @@ IntermediateRepresentation {
             end_column: 30,
         },
         SerializableUsage {
+            name: "TestStruct",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 1,
+            end_line: 1,
+            end_column: 11,
+        },
+        SerializableUsage {
             name: "value7",
             kind: Identifier,
             scope: None,

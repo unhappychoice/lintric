@@ -57,6 +57,15 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "end_column": 33
     },
     {
+      "name": "Point",
+      "kind": "TypeIdentifier",
+      "scope": "main",
+      "start_line": 3,
+      "start_column": 13,
+      "end_line": 3,
+      "end_column": 18
+    },
+    {
       "name": "p.x",
       "kind": "FieldExpression",
       "scope": "main",

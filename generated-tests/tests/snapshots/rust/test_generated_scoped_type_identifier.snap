@@ -60,6 +60,15 @@ IntermediateRepresentation {
             end_column: 19,
         },
         SerializableUsage {
+            name: "Vec",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 21,
+            end_line: 1,
+            end_column: 24,
+        },
+        SerializableUsage {
             name: "vec",
             kind: Identifier,
             scope: None,

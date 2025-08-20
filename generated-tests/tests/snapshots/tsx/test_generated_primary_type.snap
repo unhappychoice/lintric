@@ -30,7 +30,17 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
-    usage: [],
+    usage: [
+        SerializableUsage {
+            name: "Type",
+            kind: TypeIdentifier,
+            scope: None,
+            start_line: 1,
+            start_column: 15,
+            end_line: 1,
+            end_column: 19,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,
