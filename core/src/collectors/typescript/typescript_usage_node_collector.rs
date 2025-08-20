@@ -15,6 +15,9 @@ impl<'a> TypescriptUsageNodeCollector<'a> {
             DefinitionPattern::new("variable_declarator", "name"),
             DefinitionPattern::new("required_parameter", "pattern"),
             DefinitionPattern::new("optional_parameter", "pattern"),
+            // Type parameters
+            DefinitionPattern::with_any_field("type_parameters"),
+            DefinitionPattern::with_any_field("type_parameter"),
             // Named declarations
             DefinitionPattern::new("function_declaration", "name"),
             DefinitionPattern::new("class_declaration", "name"),

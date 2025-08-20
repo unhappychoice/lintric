@@ -159,6 +159,11 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
             current_scope.clone(),
         ));
 
+        // Collect type parameters
+        if let Some(type_params_node) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params_node, current_scope));
+        }
+
         if let Some(parameters_node) = node.child_by_field_name("parameters") {
             let mut param_cursor = parameters_node.walk();
             for param_child in parameters_node.children(&mut param_cursor) {
@@ -187,6 +192,8 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
         node: Node<'a>,
         current_scope: &Option<String>,
     ) -> Vec<Definition> {
+        let mut definitions = vec![];
+
         if let Some(name_node) = node.child_by_field_name("name") {
             let def_type = match node.kind() {
                 "struct_item" => DefinitionType::StructDefinition,
@@ -208,15 +215,20 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                 current_scope.clone()
             };
 
-            vec![Definition::new(
+            definitions.push(Definition::new(
                 &name_node,
                 self.source_code,
                 def_type,
                 scope,
-            )]
-        } else {
-            vec![]
+            ));
         }
+
+        // Collect type parameters for structs, enums, traits, etc.
+        if let Some(type_params_node) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params_node, current_scope));
+        }
+
+        definitions
     }
 
     fn collect_import_definitions(
@@ -340,6 +352,47 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                     DefinitionType::MacroVariableDefinition,
                     current_scope.clone(),
                 ));
+            }
+        }
+
+        definitions
+    }
+}
+
+impl<'a> RustDefinitionCollector<'a> {
+    fn collect_type_parameters(
+        &self,
+        type_params_node: Node<'a>,
+        current_scope: &Option<String>,
+    ) -> Vec<Definition> {
+        let mut definitions = vec![];
+
+        let mut cursor = type_params_node.walk();
+        for child in type_params_node.children(&mut cursor) {
+            match child.kind() {
+                "type_identifier" => {
+                    definitions.push(Definition::new(
+                        &child,
+                        self.source_code,
+                        DefinitionType::TypeDefinition,
+                        current_scope.clone(),
+                    ));
+                }
+                "lifetime" => {
+                    // Extract identifier from lifetime node (e.g., 'a from lifetime('a))
+                    let mut lifetime_cursor = child.walk();
+                    for lifetime_child in child.children(&mut lifetime_cursor) {
+                        if lifetime_child.kind() == "identifier" {
+                            definitions.push(Definition::new(
+                                &lifetime_child,
+                                self.source_code,
+                                DefinitionType::TypeDefinition, // Using TypeDefinition for lifetime parameters
+                                current_scope.clone(),
+                            ));
+                        }
+                    }
+                }
+                _ => {}
             }
         }
 

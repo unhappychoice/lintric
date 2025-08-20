@@ -16,8 +16,9 @@ impl<'a> RustUsageNodeCollector<'a> {
             DefinitionPattern::new("parameter", "pattern"),
             DefinitionPattern::new("for_expression", "pattern"),
             DefinitionPattern::with_any_field("closure_parameters"),
-            // Type and lifetime parameters
+            // Type parameters - both contexts
             DefinitionPattern::with_any_field("type_parameters"),
+            // Lifetime parameters - both contexts
             DefinitionPattern::with_any_field("lifetime"),
             // Named items
             DefinitionPattern::new("function_item", "name"),

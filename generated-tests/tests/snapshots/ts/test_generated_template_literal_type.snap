@@ -55,6 +55,12 @@ IntermediateRepresentation {
             scope: None,
         },
         Definition {
+            name: "T3",
+            line_number: 1,
+            definition_type: TypeDefinition,
+            scope: None,
+        },
+        Definition {
             name: "value27",
             line_number: 1,
             definition_type: VariableDefinition,
@@ -63,15 +69,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
-            name: "T3",
-            kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 11,
-            end_line: 1,
-            end_column: 13,
-        },
         SerializableUsage {
             name: "T3",
             kind: TypeIdentifier,
