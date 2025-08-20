@@ -36,24 +36,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "usage": [
     {
-      "name": "a",
-      "kind": "Identifier",
-      "scope": null,
-      "start_line": 1,
-      "start_column": 7,
-      "end_line": 1,
-      "end_column": 8
-    },
-    {
-      "name": "b",
-      "kind": "Identifier",
-      "scope": null,
-      "start_line": 1,
-      "start_column": 12,
-      "end_line": 1,
-      "end_column": 13
-    },
-    {
       "name": "console.log(b)",
       "kind": "CallExpression",
       "scope": null,

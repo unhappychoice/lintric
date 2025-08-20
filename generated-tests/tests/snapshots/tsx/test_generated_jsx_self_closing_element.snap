@@ -37,15 +37,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "element",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 14,
-        },
-        SerializableUsage {
             name: "Component2",
             kind: Identifier,
             scope: None,

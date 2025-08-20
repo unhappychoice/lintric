@@ -26,17 +26,7 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
-    usage: [
-        SerializableUsage {
-            name: "STATIC",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 8,
-            end_line: 1,
-            end_column: 14,
-        },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

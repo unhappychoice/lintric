@@ -34,15 +34,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "defaultVal",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 27,
-        },
-        SerializableUsage {
             name: "obj2",
             kind: Identifier,
             scope: None,

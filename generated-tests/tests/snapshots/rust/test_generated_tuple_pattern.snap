@@ -36,24 +36,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "x15",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 6,
-            end_line: 1,
-            end_column: 9,
-        },
-        SerializableUsage {
-            name: "y4",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 11,
-            end_line: 1,
-            end_column: 13,
-        },
-        SerializableUsage {
             name: "tuple_val",
             kind: Identifier,
             scope: None,

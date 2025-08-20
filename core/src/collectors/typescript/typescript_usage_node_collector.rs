@@ -1,14 +1,31 @@
+use crate::collectors::common::definition_context::{DefinitionContextChecker, DefinitionPattern};
 use crate::collectors::common::usage_node_collector::UsageNodeCollector;
 use crate::models::{Usage, UsageKind};
 use tree_sitter::Node;
 
 pub struct TypescriptUsageNodeCollector<'a> {
     source_code: &'a str,
+    definition_checker: DefinitionContextChecker,
 }
 
 impl<'a> TypescriptUsageNodeCollector<'a> {
     pub fn new(source_code: &'a str) -> Self {
-        Self { source_code }
+        let patterns = vec![
+            // Variable declarations
+            DefinitionPattern::new("variable_declarator", "name"),
+            DefinitionPattern::new("required_parameter", "pattern"),
+            DefinitionPattern::new("optional_parameter", "pattern"),
+            // Named declarations
+            DefinitionPattern::new("function_declaration", "name"),
+            DefinitionPattern::new("class_declaration", "name"),
+            DefinitionPattern::new("interface_declaration", "name"),
+            DefinitionPattern::new("type_alias_declaration", "name"),
+        ];
+
+        Self {
+            source_code,
+            definition_checker: DefinitionContextChecker::new(patterns),
+        }
     }
 }
 
@@ -19,7 +36,17 @@ impl<'a> UsageNodeCollector<'a> for TypescriptUsageNodeCollector<'a> {
         current_scope: &Option<String>,
     ) -> Option<Usage<'a>> {
         let kind = match node.kind() {
-            "identifier" => Some(UsageKind::Identifier),
+            "identifier" => {
+                // Only treat identifier as usage if it's not in a definition context
+                if self
+                    .definition_checker
+                    .is_identifier_in_definition_context(node)
+                {
+                    None
+                } else {
+                    Some(UsageKind::Identifier)
+                }
+            }
             "call_expression" => Some(UsageKind::CallExpression),
             "property_identifier" => Some(UsageKind::FieldExpression),
             _ => None,

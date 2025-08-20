@@ -78,15 +78,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "end_column": 26
     },
     {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 7,
-      "start_column": 4,
-      "end_line": 7,
-      "end_column": 8
-    },
-    {
       "name": "my_macro",
       "kind": "Identifier",
       "scope": "main",

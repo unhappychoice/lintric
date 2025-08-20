@@ -30,15 +30,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "result",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 5,
-            end_line: 1,
-            end_column: 11,
-        },
-        SerializableUsage {
             name: "x10",
             kind: Identifier,
             scope: None,

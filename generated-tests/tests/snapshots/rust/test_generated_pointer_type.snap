@@ -39,15 +39,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "ptr",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 5,
-            end_line: 1,
-            end_column: 8,
-        },
-        SerializableUsage {
             name: "std::ptr::null()",
             kind: CallExpression,
             scope: None,

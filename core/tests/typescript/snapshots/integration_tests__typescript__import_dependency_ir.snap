@@ -45,15 +45,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "end_column": 22
     },
     {
-      "name": "result",
-      "kind": "Identifier",
-      "scope": null,
-      "start_line": 2,
-      "start_column": 7,
-      "end_line": 2,
-      "end_column": 13
-    },
-    {
       "name": "someFunction()",
       "kind": "CallExpression",
       "scope": null,

@@ -43,15 +43,6 @@ IntermediateRepresentation {
             end_column: 13,
         },
         SerializableUsage {
-            name: "value22",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 15,
-            end_line: 1,
-            end_column: 22,
-        },
-        SerializableUsage {
             name: "obj3",
             kind: Identifier,
             scope: None,

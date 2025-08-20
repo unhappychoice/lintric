@@ -254,42 +254,6 @@ expression: out
   ],
   "usage": [
     {
-      "name": "add",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 6,
-      "start_column": 4,
-      "end_line": 6,
-      "end_column": 7
-    },
-    {
-      "name": "a",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 6,
-      "start_column": 8,
-      "end_line": 6,
-      "end_column": 9
-    },
-    {
-      "name": "b",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 6,
-      "start_column": 16,
-      "end_line": 6,
-      "end_column": 17
-    },
-    {
-      "name": "result",
-      "kind": "Identifier",
-      "scope": "add",
-      "start_line": 7,
-      "start_column": 9,
-      "end_line": 7,
-      "end_column": 15
-    },
-    {
       "name": "a",
       "kind": "Identifier",
       "scope": "add",
@@ -317,24 +281,6 @@ expression: out
       "end_column": 11
     },
     {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 11,
-      "start_column": 4,
-      "end_line": 11,
-      "end_column": 8
-    },
-    {
-      "name": "p1",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 12,
-      "start_column": 9,
-      "end_line": 12,
-      "end_column": 11
-    },
-    {
       "name": "Point { x: 1, y: 2 }",
       "kind": "StructExpression",
       "scope": "main",
@@ -344,15 +290,6 @@ expression: out
       "end_column": 34
     },
     {
-      "name": "p2",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 13,
-      "start_column": 9,
-      "end_line": 13,
-      "end_column": 11
-    },
-    {
       "name": "Point { x: 3, y: 4 }",
       "kind": "StructExpression",
       "scope": "main",
@@ -360,15 +297,6 @@ expression: out
       "start_column": 14,
       "end_line": 13,
       "end_column": 34
-    },
-    {
-      "name": "p3",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 9,
-      "end_line": 15,
-      "end_column": 11
     },
     {
       "name": "Point {\n        x: add(p1.x, p2.x),\n        y: add(p1.y, p2.y),\n    }",
@@ -488,24 +416,6 @@ expression: out
       "end_column": 24
     },
     {
-      "name": "p4",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 9,
-      "end_line": 20,
-      "end_column": 11
-    },
-    {
-      "name": "p5",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 13,
-      "end_line": 21,
-      "end_column": 15
-    },
-    {
       "name": "Point { x: 5, y: 6 }",
       "kind": "StructExpression",
       "scope": "main",
@@ -513,15 +423,6 @@ expression: out
       "start_column": 18,
       "end_line": 21,
       "end_column": 38
-    },
-    {
-      "name": "p6",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 22,
-      "start_column": 13,
-      "end_line": 22,
-      "end_column": 15
     },
     {
       "name": "p5",
@@ -545,37 +446,10 @@ expression: out
       "name": "x",
       "kind": "Identifier",
       "scope": "main",
-      "start_line": 26,
-      "start_column": 9,
-      "end_line": 26,
-      "end_column": 10
-    },
-    {
-      "name": "y",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 27,
-      "start_column": 9,
-      "end_line": 27,
-      "end_column": 10
-    },
-    {
-      "name": "x",
-      "kind": "Identifier",
-      "scope": "main",
       "start_line": 27,
       "start_column": 13,
       "end_line": 27,
       "end_column": 14
-    },
-    {
-      "name": "z",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 28,
-      "start_column": 9,
-      "end_line": 28,
-      "end_column": 10
     },
     {
       "name": "y",

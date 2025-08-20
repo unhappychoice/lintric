@@ -69,24 +69,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "usage": [
     {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 1,
-      "start_column": 4,
-      "end_line": 1,
-      "end_column": 8
-    },
-    {
-      "name": "add_one",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 2,
-      "start_column": 9,
-      "end_line": 2,
-      "end_column": 16
-    },
-    {
       "name": "x",
       "kind": "Identifier",
       "scope": "main",
@@ -102,15 +84,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_line": 3,
       "start_column": 9,
       "end_line": 3,
-      "end_column": 10
-    },
-    {
-      "name": "y",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 5,
-      "start_column": 9,
-      "end_line": 5,
       "end_column": 10
     },
     {

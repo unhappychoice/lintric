@@ -88,15 +88,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   ],
   "usage": [
     {
-      "name": "new",
-      "kind": "Identifier",
-      "scope": "MyStruct.new",
-      "start_line": 4,
-      "start_column": 8,
-      "end_line": 4,
-      "end_column": 11
-    },
-    {
       "name": "MyStruct",
       "kind": "Identifier",
       "scope": "MyStruct.new",
@@ -115,15 +106,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "end_column": 19
     },
     {
-      "name": "my_function",
-      "kind": "Identifier",
-      "scope": "MyType.my_function",
-      "start_line": 16,
-      "start_column": 8,
-      "end_line": 16,
-      "end_column": 19
-    },
-    {
       "name": "println",
       "kind": "Identifier",
       "scope": "MyType.my_function",
@@ -131,24 +113,6 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "start_column": 9,
       "end_line": 17,
       "end_column": 16
-    },
-    {
-      "name": "main",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 4,
-      "end_line": 21,
-      "end_column": 8
-    },
-    {
-      "name": "_s",
-      "kind": "Identifier",
-      "scope": "main",
-      "start_line": 22,
-      "start_column": 9,
-      "end_line": 22,
-      "end_column": 11
     },
     {
       "name": "MyStruct::new()",

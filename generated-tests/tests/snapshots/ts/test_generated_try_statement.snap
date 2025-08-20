@@ -52,15 +52,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         SerializableUsage {
-            name: "result1",
-            kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 13,
-            end_line: 1,
-            end_column: 20,
-        },
-        SerializableUsage {
             name: "riskyOperation()",
             kind: CallExpression,
             scope: None,
