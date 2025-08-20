@@ -104,6 +104,197 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "context": "scoped_identifier"
     }
   ],
+  "usage": [
+    {
+      "name": "my_module",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 1,
+      "start_column": 5,
+      "end_line": 1,
+      "end_column": 14
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": "my_function",
+      "start_line": 3,
+      "start_column": 12,
+      "end_line": 3,
+      "end_column": 23
+    },
+    {
+      "name": "MY_CONST",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 4,
+      "start_column": 15,
+      "end_line": 4,
+      "end_column": 23
+    },
+    {
+      "name": "my_module",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 7,
+      "start_column": 5,
+      "end_line": 7,
+      "end_column": 14
+    },
+    {
+      "name": "MyStruct",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 7,
+      "start_column": 16,
+      "end_line": 7,
+      "end_column": 24
+    },
+    {
+      "name": "my_module",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 8,
+      "start_column": 5,
+      "end_line": 8,
+      "end_column": 14
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 8,
+      "start_column": 17,
+      "end_line": 8,
+      "end_column": 28
+    },
+    {
+      "name": "MY_CONST",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 8,
+      "start_column": 30,
+      "end_line": 8,
+      "end_column": 38
+    },
+    {
+      "name": "my_module",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 9,
+      "start_column": 5,
+      "end_line": 9,
+      "end_column": 14
+    },
+    {
+      "name": "my_module",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 10,
+      "start_column": 5,
+      "end_line": 10,
+      "end_column": 14
+    },
+    {
+      "name": "mm",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 10,
+      "start_column": 18,
+      "end_line": 10,
+      "end_column": 20
+    },
+    {
+      "name": "main",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 12,
+      "start_column": 4,
+      "end_line": 12,
+      "end_column": 8
+    },
+    {
+      "name": "s",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 13,
+      "start_column": 9,
+      "end_line": 13,
+      "end_column": 10
+    },
+    {
+      "name": "MyStruct",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 13,
+      "start_column": 13,
+      "end_line": 13,
+      "end_column": 21
+    },
+    {
+      "name": "my_function()",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 14,
+      "start_column": 5,
+      "end_line": 14,
+      "end_column": 18
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 14,
+      "start_column": 5,
+      "end_line": 14,
+      "end_column": 16
+    },
+    {
+      "name": "c",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 15,
+      "start_column": 9,
+      "end_line": 15,
+      "end_column": 10
+    },
+    {
+      "name": "MY_CONST",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 15,
+      "start_column": 13,
+      "end_line": 15,
+      "end_column": 21
+    },
+    {
+      "name": "s2",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 9,
+      "end_line": 16,
+      "end_column": 11
+    },
+    {
+      "name": "mm",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 14,
+      "end_line": 16,
+      "end_column": 16
+    },
+    {
+      "name": "MyStruct",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 16,
+      "start_column": 18,
+      "end_line": 16,
+      "end_column": 26
+    }
+  ],
   "analysis_metadata": {
     "language": "Rust",
     "total_lines": 17,

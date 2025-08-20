@@ -20,6 +20,26 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "item1",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 2,
+            end_line: 1,
+            end_column: 7,
+        },
+        SerializableUsage {
+            name: "item2",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 9,
+            end_line: 1,
+            end_column: 14,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

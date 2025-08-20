@@ -38,6 +38,30 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "test_fn8",
+            kind: Identifier,
+            scope: Some(
+                "test_fn8",
+            ),
+            start_line: 1,
+            start_column: 4,
+            end_line: 1,
+            end_column: 12,
+        },
+        SerializableUsage {
+            name: "panic",
+            kind: Identifier,
+            scope: Some(
+                "test_fn8",
+            ),
+            start_line: 1,
+            start_column: 22,
+            end_line: 1,
+            end_column: 27,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

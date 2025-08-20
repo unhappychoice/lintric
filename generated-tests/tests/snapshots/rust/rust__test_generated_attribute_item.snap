@@ -53,6 +53,37 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "derive",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 3,
+            end_line: 1,
+            end_column: 9,
+        },
+        SerializableUsage {
+            name: "Debug",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 10,
+            end_line: 1,
+            end_column: 15,
+        },
+        SerializableUsage {
+            name: "test_fn1",
+            kind: Identifier,
+            scope: Some(
+                "test_fn1",
+            ),
+            start_line: 4,
+            start_column: 4,
+            end_line: 4,
+            end_column: 12,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 4,

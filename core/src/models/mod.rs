@@ -11,4 +11,4 @@ pub use dependency::{Dependency, DependencyType};
 pub use intermediate_representation::{AnalysisMetadata, IntermediateRepresentation};
 pub use language::Language;
 pub use metrics::{AnalysisResult, LineMetrics, OverallAnalysisReport};
-pub use usage::{Usage, UsageKind};
+pub use usage::{SerializableUsage, Usage, UsageKind};

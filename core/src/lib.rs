@@ -104,10 +104,16 @@ fn _get_intermediate_representation(
         .resolve_dependencies(file_content, &usage_nodes, &definitions)
         .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
+    let serializable_usage: Vec<_> = usage_nodes
+        .iter()
+        .map(|usage| usage.to_serializable(file_content))
+        .collect();
+
     Ok(IntermediateRepresentation::new(
         file_path,
         definitions,
         dependencies,
+        serializable_usage,
         language.to_string(),
         total_lines,
     ))

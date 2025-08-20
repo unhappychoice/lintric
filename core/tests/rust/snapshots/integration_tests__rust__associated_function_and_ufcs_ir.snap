@@ -86,6 +86,143 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "context": "call_expression"
     }
   ],
+  "usage": [
+    {
+      "name": "new",
+      "kind": "Identifier",
+      "scope": "MyStruct.new",
+      "start_line": 4,
+      "start_column": 8,
+      "end_line": 4,
+      "end_column": 11
+    },
+    {
+      "name": "MyStruct",
+      "kind": "Identifier",
+      "scope": "MyStruct.new",
+      "start_line": 5,
+      "start_column": 9,
+      "end_line": 5,
+      "end_column": 17
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": "MyTrait",
+      "start_line": 10,
+      "start_column": 8,
+      "end_line": 10,
+      "end_column": 19
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": "MyType.my_function",
+      "start_line": 16,
+      "start_column": 8,
+      "end_line": 16,
+      "end_column": 19
+    },
+    {
+      "name": "println",
+      "kind": "Identifier",
+      "scope": "MyType.my_function",
+      "start_line": 17,
+      "start_column": 9,
+      "end_line": 17,
+      "end_column": 16
+    },
+    {
+      "name": "main",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 21,
+      "start_column": 4,
+      "end_line": 21,
+      "end_column": 8
+    },
+    {
+      "name": "_s",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 22,
+      "start_column": 9,
+      "end_line": 22,
+      "end_column": 11
+    },
+    {
+      "name": "MyStruct::new()",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 22,
+      "start_column": 14,
+      "end_line": 22,
+      "end_column": 29
+    },
+    {
+      "name": "MyStruct",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 22,
+      "start_column": 14,
+      "end_line": 22,
+      "end_column": 22
+    },
+    {
+      "name": "new",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 22,
+      "start_column": 24,
+      "end_line": 22,
+      "end_column": 27
+    },
+    {
+      "name": "MyType::my_function()",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 23,
+      "start_column": 5,
+      "end_line": 23,
+      "end_column": 26
+    },
+    {
+      "name": "MyType",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 23,
+      "start_column": 5,
+      "end_line": 23,
+      "end_column": 11
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 23,
+      "start_column": 13,
+      "end_line": 23,
+      "end_column": 24
+    },
+    {
+      "name": "<MyType as MyTrait>::my_function()",
+      "kind": "CallExpression",
+      "scope": "main",
+      "start_line": 24,
+      "start_column": 5,
+      "end_line": 24,
+      "end_column": 39
+    },
+    {
+      "name": "my_function",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 24,
+      "start_column": 26,
+      "end_line": 24,
+      "end_column": 37
+    }
+  ],
   "analysis_metadata": {
     "language": "Rust",
     "total_lines": 25,

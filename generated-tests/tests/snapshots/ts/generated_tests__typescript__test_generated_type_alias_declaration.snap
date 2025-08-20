@@ -25,6 +25,7 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

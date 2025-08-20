@@ -19,6 +19,17 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "binding",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 3,
+            end_line: 1,
+            end_column: 10,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

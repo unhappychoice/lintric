@@ -36,7 +36,7 @@ impl Definition {
                 .utf8_text(source_code.as_bytes())
                 .unwrap()
                 .trim()
-                .to_string(),
+                .replace("\r\n", "\n"),
             line_number: node.start_position().row + 1,
             definition_type,
             scope,

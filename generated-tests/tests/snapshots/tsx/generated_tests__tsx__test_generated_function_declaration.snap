@@ -67,6 +67,63 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "testFn1",
+            kind: Identifier,
+            scope: Some(
+                "testFn1",
+            ),
+            start_line: 1,
+            start_column: 10,
+            end_line: 1,
+            end_column: 17,
+        },
+        SerializableUsage {
+            name: "param",
+            kind: Identifier,
+            scope: Some(
+                "testFn1",
+            ),
+            start_line: 1,
+            start_column: 18,
+            end_line: 1,
+            end_column: 23,
+        },
+        SerializableUsage {
+            name: "local",
+            kind: Identifier,
+            scope: Some(
+                "testFn1",
+            ),
+            start_line: 1,
+            start_column: 49,
+            end_line: 1,
+            end_column: 54,
+        },
+        SerializableUsage {
+            name: "param",
+            kind: Identifier,
+            scope: Some(
+                "testFn1",
+            ),
+            start_line: 1,
+            start_column: 57,
+            end_line: 1,
+            end_column: 62,
+        },
+        SerializableUsage {
+            name: "local",
+            kind: Identifier,
+            scope: Some(
+                "testFn1",
+            ),
+            start_line: 1,
+            start_column: 71,
+            end_line: 1,
+            end_column: 76,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

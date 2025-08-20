@@ -34,6 +34,53 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "context": "scoped_identifier"
     }
   ],
+  "usage": [
+    {
+      "name": "m",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 1,
+      "start_column": 5,
+      "end_line": 1,
+      "end_column": 6
+    },
+    {
+      "name": "f",
+      "kind": "Identifier",
+      "scope": "f",
+      "start_line": 1,
+      "start_column": 16,
+      "end_line": 1,
+      "end_column": 17
+    },
+    {
+      "name": "m::f()",
+      "kind": "CallExpression",
+      "scope": null,
+      "start_line": 2,
+      "start_column": 1,
+      "end_line": 2,
+      "end_column": 7
+    },
+    {
+      "name": "m",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 2,
+      "start_column": 1,
+      "end_line": 2,
+      "end_column": 2
+    },
+    {
+      "name": "f",
+      "kind": "Identifier",
+      "scope": null,
+      "start_line": 2,
+      "start_column": 4,
+      "end_line": 2,
+      "end_column": 5
+    }
+  ],
   "analysis_metadata": {
     "language": "Rust",
     "total_lines": 2,

@@ -26,6 +26,17 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "value6",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 23,
+            end_line: 1,
+            end_column: 29,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

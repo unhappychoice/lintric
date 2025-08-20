@@ -26,6 +26,17 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "test_fn4",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 4,
+            end_line: 1,
+            end_column: 12,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

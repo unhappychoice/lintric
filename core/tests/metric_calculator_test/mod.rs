@@ -14,6 +14,7 @@ fn test_simple_dependency() {
         "test.rs".to_string(),
         vec![],
         dependencies,
+        vec![],
         "Rust".to_string(),
         2,
     );
@@ -66,6 +67,7 @@ fn test_multiple_dependencies() {
         "test.rs".to_string(),
         vec![],
         dependencies,
+        vec![],
         "Rust".to_string(),
         3,
     );
@@ -103,6 +105,7 @@ fn test_transitive_dependencies() {
         "test.rs".to_string(),
         vec![],
         dependencies,
+        vec![],
         "Rust".to_string(),
         3,
     );
@@ -141,6 +144,7 @@ fn test_cyclic_dependencies() {
         "test.rs".to_string(),
         vec![],
         dependencies,
+        vec![],
         "Rust".to_string(),
         2,
     );
@@ -160,6 +164,7 @@ fn test_cyclic_dependencies() {
 fn test_no_dependencies() {
     let ir = IntermediateRepresentation::new(
         "test.rs".to_string(),
+        vec![],
         vec![],
         vec![],
         "Rust".to_string(),

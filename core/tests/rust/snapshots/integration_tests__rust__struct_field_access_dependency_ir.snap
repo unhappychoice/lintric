@@ -46,6 +46,62 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "context": "field_expression"
     }
   ],
+  "usage": [
+    {
+      "name": "main",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 2,
+      "start_column": 4,
+      "end_line": 2,
+      "end_column": 8
+    },
+    {
+      "name": "p",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 3,
+      "start_column": 9,
+      "end_line": 3,
+      "end_column": 10
+    },
+    {
+      "name": "Point { x: 1, y: 2 }",
+      "kind": "StructExpression",
+      "scope": "main",
+      "start_line": 3,
+      "start_column": 13,
+      "end_line": 3,
+      "end_column": 33
+    },
+    {
+      "name": "val",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 4,
+      "start_column": 9,
+      "end_line": 4,
+      "end_column": 12
+    },
+    {
+      "name": "p.x",
+      "kind": "FieldExpression",
+      "scope": "main",
+      "start_line": 4,
+      "start_column": 15,
+      "end_line": 4,
+      "end_column": 18
+    },
+    {
+      "name": "p",
+      "kind": "Identifier",
+      "scope": "main",
+      "start_line": 4,
+      "start_column": 15,
+      "end_line": 4,
+      "end_column": 16
+    }
+  ],
   "analysis_metadata": {
     "language": "Rust",
     "total_lines": 5,

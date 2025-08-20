@@ -47,6 +47,19 @@ IntermediateRepresentation {
         },
     ],
     dependencies: [],
+    usage: [
+        SerializableUsage {
+            name: "method1",
+            kind: Identifier,
+            scope: Some(
+                "TestTrait1",
+            ),
+            start_line: 1,
+            start_column: 23,
+            end_line: 1,
+            end_column: 30,
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,
