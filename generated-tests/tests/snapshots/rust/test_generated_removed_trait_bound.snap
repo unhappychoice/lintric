@@ -33,6 +33,14 @@ IntermediateRepresentation {
                 "test_fn9",
             ),
         },
+        Definition {
+            name: "T",
+            line_number: 1,
+            definition_type: TypeDefinition,
+            scope: Some(
+                "test_fn9",
+            ),
+        },
     ],
     dependencies: [],
     usage: [

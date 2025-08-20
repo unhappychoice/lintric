@@ -66,6 +66,14 @@ IntermediateRepresentation {
             ),
         },
         Definition {
+            name: "F",
+            line_number: 1,
+            definition_type: TypeDefinition,
+            scope: Some(
+                "test_fn5",
+            ),
+        },
+        Definition {
             name: "f",
             line_number: 1,
             definition_type: VariableDefinition,

@@ -89,6 +89,11 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
             current_scope.clone(),
         ));
 
+        // Collect type parameters
+        if let Some(type_params_node) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params_node, current_scope));
+        }
+
         if let Some(parameters_node) = node.child_by_field_name("parameters") {
             let mut param_cursor = parameters_node.walk();
             for param_child in parameters_node.children(&mut param_cursor) {
@@ -119,6 +124,8 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
         node: Node<'a>,
         current_scope: &Option<String>,
     ) -> Vec<Definition> {
+        let mut definitions = Vec::new();
+
         let def_type = match node.kind() {
             "class_declaration" => DefinitionType::ClassDefinition,
             "interface_declaration" => DefinitionType::InterfaceDefinition,
@@ -126,9 +133,19 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
             _ => DefinitionType::Other(node.kind().to_string()),
         };
 
-        Definition::from_naming_node(&node, self.source_code, def_type, current_scope.clone())
-            .into_iter()
-            .collect()
+        definitions.extend(Definition::from_naming_node(
+            &node,
+            self.source_code,
+            def_type,
+            current_scope.clone(),
+        ));
+
+        // Collect type parameters for classes, interfaces, and type aliases
+        if let Some(type_params_node) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params_node, current_scope));
+        }
+
+        definitions
     }
 
     fn collect_import_definitions(
@@ -209,5 +226,35 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
         _current_scope: &Option<String>,
     ) -> Vec<Definition> {
         vec![]
+    }
+}
+
+impl<'a> TypescriptDefinitionCollector<'a> {
+    fn collect_type_parameters(
+        &self,
+        type_params_node: Node<'a>,
+        current_scope: &Option<String>,
+    ) -> Vec<Definition> {
+        let mut definitions = vec![];
+
+        let mut cursor = type_params_node.walk();
+        for child in type_params_node.children(&mut cursor) {
+            if child.kind() == "type_parameter" {
+                // TypeScript type_parameter structure: type_parameter -> type_identifier
+                let mut param_cursor = child.walk();
+                for param_child in child.children(&mut param_cursor) {
+                    if param_child.kind() == "type_identifier" {
+                        definitions.push(Definition::new(
+                            &param_child,
+                            self.source_code,
+                            DefinitionType::TypeDefinition,
+                            current_scope.clone(),
+                        ));
+                    }
+                }
+            }
+        }
+
+        definitions
     }
 }
