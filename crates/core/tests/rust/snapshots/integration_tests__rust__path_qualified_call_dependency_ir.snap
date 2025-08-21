@@ -1,83 +1,117 @@
 ---
-source: core/tests/rust/mod.rs
-expression: "serde_json::to_string_pretty(&ir).unwrap()"
+source: crates/core/tests/rust/mod.rs
+expression: ir_snapshot_content
 ---
-{
-  "file_path": "tests/rust/fixtures/path_qualified_call_dependency.rs",
-  "definitions": [
-    {
-      "name": "m",
-      "position": {
-        "start_line": 1,
-        "start_column": 5,
-        "end_line": 1,
-        "end_column": 6
-      },
-      "definition_type": "ModuleDefinition"
+Source Code:
+mod m { pub fn f() {} }
+m::f();
+
+
+AST:
+(source_file
+  (mod_item
+    name: (identifier "m")
+    body: (declaration_list
+      (function_item
+        (visibility_modifier)
+        name: (identifier "f")
+        parameters: (parameters)
+        body: (block)
+      )
+    )
+  )
+  (expression_statement
+    (call_expression
+      function: (scoped_identifier "m::f"
+        path: (identifier "m")
+        name: (identifier "f")
+      )
+      arguments: (arguments)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/rust/fixtures/path_qualified_call_dependency.rs",
+    definitions: [
+        Definition {
+            name: "m",
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 6,
+            },
+            definition_type: ModuleDefinition,
+        },
+        Definition {
+            name: "f",
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 17,
+            },
+            definition_type: FunctionDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "m",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "f",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "m::f()",
+            kind: CallExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 1,
+                end_line: 2,
+                end_column: 7,
+            },
+        },
+        Usage {
+            name: "m",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 1,
+                end_line: 2,
+                end_column: 2,
+            },
+        },
+        Usage {
+            name: "f",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 4,
+                end_line: 2,
+                end_column: 5,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 2,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
     },
-    {
-      "name": "f",
-      "position": {
-        "start_line": 1,
-        "start_column": 16,
-        "end_line": 1,
-        "end_column": 17
-      },
-      "definition_type": "FunctionDefinition"
-    }
-  ],
-  "dependencies": [
-    {
-      "source_line": 2,
-      "target_line": 1,
-      "symbol": "m",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    },
-    {
-      "source_line": 2,
-      "target_line": 1,
-      "symbol": "f",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    }
-  ],
-  "usage": [
-    {
-      "name": "m::f()",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 2,
-        "start_column": 1,
-        "end_line": 2,
-        "end_column": 7
-      }
-    },
-    {
-      "name": "m",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 2,
-        "start_column": 1,
-        "end_line": 2,
-        "end_column": 2
-      }
-    },
-    {
-      "name": "f",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 2,
-        "start_column": 4,
-        "end_line": 2,
-        "end_column": 5
-      }
-    }
-  ],
-  "analysis_metadata": {
-    "language": "Rust",
-    "total_lines": 2,
-    "analysis_timestamp": "now",
-    "lintric_version": "0.1.0"
-  }
 }

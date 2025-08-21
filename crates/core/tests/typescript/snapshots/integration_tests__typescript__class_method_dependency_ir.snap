@@ -1,197 +1,276 @@
 ---
-source: core/tests/typescript/mod.rs
-expression: "serde_json::to_string_pretty(&ir).unwrap()"
+source: crates/core/tests/typescript/mod.rs
+expression: ir_snapshot_content
 ---
-{
-  "file_path": "tests/typescript/fixtures/class_method_dependency.ts",
-  "definitions": [
-    {
-      "name": "MyClass",
-      "position": {
-        "start_line": 1,
-        "start_column": 7,
-        "end_line": 1,
-        "end_column": 14
-      },
-      "definition_type": "ClassDefinition"
+Source Code:
+class MyClass {
+    constructor(public value: number){}
+    greet() { console.log(this.value); }
+}
+let instance = new MyClass(10);
+instance.greet();
+
+AST:
+(program
+  (class_declaration
+    name: (type_identifier "MyClass")
+    body: (class_body
+      (method_definition
+        name: (property_identifier "constructor")
+        parameters: (formal_parameters
+          (required_parameter
+            (accessibility_modifier "public")
+            pattern: (identifier "value")
+            type: (type_annotation
+              (predefined_type "number")
+            )
+          )
+        )
+        body: (statement_block)
+      )
+      (method_definition
+        name: (property_identifier "greet")
+        parameters: (formal_parameters)
+        body: (statement_block
+          (expression_statement
+            (call_expression
+              function: (member_expression
+                object: (identifier "console")
+                property: (property_identifier "log")
+              )
+              arguments: (arguments
+                (member_expression
+                  object: (this "this")
+                  property: (property_identifier "value")
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (lexical_declaration
+    (variable_declarator
+      name: (identifier "instance")
+      value: (new_expression
+        constructor: (identifier "MyClass")
+        arguments: (arguments
+          (number "10")
+        )
+      )
+    )
+  )
+  (expression_statement
+    (call_expression
+      function: (member_expression
+        object: (identifier "instance")
+        property: (property_identifier "greet")
+      )
+      arguments: (arguments)
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/typescript/fixtures/class_method_dependency.ts",
+    definitions: [
+        Definition {
+            name: "MyClass",
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 14,
+            },
+            definition_type: ClassDefinition,
+        },
+        Definition {
+            name: "constructor",
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 16,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "value",
+            position: Position {
+                start_line: 2,
+                start_column: 24,
+                end_line: 2,
+                end_column: 29,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "greet",
+            position: Position {
+                start_line: 3,
+                start_column: 5,
+                end_line: 3,
+                end_column: 10,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "instance",
+            position: Position {
+                start_line: 5,
+                start_column: 5,
+                end_line: 5,
+                end_column: 13,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 3,
+            target_line: 2,
+            symbol: "value",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "MyClass",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+        Dependency {
+            source_line: 6,
+            target_line: 5,
+            symbol: "instance",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+        Dependency {
+            source_line: 6,
+            target_line: 3,
+            symbol: "greet",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "constructor",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "greet",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 3,
+                start_column: 5,
+                end_line: 3,
+                end_column: 10,
+            },
+        },
+        Usage {
+            name: "console.log(this.value)",
+            kind: CallExpression,
+            position: Position {
+                start_line: 3,
+                start_column: 15,
+                end_line: 3,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "console",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 15,
+                end_line: 3,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "log",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 3,
+                start_column: 23,
+                end_line: 3,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "value",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 3,
+                start_column: 32,
+                end_line: 3,
+                end_column: 37,
+            },
+        },
+        Usage {
+            name: "MyClass",
+            kind: Identifier,
+            position: Position {
+                start_line: 5,
+                start_column: 20,
+                end_line: 5,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "instance.greet()",
+            kind: CallExpression,
+            position: Position {
+                start_line: 6,
+                start_column: 1,
+                end_line: 6,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "instance",
+            kind: Identifier,
+            position: Position {
+                start_line: 6,
+                start_column: 1,
+                end_line: 6,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "greet",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 6,
+                start_column: 10,
+                end_line: 6,
+                end_column: 15,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 6,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
     },
-    {
-      "name": "constructor",
-      "position": {
-        "start_line": 2,
-        "start_column": 5,
-        "end_line": 2,
-        "end_column": 16
-      },
-      "definition_type": "FunctionDefinition"
-    },
-    {
-      "name": "value",
-      "position": {
-        "start_line": 2,
-        "start_column": 24,
-        "end_line": 2,
-        "end_column": 29
-      },
-      "definition_type": "VariableDefinition"
-    },
-    {
-      "name": "greet",
-      "position": {
-        "start_line": 3,
-        "start_column": 5,
-        "end_line": 3,
-        "end_column": 10
-      },
-      "definition_type": "FunctionDefinition"
-    },
-    {
-      "name": "instance",
-      "position": {
-        "start_line": 5,
-        "start_column": 5,
-        "end_line": 5,
-        "end_column": 13
-      },
-      "definition_type": "VariableDefinition"
-    }
-  ],
-  "dependencies": [
-    {
-      "source_line": 3,
-      "target_line": 2,
-      "symbol": "value",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 5,
-      "target_line": 1,
-      "symbol": "MyClass",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    },
-    {
-      "source_line": 6,
-      "target_line": 5,
-      "symbol": "instance",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    },
-    {
-      "source_line": 6,
-      "target_line": 3,
-      "symbol": "greet",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    }
-  ],
-  "usage": [
-    {
-      "name": "constructor",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 2,
-        "start_column": 5,
-        "end_line": 2,
-        "end_column": 16
-      }
-    },
-    {
-      "name": "greet",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 3,
-        "start_column": 5,
-        "end_line": 3,
-        "end_column": 10
-      }
-    },
-    {
-      "name": "console.log(this.value)",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 3,
-        "start_column": 15,
-        "end_line": 3,
-        "end_column": 38
-      }
-    },
-    {
-      "name": "console",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 3,
-        "start_column": 15,
-        "end_line": 3,
-        "end_column": 22
-      }
-    },
-    {
-      "name": "log",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 3,
-        "start_column": 23,
-        "end_line": 3,
-        "end_column": 26
-      }
-    },
-    {
-      "name": "value",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 3,
-        "start_column": 32,
-        "end_line": 3,
-        "end_column": 37
-      }
-    },
-    {
-      "name": "MyClass",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 5,
-        "start_column": 20,
-        "end_line": 5,
-        "end_column": 27
-      }
-    },
-    {
-      "name": "instance.greet()",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 6,
-        "start_column": 1,
-        "end_line": 6,
-        "end_column": 17
-      }
-    },
-    {
-      "name": "instance",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 6,
-        "start_column": 1,
-        "end_line": 6,
-        "end_column": 9
-      }
-    },
-    {
-      "name": "greet",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 6,
-        "start_column": 10,
-        "end_line": 6,
-        "end_column": 15
-      }
-    }
-  ],
-  "analysis_metadata": {
-    "language": "TypeScript",
-    "total_lines": 6,
-    "analysis_timestamp": "now",
-    "lintric_version": "0.1.0"
-  }
 }
