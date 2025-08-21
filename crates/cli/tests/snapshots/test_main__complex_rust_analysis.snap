@@ -1,5 +1,5 @@
 ---
-source: cli/tests/test_main.rs
+source: crates/cli/tests/test_main.rs
 expression: out
 ---
 --- Analysis for complex_rust_code.rs ---
@@ -11,24 +11,24 @@ expression: out
 │ 12   ┆ 1          ┆ 0.34375   ┆ 1     ┆ 1               │
 │ 13   ┆ 1          ┆ 0.375     ┆ 1     ┆ 1               │
 │ 15   ┆ 1          ┆ 0.4375    ┆ 1     ┆ 1               │
-│ 16   ┆ 3          ┆ 0.53125   ┆ 2     ┆ 4               │
-│ 17   ┆ 3          ┆ 0.625     ┆ 2     ┆ 4               │
+│ 16   ┆ 5          ┆ 1.40625   ┆ 2     ┆ 5               │
+│ 17   ┆ 5          ┆ 1.5       ┆ 2     ┆ 5               │
 │ 21   ┆ 1          ┆ 0.625     ┆ 1     ┆ 1               │
 │ 22   ┆ 1          ┆ 0.03125   ┆ 2     ┆ 2               │
 │ 23   ┆ 1          ┆ 0.03125   ┆ 3     ┆ 3               │
-│ 27   ┆ 1          ┆ 0.03125   ┆ 1     ┆ 1               │
-│ 28   ┆ 2          ┆ 0.09375   ┆ 2     ┆ 2               │
+│ 27   ┆ 1          ┆ 0.78125   ┆ 1     ┆ 1               │
+│ 28   ┆ 2          ┆ 1.59375   ┆ 1     ┆ 2               │
 │ 30   ┆ 1          ┆ 0.46875   ┆ 2     ┆ 2               │
 │ 31   ┆ 1          ┆ 0.34375   ┆ 1     ┆ 1               │
 └──────┴────────────┴───────────┴───────┴─────────────────┘
-Overall Complexity Score: 47.60
+Overall Complexity Score: 51.40
 ┌──────────────────────┬──────────────────────────┐
 │ File                 ┆ Overall Complexity Score │
 ╞══════════════════════╪══════════════════════════╡
-│ complex_rust_code.rs ┆ 47.60                    │
+│ complex_rust_code.rs ┆ 51.40                    │
 └──────────────────────┴──────────────────────────┘
 
 --- Overall Report ---
 Total Files Analyzed: 1
-Total Overall Complexity Score: 47.60
-Average Complexity Score: 47.60
+Total Overall Complexity Score: 51.40
+Average Complexity Score: 51.40

@@ -16,6 +16,7 @@ pub enum DefinitionType {
     MacroVariableDefinition,
     PropertyDefinition,
     MethodDefinition,
+    StructFieldDefinition,
     ImportDefinition,
     Other(String),
 }

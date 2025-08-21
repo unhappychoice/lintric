@@ -1,5 +1,5 @@
 ---
-source: cli/tests/test_main.rs
+source: crates/cli/tests/test_main.rs
 expression: out
 ---
 {
@@ -14,6 +14,26 @@ expression: out
         "end_column": 13
       },
       "definition_type": "StructDefinition"
+    },
+    {
+      "name": "x",
+      "position": {
+        "start_line": 2,
+        "start_column": 5,
+        "end_line": 2,
+        "end_column": 6
+      },
+      "definition_type": "StructFieldDefinition"
+    },
+    {
+      "name": "y",
+      "position": {
+        "start_line": 3,
+        "start_column": 5,
+        "end_line": 3,
+        "end_column": 6
+      },
+      "definition_type": "StructFieldDefinition"
     },
     {
       "name": "add",
@@ -208,10 +228,24 @@ expression: out
     },
     {
       "source_line": 16,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 16,
       "target_line": 12,
       "symbol": "p1",
       "dependency_type": "VariableUse",
       "context": "variable_use"
+    },
+    {
+      "source_line": 16,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
     },
     {
       "source_line": 16,
@@ -229,10 +263,24 @@ expression: out
     },
     {
       "source_line": 17,
+      "target_line": 3,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 17,
       "target_line": 12,
       "symbol": "p1",
       "dependency_type": "VariableUse",
       "context": "variable_use"
+    },
+    {
+      "source_line": 17,
+      "target_line": 3,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
     },
     {
       "source_line": 17,
@@ -264,21 +312,21 @@ expression: out
     },
     {
       "source_line": 27,
-      "target_line": 26,
+      "target_line": 2,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "variable_use"
     },
     {
       "source_line": 28,
-      "target_line": 27,
+      "target_line": 3,
       "symbol": "y",
       "dependency_type": "VariableUse",
       "context": "variable_use"
     },
     {
       "source_line": 28,
-      "target_line": 26,
+      "target_line": 2,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "variable_use"

@@ -1,5 +1,6 @@
 ---
 source: crates/core/tests/rust/mod.rs
+assertion_line: 50
 expression: ir_snapshot_content
 ---
 Source Code:
@@ -70,6 +71,26 @@ IntermediateRepresentation {
             definition_type: StructDefinition,
         },
         Definition {
+            name: "x",
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 17,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "y",
+            position: Position {
+                start_line: 1,
+                start_column: 24,
+                end_line: 1,
+                end_column: 25,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
             name: "main",
             position: Position {
                 start_line: 2,
@@ -108,6 +129,15 @@ IntermediateRepresentation {
             dependency_type: TypeReference,
             context: Some(
                 "type_reference",
+            ),
+        },
+        Dependency {
+            source_line: 4,
+            target_line: 1,
+            symbol: "x",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
             ),
         },
         Dependency {

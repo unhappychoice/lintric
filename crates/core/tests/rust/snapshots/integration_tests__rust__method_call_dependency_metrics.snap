@@ -1,6 +1,7 @@
 ---
-source: core/tests/rust/mod.rs
-expression: "serde_json::to_string_pretty(&result).unwrap()"
+source: crates/core/tests/rust/mod.rs
+assertion_line: 99
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/method_call_dependency.rs",
@@ -13,6 +14,16 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       "transitive_dependencies": 1,
       "dependent_lines": [
         1
+      ]
+    },
+    {
+      "line_number": 7,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.35714285714285715,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        2
       ]
     },
     {
@@ -36,5 +47,5 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       ]
     }
   ],
-  "overall_complexity_score": 7.914285714285715
+  "overall_complexity_score": 10.15
 }

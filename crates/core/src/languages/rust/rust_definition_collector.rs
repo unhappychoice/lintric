@@ -162,6 +162,13 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
             definitions.extend(self.collect_type_parameters(type_params_node));
         }
 
+        // Collect struct field definitions if this is a struct
+        if node.kind() == "struct_item" {
+            if let Some(body_node) = node.child_by_field_name("body") {
+                definitions.extend(self.collect_struct_field_definitions(body_node));
+            }
+        }
+
         definitions
     }
 
@@ -523,6 +530,28 @@ impl<'a> RustDefinitionCollector<'a> {
                 // Recursively search in children
                 for child in node.children(&mut cursor) {
                     definitions.extend(self.collect_metavariables_from_node(child));
+                }
+            }
+        }
+
+        definitions
+    }
+
+    fn collect_struct_field_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+
+        // For field_declaration_list, look for field_declaration children
+        if node.kind() == "field_declaration_list" {
+            let mut cursor = node.walk();
+            for child in node.children(&mut cursor) {
+                if child.kind() == "field_declaration" {
+                    if let Some(name_node) = child.child_by_field_name("name") {
+                        definitions.push(Definition::new(
+                            &name_node,
+                            self.source_code,
+                            DefinitionType::StructFieldDefinition,
+                        ));
+                    }
                 }
             }
         }
