@@ -1,86 +1,122 @@
 ---
-source: core/tests/typescript/mod.rs
-expression: "serde_json::to_string_pretty(&ir).unwrap()"
+source: crates/core/tests/typescript/mod.rs
+expression: ir_snapshot_content
 ---
-{
-  "file_path": "tests/typescript/fixtures/function_parameter_dependency.ts",
-  "definitions": [
-    {
-      "name": "a",
-      "position": {
-        "start_line": 1,
-        "start_column": 10,
-        "end_line": 1,
-        "end_column": 11
-      },
-      "definition_type": "FunctionDefinition"
+Source Code:
+function a(b: string) {
+  console.log(b);
+}
+
+AST:
+(program
+  (function_declaration
+    name: (identifier "a")
+    parameters: (formal_parameters
+      (required_parameter
+        pattern: (identifier "b")
+        type: (type_annotation
+          (predefined_type "string")
+        )
+      )
+    )
+    body: (statement_block
+      (expression_statement
+        (call_expression
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
+          )
+          arguments: (arguments
+            (identifier "b")
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/typescript/fixtures/function_parameter_dependency.ts",
+    definitions: [
+        Definition {
+            name: "a",
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "b",
+            position: Position {
+                start_line: 1,
+                start_column: 12,
+                end_line: 1,
+                end_column: 13,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "b",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "console.log(b)",
+            kind: CallExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 3,
+                end_line: 2,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "console",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 3,
+                end_line: 2,
+                end_column: 10,
+            },
+        },
+        Usage {
+            name: "log",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 11,
+                end_line: 2,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "b",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 15,
+                end_line: 2,
+                end_column: 16,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 3,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
     },
-    {
-      "name": "b",
-      "position": {
-        "start_line": 1,
-        "start_column": 12,
-        "end_line": 1,
-        "end_column": 13
-      },
-      "definition_type": "VariableDefinition"
-    }
-  ],
-  "dependencies": [
-    {
-      "source_line": 2,
-      "target_line": 1,
-      "symbol": "b",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    }
-  ],
-  "usage": [
-    {
-      "name": "console.log(b)",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 2,
-        "start_column": 3,
-        "end_line": 2,
-        "end_column": 17
-      }
-    },
-    {
-      "name": "console",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 2,
-        "start_column": 3,
-        "end_line": 2,
-        "end_column": 10
-      }
-    },
-    {
-      "name": "log",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 2,
-        "start_column": 11,
-        "end_line": 2,
-        "end_column": 14
-      }
-    },
-    {
-      "name": "b",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 2,
-        "start_column": 15,
-        "end_line": 2,
-        "end_column": 16
-      }
-    }
-  ],
-  "analysis_metadata": {
-    "language": "TypeScript",
-    "total_lines": 3,
-    "analysis_timestamp": "now",
-    "lintric_version": "0.1.0"
-  }
 }

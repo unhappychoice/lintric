@@ -1,130 +1,185 @@
 ---
-source: core/tests/rust/mod.rs
-expression: "serde_json::to_string_pretty(&ir).unwrap()"
+source: crates/core/tests/rust/mod.rs
+expression: ir_snapshot_content
 ---
-{
-  "file_path": "tests/rust/fixtures/function_call_dependency.rs",
-  "definitions": [
-    {
-      "name": "add",
-      "position": {
-        "start_line": 1,
-        "start_column": 4,
-        "end_line": 1,
-        "end_column": 7
-      },
-      "definition_type": "FunctionDefinition"
+Source Code:
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+fn main() {
+    let x = add(1, 2);
+}
+
+AST:
+(source_file
+  (function_item
+    name: (identifier "add")
+    parameters: (parameters
+      (parameter
+        pattern: (identifier "a")
+        type: (primitive_type "i32")
+      )
+      (parameter
+        pattern: (identifier "b")
+        type: (primitive_type "i32")
+      )
+    )
+    return_type: (primitive_type "i32")
+    body: (block
+      (binary_expression
+        left: (identifier "a")
+        right: (identifier "b")
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "x")
+        value: (call_expression
+          function: (identifier "add")
+          arguments: (arguments
+            (integer_literal "1")
+            (integer_literal "2")
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/rust/fixtures/function_call_dependency.rs",
+    definitions: [
+        Definition {
+            name: "add",
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 7,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "a",
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 9,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "b",
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 17,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 4,
+                start_column: 4,
+                end_line: 4,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "x",
+            position: Position {
+                start_line: 5,
+                start_column: 9,
+                end_line: 5,
+                end_column: 10,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "a",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "b",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "add",
+            dependency_type: VariableUse,
+            context: Some(
+                "variable_use",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "a",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 6,
+            },
+        },
+        Usage {
+            name: "b",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 9,
+                end_line: 2,
+                end_column: 10,
+            },
+        },
+        Usage {
+            name: "add(1, 2)",
+            kind: CallExpression,
+            position: Position {
+                start_line: 5,
+                start_column: 13,
+                end_line: 5,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "add",
+            kind: Identifier,
+            position: Position {
+                start_line: 5,
+                start_column: 13,
+                end_line: 5,
+                end_column: 16,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 6,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
     },
-    {
-      "name": "a",
-      "position": {
-        "start_line": 1,
-        "start_column": 8,
-        "end_line": 1,
-        "end_column": 9
-      },
-      "definition_type": "VariableDefinition"
-    },
-    {
-      "name": "b",
-      "position": {
-        "start_line": 1,
-        "start_column": 16,
-        "end_line": 1,
-        "end_column": 17
-      },
-      "definition_type": "VariableDefinition"
-    },
-    {
-      "name": "main",
-      "position": {
-        "start_line": 4,
-        "start_column": 4,
-        "end_line": 4,
-        "end_column": 8
-      },
-      "definition_type": "FunctionDefinition"
-    },
-    {
-      "name": "x",
-      "position": {
-        "start_line": 5,
-        "start_column": 9,
-        "end_line": 5,
-        "end_column": 10
-      },
-      "definition_type": "VariableDefinition"
-    }
-  ],
-  "dependencies": [
-    {
-      "source_line": 2,
-      "target_line": 1,
-      "symbol": "a",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    },
-    {
-      "source_line": 2,
-      "target_line": 1,
-      "symbol": "b",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    },
-    {
-      "source_line": 5,
-      "target_line": 1,
-      "symbol": "add",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
-    }
-  ],
-  "usage": [
-    {
-      "name": "a",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 2,
-        "start_column": 5,
-        "end_line": 2,
-        "end_column": 6
-      }
-    },
-    {
-      "name": "b",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 2,
-        "start_column": 9,
-        "end_line": 2,
-        "end_column": 10
-      }
-    },
-    {
-      "name": "add(1, 2)",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 5,
-        "start_column": 13,
-        "end_line": 5,
-        "end_column": 22
-      }
-    },
-    {
-      "name": "add",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 5,
-        "start_column": 13,
-        "end_line": 5,
-        "end_column": 16
-      }
-    }
-  ],
-  "analysis_metadata": {
-    "language": "Rust",
-    "total_lines": 6,
-    "analysis_timestamp": "now",
-    "lintric_version": "0.1.0"
-  }
 }
