@@ -9,15 +9,15 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier ctor)
-      (type_annotation
+      name: (identifier "ctor")
+      type: (type_annotation
         (constructor_type
-          (formal_parameters)
-          (predefined_type)
+          parameters: (formal_parameters)
+          type: (predefined_type "object")
         )
       )
-      (class
-        (class_body)
+      value: (class
+        body: (class_body)
       )
     )
   )

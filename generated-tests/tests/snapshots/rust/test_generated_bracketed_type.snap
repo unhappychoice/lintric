@@ -8,24 +8,24 @@ fn test() -> <Vec<i32> as IntoIterator>::Item { 42 }
 AST:
 (source_file
   (function_item
-    (identifier test)
-    (parameters)
-    (scoped_type_identifier
-      (bracketed_type
+    name: (identifier "test")
+    parameters: (parameters)
+    return_type: (scoped_type_identifier "<Vec<i32> as IntoIterator>::Item"
+      path: (bracketed_type
         (qualified_type
-          (generic_type
-            (type_identifier)
-            (type_arguments
-              (primitive_type)
+          type: (generic_type
+            type: (type_identifier "Vec")
+            type_arguments: (type_arguments
+              (primitive_type "i32")
             )
           )
-          (type_identifier)
+          alias: (type_identifier "IntoIterator")
         )
       )
-      (type_identifier)
+      name: (type_identifier "Item")
     )
-    (block
-      (integer_literal)
+    body: (block
+      (integer_literal "42")
     )
   )
 )

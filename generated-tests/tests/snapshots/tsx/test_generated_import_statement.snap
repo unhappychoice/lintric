@@ -11,11 +11,11 @@ AST:
     (import_clause
       (named_imports
         (import_specifier
-          (identifier Item)
+          name: (identifier "Item")
         )
       )
     )
-    (string
+    source: (string
       (string_fragment)
     )
   )

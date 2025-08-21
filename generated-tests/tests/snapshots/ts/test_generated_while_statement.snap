@@ -8,10 +8,10 @@ while (condition2) { break; }
 AST:
 (program
   (while_statement
-    (parenthesized_expression
-      (identifier condition2)
+    condition: (parenthesized_expression
+      (identifier "condition2")
     )
-    (statement_block
+    body: (statement_block
       (break_statement)
     )
   )

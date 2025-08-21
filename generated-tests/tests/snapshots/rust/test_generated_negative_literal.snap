@@ -8,10 +8,10 @@ let result = x10 - y3;
 AST:
 (source_file
   (let_declaration
-    (identifier result)
-    (binary_expression
-      (identifier x10)
-      (identifier y3)
+    pattern: (identifier "result")
+    value: (binary_expression
+      left: (identifier "x10")
+      right: (identifier "y3")
     )
   )
 )

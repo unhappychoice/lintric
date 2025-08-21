@@ -12,21 +12,21 @@ AST:
 (source_file
   (attribute_item
     (attribute
-      (identifier derive)
-      (token_tree
-        (identifier Debug)
+      (identifier "derive")
+      arguments: (token_tree
+        (identifier "Debug")
       )
     )
   )
   (struct_item
-    (type_identifier)
+    name: (type_identifier "TestStruct")
   )
   (function_item
-    (identifier test_fn1)
-    (parameters)
-    (primitive_type)
-    (block
-      (integer_literal)
+    name: (identifier "test_fn1")
+    parameters: (parameters)
+    return_type: (primitive_type "i32")
+    body: (block
+      (integer_literal "42")
     )
   )
 )

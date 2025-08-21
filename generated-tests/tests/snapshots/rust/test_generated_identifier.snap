@@ -8,7 +8,7 @@ identifier
 AST:
 (source_file
   (ERROR
-    (identifier identifier)
+    (identifier "identifier")
   )
 )
 

@@ -9,9 +9,9 @@ AST:
 (program
   (throw_statement
     (new_expression
-      (identifier Error)
-      (arguments
-        (identifier error)
+      constructor: (identifier "Error")
+      arguments: (arguments
+        (identifier "error")
       )
     )
   )

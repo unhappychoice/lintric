@@ -8,9 +8,9 @@ use module::Item1;
 AST:
 (source_file
   (use_declaration
-    (scoped_identifier
-      (identifier module)
-      (identifier Item1)
+    argument: (scoped_identifier "module::Item1"
+      path: (identifier "module")
+      name: (identifier "Item1")
     )
   )
 )

@@ -8,21 +8,21 @@ let var8: std::vec::Vec<i32> = vec![];
 AST:
 (source_file
   (let_declaration
-    (identifier var8)
-    (generic_type
-      (scoped_type_identifier
-        (scoped_identifier
-          (identifier std)
-          (identifier vec)
+    pattern: (identifier "var8")
+    type: (generic_type
+      type: (scoped_type_identifier "std::vec::Vec"
+        path: (scoped_identifier "std::vec"
+          path: (identifier "std")
+          name: (identifier "vec")
         )
-        (type_identifier)
+        name: (type_identifier "Vec")
       )
-      (type_arguments
-        (primitive_type)
+      type_arguments: (type_arguments
+        (primitive_type "i32")
       )
     )
-    (macro_invocation
-      (identifier vec)
+    value: (macro_invocation
+      macro: (identifier "vec")
       (token_tree)
     )
   )

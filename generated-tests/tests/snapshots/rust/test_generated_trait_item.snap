@@ -8,16 +8,16 @@ trait TestTrait1 { fn method1(&self) -> i32; }
 AST:
 (source_file
   (trait_item
-    (type_identifier)
-    (declaration_list
+    name: (type_identifier "TestTrait1")
+    body: (declaration_list
       (function_signature_item
-        (identifier method1)
-        (parameters
+        name: (identifier "method1")
+        parameters: (parameters
           (self_parameter
-            (self)
+            (self "self")
           )
         )
-        (primitive_type)
+        return_type: (primitive_type "i32")
       )
     )
   )

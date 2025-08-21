@@ -9,8 +9,8 @@ AST:
 (source_file
   (ERROR
     (index_expression
-      (identifier arr1)
-      (identifier i)
+      (identifier "arr1")
+      (identifier "i")
     )
   )
 )

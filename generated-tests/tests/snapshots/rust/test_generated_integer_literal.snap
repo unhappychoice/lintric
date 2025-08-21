@@ -8,8 +8,8 @@ let num = 42;
 AST:
 (source_file
   (let_declaration
-    (identifier num)
-    (integer_literal)
+    pattern: (identifier "num")
+    value: (integer_literal "42")
   )
 )
 

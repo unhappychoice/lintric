@@ -9,17 +9,17 @@ AST:
 (source_file
   (expression_statement
     (if_expression
-      (let_condition
-        (struct_pattern
-          (type_identifier)
+      condition: (let_condition
+        pattern: (struct_pattern
+          type: (type_identifier "Type2")
           (field_pattern
-            (field_identifier)
-            (identifier x14)
+            name: (field_identifier "field4")
+            pattern: (identifier "x14")
           )
         )
-        (identifier value8)
+        value: (identifier "value8")
       )
-      (block)
+      consequence: (block)
     )
   )
 )

@@ -9,14 +9,14 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value31)
-      (type_annotation
+      name: (identifier "value31")
+      type: (type_annotation
         (union_type
-          (predefined_type)
-          (predefined_type)
+          (predefined_type "string")
+          (predefined_type "number")
         )
       )
-      (string
+      value: (string
         (string_fragment)
       )
     )

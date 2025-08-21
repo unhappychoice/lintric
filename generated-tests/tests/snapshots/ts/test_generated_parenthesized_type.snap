@@ -9,16 +9,16 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value20)
-      (type_annotation
+      name: (identifier "value20")
+      type: (type_annotation
         (parenthesized_type
           (union_type
-            (predefined_type)
-            (predefined_type)
+            (predefined_type "string")
+            (predefined_type "number")
           )
         )
       )
-      (string
+      value: (string
         (string_fragment)
       )
     )

@@ -8,17 +8,17 @@ fn test_fn3() -> i32 { let x5 = 42; x5 + 1 }
 AST:
 (source_file
   (function_item
-    (identifier test_fn3)
-    (parameters)
-    (primitive_type)
-    (block
+    name: (identifier "test_fn3")
+    parameters: (parameters)
+    return_type: (primitive_type "i32")
+    body: (block
       (let_declaration
-        (identifier x5)
-        (integer_literal)
+        pattern: (identifier "x5")
+        value: (integer_literal "42")
       )
       (binary_expression
-        (identifier x5)
-        (integer_literal)
+        left: (identifier "x5")
+        right: (integer_literal "1")
       )
     )
   )

@@ -9,8 +9,8 @@ AST:
 (program
   (expression_statement
     (as_expression
-      (identifier value4)
-      (type_identifier)
+      (identifier "value4")
+      (type_identifier "Type1")
     )
   )
 )

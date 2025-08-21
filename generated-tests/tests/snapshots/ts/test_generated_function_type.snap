@@ -9,32 +9,32 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier fn)
-      (type_annotation
+      name: (identifier "fn")
+      type: (type_annotation
         (function_type
-          (formal_parameters
+          parameters: (formal_parameters
             (required_parameter
-              (identifier x)
-              (type_annotation
-                (predefined_type)
+              pattern: (identifier "x")
+              type: (type_annotation
+                (predefined_type "number")
               )
             )
           )
-          (predefined_type)
+          return_type: (predefined_type "string")
         )
       )
-      (arrow_function
-        (formal_parameters
+      value: (arrow_function
+        parameters: (formal_parameters
           (required_parameter
-            (identifier x)
+            pattern: (identifier "x")
           )
         )
-        (call_expression
-          (member_expression
-            (identifier x)
-            (property_identifier)
+        body: (call_expression
+          function: (member_expression
+            object: (identifier "x")
+            property: (property_identifier "toString")
           )
-          (arguments)
+          arguments: (arguments)
         )
       )
     )

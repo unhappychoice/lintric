@@ -9,22 +9,22 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier i)
-      (number)
+      name: (identifier "i")
+      value: (number "0")
     )
   )
   (do_statement
-    (statement_block
+    body: (statement_block
       (expression_statement
         (update_expression
-          (identifier i)
+          argument: (identifier "i")
         )
       )
     )
-    (parenthesized_expression
+    condition: (parenthesized_expression
       (binary_expression
-        (identifier i)
-        (number)
+        left: (identifier "i")
+        right: (number "5")
       )
     )
   )

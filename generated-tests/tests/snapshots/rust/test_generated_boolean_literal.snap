@@ -8,8 +8,8 @@ let flag = true;
 AST:
 (source_file
   (let_declaration
-    (identifier flag)
-    (boolean_literal)
+    pattern: (identifier "flag")
+    value: (boolean_literal "true")
   )
 )
 

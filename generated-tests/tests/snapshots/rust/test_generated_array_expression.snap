@@ -9,8 +9,8 @@ AST:
 (source_file
   (expression_statement
     (array_expression
-      (identifier item1)
-      (identifier item2)
+      (identifier "item1")
+      (identifier "item2")
     )
   )
 )

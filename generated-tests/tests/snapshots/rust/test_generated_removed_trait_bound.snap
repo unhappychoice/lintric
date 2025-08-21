@@ -8,16 +8,16 @@ fn test_fn9<T>(_: T) { }
 AST:
 (source_file
   (function_item
-    (identifier test_fn9)
-    (type_parameters
-      (type_identifier)
+    name: (identifier "test_fn9")
+    type_parameters: (type_parameters
+      (type_identifier "T")
     )
-    (parameters
+    parameters: (parameters
       (parameter
-        (type_identifier)
+        type: (type_identifier "T")
       )
     )
-    (block)
+    body: (block)
   )
 )
 

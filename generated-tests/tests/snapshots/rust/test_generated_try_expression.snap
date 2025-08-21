@@ -9,7 +9,7 @@ AST:
 (source_file
   (ERROR
     (try_expression
-      (identifier result1)
+      (identifier "result1")
     )
   )
 )

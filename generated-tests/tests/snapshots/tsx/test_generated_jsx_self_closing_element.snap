@@ -9,13 +9,13 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier element)
-      (jsx_self_closing_element
-        (identifier Component2)
-        (jsx_attribute
-          (property_identifier)
+      name: (identifier "element")
+      value: (jsx_self_closing_element
+        name: (identifier "Component2")
+        attribute: (jsx_attribute
+          (property_identifier "prop3")
           (jsx_expression
-            (identifier value16)
+            (identifier "value16")
           )
         )
       )

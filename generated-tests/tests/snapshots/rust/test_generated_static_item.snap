@@ -8,9 +8,9 @@ static STATIC: i32 = 42;
 AST:
 (source_file
   (static_item
-    (identifier STATIC)
-    (primitive_type)
-    (integer_literal)
+    name: (identifier "STATIC")
+    type: (primitive_type "i32")
+    value: (integer_literal "42")
   )
 )
 

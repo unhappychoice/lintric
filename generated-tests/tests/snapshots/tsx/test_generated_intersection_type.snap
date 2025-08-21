@@ -9,35 +9,35 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value12)
-      (type_annotation
+      name: (identifier "value12")
+      type: (type_annotation
         (intersection_type
           (object_type
             (property_signature
-              (property_identifier)
-              (type_annotation
-                (predefined_type)
+              name: (property_identifier "a")
+              type: (type_annotation
+                (predefined_type "number")
               )
             )
           )
           (object_type
             (property_signature
-              (property_identifier)
-              (type_annotation
-                (predefined_type)
+              name: (property_identifier "b")
+              type: (type_annotation
+                (predefined_type "string")
               )
             )
           )
         )
       )
-      (object
+      value: (object
         (pair
-          (property_identifier)
-          (number)
+          key: (property_identifier "a")
+          value: (number "42")
         )
         (pair
-          (property_identifier)
-          (string
+          key: (property_identifier "b")
+          value: (string
             (string_fragment)
           )
         )

@@ -9,8 +9,8 @@ AST:
 (program
   (expression_statement
     (subscript_expression
-      (identifier arr3)
-      (identifier i2)
+      object: (identifier "arr3")
+      index: (identifier "i2")
     )
   )
 )

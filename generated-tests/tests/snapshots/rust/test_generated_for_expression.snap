@@ -9,17 +9,17 @@ AST:
 (source_file
   (expression_statement
     (for_expression
-      (identifier item)
-      (identifier vec)
-      (block
+      pattern: (identifier "item")
+      value: (identifier "vec")
+      body: (block
         (expression_statement
           (macro_invocation
-            (identifier println)
+            macro: (identifier "println")
             (token_tree
-              (string_literal
+              (string_literal ""{}""
                 (string_content)
               )
-              (identifier item)
+              (identifier "item")
             )
           )
         )

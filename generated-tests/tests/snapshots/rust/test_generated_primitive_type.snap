@@ -8,9 +8,9 @@ let var10: i32 = 42;
 AST:
 (source_file
   (let_declaration
-    (identifier var10)
-    (primitive_type)
-    (integer_literal)
+    pattern: (identifier "var10")
+    type: (primitive_type "i32")
+    value: (integer_literal "42")
   )
 )
 

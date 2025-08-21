@@ -9,11 +9,11 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (array_pattern
-        (identifier a)
-        (identifier b)
+      name: (array_pattern
+        (identifier "a")
+        (identifier "b")
       )
-      (identifier array)
+      value: (identifier "array")
     )
   )
 )

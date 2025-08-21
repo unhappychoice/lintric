@@ -9,7 +9,7 @@ AST:
 (source_file
   (expression_statement
     (await_expression
-      (identifier future)
+      (identifier "future")
     )
   )
 )

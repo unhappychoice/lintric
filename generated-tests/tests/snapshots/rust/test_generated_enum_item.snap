@@ -8,12 +8,12 @@ enum TestEnum { Variant(i32) }
 AST:
 (source_file
   (enum_item
-    (type_identifier)
-    (enum_variant_list
+    name: (type_identifier "TestEnum")
+    body: (enum_variant_list
       (enum_variant
-        (identifier Variant)
-        (ordered_field_declaration_list
-          (primitive_type)
+        name: (identifier "Variant")
+        body: (ordered_field_declaration_list
+          type: (primitive_type "i32")
         )
       )
     )

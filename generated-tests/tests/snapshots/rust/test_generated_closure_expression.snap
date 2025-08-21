@@ -8,14 +8,14 @@ let closure = |x3| x3 + y2;
 AST:
 (source_file
   (let_declaration
-    (identifier closure)
-    (closure_expression
-      (closure_parameters
-        (identifier x3)
+    pattern: (identifier "closure")
+    value: (closure_expression
+      parameters: (closure_parameters
+        (identifier "x3")
       )
-      (binary_expression
-        (identifier x3)
-        (identifier y2)
+      body: (binary_expression
+        left: (identifier "x3")
+        right: (identifier "y2")
       )
     )
   )

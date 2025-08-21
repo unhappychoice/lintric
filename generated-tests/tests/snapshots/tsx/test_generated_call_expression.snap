@@ -9,10 +9,10 @@ AST:
 (program
   (expression_statement
     (call_expression
-      (identifier testFn)
-      (arguments
-        (identifier a2)
-        (identifier b2)
+      function: (identifier "testFn")
+      arguments: (arguments
+        (identifier "a2")
+        (identifier "b2")
       )
     )
   )

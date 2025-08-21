@@ -8,10 +8,10 @@ trait TestTrait { type Item; }
 AST:
 (source_file
   (trait_item
-    (type_identifier)
-    (declaration_list
+    name: (type_identifier "TestTrait")
+    body: (declaration_list
       (associated_type
-        (type_identifier)
+        name: (type_identifier "Item")
       )
     )
   )

@@ -8,7 +8,7 @@ true
 AST:
 (program
   (expression_statement
-    (true)
+    (true "true")
   )
 )
 

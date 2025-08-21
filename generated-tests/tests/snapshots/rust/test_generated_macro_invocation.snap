@@ -8,12 +8,12 @@ println!("{}", var6)
 AST:
 (source_file
   (macro_invocation
-    (identifier println)
+    macro: (identifier "println")
     (token_tree
-      (string_literal
+      (string_literal ""{}""
         (string_content)
       )
-      (identifier var6)
+      (identifier "var6")
     )
   )
 )

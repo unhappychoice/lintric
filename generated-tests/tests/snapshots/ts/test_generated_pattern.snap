@@ -9,7 +9,7 @@ AST:
 (program
   (statement_block
     (expression_statement
-      (identifier binding)
+      (identifier "binding")
     )
   )
 )

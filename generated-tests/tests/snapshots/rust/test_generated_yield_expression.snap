@@ -9,7 +9,7 @@ AST:
 (source_file
   (ERROR
     (yield_expression
-      (identifier value11)
+      (identifier "value11")
     )
   )
 )

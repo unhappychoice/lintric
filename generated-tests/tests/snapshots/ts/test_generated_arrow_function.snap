@@ -9,17 +9,17 @@ AST:
 (program
   (expression_statement
     (arrow_function
-      (formal_parameters
+      parameters: (formal_parameters
         (required_parameter
-          (identifier x)
-          (type_annotation
-            (predefined_type)
+          pattern: (identifier "x")
+          type: (type_annotation
+            (predefined_type "number")
           )
         )
       )
-      (binary_expression
-        (identifier x)
-        (identifier y)
+      body: (binary_expression
+        left: (identifier "x")
+        right: (identifier "y")
       )
     )
   )

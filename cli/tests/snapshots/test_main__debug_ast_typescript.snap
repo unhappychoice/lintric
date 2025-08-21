@@ -1,164 +1,164 @@
 ---
 source: cli/tests/test_main.rs
-expression: stdout
+expression: out
 ---
 (program
   (import_statement
     (import_clause
       (named_imports
         (import_specifier
-          (identifier SomeClass)
+          name: (identifier "SomeClass")
         )
       )
     )
-    (string
+    source: (string
       (string_fragment)
     )
   )
   (import_statement
     (import_clause
       (namespace_import
-        (identifier Utils)
+        (identifier "Utils")
       )
     )
-    (string
+    source: (string
       (string_fragment)
     )
   )
   (import_statement
     (import_clause
-      (identifier DefaultExport)
+      (identifier "DefaultExport")
     )
-    (string
+    source: (string
       (string_fragment)
     )
   )
   (interface_declaration
-    (type_identifier)
-    (interface_body
+    name: (type_identifier "Point")
+    body: (interface_body
       (property_signature
-        (property_identifier)
-        (type_annotation
-          (predefined_type)
+        name: (property_identifier "x")
+        type: (type_annotation
+          (predefined_type "number")
         )
       )
       (property_signature
-        (property_identifier)
-        (type_annotation
-          (predefined_type)
+        name: (property_identifier "y")
+        type: (type_annotation
+          (predefined_type "number")
         )
       )
     )
   )
   (function_declaration
-    (identifier add)
-    (formal_parameters
+    name: (identifier "add")
+    parameters: (formal_parameters
       (required_parameter
-        (identifier a)
-        (type_annotation
-          (predefined_type)
+        pattern: (identifier "a")
+        type: (type_annotation
+          (predefined_type "number")
         )
       )
       (required_parameter
-        (identifier b)
-        (type_annotation
-          (predefined_type)
+        pattern: (identifier "b")
+        type: (type_annotation
+          (predefined_type "number")
         )
       )
     )
-    (type_annotation
-      (predefined_type)
+    return_type: (type_annotation
+      (predefined_type "number")
     )
-    (statement_block
+    body: (statement_block
       (lexical_declaration
         (variable_declarator
-          (identifier result)
-          (binary_expression
-            (identifier a)
-            (identifier b)
+          name: (identifier "result")
+          value: (binary_expression
+            left: (identifier "a")
+            right: (identifier "b")
           )
         )
       )
       (return_statement
-        (identifier result)
+        (identifier "result")
       )
     )
   )
   (function_declaration
-    (identifier main)
-    (formal_parameters)
-    (statement_block
+    name: (identifier "main")
+    parameters: (formal_parameters)
+    body: (statement_block
       (lexical_declaration
         (variable_declarator
-          (identifier p1)
-          (type_annotation
-            (type_identifier)
+          name: (identifier "p1")
+          type: (type_annotation
+            (type_identifier "Point")
           )
-          (object
+          value: (object
             (pair
-              (property_identifier)
-              (number)
+              key: (property_identifier "x")
+              value: (number "1")
             )
             (pair
-              (property_identifier)
-              (number)
+              key: (property_identifier "y")
+              value: (number "2")
             )
           )
         )
       )
       (lexical_declaration
         (variable_declarator
-          (identifier p2)
-          (type_annotation
-            (type_identifier)
+          name: (identifier "p2")
+          type: (type_annotation
+            (type_identifier "Point")
           )
-          (object
+          value: (object
             (pair
-              (property_identifier)
-              (number)
+              key: (property_identifier "x")
+              value: (number "3")
             )
             (pair
-              (property_identifier)
-              (number)
+              key: (property_identifier "y")
+              value: (number "4")
             )
           )
         )
       )
       (lexical_declaration
         (variable_declarator
-          (identifier p3)
-          (type_annotation
-            (type_identifier)
+          name: (identifier "p3")
+          type: (type_annotation
+            (type_identifier "Point")
           )
-          (object
+          value: (object
             (pair
-              (property_identifier)
-              (call_expression
-                (identifier add)
-                (arguments
+              key: (property_identifier "x")
+              value: (call_expression
+                function: (identifier "add")
+                arguments: (arguments
                   (member_expression
-                    (identifier p1)
-                    (property_identifier)
+                    object: (identifier "p1")
+                    property: (property_identifier "x")
                   )
                   (member_expression
-                    (identifier p2)
-                    (property_identifier)
+                    object: (identifier "p2")
+                    property: (property_identifier "x")
                   )
                 )
               )
             )
             (pair
-              (property_identifier)
-              (call_expression
-                (identifier add)
-                (arguments
+              key: (property_identifier "y")
+              value: (call_expression
+                function: (identifier "add")
+                arguments: (arguments
                   (member_expression
-                    (identifier p1)
-                    (property_identifier)
+                    object: (identifier "p1")
+                    property: (property_identifier "y")
                   )
                   (member_expression
-                    (identifier p2)
-                    (property_identifier)
+                    object: (identifier "p2")
+                    property: (property_identifier "y")
                   )
                 )
               )
@@ -168,89 +168,89 @@ expression: stdout
       )
       (lexical_declaration
         (variable_declarator
-          (identifier p4)
-          (call_expression
-            (parenthesized_expression
+          name: (identifier "p4")
+          value: (call_expression
+            function: (parenthesized_expression
               (arrow_function
-                (formal_parameters)
-                (statement_block
+                parameters: (formal_parameters)
+                body: (statement_block
                   (lexical_declaration
                     (variable_declarator
-                      (identifier p5)
-                      (type_annotation
-                        (type_identifier)
+                      name: (identifier "p5")
+                      type: (type_annotation
+                        (type_identifier "Point")
                       )
-                      (object
+                      value: (object
                         (pair
-                          (property_identifier)
-                          (number)
+                          key: (property_identifier "x")
+                          value: (number "5")
                         )
                         (pair
-                          (property_identifier)
-                          (number)
+                          key: (property_identifier "y")
+                          value: (number "6")
                         )
                       )
                     )
                   )
                   (lexical_declaration
                     (variable_declarator
-                      (identifier p6)
-                      (identifier p5)
+                      name: (identifier "p6")
+                      value: (identifier "p5")
                     )
                   )
                   (return_statement
-                    (identifier p6)
+                    (identifier "p6")
                   )
                 )
               )
             )
-            (arguments)
+            arguments: (arguments)
           )
         )
       )
       (lexical_declaration
         (variable_declarator
-          (identifier x)
-          (number)
+          name: (identifier "x")
+          value: (number "1")
         )
       )
       (lexical_declaration
         (variable_declarator
-          (identifier y)
-          (binary_expression
-            (identifier x)
-            (number)
+          name: (identifier "y")
+          value: (binary_expression
+            left: (identifier "x")
+            right: (number "1")
           )
         )
       )
       (lexical_declaration
         (variable_declarator
-          (identifier z)
-          (binary_expression
-            (identifier y)
-            (identifier x)
+          name: (identifier "z")
+          value: (binary_expression
+            left: (identifier "y")
+            right: (identifier "x")
           )
         )
       )
       (expression_statement
         (call_expression
-          (member_expression
-            (identifier console)
-            (property_identifier)
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
           )
-          (arguments
-            (identifier p3)
+          arguments: (arguments
+            (identifier "p3")
           )
         )
       )
       (expression_statement
         (call_expression
-          (member_expression
-            (identifier console)
-            (property_identifier)
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
           )
-          (arguments
-            (identifier p4)
+          arguments: (arguments
+            (identifier "p4")
           )
         )
       )
@@ -258,47 +258,47 @@ expression: stdout
   )
   (lexical_declaration
     (variable_declarator
-      (identifier instance)
-      (new_expression
-        (identifier SomeClass)
-        (arguments)
+      name: (identifier "instance")
+      value: (new_expression
+        constructor: (identifier "SomeClass")
+        arguments: (arguments)
       )
     )
   )
   (lexical_declaration
     (variable_declarator
-      (identifier result)
-      (call_expression
-        (member_expression
-          (identifier Utils)
-          (property_identifier)
+      name: (identifier "result")
+      value: (call_expression
+        function: (member_expression
+          object: (identifier "Utils")
+          property: (property_identifier "helperFunction")
         )
-        (arguments)
+        arguments: (arguments)
       )
     )
   )
   (expression_statement
     (call_expression
-      (member_expression
-        (identifier DefaultExport)
-        (property_identifier)
+      function: (member_expression
+        object: (identifier "DefaultExport")
+        property: (property_identifier "init")
       )
-      (arguments)
+      arguments: (arguments)
     )
   )
   (function_declaration
-    (identifier anotherFunction)
-    (formal_parameters)
-    (statement_block
+    name: (identifier "anotherFunction")
+    parameters: (formal_parameters)
+    body: (statement_block
       (expression_statement
         (call_expression
-          (member_expression
-            (identifier console)
-            (property_identifier)
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
           )
-          (arguments
-            (identifier instance)
-            (identifier result)
+          arguments: (arguments
+            (identifier "instance")
+            (identifier "result")
           )
         )
       )

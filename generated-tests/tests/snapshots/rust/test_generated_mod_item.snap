@@ -8,15 +8,15 @@ mod test_mod { pub fn test_fn7() -> i32 { 42 } }
 AST:
 (source_file
   (mod_item
-    (identifier test_mod)
-    (declaration_list
+    name: (identifier "test_mod")
+    body: (declaration_list
       (function_item
         (visibility_modifier)
-        (identifier test_fn7)
-        (parameters)
-        (primitive_type)
-        (block
-          (integer_literal)
+        name: (identifier "test_fn7")
+        parameters: (parameters)
+        return_type: (primitive_type "i32")
+        body: (block
+          (integer_literal "42")
         )
       )
     )

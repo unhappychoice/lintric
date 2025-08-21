@@ -8,31 +8,31 @@ for (let i1 = 0; i1 < arr1.length; i1++) { const item = arr1[i1]; }
 AST:
 (program
   (for_statement
-    (lexical_declaration
+    initializer: (lexical_declaration
       (variable_declarator
-        (identifier i1)
-        (number)
+        name: (identifier "i1")
+        value: (number "0")
       )
     )
-    (expression_statement
+    condition: (expression_statement
       (binary_expression
-        (identifier i1)
-        (member_expression
-          (identifier arr1)
-          (property_identifier)
+        left: (identifier "i1")
+        right: (member_expression
+          object: (identifier "arr1")
+          property: (property_identifier "length")
         )
       )
     )
-    (update_expression
-      (identifier i1)
+    increment: (update_expression
+      argument: (identifier "i1")
     )
-    (statement_block
+    body: (statement_block
       (lexical_declaration
         (variable_declarator
-          (identifier item)
-          (subscript_expression
-            (identifier arr1)
-            (identifier i1)
+          name: (identifier "item")
+          value: (subscript_expression
+            object: (identifier "arr1")
+            index: (identifier "i1")
           )
         )
       )

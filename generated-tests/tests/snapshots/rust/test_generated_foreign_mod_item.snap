@@ -9,14 +9,14 @@ AST:
 (source_file
   (foreign_mod_item
     (extern_modifier
-      (string_literal
+      (string_literal ""C""
         (string_content)
       )
     )
-    (declaration_list
+    body: (declaration_list
       (function_signature_item
-        (identifier extern_fn)
-        (parameters)
+        name: (identifier "extern_fn")
+        parameters: (parameters)
       )
     )
   )

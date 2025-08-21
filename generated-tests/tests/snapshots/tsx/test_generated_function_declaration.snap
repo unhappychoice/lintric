@@ -8,29 +8,29 @@ function testFn1(param: number): number { const local = param; return local + 1;
 AST:
 (program
   (function_declaration
-    (identifier testFn1)
-    (formal_parameters
+    name: (identifier "testFn1")
+    parameters: (formal_parameters
       (required_parameter
-        (identifier param)
-        (type_annotation
-          (predefined_type)
+        pattern: (identifier "param")
+        type: (type_annotation
+          (predefined_type "number")
         )
       )
     )
-    (type_annotation
-      (predefined_type)
+    return_type: (type_annotation
+      (predefined_type "number")
     )
-    (statement_block
+    body: (statement_block
       (lexical_declaration
         (variable_declarator
-          (identifier local)
-          (identifier param)
+          name: (identifier "local")
+          value: (identifier "param")
         )
       )
       (return_statement
         (binary_expression
-          (identifier local)
-          (number)
+          left: (identifier "local")
+          right: (number "1")
         )
       )
     )

@@ -2,6 +2,7 @@ pub mod collectors;
 pub mod file_parser;
 pub mod metric_calculator;
 pub mod models;
+pub mod s_expression_formatter;
 
 use serde::Serialize;
 

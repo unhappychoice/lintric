@@ -9,13 +9,13 @@ AST:
 (source_file
   (expression_statement
     (match_expression
-      (identifier val)
-      (match_block
+      value: (identifier "val")
+      body: (match_block
         (match_arm
-          (match_pattern
-            (identifier x8)
+          pattern: (match_pattern
+            (identifier "x8")
           )
-          (block)
+          value: (block)
         )
       )
     )

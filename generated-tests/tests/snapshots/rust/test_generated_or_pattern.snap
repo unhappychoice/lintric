@@ -9,16 +9,16 @@ AST:
 (source_file
   (expression_statement
     (match_expression
-      (identifier val1)
-      (match_block
+      value: (identifier "val1")
+      body: (match_block
         (match_arm
-          (match_pattern
+          pattern: (match_pattern
             (or_pattern
-              (integer_literal)
-              (integer_literal)
+              (integer_literal "0")
+              (integer_literal "1")
             )
           )
-          (block)
+          value: (block)
         )
       )
     )

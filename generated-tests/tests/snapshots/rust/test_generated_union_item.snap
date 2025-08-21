@@ -8,11 +8,11 @@ union TestUnion { field5: i32 }
 AST:
 (source_file
   (union_item
-    (type_identifier)
-    (field_declaration_list
+    name: (type_identifier "TestUnion")
+    body: (field_declaration_list
       (field_declaration
-        (field_identifier)
-        (primitive_type)
+        name: (field_identifier "field5")
+        type: (primitive_type "i32")
       )
     )
   )

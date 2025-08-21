@@ -8,8 +8,8 @@ let ch = 'c';
 AST:
 (source_file
   (let_declaration
-    (identifier ch)
-    (char_literal)
+    pattern: (identifier "ch")
+    value: (char_literal "'c'")
   )
 )
 

@@ -9,19 +9,19 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value10)
-      (type_annotation
+      name: (identifier "value10")
+      type: (type_annotation
         (generic_type
-          (type_identifier)
-          (type_arguments
-            (predefined_type)
+          name: (type_identifier "Array")
+          type_arguments: (type_arguments
+            (predefined_type "number")
           )
         )
       )
-      (array
-        (number)
-        (number)
-        (number)
+      value: (array
+        (number "1")
+        (number "2")
+        (number "3")
       )
     )
   )

@@ -8,14 +8,14 @@ if (condition) { const result = 42; }
 AST:
 (program
   (if_statement
-    (parenthesized_expression
-      (identifier condition)
+    condition: (parenthesized_expression
+      (identifier "condition")
     )
-    (statement_block
+    consequence: (statement_block
       (lexical_declaration
         (variable_declarator
-          (identifier result)
-          (number)
+          name: (identifier "result")
+          value: (number "42")
         )
       )
     )

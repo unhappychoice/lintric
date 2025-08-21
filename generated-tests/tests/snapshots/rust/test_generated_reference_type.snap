@@ -8,16 +8,16 @@ let source2 = 42; let var7: &i32 = &source2;
 AST:
 (source_file
   (let_declaration
-    (identifier source2)
-    (integer_literal)
+    pattern: (identifier "source2")
+    value: (integer_literal "42")
   )
   (let_declaration
-    (identifier var7)
-    (reference_type
-      (primitive_type)
+    pattern: (identifier "var7")
+    type: (reference_type
+      type: (primitive_type "i32")
     )
-    (reference_expression
-      (identifier source2)
+    value: (reference_expression
+      value: (identifier "source2")
     )
   )
 )

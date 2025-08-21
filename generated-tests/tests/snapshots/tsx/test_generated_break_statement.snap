@@ -8,22 +8,22 @@ for (let i = 0; i < 10; i++) { break; }
 AST:
 (program
   (for_statement
-    (lexical_declaration
+    initializer: (lexical_declaration
       (variable_declarator
-        (identifier i)
-        (number)
+        name: (identifier "i")
+        value: (number "0")
       )
     )
-    (expression_statement
+    condition: (expression_statement
       (binary_expression
-        (identifier i)
-        (number)
+        left: (identifier "i")
+        right: (number "10")
       )
     )
-    (update_expression
-      (identifier i)
+    increment: (update_expression
+      argument: (identifier "i")
     )
-    (statement_block
+    body: (statement_block
       (break_statement)
     )
   )

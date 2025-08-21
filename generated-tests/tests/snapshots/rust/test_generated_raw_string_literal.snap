@@ -8,7 +8,7 @@ r"test"
 AST:
 (source_file
   (ERROR
-    (raw_string_literal
+    (raw_string_literal "r"test""
       (string_content)
     )
   )

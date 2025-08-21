@@ -8,7 +8,7 @@ Source Code:
 AST:
 (source_file
   (ERROR
-    (integer_literal)
+    (integer_literal "42")
   )
 )
 

@@ -9,8 +9,8 @@ AST:
 (source_file
   (ERROR
     (range_expression
-      (integer_literal)
-      (integer_literal)
+      (integer_literal "0")
+      (integer_literal "10")
     )
   )
 )

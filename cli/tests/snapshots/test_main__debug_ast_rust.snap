@@ -1,114 +1,114 @@
 ---
 source: cli/tests/test_main.rs
-expression: stdout
+expression: out
 ---
 (source_file
   (struct_item
-    (type_identifier)
-    (field_declaration_list
+    name: (type_identifier "Point")
+    body: (field_declaration_list
       (field_declaration
-        (field_identifier)
-        (primitive_type)
+        name: (field_identifier "x")
+        type: (primitive_type "i32")
       )
       (field_declaration
-        (field_identifier)
-        (primitive_type)
+        name: (field_identifier "y")
+        type: (primitive_type "i32")
       )
     )
   )
   (function_item
-    (identifier add)
-    (parameters
+    name: (identifier "add")
+    parameters: (parameters
       (parameter
-        (identifier a)
-        (primitive_type)
+        pattern: (identifier "a")
+        type: (primitive_type "i32")
       )
       (parameter
-        (identifier b)
-        (primitive_type)
+        pattern: (identifier "b")
+        type: (primitive_type "i32")
       )
     )
-    (primitive_type)
-    (block
+    return_type: (primitive_type "i32")
+    body: (block
       (let_declaration
-        (identifier result)
-        (binary_expression
-          (identifier a)
-          (identifier b)
+        pattern: (identifier "result")
+        value: (binary_expression
+          left: (identifier "a")
+          right: (identifier "b")
         )
       )
-      (identifier result)
+      (identifier "result")
     )
   )
   (function_item
-    (identifier main)
-    (parameters)
-    (block
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
       (let_declaration
-        (identifier p1)
-        (struct_expression
-          (type_identifier)
-          (field_initializer_list
+        pattern: (identifier "p1")
+        value: (struct_expression
+          name: (type_identifier "Point")
+          body: (field_initializer_list
             (field_initializer
-              (field_identifier)
-              (integer_literal)
+              field: (field_identifier "x")
+              value: (integer_literal "1")
             )
             (field_initializer
-              (field_identifier)
-              (integer_literal)
+              field: (field_identifier "y")
+              value: (integer_literal "2")
             )
           )
         )
       )
       (let_declaration
-        (identifier p2)
-        (struct_expression
-          (type_identifier)
-          (field_initializer_list
+        pattern: (identifier "p2")
+        value: (struct_expression
+          name: (type_identifier "Point")
+          body: (field_initializer_list
             (field_initializer
-              (field_identifier)
-              (integer_literal)
+              field: (field_identifier "x")
+              value: (integer_literal "3")
             )
             (field_initializer
-              (field_identifier)
-              (integer_literal)
+              field: (field_identifier "y")
+              value: (integer_literal "4")
             )
           )
         )
       )
       (let_declaration
-        (identifier p3)
-        (struct_expression
-          (type_identifier)
-          (field_initializer_list
+        pattern: (identifier "p3")
+        value: (struct_expression
+          name: (type_identifier "Point")
+          body: (field_initializer_list
             (field_initializer
-              (field_identifier)
-              (call_expression
-                (identifier add)
-                (arguments
+              field: (field_identifier "x")
+              value: (call_expression
+                function: (identifier "add")
+                arguments: (arguments
                   (field_expression
-                    (identifier p1)
-                    (field_identifier)
+                    value: (identifier "p1")
+                    field: (field_identifier "x")
                   )
                   (field_expression
-                    (identifier p2)
-                    (field_identifier)
+                    value: (identifier "p2")
+                    field: (field_identifier "x")
                   )
                 )
               )
             )
             (field_initializer
-              (field_identifier)
-              (call_expression
-                (identifier add)
-                (arguments
+              field: (field_identifier "y")
+              value: (call_expression
+                function: (identifier "add")
+                arguments: (arguments
                   (field_expression
-                    (identifier p1)
-                    (field_identifier)
+                    value: (identifier "p1")
+                    field: (field_identifier "y")
                   )
                   (field_expression
-                    (identifier p2)
-                    (field_identifier)
+                    value: (identifier "p2")
+                    field: (field_identifier "y")
                   )
                 )
               )
@@ -117,68 +117,68 @@ expression: stdout
         )
       )
       (let_declaration
-        (identifier p4)
-        (block
+        pattern: (identifier "p4")
+        value: (block
           (let_declaration
-            (identifier p5)
-            (struct_expression
-              (type_identifier)
-              (field_initializer_list
+            pattern: (identifier "p5")
+            value: (struct_expression
+              name: (type_identifier "Point")
+              body: (field_initializer_list
                 (field_initializer
-                  (field_identifier)
-                  (integer_literal)
+                  field: (field_identifier "x")
+                  value: (integer_literal "5")
                 )
                 (field_initializer
-                  (field_identifier)
-                  (integer_literal)
+                  field: (field_identifier "y")
+                  value: (integer_literal "6")
                 )
               )
             )
           )
           (let_declaration
-            (identifier p6)
-            (identifier p5)
+            pattern: (identifier "p6")
+            value: (identifier "p5")
           )
-          (identifier p6)
+          (identifier "p6")
         )
       )
       (let_declaration
-        (identifier x)
-        (integer_literal)
+        pattern: (identifier "x")
+        value: (integer_literal "1")
       )
       (let_declaration
-        (identifier y)
-        (binary_expression
-          (identifier x)
-          (integer_literal)
+        pattern: (identifier "y")
+        value: (binary_expression
+          left: (identifier "x")
+          right: (integer_literal "1")
         )
       )
       (let_declaration
-        (identifier z)
-        (binary_expression
-          (identifier y)
-          (identifier x)
+        pattern: (identifier "z")
+        value: (binary_expression
+          left: (identifier "y")
+          right: (identifier "x")
         )
       )
       (expression_statement
         (macro_invocation
-          (identifier println)
+          macro: (identifier "println")
           (token_tree
-            (string_literal
+            (string_literal ""{:?}""
               (string_content)
             )
-            (identifier p3)
+            (identifier "p3")
           )
         )
       )
       (expression_statement
         (macro_invocation
-          (identifier println)
+          macro: (identifier "println")
           (token_tree
-            (string_literal
+            (string_literal ""{:?}""
               (string_content)
             )
-            (identifier p4)
+            (identifier "p4")
           )
         )
       )

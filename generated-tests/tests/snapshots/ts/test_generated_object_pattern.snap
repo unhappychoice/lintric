@@ -9,11 +9,11 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (object_pattern
-        (shorthand_property_identifier_pattern)
-        (shorthand_property_identifier_pattern)
+      name: (object_pattern
+        (shorthand_property_identifier_pattern "prop12")
+        (shorthand_property_identifier_pattern "prop21")
       )
-      (identifier object)
+      value: (identifier "object")
     )
   )
 )

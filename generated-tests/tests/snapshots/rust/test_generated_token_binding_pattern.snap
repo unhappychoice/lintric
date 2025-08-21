@@ -9,15 +9,15 @@ AST:
 (source_file
   (expression_statement
     (match_expression
-      (identifier val3)
-      (match_block
+      value: (identifier "val3")
+      body: (match_block
         (match_arm
-          (match_pattern
+          pattern: (match_pattern
             (captured_pattern
-              (identifier b4)
+              (identifier "b4")
             )
           )
-          (block)
+          value: (block)
         )
       )
     )

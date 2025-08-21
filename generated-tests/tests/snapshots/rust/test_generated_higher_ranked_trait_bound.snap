@@ -8,48 +8,48 @@ fn test_fn5<F>(f: F) where F: for<'a> Fn(&'a str) -> &'a str { }
 AST:
 (source_file
   (function_item
-    (identifier test_fn5)
-    (type_parameters
-      (type_identifier)
+    name: (identifier "test_fn5")
+    type_parameters: (type_parameters
+      (type_identifier "F")
     )
-    (parameters
+    parameters: (parameters
       (parameter
-        (identifier f)
-        (type_identifier)
+        pattern: (identifier "f")
+        type: (type_identifier "F")
       )
     )
     (where_clause
       (where_predicate
-        (type_identifier)
-        (trait_bounds
+        left: (type_identifier "F")
+        bounds: (trait_bounds
           (higher_ranked_trait_bound
-            (type_parameters
+            type_parameters: (type_parameters
               (lifetime
-                (identifier a)
+                (identifier "a")
               )
             )
-            (function_type
-              (type_identifier)
-              (parameters
+            type: (function_type
+              trait: (type_identifier "Fn")
+              parameters: (parameters
                 (reference_type
                   (lifetime
-                    (identifier a)
+                    (identifier "a")
                   )
-                  (primitive_type)
+                  type: (primitive_type "str")
                 )
               )
-              (reference_type
+              return_type: (reference_type
                 (lifetime
-                  (identifier a)
+                  (identifier "a")
                 )
-                (primitive_type)
+                type: (primitive_type "str")
               )
             )
           )
         )
       )
     )
-    (block)
+    body: (block)
   )
 )
 

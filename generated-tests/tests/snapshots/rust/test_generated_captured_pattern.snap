@@ -9,18 +9,18 @@ AST:
 (source_file
   (expression_statement
     (match_expression
-      (identifier x2)
-      (match_block
+      value: (identifier "x2")
+      body: (match_block
         (match_arm
-          (match_pattern
+          pattern: (match_pattern
             (captured_pattern
-              (identifier y1)
+              (identifier "y1")
               (tuple_struct_pattern
-                (identifier Some)
+                type: (identifier "Some")
               )
             )
           )
-          (identifier y1)
+          value: (identifier "y1")
         )
       )
     )

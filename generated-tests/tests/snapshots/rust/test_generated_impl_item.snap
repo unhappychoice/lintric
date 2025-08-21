@@ -8,18 +8,18 @@ impl TestType { fn method(&self) -> i32 { 42 } }
 AST:
 (source_file
   (impl_item
-    (type_identifier)
-    (declaration_list
+    type: (type_identifier "TestType")
+    body: (declaration_list
       (function_item
-        (identifier method)
-        (parameters
+        name: (identifier "method")
+        parameters: (parameters
           (self_parameter
-            (self)
+            (self "self")
           )
         )
-        (primitive_type)
-        (block
-          (integer_literal)
+        return_type: (primitive_type "i32")
+        body: (block
+          (integer_literal "42")
         )
       )
     )

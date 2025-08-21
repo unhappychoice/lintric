@@ -9,13 +9,13 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (object_pattern
+      name: (object_pattern
         (object_assignment_pattern
-          (shorthand_property_identifier_pattern)
-          (identifier defaultVal)
+          left: (shorthand_property_identifier_pattern "prop5")
+          right: (identifier "defaultVal")
         )
       )
-      (identifier obj2)
+      value: (identifier "obj2")
     )
   )
 )

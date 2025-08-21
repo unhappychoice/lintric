@@ -9,27 +9,27 @@ AST:
 (source_file
   (expression_statement
     (match_expression
-      (identifier x)
-      (match_block
+      value: (identifier "x")
+      body: (match_block
         (match_arm
-          (match_pattern
+          pattern: (match_pattern
             (tuple_struct_pattern
-              (scoped_identifier
-                (generic_type
-                  (type_identifier)
-                  (type_arguments
-                    (type_identifier)
+              type: (scoped_identifier "Vec::<T>::new"
+                path: (generic_type
+                  type: (type_identifier "Vec")
+                  type_arguments: (type_arguments
+                    (type_identifier "T")
                   )
                 )
-                (identifier new)
+                name: (identifier "new")
               )
             )
           )
-          (identifier x6)
+          value: (identifier "x6")
         )
         (match_arm
-          (match_pattern)
-          (identifier x6)
+          pattern: (match_pattern)
+          value: (identifier "x6")
         )
       )
     )

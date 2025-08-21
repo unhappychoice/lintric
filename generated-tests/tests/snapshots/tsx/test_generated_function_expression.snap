@@ -9,25 +9,25 @@ AST:
 (program
   (expression_statement
     (function_expression
-      (formal_parameters
+      parameters: (formal_parameters
         (required_parameter
-          (identifier param1)
-          (type_annotation
-            (predefined_type)
+          pattern: (identifier "param1")
+          type: (type_annotation
+            (predefined_type "number")
           )
         )
       )
-      (statement_block
+      body: (statement_block
         (lexical_declaration
           (variable_declarator
-            (identifier local1)
-            (identifier param1)
+            name: (identifier "local1")
+            value: (identifier "param1")
           )
         )
         (return_statement
           (binary_expression
-            (identifier local1)
-            (number)
+            left: (identifier "local1")
+            right: (number "1")
           )
         )
       )

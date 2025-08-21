@@ -8,27 +8,27 @@ function test([first = 1, second = 2] = []) { return first + second; }
 AST:
 (program
   (function_declaration
-    (identifier test)
-    (formal_parameters
+    name: (identifier "test")
+    parameters: (formal_parameters
       (required_parameter
-        (array_pattern
+        pattern: (array_pattern
           (assignment_pattern
-            (identifier first)
-            (number)
+            left: (identifier "first")
+            right: (number "1")
           )
           (assignment_pattern
-            (identifier second)
-            (number)
+            left: (identifier "second")
+            right: (number "2")
           )
         )
-        (array)
+        value: (array)
       )
     )
-    (statement_block
+    body: (statement_block
       (return_statement
         (binary_expression
-          (identifier first)
-          (identifier second)
+          left: (identifier "first")
+          right: (identifier "second")
         )
       )
     )

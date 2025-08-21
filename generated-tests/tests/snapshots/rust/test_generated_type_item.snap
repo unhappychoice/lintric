@@ -8,8 +8,8 @@ type TestType1 = i32;
 AST:
 (source_file
   (type_item
-    (type_identifier)
-    (primitive_type)
+    name: (type_identifier "TestType1")
+    type: (primitive_type "i32")
   )
 )
 

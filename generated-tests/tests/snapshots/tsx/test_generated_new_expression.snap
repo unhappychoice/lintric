@@ -9,9 +9,9 @@ AST:
 (program
   (expression_statement
     (new_expression
-      (identifier TestClass2)
-      (arguments
-        (identifier arg)
+      constructor: (identifier "TestClass2")
+      arguments: (arguments
+        (identifier "arg")
       )
     )
   )

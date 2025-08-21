@@ -9,13 +9,13 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (array_pattern
-        (identifier first)
+      name: (array_pattern
+        (identifier "first")
         (rest_pattern
-          (identifier rest)
+          (identifier "rest")
         )
       )
-      (identifier arr2)
+      value: (identifier "arr2")
     )
   )
 )

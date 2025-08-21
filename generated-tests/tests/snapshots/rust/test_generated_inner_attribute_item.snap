@@ -10,18 +10,18 @@ AST:
 (source_file
   (inner_attribute_item
     (attribute
-      (identifier allow)
-      (token_tree
-        (identifier dead_code)
+      (identifier "allow")
+      arguments: (token_tree
+        (identifier "dead_code")
       )
     )
   )
   (function_item
-    (identifier test_fn6)
-    (parameters)
-    (primitive_type)
-    (block
-      (integer_literal)
+    name: (identifier "test_fn6")
+    parameters: (parameters)
+    return_type: (primitive_type "i32")
+    body: (block
+      (integer_literal "42")
     )
   )
 )

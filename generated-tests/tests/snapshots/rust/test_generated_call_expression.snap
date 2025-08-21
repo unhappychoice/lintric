@@ -9,10 +9,10 @@ AST:
 (source_file
   (expression_statement
     (call_expression
-      (identifier test_fn2)
-      (arguments
-        (identifier a1)
-        (identifier b1)
+      function: (identifier "test_fn2")
+      arguments: (arguments
+        (identifier "a1")
+        (identifier "b1")
       )
     )
   )

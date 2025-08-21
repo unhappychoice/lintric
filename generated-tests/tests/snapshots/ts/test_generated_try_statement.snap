@@ -8,28 +8,28 @@ try { const result1 = riskyOperation(); } catch (error1) { console.log(error1); 
 AST:
 (program
   (try_statement
-    (statement_block
+    body: (statement_block
       (lexical_declaration
         (variable_declarator
-          (identifier result1)
-          (call_expression
-            (identifier riskyOperation)
-            (arguments)
+          name: (identifier "result1")
+          value: (call_expression
+            function: (identifier "riskyOperation")
+            arguments: (arguments)
           )
         )
       )
     )
-    (catch_clause
-      (identifier error1)
-      (statement_block
+    handler: (catch_clause
+      parameter: (identifier "error1")
+      body: (statement_block
         (expression_statement
           (call_expression
-            (member_expression
-              (identifier console)
-              (property_identifier)
+            function: (member_expression
+              object: (identifier "console")
+              property: (property_identifier "log")
             )
-            (arguments
-              (identifier error1)
+            arguments: (arguments
+              (identifier "error1")
             )
           )
         )

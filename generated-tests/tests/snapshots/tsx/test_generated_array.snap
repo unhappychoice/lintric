@@ -9,8 +9,8 @@ AST:
 (program
   (expression_statement
     (array
-      (identifier item1)
-      (identifier item2)
+      (identifier "item1")
+      (identifier "item2")
     )
   )
 )

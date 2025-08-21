@@ -8,8 +8,8 @@ let var = source;
 AST:
 (source_file
   (let_declaration
-    (identifier var)
-    (identifier source)
+    pattern: (identifier "var")
+    value: (identifier "source")
   )
 )
 

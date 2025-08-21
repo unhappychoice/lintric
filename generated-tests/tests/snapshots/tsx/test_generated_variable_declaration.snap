@@ -9,8 +9,8 @@ AST:
 (program
   (variable_declaration
     (variable_declarator
-      (identifier variable1)
-      (identifier source2)
+      name: (identifier "variable1")
+      value: (identifier "source2")
     )
   )
 )

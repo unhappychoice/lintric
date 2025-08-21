@@ -9,8 +9,8 @@ AST:
 (source_file
   (ERROR
     (binary_expression
-      (identifier var1)
-      (integer_literal)
+      left: (identifier "var1")
+      right: (integer_literal "1")
     )
   )
 )

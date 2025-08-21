@@ -8,13 +8,13 @@ abstract class TestClass { abstract method(): void; }
 AST:
 (program
   (abstract_class_declaration
-    (type_identifier)
-    (class_body
+    name: (type_identifier "TestClass")
+    body: (class_body
       (abstract_method_signature
-        (property_identifier)
-        (formal_parameters)
-        (type_annotation
-          (predefined_type)
+        name: (property_identifier "method")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
+          (predefined_type "void")
         )
       )
     )

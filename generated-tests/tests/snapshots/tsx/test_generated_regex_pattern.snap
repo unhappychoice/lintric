@@ -9,10 +9,10 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier regex)
-      (regex
-        (regex_pattern)
-        (regex_flags)
+      name: (identifier "regex")
+      value: (regex
+        pattern: (regex_pattern)
+        flags: (regex_flags)
       )
     )
   )
