@@ -31,48 +31,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "ptr",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 8,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "std::ptr::null()",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 39,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 39,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "std",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 26,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "ptr",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 28,
-            end_line: 1,
-            end_column: 31,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 31,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "null",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 33,
-            end_line: 1,
-            end_column: 37,
+            position: Position {
+                start_line: 1,
+                start_column: 33,
+                end_line: 1,
+                end_column: 37,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

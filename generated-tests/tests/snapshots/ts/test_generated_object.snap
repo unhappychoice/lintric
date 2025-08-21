@@ -27,41 +27,45 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "prop11",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 3,
-            end_line: 1,
-            end_column: 9,
+            position: Position {
+                start_line: 1,
+                start_column: 3,
+                end_line: 1,
+                end_column: 9,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value16",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 11,
-            end_line: 1,
-            end_column: 18,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 18,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "prop2",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 20,
-            end_line: 1,
-            end_column: 25,
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 25,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value21",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 27,
-            end_line: 1,
-            end_column: 34,
+            position: Position {
+                start_line: 1,
+                start_column: 27,
+                end_line: 1,
+                end_column: 34,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -34,39 +34,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "item",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 9,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "vec",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 13,
-            end_line: 1,
-            end_column: 16,
+            position: Position {
+                start_line: 1,
+                start_column: 13,
+                end_line: 1,
+                end_column: 16,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "println",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 19,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 19,
+                end_line: 1,
+                end_column: 26,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "item",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 34,
-            end_line: 1,
-            end_column: 38,
+            position: Position {
+                start_line: 1,
+                start_column: 34,
+                end_line: 1,
+                end_column: 38,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

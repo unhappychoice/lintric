@@ -16,16 +16,25 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
       ]
     },
     {
-      "line_number": 13,
-      "total_dependencies": 2,
-      "dependency_distance_cost": 0.5714285714285714,
+      "line_number": 12,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.7857142857142857,
       "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 13,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.07142857142857142,
+      "depth": 2,
       "transitive_dependencies": 2,
       "dependent_lines": [
-        12,
-        6
+        12
       ]
     }
   ],
-  "overall_complexity_score": 5.685714285714285
+  "overall_complexity_score": 7.914285714285715
 }

@@ -9,6 +9,7 @@ pub enum DependencyType {
     TypeReference,
     ModuleReference,
     MacroInvocation,
+    MacroVariable,
     Other(String),
 }
 

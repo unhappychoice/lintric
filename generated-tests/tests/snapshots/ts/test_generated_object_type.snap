@@ -36,36 +36,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "value17",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "prop4",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 23,
+            },
             definition_type: PropertyDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "prop4",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 18,
-            end_line: 1,
-            end_column: 23,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 23,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "prop4",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 38,
-            end_line: 1,
-            end_column: 43,
+            position: Position {
+                start_line: 1,
+                start_column: 38,
+                end_line: 1,
+                end_column: 43,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

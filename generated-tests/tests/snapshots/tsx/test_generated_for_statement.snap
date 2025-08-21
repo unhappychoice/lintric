@@ -46,72 +46,86 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "i1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 12,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "item",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 50,
+                end_line: 1,
+                end_column: 54,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "i1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 18,
-            end_line: 1,
-            end_column: 20,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 20,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "arr1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 27,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 27,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "length",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 28,
-            end_line: 1,
-            end_column: 34,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 34,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "i1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 36,
-            end_line: 1,
-            end_column: 38,
+            position: Position {
+                start_line: 1,
+                start_column: 36,
+                end_line: 1,
+                end_column: 38,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "arr1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 57,
-            end_line: 1,
-            end_column: 61,
+            position: Position {
+                start_line: 1,
+                start_column: 57,
+                end_line: 1,
+                end_column: 61,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "i1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 62,
-            end_line: 1,
-            end_column: 64,
+            position: Position {
+                start_line: 1,
+                start_column: 62,
+                end_line: 1,
+                end_column: 64,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -30,50 +30,55 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "std::collections::HashMap::new()",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 33,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 33,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "std",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 4,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 4,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "collections",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 6,
-            end_line: 1,
-            end_column: 17,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 17,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "HashMap",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 19,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 19,
+                end_line: 1,
+                end_column: 26,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "new",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 28,
-            end_line: 1,
-            end_column: 31,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 31,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

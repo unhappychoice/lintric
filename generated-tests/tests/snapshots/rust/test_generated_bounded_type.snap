@@ -51,99 +51,106 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 8,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "test",
-            ),
+        },
+        Definition {
+            name: "T",
+            position: Position {
+                start_line: 1,
+                start_column: 9,
+                end_line: 1,
+                end_column: 10,
+            },
+            definition_type: TypeDefinition,
         },
         Definition {
             name: "x",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 27,
+            },
             definition_type: VariableDefinition,
-            scope: Some(
-                "test",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "T",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 29,
-            end_line: 1,
-            end_column: 30,
+            position: Position {
+                start_line: 1,
+                start_column: 29,
+                end_line: 1,
+                end_column: 30,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "T",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 35,
-            end_line: 1,
-            end_column: 36,
+            position: Position {
+                start_line: 1,
+                start_column: 35,
+                end_line: 1,
+                end_column: 36,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "T",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 43,
-            end_line: 1,
-            end_column: 44,
+            position: Position {
+                start_line: 1,
+                start_column: 43,
+                end_line: 1,
+                end_column: 44,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "std",
             kind: Identifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 46,
-            end_line: 1,
-            end_column: 49,
+            position: Position {
+                start_line: 1,
+                start_column: 46,
+                end_line: 1,
+                end_column: 49,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "fmt",
             kind: Identifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 51,
-            end_line: 1,
-            end_column: 54,
+            position: Position {
+                start_line: 1,
+                start_column: 51,
+                end_line: 1,
+                end_column: 54,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Debug",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 56,
-            end_line: 1,
-            end_column: 61,
+            position: Position {
+                start_line: 1,
+                start_column: 56,
+                end_line: 1,
+                end_column: 61,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x",
             kind: Identifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 64,
-            end_line: 1,
-            end_column: 65,
+            position: Position {
+                start_line: 1,
+                start_column: 64,
+                end_line: 1,
+                end_column: 65,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

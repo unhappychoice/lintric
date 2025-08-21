@@ -31,30 +31,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "x",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 2,
+                end_line: 1,
+                end_column: 3,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "x",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 16,
-            end_line: 1,
-            end_column: 17,
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 17,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "y",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 20,
-            end_line: 1,
-            end_column: 21,
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 21,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -29,35 +29,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestTrait1",
-            line_number: 1,
-            definition_type: Other(
-                "trait_item",
-            ),
-            scope: Some(
-                "TestTrait1",
-            ),
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 17,
+            },
+            definition_type: TypeDefinition,
         },
         Definition {
             name: "method1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 30,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "TestTrait1",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "method1",
             kind: Identifier,
-            scope: Some(
-                "TestTrait1",
-            ),
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 30,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 30,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

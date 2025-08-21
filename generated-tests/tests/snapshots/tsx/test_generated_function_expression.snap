@@ -41,30 +41,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "local1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 34,
+                end_line: 1,
+                end_column: 40,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "param1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 43,
-            end_line: 1,
-            end_column: 49,
+            position: Position {
+                start_line: 1,
+                start_column: 43,
+                end_line: 1,
+                end_column: 49,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "local1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 58,
-            end_line: 1,
-            end_column: 64,
+            position: Position {
+                start_line: 1,
+                start_column: 58,
+                end_line: 1,
+                end_column: 64,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

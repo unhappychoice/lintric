@@ -29,17 +29,23 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test_mod",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 13,
+            },
             definition_type: ModuleDefinition,
-            scope: None,
         },
         Definition {
             name: "test_fn7",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 31,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "test_mod.test_fn7",
-            ),
         },
     ],
     dependencies: [],

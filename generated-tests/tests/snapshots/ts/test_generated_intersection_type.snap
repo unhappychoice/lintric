@@ -52,60 +52,76 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "value12",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "a",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 19,
+            },
             definition_type: PropertyDefinition,
-            scope: None,
         },
         Definition {
             name: "b",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 34,
+                end_line: 1,
+                end_column: 35,
+            },
             definition_type: PropertyDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "a",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 18,
-            end_line: 1,
-            end_column: 19,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 19,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "b",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 34,
-            end_line: 1,
-            end_column: 35,
+            position: Position {
+                start_line: 1,
+                start_column: 34,
+                end_line: 1,
+                end_column: 35,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "a",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 50,
-            end_line: 1,
-            end_column: 51,
+            position: Position {
+                start_line: 1,
+                start_column: 50,
+                end_line: 1,
+                end_column: 51,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "b",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 57,
-            end_line: 1,
-            end_column: 58,
+            position: Position {
+                start_line: 1,
+                start_column: 57,
+                end_line: 1,
+                end_column: 58,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -7,45 +7,73 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   "definitions": [
     {
       "name": "main",
-      "line_number": 1,
-      "definition_type": "FunctionDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 1,
+        "start_column": 4,
+        "end_line": 1,
+        "end_column": 8
+      },
+      "definition_type": "FunctionDefinition"
     },
     {
       "name": "option_value",
-      "line_number": 2,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 2,
+        "start_column": 9,
+        "end_line": 2,
+        "end_column": 21
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "value",
-      "line_number": 3,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 3,
+        "start_column": 17,
+        "end_line": 3,
+        "end_column": 22
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "numbers",
-      "line_number": 7,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 7,
+        "start_column": 9,
+        "end_line": 7,
+        "end_column": 16
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "num",
-      "line_number": 8,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 8,
+        "start_column": 9,
+        "end_line": 8,
+        "end_column": 12
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "iter",
-      "line_number": 12,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 12,
+        "start_column": 13,
+        "end_line": 12,
+        "end_column": 17
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "i",
-      "line_number": 13,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 13,
+        "start_column": 20,
+        "end_line": 13,
+        "end_column": 21
+      },
+      "definition_type": "VariableDefinition"
     }
   ],
   "dependencies": [
@@ -54,281 +82,305 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "target_line": 2,
       "symbol": "option_value",
       "dependency_type": "VariableUse",
-      "context": "let_condition"
+      "context": "variable_use"
     },
     {
       "source_line": 4,
       "target_line": 3,
       "symbol": "value",
       "dependency_type": "VariableUse",
-      "context": "token_tree"
+      "context": "variable_use"
     },
     {
       "source_line": 8,
       "target_line": 7,
       "symbol": "numbers",
       "dependency_type": "VariableUse",
-      "context": "for_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 9,
       "target_line": 8,
       "symbol": "num",
       "dependency_type": "VariableUse",
-      "context": "token_tree"
+      "context": "variable_use"
     },
     {
       "source_line": 13,
       "target_line": 12,
       "symbol": "iter",
       "dependency_type": "VariableUse",
-      "context": "let_condition"
+      "context": "variable_use"
     },
     {
       "source_line": 14,
       "target_line": 13,
       "symbol": "i",
       "dependency_type": "VariableUse",
-      "context": "token_tree"
+      "context": "variable_use"
     },
     {
       "source_line": 15,
       "target_line": 12,
       "symbol": "iter",
       "dependency_type": "VariableUse",
-      "context": "assignment_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 15,
       "target_line": 13,
       "symbol": "i",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 15,
       "target_line": 13,
       "symbol": "i",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     }
   ],
   "usage": [
     {
       "name": "Some(10)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 2,
-      "start_column": 24,
-      "end_line": 2,
-      "end_column": 32
+      "position": {
+        "start_line": 2,
+        "start_column": 24,
+        "end_line": 2,
+        "end_column": 32
+      }
     },
     {
       "name": "Some",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 2,
-      "start_column": 24,
-      "end_line": 2,
-      "end_column": 28
+      "position": {
+        "start_line": 2,
+        "start_column": 24,
+        "end_line": 2,
+        "end_column": 28
+      }
     },
     {
       "name": "Some",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 3,
-      "start_column": 12,
-      "end_line": 3,
-      "end_column": 16
+      "position": {
+        "start_line": 3,
+        "start_column": 12,
+        "end_line": 3,
+        "end_column": 16
+      }
     },
     {
       "name": "value",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 3,
-      "start_column": 17,
-      "end_line": 3,
-      "end_column": 22
+      "position": {
+        "start_line": 3,
+        "start_column": 17,
+        "end_line": 3,
+        "end_column": 22
+      }
     },
     {
       "name": "option_value",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 3,
-      "start_column": 26,
-      "end_line": 3,
-      "end_column": 38
+      "position": {
+        "start_line": 3,
+        "start_column": 26,
+        "end_line": 3,
+        "end_column": 38
+      }
     },
     {
       "name": "println",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 4,
-      "start_column": 9,
-      "end_line": 4,
-      "end_column": 16
+      "position": {
+        "start_line": 4,
+        "start_column": 9,
+        "end_line": 4,
+        "end_column": 16
+      }
     },
     {
       "name": "value",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 4,
-      "start_column": 31,
-      "end_line": 4,
-      "end_column": 36
+      "position": {
+        "start_line": 4,
+        "start_column": 31,
+        "end_line": 4,
+        "end_column": 36
+      }
     },
     {
       "name": "vec",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 7,
-      "start_column": 19,
-      "end_line": 7,
-      "end_column": 22
+      "position": {
+        "start_line": 7,
+        "start_column": 19,
+        "end_line": 7,
+        "end_column": 22
+      }
     },
     {
       "name": "numbers",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 8,
-      "start_column": 16,
-      "end_line": 8,
-      "end_column": 23
+      "position": {
+        "start_line": 8,
+        "start_column": 16,
+        "end_line": 8,
+        "end_column": 23
+      }
     },
     {
       "name": "println",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 9,
-      "start_column": 9,
-      "end_line": 9,
-      "end_column": 16
+      "position": {
+        "start_line": 9,
+        "start_column": 9,
+        "end_line": 9,
+        "end_column": 16
+      }
     },
     {
       "name": "num",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 9,
-      "start_column": 32,
-      "end_line": 9,
-      "end_column": 35
+      "position": {
+        "start_line": 9,
+        "start_column": 32,
+        "end_line": 9,
+        "end_column": 35
+      }
     },
     {
       "name": "Some(5)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 12,
-      "start_column": 20,
-      "end_line": 12,
-      "end_column": 27
+      "position": {
+        "start_line": 12,
+        "start_column": 20,
+        "end_line": 12,
+        "end_column": 27
+      }
     },
     {
       "name": "Some",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 12,
-      "start_column": 20,
-      "end_line": 12,
-      "end_column": 24
+      "position": {
+        "start_line": 12,
+        "start_column": 20,
+        "end_line": 12,
+        "end_column": 24
+      }
     },
     {
       "name": "Some",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 13,
-      "start_column": 15,
-      "end_line": 13,
-      "end_column": 19
+      "position": {
+        "start_line": 13,
+        "start_column": 15,
+        "end_line": 13,
+        "end_column": 19
+      }
     },
     {
       "name": "i",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 13,
-      "start_column": 20,
-      "end_line": 13,
-      "end_column": 21
+      "position": {
+        "start_line": 13,
+        "start_column": 20,
+        "end_line": 13,
+        "end_column": 21
+      }
     },
     {
       "name": "iter",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 13,
-      "start_column": 25,
-      "end_line": 13,
-      "end_column": 29
+      "position": {
+        "start_line": 13,
+        "start_column": 25,
+        "end_line": 13,
+        "end_column": 29
+      }
     },
     {
       "name": "println",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 14,
-      "start_column": 9,
-      "end_line": 14,
-      "end_column": 16
+      "position": {
+        "start_line": 14,
+        "start_column": 9,
+        "end_line": 14,
+        "end_column": 16
+      }
     },
     {
       "name": "i",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 14,
-      "start_column": 35,
-      "end_line": 14,
-      "end_column": 36
+      "position": {
+        "start_line": 14,
+        "start_column": 35,
+        "end_line": 14,
+        "end_column": 36
+      }
     },
     {
       "name": "iter",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 9,
-      "end_line": 15,
-      "end_column": 13
+      "position": {
+        "start_line": 15,
+        "start_column": 9,
+        "end_line": 15,
+        "end_column": 13
+      }
     },
     {
       "name": "i",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 19,
-      "end_line": 15,
-      "end_column": 20
+      "position": {
+        "start_line": 15,
+        "start_column": 19,
+        "end_line": 15,
+        "end_column": 20
+      }
     },
     {
       "name": "Some(i - 1)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 27,
-      "end_line": 15,
-      "end_column": 38
+      "position": {
+        "start_line": 15,
+        "start_column": 27,
+        "end_line": 15,
+        "end_column": 38
+      }
     },
     {
       "name": "Some",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 27,
-      "end_line": 15,
-      "end_column": 31
+      "position": {
+        "start_line": 15,
+        "start_column": 27,
+        "end_line": 15,
+        "end_column": 31
+      }
     },
     {
       "name": "i",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 32,
-      "end_line": 15,
-      "end_column": 33
+      "position": {
+        "start_line": 15,
+        "start_column": 32,
+        "end_line": 15,
+        "end_column": 33
+      }
     },
     {
       "name": "None",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 48,
-      "end_line": 15,
-      "end_column": 52
+      "position": {
+        "start_line": 15,
+        "start_column": 48,
+        "end_line": 15,
+        "end_column": 52
+      }
     }
   ],
   "analysis_metadata": {

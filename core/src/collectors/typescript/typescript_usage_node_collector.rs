@@ -3,13 +3,12 @@ use crate::collectors::common::usage_node_collector::UsageNodeCollector;
 use crate::models::{Usage, UsageKind};
 use tree_sitter::Node;
 
-pub struct TypescriptUsageNodeCollector<'a> {
-    source_code: &'a str,
+pub struct TypescriptUsageNodeCollector {
     definition_checker: DefinitionContextChecker,
 }
 
-impl<'a> TypescriptUsageNodeCollector<'a> {
-    pub fn new(source_code: &'a str) -> Self {
+impl TypescriptUsageNodeCollector {
+    pub fn new(_source_code: &str) -> Self {
         let patterns = vec![
             // Variable declarations
             DefinitionPattern::new("variable_declarator", "name"),
@@ -27,12 +26,11 @@ impl<'a> TypescriptUsageNodeCollector<'a> {
         ];
 
         Self {
-            source_code,
             definition_checker: DefinitionContextChecker::new(patterns),
         }
     }
 
-    fn is_default_value_in_assignment_pattern(&self, node: Node<'a>) -> bool {
+    fn is_default_value_in_assignment_pattern<'a>(&self, node: Node<'a>) -> bool {
         // Check if this identifier is the default value (right side) in an assignment pattern
         if let Some(parent) = node.parent() {
             if parent.kind() == "object_assignment_pattern" || parent.kind() == "assignment_pattern"
@@ -47,12 +45,8 @@ impl<'a> TypescriptUsageNodeCollector<'a> {
     }
 }
 
-impl<'a> UsageNodeCollector<'a> for TypescriptUsageNodeCollector<'a> {
-    fn extract_node_if_usage(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Option<Usage<'a>> {
+impl UsageNodeCollector for TypescriptUsageNodeCollector {
+    fn extract_node_if_usage(&self, node: Node, source_code: &str) -> Option<Usage> {
         let kind = match node.kind() {
             "identifier" => {
                 // Special case: default values in object assignment patterns are always usage
@@ -85,34 +79,6 @@ impl<'a> UsageNodeCollector<'a> for TypescriptUsageNodeCollector<'a> {
             _ => None,
         };
 
-        kind.map(|k| Usage {
-            node,
-            kind: k,
-            scope: current_scope.clone(),
-        })
-    }
-
-    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String> {
-        let new_scope_name = match node.kind() {
-            "function_declaration" | "class_declaration" | "interface_declaration" | "module" => {
-                node.child_by_field_name("name").map(|n| {
-                    n.utf8_text(self.source_code.as_bytes())
-                        .unwrap()
-                        .trim()
-                        .to_string()
-                })
-            }
-            _ => None,
-        };
-
-        if let Some(name) = new_scope_name {
-            Some(
-                parent_scope
-                    .as_ref()
-                    .map_or(name.clone(), |p| format!("{p}.{name}")),
-            )
-        } else {
-            parent_scope.clone()
-        }
+        kind.map(|k| Usage::new(&node, source_code, k))
     }
 }

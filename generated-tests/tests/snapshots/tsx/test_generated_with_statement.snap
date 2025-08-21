@@ -25,23 +25,25 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "obj4",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 11,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 11,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "prop7",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 15,
-            end_line: 1,
-            end_column: 20,
+            position: Position {
+                start_line: 1,
+                start_column: 15,
+                end_line: 1,
+                end_column: 20,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

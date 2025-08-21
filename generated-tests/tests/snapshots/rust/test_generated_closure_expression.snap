@@ -27,36 +27,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "closure",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 12,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "x3",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 18,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "x3",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 20,
-            end_line: 1,
-            end_column: 22,
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 22,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "y2",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 25,
-            end_line: 1,
-            end_column: 27,
+            position: Position {
+                start_line: 1,
+                start_column: 25,
+                end_line: 1,
+                end_column: 27,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

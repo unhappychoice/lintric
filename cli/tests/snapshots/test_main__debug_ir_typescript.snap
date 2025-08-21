@@ -7,135 +7,213 @@ expression: out
   "definitions": [
     {
       "name": "SomeClass",
-      "line_number": 1,
-      "definition_type": "ModuleDefinition",
-      "scope": null
-    },
-    {
-      "name": "DefaultExport",
-      "line_number": 3,
-      "definition_type": "ModuleDefinition",
-      "scope": null
+      "position": {
+        "start_line": 1,
+        "start_column": 10,
+        "end_line": 1,
+        "end_column": 19
+      },
+      "definition_type": "ImportDefinition"
     },
     {
       "name": "Point",
-      "line_number": 5,
-      "definition_type": "InterfaceDefinition",
-      "scope": "Point"
+      "position": {
+        "start_line": 5,
+        "start_column": 11,
+        "end_line": 5,
+        "end_column": 16
+      },
+      "definition_type": "InterfaceDefinition"
     },
     {
       "name": "x",
-      "line_number": 6,
-      "definition_type": "PropertyDefinition",
-      "scope": "Point"
+      "position": {
+        "start_line": 6,
+        "start_column": 5,
+        "end_line": 6,
+        "end_column": 6
+      },
+      "definition_type": "PropertyDefinition"
     },
     {
       "name": "y",
-      "line_number": 7,
-      "definition_type": "PropertyDefinition",
-      "scope": "Point"
+      "position": {
+        "start_line": 7,
+        "start_column": 5,
+        "end_line": 7,
+        "end_column": 6
+      },
+      "definition_type": "PropertyDefinition"
     },
     {
       "name": "add",
-      "line_number": 10,
-      "definition_type": "FunctionDefinition",
-      "scope": "add"
+      "position": {
+        "start_line": 10,
+        "start_column": 10,
+        "end_line": 10,
+        "end_column": 13
+      },
+      "definition_type": "FunctionDefinition"
     },
     {
       "name": "a",
-      "line_number": 10,
-      "definition_type": "VariableDefinition",
-      "scope": "add"
+      "position": {
+        "start_line": 10,
+        "start_column": 14,
+        "end_line": 10,
+        "end_column": 15
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "b",
-      "line_number": 10,
-      "definition_type": "VariableDefinition",
-      "scope": "add"
+      "position": {
+        "start_line": 10,
+        "start_column": 25,
+        "end_line": 10,
+        "end_column": 26
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "result",
-      "line_number": 11,
-      "definition_type": "VariableDefinition",
-      "scope": "add"
+      "position": {
+        "start_line": 11,
+        "start_column": 11,
+        "end_line": 11,
+        "end_column": 17
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "main",
-      "line_number": 15,
-      "definition_type": "FunctionDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 15,
+        "start_column": 10,
+        "end_line": 15,
+        "end_column": 14
+      },
+      "definition_type": "FunctionDefinition"
     },
     {
       "name": "p1",
-      "line_number": 16,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 16,
+        "start_column": 11,
+        "end_line": 16,
+        "end_column": 13
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "p2",
-      "line_number": 17,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 17,
+        "start_column": 11,
+        "end_line": 17,
+        "end_column": 13
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "p3",
-      "line_number": 19,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 19,
+        "start_column": 11,
+        "end_line": 19,
+        "end_column": 13
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "p4",
-      "line_number": 24,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 24,
+        "start_column": 11,
+        "end_line": 24,
+        "end_column": 13
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "p5",
-      "line_number": 25,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 25,
+        "start_column": 15,
+        "end_line": 25,
+        "end_column": 17
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "p6",
-      "line_number": 26,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 26,
+        "start_column": 15,
+        "end_line": 26,
+        "end_column": 17
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "x",
-      "line_number": 30,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 30,
+        "start_column": 9,
+        "end_line": 30,
+        "end_column": 10
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "y",
-      "line_number": 31,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 31,
+        "start_column": 9,
+        "end_line": 31,
+        "end_column": 10
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "z",
-      "line_number": 32,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 32,
+        "start_column": 9,
+        "end_line": 32,
+        "end_column": 10
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "instance",
-      "line_number": 38,
-      "definition_type": "VariableDefinition",
-      "scope": null
+      "position": {
+        "start_line": 38,
+        "start_column": 7,
+        "end_line": 38,
+        "end_column": 15
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "result",
-      "line_number": 39,
-      "definition_type": "VariableDefinition",
-      "scope": null
+      "position": {
+        "start_line": 39,
+        "start_column": 7,
+        "end_line": 39,
+        "end_column": 13
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "anotherFunction",
-      "line_number": 42,
-      "definition_type": "FunctionDefinition",
-      "scope": "anotherFunction"
+      "position": {
+        "start_line": 42,
+        "start_column": 10,
+        "end_line": 42,
+        "end_column": 25
+      },
+      "definition_type": "FunctionDefinition"
     }
   ],
   "dependencies": [
@@ -144,105 +222,210 @@ expression: out
       "target_line": 10,
       "symbol": "a",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 11,
       "target_line": 10,
       "symbol": "b",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 12,
       "target_line": 11,
       "symbol": "result",
       "dependency_type": "VariableUse",
-      "context": "return_statement"
+      "context": "variable_use"
+    },
+    {
+      "source_line": 16,
+      "target_line": 5,
+      "symbol": "Point",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
+      "source_line": 16,
+      "target_line": 6,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 16,
+      "target_line": 7,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 17,
+      "target_line": 5,
+      "symbol": "Point",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
+      "source_line": 17,
+      "target_line": 6,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 17,
+      "target_line": 7,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 19,
+      "target_line": 5,
+      "symbol": "Point",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
+      "source_line": 20,
+      "target_line": 6,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 20,
+      "target_line": 10,
+      "symbol": "add",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     },
     {
       "source_line": 20,
       "target_line": 16,
       "symbol": "p1",
       "dependency_type": "VariableUse",
-      "context": "member_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 20,
-      "target_line": 16,
-      "symbol": "p1",
+      "target_line": 6,
+      "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "member_access"
+      "context": "field_access"
     },
     {
       "source_line": 20,
       "target_line": 17,
       "symbol": "p2",
       "dependency_type": "VariableUse",
-      "context": "member_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 20,
-      "target_line": 17,
-      "symbol": "p2",
+      "target_line": 6,
+      "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "member_access"
+      "context": "field_access"
+    },
+    {
+      "source_line": 21,
+      "target_line": 7,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 21,
+      "target_line": 10,
+      "symbol": "add",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     },
     {
       "source_line": 21,
       "target_line": 16,
       "symbol": "p1",
       "dependency_type": "VariableUse",
-      "context": "member_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 21,
-      "target_line": 16,
-      "symbol": "p1",
+      "target_line": 7,
+      "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "member_access"
+      "context": "field_access"
     },
     {
       "source_line": 21,
       "target_line": 17,
       "symbol": "p2",
       "dependency_type": "VariableUse",
-      "context": "member_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 21,
-      "target_line": 17,
-      "symbol": "p2",
+      "target_line": 7,
+      "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "member_access"
+      "context": "field_access"
+    },
+    {
+      "source_line": 25,
+      "target_line": 5,
+      "symbol": "Point",
+      "dependency_type": "TypeReference",
+      "context": "type_reference"
+    },
+    {
+      "source_line": 25,
+      "target_line": 6,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 25,
+      "target_line": 7,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "field_access"
+    },
+    {
+      "source_line": 26,
+      "target_line": 25,
+      "symbol": "p5",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     },
     {
       "source_line": 27,
       "target_line": 26,
       "symbol": "p6",
       "dependency_type": "VariableUse",
-      "context": "return_statement"
+      "context": "variable_use"
     },
     {
       "source_line": 31,
-      "target_line": 30,
+      "target_line": 6,
       "symbol": "x",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 32,
-      "target_line": 31,
+      "target_line": 7,
       "symbol": "y",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 32,
-      "target_line": 30,
+      "target_line": 6,
       "symbol": "x",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     },
     {
       "source_line": 34,
@@ -252,46 +435,18 @@ expression: out
       "context": "variable_use"
     },
     {
-      "source_line": 34,
-      "target_line": 19,
-      "symbol": "p3",
-      "dependency_type": "VariableUse",
-      "context": "arguments"
-    },
-    {
       "source_line": 35,
       "target_line": 24,
       "symbol": "p4",
       "dependency_type": "VariableUse",
       "context": "variable_use"
-    },
-    {
-      "source_line": 35,
-      "target_line": 24,
-      "symbol": "p4",
-      "dependency_type": "VariableUse",
-      "context": "arguments"
     },
     {
       "source_line": 38,
       "target_line": 1,
       "symbol": "SomeClass",
       "dependency_type": "VariableUse",
-      "context": "new_expression"
-    },
-    {
-      "source_line": 40,
-      "target_line": 3,
-      "symbol": "DefaultExport",
-      "dependency_type": "VariableUse",
-      "context": "member_expression"
-    },
-    {
-      "source_line": 40,
-      "target_line": 3,
-      "symbol": "DefaultExport",
-      "dependency_type": "StructFieldAccess",
-      "context": "member_access"
+      "context": "variable_use"
     },
     {
       "source_line": 43,
@@ -302,548 +457,592 @@ expression: out
     },
     {
       "source_line": 43,
-      "target_line": 39,
+      "target_line": 11,
       "symbol": "result",
       "dependency_type": "VariableUse",
       "context": "variable_use"
-    },
-    {
-      "source_line": 43,
-      "target_line": 38,
-      "symbol": "instance",
-      "dependency_type": "VariableUse",
-      "context": "arguments"
-    },
-    {
-      "source_line": 43,
-      "target_line": 39,
-      "symbol": "result",
-      "dependency_type": "VariableUse",
-      "context": "arguments"
     }
   ],
   "usage": [
     {
       "name": "SomeClass",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 1,
-      "start_column": 10,
-      "end_line": 1,
-      "end_column": 19
+      "position": {
+        "start_line": 1,
+        "start_column": 10,
+        "end_line": 1,
+        "end_column": 19
+      }
     },
     {
       "name": "Utils",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 2,
-      "start_column": 13,
-      "end_line": 2,
-      "end_column": 18
+      "position": {
+        "start_line": 2,
+        "start_column": 13,
+        "end_line": 2,
+        "end_column": 18
+      }
     },
     {
       "name": "DefaultExport",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 3,
-      "start_column": 8,
-      "end_line": 3,
-      "end_column": 21
+      "position": {
+        "start_line": 3,
+        "start_column": 8,
+        "end_line": 3,
+        "end_column": 21
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "Point",
-      "start_line": 6,
-      "start_column": 5,
-      "end_line": 6,
-      "end_column": 6
+      "position": {
+        "start_line": 6,
+        "start_column": 5,
+        "end_line": 6,
+        "end_column": 6
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "Point",
-      "start_line": 7,
-      "start_column": 5,
-      "end_line": 7,
-      "end_column": 6
+      "position": {
+        "start_line": 7,
+        "start_column": 5,
+        "end_line": 7,
+        "end_column": 6
+      }
     },
     {
       "name": "a",
       "kind": "Identifier",
-      "scope": "add",
-      "start_line": 11,
-      "start_column": 20,
-      "end_line": 11,
-      "end_column": 21
+      "position": {
+        "start_line": 11,
+        "start_column": 20,
+        "end_line": 11,
+        "end_column": 21
+      }
     },
     {
       "name": "b",
       "kind": "Identifier",
-      "scope": "add",
-      "start_line": 11,
-      "start_column": 24,
-      "end_line": 11,
-      "end_column": 25
+      "position": {
+        "start_line": 11,
+        "start_column": 24,
+        "end_line": 11,
+        "end_column": 25
+      }
     },
     {
       "name": "result",
       "kind": "Identifier",
-      "scope": "add",
-      "start_line": 12,
-      "start_column": 12,
-      "end_line": 12,
-      "end_column": 18
+      "position": {
+        "start_line": 12,
+        "start_column": 12,
+        "end_line": 12,
+        "end_column": 18
+      }
     },
     {
       "name": "Point",
       "kind": "TypeIdentifier",
-      "scope": "main",
-      "start_line": 16,
-      "start_column": 15,
-      "end_line": 16,
-      "end_column": 20
+      "position": {
+        "start_line": 16,
+        "start_column": 15,
+        "end_line": 16,
+        "end_column": 20
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 16,
-      "start_column": 25,
-      "end_line": 16,
-      "end_column": 26
+      "position": {
+        "start_line": 16,
+        "start_column": 25,
+        "end_line": 16,
+        "end_column": 26
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 16,
-      "start_column": 31,
-      "end_line": 16,
-      "end_column": 32
+      "position": {
+        "start_line": 16,
+        "start_column": 31,
+        "end_line": 16,
+        "end_column": 32
+      }
     },
     {
       "name": "Point",
       "kind": "TypeIdentifier",
-      "scope": "main",
-      "start_line": 17,
-      "start_column": 15,
-      "end_line": 17,
-      "end_column": 20
+      "position": {
+        "start_line": 17,
+        "start_column": 15,
+        "end_line": 17,
+        "end_column": 20
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 17,
-      "start_column": 25,
-      "end_line": 17,
-      "end_column": 26
+      "position": {
+        "start_line": 17,
+        "start_column": 25,
+        "end_line": 17,
+        "end_column": 26
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 17,
-      "start_column": 31,
-      "end_line": 17,
-      "end_column": 32
+      "position": {
+        "start_line": 17,
+        "start_column": 31,
+        "end_line": 17,
+        "end_column": 32
+      }
     },
     {
       "name": "Point",
       "kind": "TypeIdentifier",
-      "scope": "main",
-      "start_line": 19,
-      "start_column": 15,
-      "end_line": 19,
-      "end_column": 20
+      "position": {
+        "start_line": 19,
+        "start_column": 15,
+        "end_line": 19,
+        "end_column": 20
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 9,
-      "end_line": 20,
-      "end_column": 10
+      "position": {
+        "start_line": 20,
+        "start_column": 9,
+        "end_line": 20,
+        "end_column": 10
+      }
     },
     {
       "name": "add(p1.x, p2.x)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 12,
-      "end_line": 20,
-      "end_column": 27
+      "position": {
+        "start_line": 20,
+        "start_column": 12,
+        "end_line": 20,
+        "end_column": 27
+      }
     },
     {
       "name": "add",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 12,
-      "end_line": 20,
-      "end_column": 15
+      "position": {
+        "start_line": 20,
+        "start_column": 12,
+        "end_line": 20,
+        "end_column": 15
+      }
     },
     {
       "name": "p1",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 16,
-      "end_line": 20,
-      "end_column": 18
+      "position": {
+        "start_line": 20,
+        "start_column": 16,
+        "end_line": 20,
+        "end_column": 18
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 19,
-      "end_line": 20,
-      "end_column": 20
+      "position": {
+        "start_line": 20,
+        "start_column": 19,
+        "end_line": 20,
+        "end_column": 20
+      }
     },
     {
       "name": "p2",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 22,
-      "end_line": 20,
-      "end_column": 24
+      "position": {
+        "start_line": 20,
+        "start_column": 22,
+        "end_line": 20,
+        "end_column": 24
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 20,
-      "start_column": 25,
-      "end_line": 20,
-      "end_column": 26
+      "position": {
+        "start_line": 20,
+        "start_column": 25,
+        "end_line": 20,
+        "end_column": 26
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 9,
-      "end_line": 21,
-      "end_column": 10
+      "position": {
+        "start_line": 21,
+        "start_column": 9,
+        "end_line": 21,
+        "end_column": 10
+      }
     },
     {
       "name": "add(p1.y, p2.y)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 12,
-      "end_line": 21,
-      "end_column": 27
+      "position": {
+        "start_line": 21,
+        "start_column": 12,
+        "end_line": 21,
+        "end_column": 27
+      }
     },
     {
       "name": "add",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 12,
-      "end_line": 21,
-      "end_column": 15
+      "position": {
+        "start_line": 21,
+        "start_column": 12,
+        "end_line": 21,
+        "end_column": 15
+      }
     },
     {
       "name": "p1",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 16,
-      "end_line": 21,
-      "end_column": 18
+      "position": {
+        "start_line": 21,
+        "start_column": 16,
+        "end_line": 21,
+        "end_column": 18
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 19,
-      "end_line": 21,
-      "end_column": 20
+      "position": {
+        "start_line": 21,
+        "start_column": 19,
+        "end_line": 21,
+        "end_column": 20
+      }
     },
     {
       "name": "p2",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 22,
-      "end_line": 21,
-      "end_column": 24
+      "position": {
+        "start_line": 21,
+        "start_column": 22,
+        "end_line": 21,
+        "end_column": 24
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 21,
-      "start_column": 25,
-      "end_line": 21,
-      "end_column": 26
+      "position": {
+        "start_line": 21,
+        "start_column": 25,
+        "end_line": 21,
+        "end_column": 26
+      }
     },
     {
       "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })()",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 24,
-      "start_column": 16,
-      "end_line": 28,
-      "end_column": 9
+      "position": {
+        "start_line": 24,
+        "start_column": 16,
+        "end_line": 28,
+        "end_column": 9
+      }
     },
     {
       "name": "Point",
       "kind": "TypeIdentifier",
-      "scope": "main",
-      "start_line": 25,
-      "start_column": 19,
-      "end_line": 25,
-      "end_column": 24
+      "position": {
+        "start_line": 25,
+        "start_column": 19,
+        "end_line": 25,
+        "end_column": 24
+      }
     },
     {
       "name": "x",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 25,
-      "start_column": 29,
-      "end_line": 25,
-      "end_column": 30
+      "position": {
+        "start_line": 25,
+        "start_column": 29,
+        "end_line": 25,
+        "end_column": 30
+      }
     },
     {
       "name": "y",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 25,
-      "start_column": 35,
-      "end_line": 25,
-      "end_column": 36
+      "position": {
+        "start_line": 25,
+        "start_column": 35,
+        "end_line": 25,
+        "end_column": 36
+      }
     },
     {
       "name": "p5",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 26,
-      "start_column": 20,
-      "end_line": 26,
-      "end_column": 22
+      "position": {
+        "start_line": 26,
+        "start_column": 20,
+        "end_line": 26,
+        "end_column": 22
+      }
     },
     {
       "name": "p6",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 27,
-      "start_column": 16,
-      "end_line": 27,
-      "end_column": 18
+      "position": {
+        "start_line": 27,
+        "start_column": 16,
+        "end_line": 27,
+        "end_column": 18
+      }
     },
     {
       "name": "x",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 31,
-      "start_column": 13,
-      "end_line": 31,
-      "end_column": 14
+      "position": {
+        "start_line": 31,
+        "start_column": 13,
+        "end_line": 31,
+        "end_column": 14
+      }
     },
     {
       "name": "y",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 32,
-      "start_column": 13,
-      "end_line": 32,
-      "end_column": 14
+      "position": {
+        "start_line": 32,
+        "start_column": 13,
+        "end_line": 32,
+        "end_column": 14
+      }
     },
     {
       "name": "x",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 32,
-      "start_column": 17,
-      "end_line": 32,
-      "end_column": 18
+      "position": {
+        "start_line": 32,
+        "start_column": 17,
+        "end_line": 32,
+        "end_column": 18
+      }
     },
     {
       "name": "console.log(p3)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 34,
-      "start_column": 5,
-      "end_line": 34,
-      "end_column": 20
+      "position": {
+        "start_line": 34,
+        "start_column": 5,
+        "end_line": 34,
+        "end_column": 20
+      }
     },
     {
       "name": "console",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 34,
-      "start_column": 5,
-      "end_line": 34,
-      "end_column": 12
+      "position": {
+        "start_line": 34,
+        "start_column": 5,
+        "end_line": 34,
+        "end_column": 12
+      }
     },
     {
       "name": "log",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 34,
-      "start_column": 13,
-      "end_line": 34,
-      "end_column": 16
+      "position": {
+        "start_line": 34,
+        "start_column": 13,
+        "end_line": 34,
+        "end_column": 16
+      }
     },
     {
       "name": "p3",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 34,
-      "start_column": 17,
-      "end_line": 34,
-      "end_column": 19
+      "position": {
+        "start_line": 34,
+        "start_column": 17,
+        "end_line": 34,
+        "end_column": 19
+      }
     },
     {
       "name": "console.log(p4)",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 35,
-      "start_column": 5,
-      "end_line": 35,
-      "end_column": 20
+      "position": {
+        "start_line": 35,
+        "start_column": 5,
+        "end_line": 35,
+        "end_column": 20
+      }
     },
     {
       "name": "console",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 35,
-      "start_column": 5,
-      "end_line": 35,
-      "end_column": 12
+      "position": {
+        "start_line": 35,
+        "start_column": 5,
+        "end_line": 35,
+        "end_column": 12
+      }
     },
     {
       "name": "log",
       "kind": "FieldExpression",
-      "scope": "main",
-      "start_line": 35,
-      "start_column": 13,
-      "end_line": 35,
-      "end_column": 16
+      "position": {
+        "start_line": 35,
+        "start_column": 13,
+        "end_line": 35,
+        "end_column": 16
+      }
     },
     {
       "name": "p4",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 35,
-      "start_column": 17,
-      "end_line": 35,
-      "end_column": 19
+      "position": {
+        "start_line": 35,
+        "start_column": 17,
+        "end_line": 35,
+        "end_column": 19
+      }
     },
     {
       "name": "SomeClass",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 38,
-      "start_column": 22,
-      "end_line": 38,
-      "end_column": 31
+      "position": {
+        "start_line": 38,
+        "start_column": 22,
+        "end_line": 38,
+        "end_column": 31
+      }
     },
     {
       "name": "Utils.helperFunction()",
       "kind": "CallExpression",
-      "scope": null,
-      "start_line": 39,
-      "start_column": 16,
-      "end_line": 39,
-      "end_column": 38
+      "position": {
+        "start_line": 39,
+        "start_column": 16,
+        "end_line": 39,
+        "end_column": 38
+      }
     },
     {
       "name": "Utils",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 39,
-      "start_column": 16,
-      "end_line": 39,
-      "end_column": 21
+      "position": {
+        "start_line": 39,
+        "start_column": 16,
+        "end_line": 39,
+        "end_column": 21
+      }
     },
     {
       "name": "helperFunction",
       "kind": "FieldExpression",
-      "scope": null,
-      "start_line": 39,
-      "start_column": 22,
-      "end_line": 39,
-      "end_column": 36
+      "position": {
+        "start_line": 39,
+        "start_column": 22,
+        "end_line": 39,
+        "end_column": 36
+      }
     },
     {
       "name": "DefaultExport.init()",
       "kind": "CallExpression",
-      "scope": null,
-      "start_line": 40,
-      "start_column": 1,
-      "end_line": 40,
-      "end_column": 21
+      "position": {
+        "start_line": 40,
+        "start_column": 1,
+        "end_line": 40,
+        "end_column": 21
+      }
     },
     {
       "name": "DefaultExport",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 40,
-      "start_column": 1,
-      "end_line": 40,
-      "end_column": 14
+      "position": {
+        "start_line": 40,
+        "start_column": 1,
+        "end_line": 40,
+        "end_column": 14
+      }
     },
     {
       "name": "init",
       "kind": "FieldExpression",
-      "scope": null,
-      "start_line": 40,
-      "start_column": 15,
-      "end_line": 40,
-      "end_column": 19
+      "position": {
+        "start_line": 40,
+        "start_column": 15,
+        "end_line": 40,
+        "end_column": 19
+      }
     },
     {
       "name": "console.log(instance, result)",
       "kind": "CallExpression",
-      "scope": "anotherFunction",
-      "start_line": 43,
-      "start_column": 5,
-      "end_line": 43,
-      "end_column": 34
+      "position": {
+        "start_line": 43,
+        "start_column": 5,
+        "end_line": 43,
+        "end_column": 34
+      }
     },
     {
       "name": "console",
       "kind": "Identifier",
-      "scope": "anotherFunction",
-      "start_line": 43,
-      "start_column": 5,
-      "end_line": 43,
-      "end_column": 12
+      "position": {
+        "start_line": 43,
+        "start_column": 5,
+        "end_line": 43,
+        "end_column": 12
+      }
     },
     {
       "name": "log",
       "kind": "FieldExpression",
-      "scope": "anotherFunction",
-      "start_line": 43,
-      "start_column": 13,
-      "end_line": 43,
-      "end_column": 16
+      "position": {
+        "start_line": 43,
+        "start_column": 13,
+        "end_line": 43,
+        "end_column": 16
+      }
     },
     {
       "name": "instance",
       "kind": "Identifier",
-      "scope": "anotherFunction",
-      "start_line": 43,
-      "start_column": 17,
-      "end_line": 43,
-      "end_column": 25
+      "position": {
+        "start_line": 43,
+        "start_column": 17,
+        "end_line": 43,
+        "end_column": 25
+      }
     },
     {
       "name": "result",
       "kind": "Identifier",
-      "scope": "anotherFunction",
-      "start_line": 43,
-      "start_column": 27,
-      "end_line": 43,
-      "end_column": 33
+      "position": {
+        "start_line": 43,
+        "start_column": 27,
+        "end_line": 43,
+        "end_column": 33
+      }
     }
   ],
   "analysis_metadata": {

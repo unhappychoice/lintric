@@ -30,33 +30,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test_fn3",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 12,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "test_fn3",
-            ),
         },
         Definition {
             name: "x5",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 30,
+            },
             definition_type: VariableDefinition,
-            scope: Some(
-                "test_fn3",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "x5",
             kind: Identifier,
-            scope: Some(
-                "test_fn3",
-            ),
-            start_line: 1,
-            start_column: 37,
-            end_line: 1,
-            end_column: 39,
+            position: Position {
+                start_line: 1,
+                start_column: 37,
+                end_line: 1,
+                end_column: 39,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

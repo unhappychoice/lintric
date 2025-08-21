@@ -7,15 +7,23 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   "definitions": [
     {
       "name": "main",
-      "line_number": 1,
-      "definition_type": "FunctionDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 1,
+        "start_column": 4,
+        "end_line": 1,
+        "end_column": 8
+      },
+      "definition_type": "FunctionDefinition"
     },
     {
       "name": "some_macro",
-      "line_number": 2,
-      "definition_type": "ModuleDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 2,
+        "start_column": 20,
+        "end_line": 2,
+        "end_column": 30
+      },
+      "definition_type": "ImportDefinition"
     }
   ],
   "dependencies": [
@@ -23,37 +31,40 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "source_line": 3,
       "target_line": 2,
       "symbol": "some_macro",
-      "dependency_type": "MacroInvocation",
-      "context": "macro_invocation"
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     }
   ],
   "usage": [
     {
       "name": "my_module",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 2,
-      "start_column": 9,
-      "end_line": 2,
-      "end_column": 18
+      "position": {
+        "start_line": 2,
+        "start_column": 9,
+        "end_line": 2,
+        "end_column": 18
+      }
     },
     {
       "name": "some_macro",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 2,
-      "start_column": 20,
-      "end_line": 2,
-      "end_column": 30
+      "position": {
+        "start_line": 2,
+        "start_column": 20,
+        "end_line": 2,
+        "end_column": 30
+      }
     },
     {
       "name": "some_macro",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 3,
-      "start_column": 5,
-      "end_line": 3,
-      "end_column": 15
+      "position": {
+        "start_line": 3,
+        "start_column": 5,
+        "end_line": 3,
+        "end_column": 15
+      }
     }
   ],
   "analysis_metadata": {

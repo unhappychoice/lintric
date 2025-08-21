@@ -26,25 +26,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestEnum",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: EnumDefinition,
-            scope: Some(
-                "TestEnum",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Variant",
             kind: Identifier,
-            scope: Some(
-                "TestEnum",
-            ),
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 24,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 24,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

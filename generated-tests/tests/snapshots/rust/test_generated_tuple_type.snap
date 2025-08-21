@@ -34,39 +34,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "tuple",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 10,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "String",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 18,
-            end_line: 1,
-            end_column: 24,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 24,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "\"test\".to_string()",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 33,
-            end_line: 1,
-            end_column: 51,
+            position: Position {
+                start_line: 1,
+                start_column: 33,
+                end_line: 1,
+                end_column: 51,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "\"test\".to_string",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 33,
-            end_line: 1,
-            end_column: 49,
+            position: Position {
+                start_line: 1,
+                start_column: 33,
+                end_line: 1,
+                end_column: 49,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

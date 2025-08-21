@@ -30,32 +30,35 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Type",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 8,
-            end_line: 1,
-            end_column: 12,
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 12,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x4",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 25,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 25,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 30,
-            end_line: 1,
-            end_column: 35,
+            position: Position {
+                start_line: 1,
+                start_column: 30,
+                end_line: 1,
+                end_column: 35,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -22,27 +22,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "x15",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 9,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "y4",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 13,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "tuple_val",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 26,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

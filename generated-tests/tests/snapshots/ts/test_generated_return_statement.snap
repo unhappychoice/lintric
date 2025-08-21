@@ -24,25 +24,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "test",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "value24",
             kind: Identifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 33,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 33,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -23,21 +23,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "prop8",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 9,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "obj5",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 19,
-            end_line: 1,
-            end_column: 23,
+            position: Position {
+                start_line: 1,
+                start_column: 19,
+                end_line: 1,
+                end_column: 23,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

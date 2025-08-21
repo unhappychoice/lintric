@@ -47,45 +47,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "fn",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 9,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "x",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 36,
+                end_line: 1,
+                end_column: 37,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "x.toString()",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 42,
-            end_line: 1,
-            end_column: 54,
+            position: Position {
+                start_line: 1,
+                start_column: 42,
+                end_line: 1,
+                end_column: 54,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 42,
-            end_line: 1,
-            end_column: 43,
+            position: Position {
+                start_line: 1,
+                start_column: 42,
+                end_line: 1,
+                end_column: 43,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "toString",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 44,
-            end_line: 1,
-            end_column: 52,
+            position: Position {
+                start_line: 1,
+                start_column: 44,
+                end_line: 1,
+                end_column: 52,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

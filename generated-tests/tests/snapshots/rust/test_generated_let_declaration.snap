@@ -19,21 +19,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "var5",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 9,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "source1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 12,
-            end_line: 1,
-            end_column: 19,
+            position: Position {
+                start_line: 1,
+                start_column: 12,
+                end_line: 1,
+                end_column: 19,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

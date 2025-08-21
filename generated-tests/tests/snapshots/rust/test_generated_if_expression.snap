@@ -37,48 +37,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "value1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 13,
+                end_line: 1,
+                end_column: 19,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Some",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 8,
-            end_line: 1,
-            end_column: 12,
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 12,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 13,
-            end_line: 1,
-            end_column: 19,
+            position: Position {
+                start_line: 1,
+                start_column: 13,
+                end_line: 1,
+                end_column: 19,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "opt",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 26,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 29,
-            end_line: 1,
-            end_column: 35,
+            position: Position {
+                start_line: 1,
+                start_column: 29,
+                end_line: 1,
+                end_column: 35,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

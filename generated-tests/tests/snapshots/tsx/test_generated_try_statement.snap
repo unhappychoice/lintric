@@ -44,75 +44,86 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "result1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 13,
+                end_line: 1,
+                end_column: 20,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "riskyOperation()",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 39,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 39,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "riskyOperation",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 23,
-            end_line: 1,
-            end_column: 37,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 37,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "error1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 50,
-            end_line: 1,
-            end_column: 56,
+            position: Position {
+                start_line: 1,
+                start_column: 50,
+                end_line: 1,
+                end_column: 56,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "console.log(error1)",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 60,
-            end_line: 1,
-            end_column: 79,
+            position: Position {
+                start_line: 1,
+                start_column: 60,
+                end_line: 1,
+                end_column: 79,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "console",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 60,
-            end_line: 1,
-            end_column: 67,
+            position: Position {
+                start_line: 1,
+                start_column: 60,
+                end_line: 1,
+                end_column: 67,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "log",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 68,
-            end_line: 1,
-            end_column: 71,
+            position: Position {
+                start_line: 1,
+                start_column: 68,
+                end_line: 1,
+                end_column: 71,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "error1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 72,
-            end_line: 1,
-            end_column: 78,
+            position: Position {
+                start_line: 1,
+                start_column: 72,
+                end_line: 1,
+                end_column: 78,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

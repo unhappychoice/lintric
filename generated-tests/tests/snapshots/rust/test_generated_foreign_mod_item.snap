@@ -28,21 +28,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "extern_fn",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 26,
+            },
             definition_type: FunctionDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "extern_fn",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 26,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

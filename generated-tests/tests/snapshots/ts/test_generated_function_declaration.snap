@@ -43,52 +43,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "testFn1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 17,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "testFn1",
-            ),
         },
         Definition {
             name: "param",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 23,
+            },
             definition_type: VariableDefinition,
-            scope: Some(
-                "testFn1",
-            ),
         },
         Definition {
             name: "local",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 49,
+                end_line: 1,
+                end_column: 54,
+            },
             definition_type: VariableDefinition,
-            scope: Some(
-                "testFn1",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "param",
             kind: Identifier,
-            scope: Some(
-                "testFn1",
-            ),
-            start_line: 1,
-            start_column: 57,
-            end_line: 1,
-            end_column: 62,
+            position: Position {
+                start_line: 1,
+                start_column: 57,
+                end_line: 1,
+                end_column: 62,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "local",
             kind: Identifier,
-            scope: Some(
-                "testFn1",
-            ),
-            start_line: 1,
-            start_column: 71,
-            end_line: 1,
-            end_column: 76,
+            position: Position {
+                start_line: 1,
+                start_column: 71,
+                end_line: 1,
+                end_column: 76,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

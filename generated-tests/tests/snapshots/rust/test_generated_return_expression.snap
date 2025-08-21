@@ -27,11 +27,13 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "f",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 5,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "f",
-            ),
         },
     ],
     dependencies: [],

@@ -24,21 +24,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "value2",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 13,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Type",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 15,
-            end_line: 1,
-            end_column: 19,
+            position: Position {
+                start_line: 1,
+                start_column: 15,
+                end_line: 1,
+                end_column: 19,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {
