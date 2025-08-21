@@ -1,9 +1,5 @@
 [workspace]
-members = [
-    "core",
-    "cli",
-    "generated-tests",
-]
+members = ["core", "cli", "test-generator"]
 
 [package]
 name = "lintric-workspace"
