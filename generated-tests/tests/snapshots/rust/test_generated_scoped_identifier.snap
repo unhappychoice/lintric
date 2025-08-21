@@ -9,17 +9,17 @@ AST:
 (source_file
   (expression_statement
     (call_expression
-      (scoped_identifier
-        (scoped_identifier
-          (scoped_identifier
-            (identifier std)
-            (identifier collections)
+      function: (scoped_identifier "std::collections::HashMap::new"
+        path: (scoped_identifier "std::collections::HashMap"
+          path: (scoped_identifier "std::collections"
+            path: (identifier "std")
+            name: (identifier "collections")
           )
-          (identifier HashMap)
+          name: (identifier "HashMap")
         )
-        (identifier new)
+        name: (identifier "new")
       )
-      (arguments)
+      arguments: (arguments)
     )
   )
 )

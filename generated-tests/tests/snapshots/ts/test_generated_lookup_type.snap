@@ -8,22 +8,22 @@ type Obj = { key: string }; const value14: Obj['key'] = 'test';
 AST:
 (program
   (type_alias_declaration
-    (type_identifier)
-    (object_type
+    name: (type_identifier "Obj")
+    value: (object_type
       (property_signature
-        (property_identifier)
-        (type_annotation
-          (predefined_type)
+        name: (property_identifier "key")
+        type: (type_annotation
+          (predefined_type "string")
         )
       )
     )
   )
   (lexical_declaration
     (variable_declarator
-      (identifier value14)
-      (type_annotation
+      name: (identifier "value14")
+      type: (type_annotation
         (lookup_type
-          (type_identifier)
+          (type_identifier "Obj")
           (literal_type
             (string
               (string_fragment)
@@ -31,7 +31,7 @@ AST:
           )
         )
       )
-      (string
+      value: (string
         (string_fragment)
       )
     )

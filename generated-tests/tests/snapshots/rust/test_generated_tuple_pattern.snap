@@ -8,11 +8,11 @@ let (x15, y4) = tuple_val;
 AST:
 (source_file
   (let_declaration
-    (tuple_pattern
-      (identifier x15)
-      (identifier y4)
+    pattern: (tuple_pattern
+      (identifier "x15")
+      (identifier "y4")
     )
-    (identifier tuple_val)
+    value: (identifier "tuple_val")
   )
 )
 

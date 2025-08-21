@@ -9,13 +9,13 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier val1)
-      (type_annotation
+      name: (identifier "val1")
+      type: (type_annotation
         (flow_maybe_type
-          (predefined_type)
+          (predefined_type "string")
         )
       )
-      (null)
+      value: (null "null")
     )
   )
 )

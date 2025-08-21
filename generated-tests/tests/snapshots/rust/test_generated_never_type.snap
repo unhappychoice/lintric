@@ -8,14 +8,14 @@ fn test_fn8() -> ! { panic!("never returns") }
 AST:
 (source_file
   (function_item
-    (identifier test_fn8)
-    (parameters)
-    (never_type)
-    (block
+    name: (identifier "test_fn8")
+    parameters: (parameters)
+    return_type: (never_type)
+    body: (block
       (macro_invocation
-        (identifier panic)
+        macro: (identifier "panic")
         (token_tree
-          (string_literal
+          (string_literal ""never returns""
             (string_content)
           )
         )

@@ -8,39 +8,39 @@ fn test<T: Clone + Send>(x: T) -> T where T: std::fmt::Debug { x }
 AST:
 (source_file
   (function_item
-    (identifier test)
-    (type_parameters
+    name: (identifier "test")
+    type_parameters: (type_parameters
       (constrained_type_parameter
-        (type_identifier)
-        (trait_bounds
-          (type_identifier)
-          (type_identifier)
+        left: (type_identifier "T")
+        bounds: (trait_bounds
+          (type_identifier "Clone")
+          (type_identifier "Send")
         )
       )
     )
-    (parameters
+    parameters: (parameters
       (parameter
-        (identifier x)
-        (type_identifier)
+        pattern: (identifier "x")
+        type: (type_identifier "T")
       )
     )
-    (type_identifier)
+    return_type: (type_identifier "T")
     (where_clause
       (where_predicate
-        (type_identifier)
-        (trait_bounds
-          (scoped_type_identifier
-            (scoped_identifier
-              (identifier std)
-              (identifier fmt)
+        left: (type_identifier "T")
+        bounds: (trait_bounds
+          (scoped_type_identifier "std::fmt::Debug"
+            path: (scoped_identifier "std::fmt"
+              path: (identifier "std")
+              name: (identifier "fmt")
             )
-            (type_identifier)
+            name: (type_identifier "Debug")
           )
         )
       )
     )
-    (block
-      (identifier x)
+    body: (block
+      (identifier "x")
     )
   )
 )

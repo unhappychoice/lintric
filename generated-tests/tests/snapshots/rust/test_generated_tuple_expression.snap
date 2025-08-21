@@ -9,8 +9,8 @@ AST:
 (source_file
   (expression_statement
     (tuple_expression
-      (identifier item11)
-      (identifier item21)
+      (identifier "item11")
+      (identifier "item21")
     )
   )
 )

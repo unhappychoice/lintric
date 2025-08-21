@@ -9,8 +9,8 @@ AST:
 (source_file
   (ERROR
     (field_expression
-      (identifier obj)
-      (field_identifier)
+      value: (identifier "obj")
+      field: (field_identifier "field")
     )
   )
 )

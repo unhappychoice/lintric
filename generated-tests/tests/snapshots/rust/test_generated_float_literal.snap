@@ -8,8 +8,8 @@ let pi = 3.14;
 AST:
 (source_file
   (let_declaration
-    (identifier pi)
-    (float_literal)
+    pattern: (identifier "pi")
+    value: (float_literal "3.14")
   )
 )
 

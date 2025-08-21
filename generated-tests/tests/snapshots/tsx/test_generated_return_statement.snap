@@ -8,11 +8,11 @@ function test() { return value27; }
 AST:
 (program
   (function_declaration
-    (identifier test)
-    (formal_parameters)
-    (statement_block
+    name: (identifier "test")
+    parameters: (formal_parameters)
+    body: (statement_block
       (return_statement
-        (identifier value27)
+        (identifier "value27")
       )
     )
   )

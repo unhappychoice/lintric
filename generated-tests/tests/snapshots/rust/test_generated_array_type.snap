@@ -8,15 +8,15 @@ let arr: [i32; 3] = [1, 2, 3];
 AST:
 (source_file
   (let_declaration
-    (identifier arr)
-    (array_type
-      (primitive_type)
-      (integer_literal)
+    pattern: (identifier "arr")
+    type: (array_type
+      element: (primitive_type "i32")
+      length: (integer_literal "3")
     )
-    (array_expression
-      (integer_literal)
-      (integer_literal)
-      (integer_literal)
+    value: (array_expression
+      (integer_literal "1")
+      (integer_literal "2")
+      (integer_literal "3")
     )
   )
 )

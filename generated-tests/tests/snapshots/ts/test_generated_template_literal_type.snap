@@ -8,27 +8,27 @@ type Test<T3> = `hello ${T3}!`; const value27: Test<'world'> = 'hello world!';
 AST:
 (program
   (type_alias_declaration
-    (type_identifier)
-    (type_parameters
+    name: (type_identifier "Test")
+    type_parameters: (type_parameters
       (type_parameter
-        (type_identifier)
+        name: (type_identifier "T3")
       )
     )
-    (template_literal_type
+    value: (template_literal_type
       (string_fragment)
       (template_type
-        (type_identifier)
+        (type_identifier "T3")
       )
       (string_fragment)
     )
   )
   (lexical_declaration
     (variable_declarator
-      (identifier value27)
-      (type_annotation
+      name: (identifier "value27")
+      type: (type_annotation
         (generic_type
-          (type_identifier)
-          (type_arguments
+          name: (type_identifier "Test")
+          type_arguments: (type_arguments
             (literal_type
               (string
                 (string_fragment)
@@ -37,7 +37,7 @@ AST:
           )
         )
       )
-      (string
+      value: (string
         (string_fragment)
       )
     )

@@ -8,16 +8,16 @@ switch (value26) { case 1: break; default: break; }
 AST:
 (program
   (switch_statement
-    (parenthesized_expression
-      (identifier value26)
+    value: (parenthesized_expression
+      (identifier "value26")
     )
-    (switch_body
+    body: (switch_body
       (switch_case
-        (number)
-        (break_statement)
+        value: (number "1")
+        body: (break_statement)
       )
       (switch_default
-        (break_statement)
+        body: (break_statement)
       )
     )
   )

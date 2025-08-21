@@ -8,28 +8,28 @@ let var3: Box<dyn std::fmt::Display> = Box::new(42);
 AST:
 (source_file
   (let_declaration
-    (identifier var3)
-    (generic_type
-      (type_identifier)
-      (type_arguments
+    pattern: (identifier "var3")
+    type: (generic_type
+      type: (type_identifier "Box")
+      type_arguments: (type_arguments
         (dynamic_type
-          (scoped_type_identifier
-            (scoped_identifier
-              (identifier std)
-              (identifier fmt)
+          trait: (scoped_type_identifier "std::fmt::Display"
+            path: (scoped_identifier "std::fmt"
+              path: (identifier "std")
+              name: (identifier "fmt")
             )
-            (type_identifier)
+            name: (type_identifier "Display")
           )
         )
       )
     )
-    (call_expression
-      (scoped_identifier
-        (identifier Box)
-        (identifier new)
+    value: (call_expression
+      function: (scoped_identifier "Box::new"
+        path: (identifier "Box")
+        name: (identifier "new")
       )
-      (arguments
-        (integer_literal)
+      arguments: (arguments
+        (integer_literal "42")
       )
     )
   )

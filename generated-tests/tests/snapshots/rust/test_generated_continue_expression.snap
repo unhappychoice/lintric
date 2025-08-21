@@ -10,13 +10,13 @@ AST:
   (expression_statement
     (loop_expression
       (label
-        (identifier label1)
+        (identifier "label1")
       )
-      (block
+      body: (block
         (expression_statement
           (continue_expression
             (label
-              (identifier label1)
+              (identifier "label1")
             )
           )
         )

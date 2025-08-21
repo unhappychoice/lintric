@@ -8,17 +8,17 @@ for (const key in obj) { console.log(key); }
 AST:
 (program
   (for_in_statement
-    (identifier key)
-    (identifier obj)
-    (statement_block
+    left: (identifier "key")
+    right: (identifier "obj")
+    body: (statement_block
       (expression_statement
         (call_expression
-          (member_expression
-            (identifier console)
-            (property_identifier)
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
           )
-          (arguments
-            (identifier key)
+          arguments: (arguments
+            (identifier "key")
           )
         )
       )

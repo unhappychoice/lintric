@@ -8,8 +8,8 @@ type TestType = string;
 AST:
 (program
   (type_alias_declaration
-    (type_identifier)
-    (predefined_type)
+    name: (type_identifier "TestType")
+    value: (predefined_type "string")
   )
 )
 

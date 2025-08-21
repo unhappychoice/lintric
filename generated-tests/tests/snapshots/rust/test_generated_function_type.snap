@@ -8,20 +8,20 @@ let func: fn(i32) -> i32 = |x| x + 1;
 AST:
 (source_file
   (let_declaration
-    (identifier func)
-    (function_type
-      (parameters
-        (primitive_type)
+    pattern: (identifier "func")
+    type: (function_type
+      parameters: (parameters
+        (primitive_type "i32")
       )
-      (primitive_type)
+      return_type: (primitive_type "i32")
     )
-    (closure_expression
-      (closure_parameters
-        (identifier x)
+    value: (closure_expression
+      parameters: (closure_parameters
+        (identifier "x")
       )
-      (binary_expression
-        (identifier x)
-        (integer_literal)
+      body: (binary_expression
+        left: (identifier "x")
+        right: (integer_literal "1")
       )
     )
   )

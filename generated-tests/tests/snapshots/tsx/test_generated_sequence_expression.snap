@@ -9,8 +9,8 @@ AST:
 (program
   (expression_statement
     (sequence_expression
-      (identifier a3)
-      (identifier b3)
+      (identifier "a3")
+      (identifier "b3")
     )
   )
 )

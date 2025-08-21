@@ -9,8 +9,8 @@ AST:
 (source_file
   (expression_statement
     (binary_expression
-      (identifier a2)
-      (identifier b2)
+      left: (identifier "a2")
+      right: (identifier "b2")
     )
   )
 )

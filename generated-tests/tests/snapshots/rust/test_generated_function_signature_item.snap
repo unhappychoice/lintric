@@ -8,9 +8,9 @@ fn test_fn4() -> i32;
 AST:
 (source_file
   (function_signature_item
-    (identifier test_fn4)
-    (parameters)
-    (primitive_type)
+    name: (identifier "test_fn4")
+    parameters: (parameters)
+    return_type: (primitive_type "i32")
   )
 )
 

@@ -10,7 +10,7 @@ AST:
   (ERROR)
   (expression_statement
     (unary_expression
-      (number)
+      argument: (number "1")
     )
   )
 )

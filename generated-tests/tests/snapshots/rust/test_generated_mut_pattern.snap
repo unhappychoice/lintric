@@ -9,8 +9,8 @@ AST:
 (source_file
   (let_declaration
     (mutable_specifier)
-    (identifier x9)
-    (identifier value2)
+    pattern: (identifier "x9")
+    value: (identifier "value2")
   )
 )
 

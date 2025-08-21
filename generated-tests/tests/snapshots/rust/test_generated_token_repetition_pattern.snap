@@ -8,20 +8,20 @@ macro_rules! test_macro { ($($item:ident),*) => { $(let $item = 42;)* }; }
 AST:
 (source_file
   (macro_definition
-    (identifier test_macro)
+    name: (identifier "test_macro")
     (macro_rule
-      (token_tree_pattern
+      left: (token_tree_pattern
         (token_repetition_pattern
           (token_binding_pattern
-            (metavariable)
-            (fragment_specifier)
+            name: (metavariable)
+            type: (fragment_specifier)
           )
         )
       )
-      (token_tree
+      right: (token_tree
         (token_repetition
           (metavariable)
-          (integer_literal)
+          (integer_literal "42")
         )
       )
     )

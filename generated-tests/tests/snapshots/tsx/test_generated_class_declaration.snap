@@ -8,28 +8,28 @@ class TestClass1 { private field: number = 42; public method1(): number { return
 AST:
 (program
   (class_declaration
-    (type_identifier)
-    (class_body
+    name: (type_identifier "TestClass1")
+    body: (class_body
       (public_field_definition
-        (accessibility_modifier)
-        (property_identifier)
-        (type_annotation
-          (predefined_type)
+        (accessibility_modifier "private")
+        name: (property_identifier "field")
+        type: (type_annotation
+          (predefined_type "number")
         )
-        (number)
+        value: (number "42")
       )
       (method_definition
-        (accessibility_modifier)
-        (property_identifier)
-        (formal_parameters)
-        (type_annotation
-          (predefined_type)
+        (accessibility_modifier "public")
+        name: (property_identifier "method1")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
+          (predefined_type "number")
         )
-        (statement_block
+        body: (statement_block
           (return_statement
             (member_expression
-              (this)
-              (property_identifier)
+              object: (this "this")
+              property: (property_identifier "field")
             )
           )
         )

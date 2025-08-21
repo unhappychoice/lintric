@@ -8,11 +8,11 @@ let &x12 = &value5;
 AST:
 (source_file
   (let_declaration
-    (reference_pattern
-      (identifier x12)
+    pattern: (reference_pattern
+      (identifier "x12")
     )
-    (reference_expression
-      (identifier value5)
+    value: (reference_expression
+      value: (identifier "value5")
     )
   )
 )

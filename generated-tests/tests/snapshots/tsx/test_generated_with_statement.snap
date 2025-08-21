@@ -8,12 +8,12 @@ with (obj4) { prop7; }
 AST:
 (program
   (with_statement
-    (parenthesized_expression
-      (identifier obj4)
+    object: (parenthesized_expression
+      (identifier "obj4")
     )
-    (statement_block
+    body: (statement_block
       (expression_statement
-        (identifier prop7)
+        (identifier "prop7")
       )
     )
   )

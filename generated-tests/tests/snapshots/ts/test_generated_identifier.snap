@@ -8,7 +8,7 @@ identifier
 AST:
 (program
   (expression_statement
-    (identifier identifier)
+    (identifier "identifier")
   )
 )
 

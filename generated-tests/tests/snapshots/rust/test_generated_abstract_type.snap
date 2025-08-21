@@ -8,19 +8,19 @@ fn test_fn() -> impl std::fmt::Debug { 42 }
 AST:
 (source_file
   (function_item
-    (identifier test_fn)
-    (parameters)
-    (abstract_type
-      (scoped_type_identifier
-        (scoped_identifier
-          (identifier std)
-          (identifier fmt)
+    name: (identifier "test_fn")
+    parameters: (parameters)
+    return_type: (abstract_type
+      trait: (scoped_type_identifier "std::fmt::Debug"
+        path: (scoped_identifier "std::fmt"
+          path: (identifier "std")
+          name: (identifier "fmt")
         )
-        (type_identifier)
+        name: (type_identifier "Debug")
       )
     )
-    (block
-      (integer_literal)
+    body: (block
+      (integer_literal "42")
     )
   )
 )

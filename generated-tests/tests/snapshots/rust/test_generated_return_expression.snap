@@ -8,13 +8,13 @@ fn f() -> i32 { return 1; }
 AST:
 (source_file
   (function_item
-    (identifier f)
-    (parameters)
-    (primitive_type)
-    (block
+    name: (identifier "f")
+    parameters: (parameters)
+    return_type: (primitive_type "i32")
+    body: (block
       (expression_statement
         (return_expression
-          (integer_literal)
+          (integer_literal "1")
         )
       )
     )

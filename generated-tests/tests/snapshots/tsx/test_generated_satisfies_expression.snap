@@ -9,8 +9,8 @@ AST:
 (program
   (expression_statement
     (satisfies_expression
-      (identifier value28)
-      (predefined_type)
+      (identifier "value28")
+      (predefined_type "string")
     )
   )
 )

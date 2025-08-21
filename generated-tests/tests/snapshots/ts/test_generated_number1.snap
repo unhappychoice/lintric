@@ -8,7 +8,7 @@ Source Code:
 AST:
 (program
   (expression_statement
-    (number)
+    (number "42")
   )
 )
 

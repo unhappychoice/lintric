@@ -8,9 +8,9 @@ let var9: () = ();
 AST:
 (source_file
   (let_declaration
-    (identifier var9)
-    (unit_type)
-    (unit_expression)
+    pattern: (identifier "var9")
+    type: (unit_type)
+    value: (unit_expression)
   )
 )
 

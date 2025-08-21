@@ -9,8 +9,8 @@ AST:
 (program
   (expression_statement
     (member_expression
-      (identifier obj1)
-      (property_identifier)
+      object: (identifier "obj1")
+      property: (property_identifier "prop4")
     )
   )
 )

@@ -9,7 +9,7 @@ AST:
 (program
   (expression_statement
     (yield_expression
-      (identifier value32)
+      (identifier "value32")
     )
   )
 )

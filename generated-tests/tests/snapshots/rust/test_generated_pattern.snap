@@ -9,9 +9,9 @@ AST:
 (source_file
   (ERROR
     (call_expression
-      (identifier Some)
-      (arguments
-        (identifier x)
+      function: (identifier "Some")
+      arguments: (arguments
+        (identifier "x")
       )
     )
   )

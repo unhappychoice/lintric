@@ -9,15 +9,15 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value13)
-      (type_annotation
+      name: (identifier "value13")
+      type: (type_annotation
         (literal_type
           (string
             (string_fragment)
           )
         )
       )
-      (string
+      value: (string
         (string_fragment)
       )
     )

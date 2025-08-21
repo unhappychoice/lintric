@@ -9,7 +9,7 @@ AST:
 (source_file
   (expression_statement
     (loop_expression
-      (block
+      body: (block
         (expression_statement
           (break_expression)
         )

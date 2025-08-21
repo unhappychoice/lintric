@@ -9,8 +9,8 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier var1)
-      (identifier source)
+      name: (identifier "var1")
+      value: (identifier "source")
     )
   )
 )

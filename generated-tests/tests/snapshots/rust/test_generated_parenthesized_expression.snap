@@ -10,8 +10,8 @@ AST:
   (ERROR
     (parenthesized_expression
       (binary_expression
-        (identifier a3)
-        (identifier b3)
+        left: (identifier "a3")
+        right: (identifier "b3")
       )
     )
   )

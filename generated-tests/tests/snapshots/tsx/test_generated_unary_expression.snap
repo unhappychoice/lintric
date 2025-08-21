@@ -9,7 +9,7 @@ AST:
 (program
   (expression_statement
     (unary_expression
-      (identifier value33)
+      argument: (identifier "value33")
     )
   )
 )

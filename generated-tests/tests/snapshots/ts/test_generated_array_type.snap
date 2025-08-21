@@ -9,16 +9,16 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier arr)
-      (type_annotation
+      name: (identifier "arr")
+      type: (type_annotation
         (array_type
-          (predefined_type)
+          (predefined_type "number")
         )
       )
-      (array
-        (number)
-        (number)
-        (number)
+      value: (array
+        (number "1")
+        (number "2")
+        (number "3")
       )
     )
   )

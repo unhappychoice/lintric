@@ -8,19 +8,19 @@ interface TestInterface { prop: number; method2(): void; }
 AST:
 (program
   (interface_declaration
-    (type_identifier)
-    (interface_body
+    name: (type_identifier "TestInterface")
+    body: (interface_body
       (property_signature
-        (property_identifier)
-        (type_annotation
-          (predefined_type)
+        name: (property_identifier "prop")
+        type: (type_annotation
+          (predefined_type "number")
         )
       )
       (method_signature
-        (property_identifier)
-        (formal_parameters)
-        (type_annotation
-          (predefined_type)
+        name: (property_identifier "method2")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
+          (predefined_type "void")
         )
       )
     )

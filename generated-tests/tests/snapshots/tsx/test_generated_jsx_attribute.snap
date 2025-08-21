@@ -9,20 +9,20 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier element)
-      (jsx_element
-        (jsx_opening_element
-          (identifier div)
-          (jsx_attribute
-            (property_identifier)
+      name: (identifier "element")
+      value: (jsx_element
+        open_tag: (jsx_opening_element
+          name: (identifier "div")
+          attribute: (jsx_attribute
+            (property_identifier "prop1")
             (jsx_expression
-              (identifier value13)
+              (identifier "value13")
             )
           )
         )
         (jsx_text)
-        (jsx_closing_element
-          (identifier div)
+        close_tag: (jsx_closing_element
+          name: (identifier "div")
         )
       )
     )

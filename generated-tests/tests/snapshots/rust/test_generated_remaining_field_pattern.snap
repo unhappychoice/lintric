@@ -9,14 +9,14 @@ AST:
 (source_file
   (expression_statement
     (if_expression
-      (let_condition
-        (struct_pattern
-          (type_identifier)
+      condition: (let_condition
+        pattern: (struct_pattern
+          type: (type_identifier "Type1")
           (remaining_field_pattern)
         )
-        (identifier value6)
+        value: (identifier "value6")
       )
-      (block)
+      consequence: (block)
     )
   )
 )

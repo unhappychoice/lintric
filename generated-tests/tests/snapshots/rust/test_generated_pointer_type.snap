@@ -8,19 +8,19 @@ let ptr: *const i32 = std::ptr::null();
 AST:
 (source_file
   (let_declaration
-    (identifier ptr)
-    (pointer_type
-      (primitive_type)
+    pattern: (identifier "ptr")
+    type: (pointer_type
+      type: (primitive_type "i32")
     )
-    (call_expression
-      (scoped_identifier
-        (scoped_identifier
-          (identifier std)
-          (identifier ptr)
+    value: (call_expression
+      function: (scoped_identifier "std::ptr::null"
+        path: (scoped_identifier "std::ptr"
+          path: (identifier "std")
+          name: (identifier "ptr")
         )
-        (identifier null)
+        name: (identifier "null")
       )
-      (arguments)
+      arguments: (arguments)
     )
   )
 )

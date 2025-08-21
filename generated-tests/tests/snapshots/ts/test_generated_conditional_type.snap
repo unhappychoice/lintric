@@ -8,31 +8,31 @@ type Test<T> = T extends string ? number : boolean; const value5: Test<string> =
 AST:
 (program
   (type_alias_declaration
-    (type_identifier)
-    (type_parameters
+    name: (type_identifier "Test")
+    type_parameters: (type_parameters
       (type_parameter
-        (type_identifier)
+        name: (type_identifier "T")
       )
     )
-    (conditional_type
-      (type_identifier)
-      (predefined_type)
-      (predefined_type)
-      (predefined_type)
+    value: (conditional_type
+      left: (type_identifier "T")
+      right: (predefined_type "string")
+      consequence: (predefined_type "number")
+      alternative: (predefined_type "boolean")
     )
   )
   (lexical_declaration
     (variable_declarator
-      (identifier value5)
-      (type_annotation
+      name: (identifier "value5")
+      type: (type_annotation
         (generic_type
-          (type_identifier)
-          (type_arguments
-            (predefined_type)
+          name: (type_identifier "Test")
+          type_arguments: (type_arguments
+            (predefined_type "string")
           )
         )
       )
-      (number)
+      value: (number "42")
     )
   )
 )

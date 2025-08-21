@@ -9,11 +9,11 @@ AST:
 (source_file
   (expression_statement
     (struct_expression
-      (type_identifier)
-      (field_initializer_list
+      name: (type_identifier "TestStruct")
+      body: (field_initializer_list
         (field_initializer
-          (field_identifier)
-          (identifier value7)
+          field: (field_identifier "field2")
+          value: (identifier "value7")
         )
       )
     )

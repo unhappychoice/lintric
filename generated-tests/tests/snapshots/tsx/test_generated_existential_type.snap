@@ -9,11 +9,11 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier val)
-      (type_annotation
+      name: (identifier "val")
+      type: (type_annotation
         (existential_type)
       )
-      (number)
+      value: (number "42")
     )
   )
 )

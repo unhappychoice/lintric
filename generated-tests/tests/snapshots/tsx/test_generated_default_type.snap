@@ -8,24 +8,24 @@ type Test<T1 = string> = T1; const value6: Test = 'default';
 AST:
 (program
   (type_alias_declaration
-    (type_identifier)
-    (type_parameters
+    name: (type_identifier "Test")
+    type_parameters: (type_parameters
       (type_parameter
-        (type_identifier)
-        (default_type
-          (predefined_type)
+        name: (type_identifier "T1")
+        value: (default_type
+          (predefined_type "string")
         )
       )
     )
-    (type_identifier)
+    value: (type_identifier "T1")
   )
   (lexical_declaration
     (variable_declarator
-      (identifier value6)
-      (type_annotation
-        (type_identifier)
+      name: (identifier "value6")
+      type: (type_annotation
+        (type_identifier "Test")
       )
-      (string
+      value: (string
         (string_fragment)
       )
     )

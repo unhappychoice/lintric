@@ -9,7 +9,7 @@ AST:
 (source_file
   (ERROR
     (reference_expression
-      (identifier value4)
+      value: (identifier "value4")
     )
   )
 )

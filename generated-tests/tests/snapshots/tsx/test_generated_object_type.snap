@@ -9,21 +9,21 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value20)
-      (type_annotation
+      name: (identifier "value20")
+      type: (type_annotation
         (object_type
           (property_signature
-            (property_identifier)
-            (type_annotation
-              (predefined_type)
+            name: (property_identifier "prop6")
+            type: (type_annotation
+              (predefined_type "number")
             )
           )
         )
       )
-      (object
+      value: (object
         (pair
-          (property_identifier)
-          (number)
+          key: (property_identifier "prop6")
+          value: (number "42")
         )
       )
     )

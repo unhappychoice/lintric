@@ -10,12 +10,12 @@ AST:
   (expression_statement
     (object
       (pair
-        (property_identifier)
-        (identifier value16)
+        key: (property_identifier "prop11")
+        value: (identifier "value16")
       )
       (pair
-        (property_identifier)
-        (identifier value21)
+        key: (property_identifier "prop2")
+        value: (identifier "value21")
       )
     )
   )

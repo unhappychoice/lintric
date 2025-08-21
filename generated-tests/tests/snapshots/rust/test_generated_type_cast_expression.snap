@@ -9,8 +9,8 @@ AST:
 (source_file
   (expression_statement
     (type_cast_expression
-      (identifier value9)
-      (primitive_type)
+      value: (identifier "value9")
+      type: (primitive_type "i32")
     )
   )
 )

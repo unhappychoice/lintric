@@ -8,7 +8,7 @@ false
 AST:
 (program
   (expression_statement
-    (false)
+    (false "false")
   )
 )
 

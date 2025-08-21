@@ -8,17 +8,17 @@ class TestClass3 { method3(): this { return this; } }
 AST:
 (program
   (class_declaration
-    (type_identifier)
-    (class_body
+    name: (type_identifier "TestClass3")
+    body: (class_body
       (method_definition
-        (property_identifier)
-        (formal_parameters)
-        (type_annotation
+        name: (property_identifier "method3")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
           (this_type)
         )
-        (statement_block
+        body: (statement_block
           (return_statement
-            (this)
+            (this "this")
           )
         )
       )

@@ -9,13 +9,13 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (object_pattern
+      name: (object_pattern
         (pair_pattern
-          (property_identifier)
-          (identifier value22)
+          key: (property_identifier "key1")
+          value: (identifier "value22")
         )
       )
-      (identifier obj3)
+      value: (identifier "obj3")
     )
   )
 )

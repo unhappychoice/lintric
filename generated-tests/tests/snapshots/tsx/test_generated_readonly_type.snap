@@ -9,18 +9,18 @@ AST:
 (program
   (lexical_declaration
     (variable_declarator
-      (identifier value26)
-      (type_annotation
+      name: (identifier "value26")
+      type: (type_annotation
         (readonly_type
           (array_type
-            (predefined_type)
+            (predefined_type "number")
           )
         )
       )
-      (array
-        (number)
-        (number)
-        (number)
+      value: (array
+        (number "1")
+        (number "2")
+        (number "3")
       )
     )
   )

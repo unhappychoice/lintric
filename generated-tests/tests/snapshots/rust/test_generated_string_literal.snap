@@ -8,8 +8,8 @@ let text = "test";
 AST:
 (source_file
   (let_declaration
-    (identifier text)
-    (string_literal
+    pattern: (identifier "text")
+    value: (string_literal ""test""
       (string_content)
     )
   )

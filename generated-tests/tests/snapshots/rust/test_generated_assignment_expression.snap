@@ -9,8 +9,8 @@ AST:
 (source_file
   (ERROR
     (assignment_expression
-      (identifier x1)
-      (identifier y)
+      left: (identifier "x1")
+      right: (identifier "y")
     )
   )
 )

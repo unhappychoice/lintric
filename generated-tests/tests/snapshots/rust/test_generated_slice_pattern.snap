@@ -8,14 +8,14 @@ let [x13, ..] = [1, 2, 3];
 AST:
 (source_file
   (let_declaration
-    (slice_pattern
-      (identifier x13)
+    pattern: (slice_pattern
+      (identifier "x13")
       (remaining_field_pattern)
     )
-    (array_expression
-      (integer_literal)
-      (integer_literal)
-      (integer_literal)
+    value: (array_expression
+      (integer_literal "1")
+      (integer_literal "2")
+      (integer_literal "3")
     )
   )
 )

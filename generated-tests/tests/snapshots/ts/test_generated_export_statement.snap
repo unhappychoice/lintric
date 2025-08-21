@@ -8,10 +8,10 @@ export const exported = value7;
 AST:
 (program
   (export_statement
-    (lexical_declaration
+    declaration: (lexical_declaration
       (variable_declarator
-        (identifier exported)
-        (identifier value7)
+        name: (identifier "exported")
+        value: (identifier "value7")
       )
     )
   )

@@ -8,10 +8,10 @@ enum TestEnum { A, B }
 AST:
 (program
   (enum_declaration
-    (identifier TestEnum)
-    (enum_body
-      (property_identifier)
-      (property_identifier)
+    name: (identifier "TestEnum")
+    body: (enum_body
+      name: (property_identifier "A")
+      name: (property_identifier "B")
     )
   )
 )

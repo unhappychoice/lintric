@@ -10,9 +10,9 @@ AST:
   (ambient_declaration
     (lexical_declaration
       (variable_declarator
-        (identifier value3)
-        (type_annotation
-          (predefined_type)
+        name: (identifier "value3")
+        type: (type_annotation
+          (predefined_type "string")
         )
       )
     )

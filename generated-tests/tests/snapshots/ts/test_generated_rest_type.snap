@@ -8,12 +8,12 @@ type RestTuple = [string, ...number[]];
 AST:
 (program
   (type_alias_declaration
-    (type_identifier)
-    (tuple_type
-      (predefined_type)
+    name: (type_identifier "RestTuple")
+    value: (tuple_type
+      (predefined_type "string")
       (rest_type
         (array_type
-          (predefined_type)
+          (predefined_type "number")
         )
       )
     )

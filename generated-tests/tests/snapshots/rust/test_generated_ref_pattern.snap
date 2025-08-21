@@ -8,10 +8,10 @@ let ref x11 = value3;
 AST:
 (source_file
   (let_declaration
-    (ref_pattern
-      (identifier x11)
+    pattern: (ref_pattern
+      (identifier "x11")
     )
-    (identifier value3)
+    value: (identifier "value3")
   )
 )
 

@@ -9,7 +9,7 @@ AST:
 (program
   (expression_statement
     (parenthesized_expression
-      (identifier value23)
+      (identifier "value23")
     )
   )
 )

@@ -8,19 +8,19 @@ let var4: Vec<i32> = vec![1, 2, 3];
 AST:
 (source_file
   (let_declaration
-    (identifier var4)
-    (generic_type
-      (type_identifier)
-      (type_arguments
-        (primitive_type)
+    pattern: (identifier "var4")
+    type: (generic_type
+      type: (type_identifier "Vec")
+      type_arguments: (type_arguments
+        (primitive_type "i32")
       )
     )
-    (macro_invocation
-      (identifier vec)
+    value: (macro_invocation
+      macro: (identifier "vec")
       (token_tree
-        (integer_literal)
-        (integer_literal)
-        (integer_literal)
+        (integer_literal "1")
+        (integer_literal "2")
+        (integer_literal "3")
       )
     )
   )
