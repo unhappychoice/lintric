@@ -40,6 +40,12 @@ IntermediateRepresentation {
             definition_type: VariableDefinition,
             scope: None,
         },
+        Definition {
+            name: "prop6",
+            line_number: 1,
+            definition_type: PropertyDefinition,
+            scope: None,
+        },
     ],
     dependencies: [],
     usage: [

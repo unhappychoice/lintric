@@ -13,6 +13,8 @@ pub enum DefinitionType {
     ConstDefinition,
     MacroDefinition,
     MacroVariableDefinition,
+    PropertyDefinition,
+    MethodDefinition,
     Other(String),
 }
 

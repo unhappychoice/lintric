@@ -51,9 +51,17 @@ IntermediateRepresentation {
             ),
         },
         Definition {
+            name: "field",
+            line_number: 1,
+            definition_type: PropertyDefinition,
+            scope: Some(
+                "TestClass1",
+            ),
+        },
+        Definition {
             name: "method1",
             line_number: 1,
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
             scope: Some(
                 "TestClass1",
             ),

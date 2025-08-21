@@ -41,7 +41,7 @@ IntermediateRepresentation {
         Definition {
             name: "method3",
             line_number: 1,
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
             scope: Some(
                 "TestClass3",
             ),

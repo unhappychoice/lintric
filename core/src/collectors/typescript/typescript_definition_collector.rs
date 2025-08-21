@@ -31,6 +31,12 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
             "import_statement" | "export_statement" => {
                 definitions.extend(self.collect_import_definitions(node, current_scope));
             }
+            "public_field_definition" | "private_field_definition" | "field_definition" => {
+                definitions.extend(self.collect_class_field_definitions(node, current_scope));
+            }
+            "property_signature" | "method_signature" => {
+                definitions.extend(self.collect_interface_member_definitions(node, current_scope));
+            }
             _ => {}
         }
         definitions
@@ -90,10 +96,15 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
     ) -> Vec<Definition> {
         let mut definitions = Vec::new();
 
+        let def_type = match node.kind() {
+            "method_definition" => DefinitionType::MethodDefinition,
+            _ => DefinitionType::FunctionDefinition,
+        };
+
         definitions.extend(Definition::from_naming_node(
             &node,
             self.source_code,
-            DefinitionType::FunctionDefinition,
+            def_type,
             current_scope.clone(),
         ));
 
@@ -261,6 +272,62 @@ impl<'a> TypescriptDefinitionCollector<'a> {
                     }
                 }
             }
+        }
+
+        definitions
+    }
+
+    fn collect_class_field_definitions(
+        &self,
+        node: Node<'a>,
+        current_scope: &Option<String>,
+    ) -> Vec<Definition> {
+        let mut definitions = vec![];
+
+        // Class field: public_field_definition/private_field_definition -> property_identifier
+        if let Some(name_node) = node.child_by_field_name("name") {
+            definitions.push(Definition::new(
+                &name_node,
+                self.source_code,
+                DefinitionType::PropertyDefinition,
+                current_scope.clone(),
+            ));
+        }
+
+        definitions
+    }
+
+    fn collect_interface_member_definitions(
+        &self,
+        node: Node<'a>,
+        current_scope: &Option<String>,
+    ) -> Vec<Definition> {
+        let mut definitions = vec![];
+
+        match node.kind() {
+            "property_signature" => {
+                // Interface property: property_signature -> property_identifier
+                if let Some(name_node) = node.child_by_field_name("name") {
+                    definitions.push(Definition::new(
+                        &name_node,
+                        self.source_code,
+                        DefinitionType::PropertyDefinition,
+                        current_scope.clone(),
+                    ));
+                }
+            }
+            "method_signature" => {
+                // Interface method: method_signature -> property_identifier
+                if let Some(name_node) = node.child_by_field_name("name") {
+                    definitions.push(Definition::new(
+                        &name_node,
+                        self.source_code,
+                        DefinitionType::MethodDefinition,
+                        current_scope.clone(),
+                    ));
+                }
+            }
+            _ => {}
         }
 
         definitions

@@ -56,6 +56,18 @@ IntermediateRepresentation {
             definition_type: VariableDefinition,
             scope: None,
         },
+        Definition {
+            name: "a",
+            line_number: 1,
+            definition_type: PropertyDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "b",
+            line_number: 1,
+            definition_type: PropertyDefinition,
+            scope: None,
+        },
     ],
     dependencies: [],
     usage: [

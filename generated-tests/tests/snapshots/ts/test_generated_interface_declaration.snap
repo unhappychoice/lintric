@@ -39,6 +39,22 @@ IntermediateRepresentation {
                 "TestInterface",
             ),
         },
+        Definition {
+            name: "prop",
+            line_number: 1,
+            definition_type: PropertyDefinition,
+            scope: Some(
+                "TestInterface",
+            ),
+        },
+        Definition {
+            name: "method2",
+            line_number: 1,
+            definition_type: MethodDefinition,
+            scope: Some(
+                "TestInterface",
+            ),
+        },
     ],
     dependencies: [],
     usage: [
