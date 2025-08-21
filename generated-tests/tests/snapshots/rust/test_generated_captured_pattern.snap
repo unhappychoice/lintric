@@ -30,7 +30,14 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition {
+            name: "y1",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+    ],
     dependencies: [],
     usage: [
         SerializableUsage {

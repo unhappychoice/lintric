@@ -25,7 +25,13 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "[first, ...rest]",
+            name: "first",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "rest",
             line_number: 1,
             definition_type: VariableDefinition,
             scope: None,

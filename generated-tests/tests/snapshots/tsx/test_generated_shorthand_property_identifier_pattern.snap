@@ -22,7 +22,7 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "{ prop8 }",
+            name: "prop8",
             line_number: 1,
             definition_type: VariableDefinition,
             scope: None,

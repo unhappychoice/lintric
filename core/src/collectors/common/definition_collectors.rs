@@ -66,24 +66,44 @@ pub trait DefinitionCollector<'a>: Send + Sync {
     ) -> Vec<Definition>;
 }
 
-pub fn find_identifier_nodes_in_node(node: Node) -> Vec<Node> {
+pub fn find_identifier_nodes_in_node<'a>(node: Node<'a>) -> Vec<Node<'a>> {
     let mut identifiers = vec![];
-    let mut stack: Vec<Node> = vec![];
-    stack.push(node);
+    find_identifier_nodes_recursive(node, &mut identifiers);
+    identifiers
+}
 
-    while let Some(n) = stack.pop() {
-        if n.kind() == "identifier" {
-            identifiers.push(n);
+fn find_identifier_nodes_recursive<'a>(node: Node<'a>, identifiers: &mut Vec<Node<'a>>) {
+    match node.kind() {
+        "identifier" => {
+            identifiers.push(node);
         }
-
-        let mut cursor = n.walk();
-        let mut children: Vec<Node> = vec![];
-        for child in n.children(&mut cursor) {
-            children.push(child);
+        "shorthand_property_identifier_pattern" => {
+            // For TypeScript/TSX object destructuring patterns like { prop }
+            // The shorthand_property_identifier_pattern node itself represents the identifier
+            identifiers.push(node);
         }
-        for child in children.into_iter().rev() {
-            stack.push(child);
+        "object_assignment_pattern" => {
+            // For TypeScript/TSX patterns like { prop = defaultValue }
+            // Only extract the property name (left side), not the default value (right side)
+            if let Some(left_node) = node.child_by_field_name("left") {
+                find_identifier_nodes_recursive(left_node, identifiers);
+            }
+            // Skip the right side (default value) as it's a usage, not a definition
+        }
+        "assignment_pattern" => {
+            // For array destructuring with defaults like [a = defaultValue]
+            // Only extract the variable name (left side), not the default value (right side)
+            if let Some(left_node) = node.child_by_field_name("left") {
+                find_identifier_nodes_recursive(left_node, identifiers);
+            }
+            // Skip the right side (default value) as it's a usage, not a definition
+        }
+        _ => {
+            // Continue traversing for other node types
+            let mut cursor = node.walk();
+            for child in node.children(&mut cursor) {
+                find_identifier_nodes_recursive(child, identifiers);
+            }
         }
     }
-    identifiers
 }

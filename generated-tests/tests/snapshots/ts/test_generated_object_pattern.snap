@@ -23,7 +23,13 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "{ prop12, prop21 }",
+            name: "prop12",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "prop21",
             line_number: 1,
             definition_type: VariableDefinition,
             scope: None,
