@@ -1,6 +1,5 @@
 ---
 source: core/tests/typescript/mod.rs
-assertion_line: 75
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
@@ -8,15 +7,14 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
   "line_metrics": [
     {
       "line_number": 2,
-      "total_dependencies": 2,
-      "dependency_distance_cost": 0.6666666666666666,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.3333333333333333,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        1,
         1
       ]
     }
   ],
-  "overall_complexity_score": 3.266666666666667
+  "overall_complexity_score": 2.2333333333333334
 }

@@ -21,10 +21,10 @@ pub fn get_definition_collector<'a>(
     }
 }
 
-pub fn get_usage_node_collector<'a>(
+pub fn get_usage_node_collector(
     language: Language,
-    source_code: &'a str,
-) -> Result<Box<dyn UsageNodeCollector<'a> + 'a>, String> {
+    source_code: &str,
+) -> Result<Box<dyn UsageNodeCollector>, String> {
     match language {
         Language::Rust => Ok(Box::new(RustUsageNodeCollector::new(source_code))),
         Language::TypeScript | Language::TSX => {
@@ -33,9 +33,7 @@ pub fn get_usage_node_collector<'a>(
     }
 }
 
-pub fn get_dependency_resolver<'a>(
-    language: Language,
-) -> Result<Box<dyn DependencyResolver<'a> + 'a>, String> {
+pub fn get_dependency_resolver(language: Language) -> Result<Box<dyn DependencyResolver>, String> {
     match language {
         Language::Rust => Ok(Box::new(RustDependencyResolver::new())),
         Language::TypeScript | Language::TSX => Ok(Box::new(TypescriptDependencyResolver::new())),

@@ -25,26 +25,39 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition {
+            name: "x8",
+            position: Position {
+                start_line: 1,
+                start_column: 13,
+                end_line: 1,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "val",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 10,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 10,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x8",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 13,
-            end_line: 1,
-            end_column: 15,
+            position: Position {
+                start_line: 1,
+                start_column: 13,
+                end_line: 1,
+                end_column: 15,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -42,59 +42,65 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "x",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 8,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 8,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Vec",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 11,
-            end_line: 1,
-            end_column: 14,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 14,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "T",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 18,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 18,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "new",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 21,
-            end_line: 1,
-            end_column: 24,
+            position: Position {
+                start_line: 1,
+                start_column: 21,
+                end_line: 1,
+                end_column: 24,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x6",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 30,
-            end_line: 1,
-            end_column: 32,
+            position: Position {
+                start_line: 1,
+                start_column: 30,
+                end_line: 1,
+                end_column: 32,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x6",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 39,
-            end_line: 1,
-            end_column: 41,
+            position: Position {
+                start_line: 1,
+                start_column: 39,
+                end_line: 1,
+                end_column: 41,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

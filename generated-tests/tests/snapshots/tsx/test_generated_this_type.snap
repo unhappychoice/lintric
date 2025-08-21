@@ -32,33 +32,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestClass3",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 17,
+            },
             definition_type: ClassDefinition,
-            scope: Some(
-                "TestClass3",
-            ),
         },
         Definition {
             name: "method3",
-            line_number: 1,
-            definition_type: MethodDefinition,
-            scope: Some(
-                "TestClass3",
-            ),
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 27,
+            },
+            definition_type: FunctionDefinition,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "method3",
             kind: FieldExpression,
-            scope: Some(
-                "TestClass3",
-            ),
-            start_line: 1,
-            start_column: 20,
-            end_line: 1,
-            end_column: 27,
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 27,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

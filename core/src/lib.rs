@@ -95,25 +95,22 @@ fn _get_intermediate_representation(
         collector_factory::get_usage_node_collector(language.clone(), file_content)
             .map_err(|e| format!("Failed to get usage node collector: {e}"))?;
     let usage_nodes = usage_collector_instance
-        .collect_usage_nodes(tree.root_node())
+        .collect_usage_nodes(tree.root_node(), file_content)
         .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
 
     let dependency_resolver_instance = collector_factory::get_dependency_resolver(language.clone())
         .map_err(|e| format!("Failed to get dependency resolver: {e}"))?;
     let dependencies = dependency_resolver_instance
-        .resolve_dependencies(file_content, &usage_nodes, &definitions)
+        .resolve_dependencies(file_content, tree.root_node(), &usage_nodes, &definitions)
         .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
-    let serializable_usage: Vec<_> = usage_nodes
-        .iter()
-        .map(|usage| usage.to_serializable(file_content))
-        .collect();
+    // Usage is now directly serializable
 
     Ok(IntermediateRepresentation::new(
         file_path,
         definitions,
         dependencies,
-        serializable_usage,
+        usage_nodes,
         language.to_string(),
         total_lines,
     ))

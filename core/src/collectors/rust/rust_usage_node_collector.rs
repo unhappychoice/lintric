@@ -3,18 +3,18 @@ use crate::collectors::common::usage_node_collector::UsageNodeCollector;
 use crate::models::{Usage, UsageKind};
 use tree_sitter::Node;
 
-pub struct RustUsageNodeCollector<'a> {
-    source_code: &'a str,
+pub struct RustUsageNodeCollector {
     definition_checker: DefinitionContextChecker,
 }
 
-impl<'a> RustUsageNodeCollector<'a> {
-    pub fn new(source_code: &'a str) -> Self {
+impl RustUsageNodeCollector {
+    pub fn new(_source_code: &str) -> Self {
         let patterns = vec![
             // Variable declarations
             DefinitionPattern::new("let_declaration", "pattern"),
             DefinitionPattern::new("parameter", "pattern"),
             DefinitionPattern::new("for_expression", "pattern"),
+            // Closure parameters - definition context
             DefinitionPattern::with_any_field("closure_parameters"),
             // Type parameters - both contexts
             DefinitionPattern::with_any_field("type_parameters"),
@@ -33,18 +33,13 @@ impl<'a> RustUsageNodeCollector<'a> {
         ];
 
         Self {
-            source_code,
             definition_checker: DefinitionContextChecker::new(patterns),
         }
     }
 }
 
-impl<'a> UsageNodeCollector<'a> for RustUsageNodeCollector<'a> {
-    fn extract_node_if_usage(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Option<Usage<'a>> {
+impl UsageNodeCollector for RustUsageNodeCollector {
+    fn extract_node_if_usage(&self, node: Node, source_code: &str) -> Option<Usage> {
         let kind = match node.kind() {
             "identifier" => {
                 // Only treat identifier as usage if it's not in a definition context
@@ -75,40 +70,6 @@ impl<'a> UsageNodeCollector<'a> for RustUsageNodeCollector<'a> {
             _ => None,
         };
 
-        kind.map(|k| Usage {
-            node,
-            kind: k,
-            scope: current_scope.clone(),
-        })
-    }
-
-    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String> {
-        let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" => {
-                node.child_by_field_name("name").map(|n| {
-                    n.utf8_text(self.source_code.as_bytes())
-                        .unwrap()
-                        .trim()
-                        .to_string()
-                })
-            }
-            "impl_item" => node.child_by_field_name("type").map(|n| {
-                n.utf8_text(self.source_code.as_bytes())
-                    .unwrap()
-                    .trim()
-                    .to_string()
-            }),
-            _ => None,
-        };
-
-        if let Some(name) = new_scope_name {
-            Some(
-                parent_scope
-                    .as_ref()
-                    .map_or(name.clone(), |p| format!("{p}.{name}")),
-            )
-        } else {
-            parent_scope.clone()
-        }
+        kind.map(|k| Usage::new(&node, source_code, k))
     }
 }

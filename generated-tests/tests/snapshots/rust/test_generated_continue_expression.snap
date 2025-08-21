@@ -31,23 +31,25 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "label1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 2,
-            end_line: 1,
-            end_column: 8,
+            position: Position {
+                start_line: 1,
+                start_column: 2,
+                end_line: 1,
+                end_column: 8,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "label1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 27,
-            end_line: 1,
-            end_column: 33,
+            position: Position {
+                start_line: 1,
+                start_column: 27,
+                end_line: 1,
+                end_column: 33,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

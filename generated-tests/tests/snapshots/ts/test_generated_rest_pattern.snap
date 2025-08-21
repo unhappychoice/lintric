@@ -26,27 +26,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "first",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 13,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "rest",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 22,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "arr2",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 30,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 30,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

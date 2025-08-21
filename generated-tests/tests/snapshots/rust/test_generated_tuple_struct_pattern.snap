@@ -28,54 +28,66 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "x16",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 14,
+                end_line: 1,
+                end_column: 17,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "y5",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 19,
+                end_line: 1,
+                end_column: 21,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Point",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 8,
-            end_line: 1,
-            end_column: 13,
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 13,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x16",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 14,
-            end_line: 1,
-            end_column: 17,
+            position: Position {
+                start_line: 1,
+                start_column: 14,
+                end_line: 1,
+                end_column: 17,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "y5",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 19,
-            end_line: 1,
-            end_column: 21,
+            position: Position {
+                start_line: 1,
+                start_column: 19,
+                end_line: 1,
+                end_column: 21,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "point_val",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 25,
-            end_line: 1,
-            end_column: 34,
+            position: Position {
+                start_line: 1,
+                start_column: 25,
+                end_line: 1,
+                end_column: 34,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

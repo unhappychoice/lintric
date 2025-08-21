@@ -35,48 +35,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "element",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "div",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 18,
-            end_line: 1,
-            end_column: 21,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 21,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "prop1",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 22,
-            end_line: 1,
-            end_column: 27,
+            position: Position {
+                start_line: 1,
+                start_column: 22,
+                end_line: 1,
+                end_column: 27,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value13",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 29,
-            end_line: 1,
-            end_column: 36,
+            position: Position {
+                start_line: 1,
+                start_column: 29,
+                end_line: 1,
+                end_column: 36,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "div",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 47,
-            end_line: 1,
-            end_column: 50,
+            position: Position {
+                start_line: 1,
+                start_column: 47,
+                end_line: 1,
+                end_column: 50,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

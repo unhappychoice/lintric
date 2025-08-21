@@ -15,61 +15,25 @@ impl<'a> RustDefinitionCollector<'a> {
 }
 
 impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
-    fn process_node(&self, node: Node<'a>, current_scope: &Option<String>) -> Vec<Definition> {
+    fn process_node(&self, node: Node<'a>) -> Vec<Definition> {
         match node.kind() {
-            "function_item" | "function_signature_item" => {
-                self.collect_function_definitions(node, current_scope)
-            }
+            "function_item" | "function_signature_item" => self.collect_function_definitions(node),
             "let_declaration" | "for_expression" | "if_expression" | "while_expression" => {
-                self.collect_variable_definitions(node, current_scope)
+                self.collect_variable_definitions(node)
             }
             "struct_item" | "enum_item" | "type_item" | "trait_item" | "impl_item" | "mod_item" => {
-                self.collect_type_definitions(node, current_scope)
+                self.collect_type_definitions(node)
             }
-            "use_declaration" => self.collect_import_definitions(node, current_scope),
-            "closure_expression" => self.collect_closure_definitions(node, current_scope),
-            "const_item" | "static_item" => self.collect_variable_definitions(node, current_scope),
-            "macro_definition" => self.collect_macro_definitions(node, current_scope),
-            "match_arm" => self.collect_match_pattern_definitions(node, current_scope),
+            "use_declaration" => self.collect_import_definitions(node),
+            "closure_expression" => self.collect_closure_definitions(node),
+            "const_item" | "static_item" => self.collect_variable_definitions(node),
+            "macro_definition" => self.collect_macro_definitions(node),
+            "match_expression" => self.collect_match_definitions(node),
             _ => Vec::new(),
         }
     }
 
-    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String> {
-        let new_scope_name = match node.kind() {
-            "function_item" | "struct_item" | "enum_item" | "trait_item" | "mod_item" => {
-                node.child_by_field_name("name").map(|n| {
-                    n.utf8_text(self.source_code.as_bytes())
-                        .unwrap()
-                        .trim()
-                        .to_string()
-                })
-            }
-            "impl_item" => node.child_by_field_name("type").map(|n| {
-                n.utf8_text(self.source_code.as_bytes())
-                    .unwrap()
-                    .trim()
-                    .to_string()
-            }),
-            _ => None,
-        };
-
-        if let Some(name) = new_scope_name {
-            Some(
-                parent_scope
-                    .as_ref()
-                    .map_or(name.clone(), |p| format!("{p}.{name}")),
-            )
-        } else {
-            parent_scope.clone()
-        }
-    }
-
-    fn collect_variable_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
+    fn collect_variable_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         match node.kind() {
             "let_declaration" => {
                 if let Some(pattern_node) = node.child_by_field_name("pattern") {
@@ -80,7 +44,6 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                                 node,
                                 self.source_code,
                                 DefinitionType::VariableDefinition,
-                                current_scope.clone(),
                             )
                         })
                         .collect()
@@ -97,7 +60,6 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
                                 node,
                                 self.source_code,
                                 DefinitionType::VariableDefinition,
-                                current_scope.clone(),
                             )
                         })
                         .collect()
@@ -107,38 +69,54 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
             }
             "if_expression" | "while_expression" => {
                 let mut definitions = vec![];
-
-                let mut cursor = node.walk();
-                for let_condition_node in node.children(&mut cursor) {
-                    if let_condition_node.kind() == "let_condition" {
-                        let mut let_cursor = let_condition_node.walk();
-                        for destruct_pattern_node in let_condition_node.children(&mut let_cursor) {
-                            if destruct_pattern_node.kind() == "tuple_struct_pattern" {
-                                let mut nodes =
-                                    find_identifier_nodes_in_node(destruct_pattern_node)
-                                        .into_iter();
-                                nodes.next();
-
-                                nodes.for_each(|node| {
-                                    definitions.push(Definition::new(
-                                        &node,
-                                        self.source_code,
-                                        DefinitionType::VariableDefinition,
-                                        current_scope.clone(),
-                                    ))
-                                });
+                if let Some(condition_node) = node.child_by_field_name("condition") {
+                    // Handle let_condition patterns
+                    if condition_node.kind() == "let_condition" {
+                        // Find the pattern node (usually the first child that is a pattern)
+                        let mut cursor = condition_node.walk();
+                        for child in condition_node.children(&mut cursor) {
+                            if matches!(
+                                child.kind(),
+                                "tuple_struct_pattern"
+                                    | "tuple_pattern"
+                                    | "struct_pattern"
+                                    | "identifier"
+                                    | "captured_pattern"
+                            ) {
+                                definitions.extend(self.collect_pattern_definitions(child));
+                                break;
+                            }
+                        }
+                    } else {
+                        // Handle let_declaration in condition
+                        let query_str = "(let_declaration) @let";
+                        if let Ok(query) = Query::new(&tree_sitter_rust::language(), query_str) {
+                            let mut cursor = QueryCursor::new();
+                            for query_match in
+                                cursor.matches(&query, condition_node, self.source_code.as_bytes())
+                            {
+                                for capture in query_match.captures {
+                                    let nodes = find_identifier_nodes_in_node(capture.node)
+                                        .into_iter()
+                                        .map(|n| {
+                                            Definition::new(
+                                                &n,
+                                                self.source_code,
+                                                DefinitionType::VariableDefinition,
+                                            )
+                                        });
+                                    definitions.extend(nodes);
+                                }
                             }
                         }
                     }
                 }
-
                 definitions
             }
             "const_item" | "static_item" => Definition::from_naming_node(
                 &node,
                 self.source_code,
                 DefinitionType::ConstDefinition,
-                current_scope.clone(),
             )
             .into_iter()
             .collect(),
@@ -146,252 +124,365 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
         }
     }
 
-    fn collect_function_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
+    fn collect_function_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         let mut definitions = vec![];
 
         definitions.extend(Definition::from_naming_node(
             &node,
             self.source_code,
             DefinitionType::FunctionDefinition,
-            current_scope.clone(),
         ));
 
-        // Collect type parameters
         if let Some(type_params_node) = node.child_by_field_name("type_parameters") {
-            definitions.extend(self.collect_type_parameters(type_params_node, current_scope));
+            definitions.extend(self.collect_type_parameters(type_params_node));
         }
 
-        if let Some(parameters_node) = node.child_by_field_name("parameters") {
-            let mut param_cursor = parameters_node.walk();
-            for param_child in parameters_node.children(&mut param_cursor) {
-                if param_child.kind() == "parameter" {
-                    if let Some(pattern_node) = param_child.child_by_field_name("pattern") {
-                        find_identifier_nodes_in_node(pattern_node)
-                            .iter()
-                            .for_each(|node| {
-                                definitions.push(Definition::new(
-                                    node,
-                                    self.source_code,
-                                    DefinitionType::VariableDefinition,
-                                    current_scope.clone(),
-                                ))
-                            });
-                    }
-                }
-            }
+        if let Some(params_node) = node.child_by_field_name("parameters") {
+            definitions.extend(self.collect_function_parameters(params_node));
         }
 
         definitions
     }
 
-    fn collect_type_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
-        let mut definitions = vec![];
+    fn collect_type_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+        let definition_type = match node.kind() {
+            "struct_item" => DefinitionType::StructDefinition,
+            "enum_item" => DefinitionType::EnumDefinition,
+            "type_item" => DefinitionType::TypeDefinition,
+            "trait_item" => DefinitionType::TypeDefinition,
+            "impl_item" => return self.collect_impl_definitions(node),
+            "mod_item" => DefinitionType::ModuleDefinition,
+            _ => DefinitionType::Other("unknown".to_string()),
+        };
 
-        if let Some(name_node) = node.child_by_field_name("name") {
-            let def_type = match node.kind() {
-                "struct_item" => DefinitionType::StructDefinition,
-                "enum_item" => DefinitionType::EnumDefinition,
-                "type_item" => DefinitionType::TypeDefinition,
-                "mod_item" => DefinitionType::ModuleDefinition,
-                _ => DefinitionType::Other(node.kind().to_string()),
-            };
+        let mut definitions =
+            Definition::from_naming_node(&node, self.source_code, definition_type)
+                .into_iter()
+                .collect::<Vec<_>>();
 
-            let scope = if node.kind() == "mod_item" {
-                if let Some(scope_str) = current_scope {
-                    scope_str
-                        .rfind('.')
-                        .map(|last_dot| scope_str[..last_dot].to_string())
-                } else {
-                    None
-                }
-            } else {
-                current_scope.clone()
-            };
-
-            definitions.push(Definition::new(
-                &name_node,
-                self.source_code,
-                def_type,
-                scope,
-            ));
-        }
-
-        // Collect type parameters for structs, enums, traits, etc.
         if let Some(type_params_node) = node.child_by_field_name("type_parameters") {
-            definitions.extend(self.collect_type_parameters(type_params_node, current_scope));
+            definitions.extend(self.collect_type_parameters(type_params_node));
         }
 
         definitions
     }
 
-    fn collect_import_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
+    fn collect_import_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         let mut definitions = vec![];
-        let start_line = node.start_position().row + 1;
-        let mut use_cursor = node.walk();
-        for use_child in node.children(&mut use_cursor) {
-            match use_child.kind() {
-                "scoped_identifier" | "identifier" => {
-                    let full_name = use_child
-                        .utf8_text(self.source_code.as_bytes())
-                        .unwrap()
-                        .trim()
-                        .to_string();
-                    let name = full_name
-                        .split("::")
-                        .last()
-                        .unwrap_or(&full_name)
-                        .to_string();
-                    definitions.push(Definition {
-                        name,
-                        line_number: start_line,
-                        definition_type: DefinitionType::ModuleDefinition,
-                        scope: current_scope.clone(),
-                    });
-                }
-                "use_clause" => {
-                    let mut clause_cursor = use_child.walk();
-                    for clause_child_node in use_child.children(&mut clause_cursor) {
-                        if clause_child_node.kind() == "identifier"
-                            || clause_child_node.kind() == "scoped_identifier"
-                        {
-                            let full_name = clause_child_node
-                                .utf8_text(self.source_code.as_bytes())
-                                .unwrap()
-                                .trim()
-                                .to_string();
-                            let name = full_name
-                                .split("::")
-                                .last()
-                                .unwrap_or(&full_name)
-                                .to_string();
-                            definitions.push(Definition {
-                                name,
-                                line_number: start_line,
-                                definition_type: DefinitionType::ModuleDefinition,
-                                scope: current_scope.clone(),
-                            });
-                        } else if clause_child_node.kind() == "use_as_clause" {
-                            if let Some(alias_node) = clause_child_node.child_by_field_name("alias")
-                            {
-                                definitions.push(Definition::new(
-                                    &alias_node,
-                                    self.source_code,
-                                    DefinitionType::ModuleDefinition,
-                                    current_scope.clone(),
-                                ));
-                            }
-                        }
-                    }
-                }
-                _ => {}
-            }
-        }
 
-        definitions
-    }
-
-    fn collect_closure_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
-        let mut definitions = vec![];
-        if let Some(parameters_node) = node.child_by_field_name("parameters") {
-            let mut param_cursor = parameters_node.walk();
-            for param_child in parameters_node.children(&mut param_cursor) {
-                find_identifier_nodes_in_node(param_child)
-                    .iter()
-                    .for_each(|node| {
+        // Handle use_as_clause with aliases
+        let alias_query_str = "(use_as_clause alias: (identifier) @alias) @use_as";
+        if let Ok(query) = Query::new(&tree_sitter_rust::language(), alias_query_str) {
+            let mut cursor = QueryCursor::new();
+            for query_match in cursor.matches(&query, node, self.source_code.as_bytes()) {
+                for capture in query_match.captures {
+                    if capture.index == 0 {
                         definitions.push(Definition::new(
-                            node,
+                            &capture.node,
                             self.source_code,
-                            DefinitionType::VariableDefinition,
-                            current_scope.clone(),
-                        ))
-                    });
+                            DefinitionType::ImportDefinition,
+                        ));
+                    }
+                }
+            }
+        }
+
+        // Handle regular imports like `use module::item;`
+        let import_query_str = "(use_declaration argument: (scoped_use_list path: (_) list: (use_list (_)*)) @import) @use_decl";
+        if let Ok(query) = Query::new(&tree_sitter_rust::language(), import_query_str) {
+            let mut cursor = QueryCursor::new();
+            for query_match in cursor.matches(&query, node, self.source_code.as_bytes()) {
+                for capture in query_match.captures {
+                    definitions.extend(self.collect_use_list_items(capture.node));
+                }
+            }
+        }
+
+        // Handle simple use like `use module::item;`
+        let simple_query_str = "(use_declaration argument: (scoped_identifier name: (identifier) @imported_name)) @simple_use";
+        if let Ok(query) = Query::new(&tree_sitter_rust::language(), simple_query_str) {
+            let mut cursor = QueryCursor::new();
+            for query_match in cursor.matches(&query, node, self.source_code.as_bytes()) {
+                for capture in query_match.captures {
+                    if capture.index == 0 {
+                        definitions.push(Definition::new(
+                            &capture.node,
+                            self.source_code,
+                            DefinitionType::ImportDefinition,
+                        ));
+                    }
+                }
             }
         }
 
         definitions
     }
 
-    fn collect_macro_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
+    fn collect_closure_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        if let Some(params_node) = node.child_by_field_name("parameters") {
+            definitions.extend(self.collect_closure_parameters(params_node));
+        }
+        definitions
+    }
+
+    fn collect_macro_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         let mut definitions = vec![];
 
+        // Collect the macro name itself
         definitions.extend(Definition::from_naming_node(
             &node,
             self.source_code,
             DefinitionType::MacroDefinition,
-            current_scope.clone(),
         ));
 
-        if let Some(macro_node) =
-            run_query("(token_binding_pattern) @rule", node, self.source_code).first()
-        {
-            let nodes = run_query("(metavariable) @meta", *macro_node, self.source_code);
-
-            for node in nodes {
-                definitions.push(Definition::new(
-                    &node,
-                    self.source_code,
-                    DefinitionType::MacroVariableDefinition,
-                    current_scope.clone(),
-                ));
-            }
-        }
+        // Collect metavariables from macro rules
+        definitions.extend(self.collect_macro_metavariables(node));
 
         definitions
     }
 }
 
 impl<'a> RustDefinitionCollector<'a> {
-    fn collect_type_parameters(
-        &self,
-        type_params_node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
+    fn collect_match_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         let mut definitions = vec![];
-
-        let mut cursor = type_params_node.walk();
-        for child in type_params_node.children(&mut cursor) {
-            match child.kind() {
-                "type_identifier" => {
-                    definitions.push(Definition::new(
-                        &child,
-                        self.source_code,
-                        DefinitionType::TypeDefinition,
-                        current_scope.clone(),
-                    ));
+        // Look for match_block and then match_arms
+        let mut cursor = node.walk();
+        for child in node.children(&mut cursor) {
+            if child.kind() == "match_block" {
+                let mut match_cursor = child.walk();
+                for match_child in child.children(&mut match_cursor) {
+                    if match_child.kind() == "match_arm" {
+                        definitions.extend(self.collect_match_pattern_definitions(match_child));
+                    }
                 }
-                "lifetime" => {
-                    // Extract identifier from lifetime node (e.g., 'a from lifetime('a))
-                    let mut lifetime_cursor = child.walk();
-                    for lifetime_child in child.children(&mut lifetime_cursor) {
-                        if lifetime_child.kind() == "identifier" {
+            }
+        }
+        definitions
+    }
+
+    fn collect_match_pattern_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        // Look for match_pattern child in match_arm
+        let mut cursor = node.walk();
+        for child in node.children(&mut cursor) {
+            if child.kind() == "match_pattern" {
+                // Process all children of match_pattern
+                let mut pattern_cursor = child.walk();
+                for pattern_child in child.children(&mut pattern_cursor) {
+                    definitions.extend(self.collect_pattern_definitions(pattern_child));
+                }
+            }
+        }
+        definitions
+    }
+
+    fn collect_pattern_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+        match node.kind() {
+            "identifier" => {
+                // In match patterns, standalone identifiers can be either:
+                // 1. Variable bindings (definitions) - lowercase identifiers
+                // 2. Constructor references (usages) - uppercase identifiers
+                let name = node.utf8_text(self.source_code.as_bytes()).unwrap_or("");
+                if name
+                    .chars()
+                    .next()
+                    .is_some_and(|c| c.is_lowercase() || c == '_')
+                {
+                    vec![Definition::new(
+                        &node,
+                        self.source_code,
+                        DefinitionType::VariableDefinition,
+                    )]
+                } else {
+                    vec![]
+                }
+            }
+            "captured_pattern" => {
+                let mut definitions = vec![];
+                // First child is usually the binding identifier
+                if let Some(first_child) = node.child(0) {
+                    if first_child.kind() == "identifier" {
+                        definitions.push(Definition::new(
+                            &first_child,
+                            self.source_code,
+                            DefinitionType::VariableDefinition,
+                        ));
+                    }
+                }
+                // Also collect from the rest of the pattern
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor).skip(1) {
+                    definitions.extend(self.collect_pattern_definitions(child));
+                }
+                definitions
+            }
+            "tuple_pattern" | "struct_pattern" | "slice_pattern" => {
+                let mut definitions = vec![];
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    if child.kind() != "("
+                        && child.kind() != ")"
+                        && child.kind() != "["
+                        && child.kind() != "]"
+                    {
+                        definitions.extend(self.collect_pattern_definitions(child));
+                    }
+                }
+                definitions
+            }
+            "tuple_struct_pattern" => {
+                let mut definitions = vec![];
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    // Skip the first identifier (constructor name) and punctuation
+                    if child.kind() == "identifier" {
+                        // Check if this is not the first child (constructor name)
+                        if child.start_position().column
+                            > node.child(0).unwrap().end_position().column
+                        {
                             definitions.push(Definition::new(
-                                &lifetime_child,
+                                &child,
                                 self.source_code,
-                                DefinitionType::TypeDefinition, // Using TypeDefinition for lifetime parameters
-                                current_scope.clone(),
+                                DefinitionType::VariableDefinition,
+                            ));
+                        }
+                    } else if child.kind() != "(" && child.kind() != ")" {
+                        definitions.extend(self.collect_pattern_definitions(child));
+                    }
+                }
+                definitions
+            }
+            _ => vec![],
+        }
+    }
+
+    fn collect_type_parameters(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        let mut cursor = node.walk();
+
+        for child in node.children(&mut cursor) {
+            match child.kind() {
+                "constrained_type_parameter" => {
+                    // Only collect the first type_identifier as a type parameter definition
+                    // The ones in trait_bounds are usages
+                    if let Some(first_child) = child.child(0) {
+                        if first_child.kind() == "type_identifier" {
+                            definitions.push(Definition::new(
+                                &first_child,
+                                self.source_code,
+                                DefinitionType::TypeDefinition,
                             ));
                         }
                     }
+                }
+                "type_parameter" => {
+                    if let Some(type_id) = child.child_by_field_name("name") {
+                        definitions.push(Definition::new(
+                            &type_id,
+                            self.source_code,
+                            DefinitionType::TypeDefinition,
+                        ));
+                    }
+                }
+                _ => {
+                    // For other simple type parameters
+                    if child.kind() == "type_identifier" {
+                        definitions.push(Definition::new(
+                            &child,
+                            self.source_code,
+                            DefinitionType::TypeDefinition,
+                        ));
+                    }
+                }
+            }
+        }
+        definitions
+    }
+
+    fn collect_function_parameters(&self, node: Node<'a>) -> Vec<Definition> {
+        let query_str = "(parameter pattern: (identifier) @param) @parameter";
+        let mut definitions = vec![];
+        if let Ok(query) = Query::new(&tree_sitter_rust::language(), query_str) {
+            let mut cursor = QueryCursor::new();
+            for query_match in cursor.matches(&query, node, self.source_code.as_bytes()) {
+                for capture in query_match.captures {
+                    if capture.index == 0 {
+                        definitions.push(Definition::new(
+                            &capture.node,
+                            self.source_code,
+                            DefinitionType::VariableDefinition,
+                        ));
+                    }
+                }
+            }
+        }
+        definitions
+    }
+
+    fn collect_impl_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        let mut cursor = node.walk();
+        for child in node.children(&mut cursor) {
+            if child.kind() == "declaration_list" {
+                let mut inner_cursor = child.walk();
+                for declaration in child.children(&mut inner_cursor) {
+                    if declaration.kind() == "function_item" {
+                        // Collect as method definition instead of function definition
+                        definitions.extend(Definition::from_naming_node(
+                            &declaration,
+                            self.source_code,
+                            DefinitionType::MethodDefinition,
+                        ));
+
+                        // Also collect function parameters
+                        if let Some(params_node) = declaration.child_by_field_name("parameters") {
+                            definitions.extend(self.collect_function_parameters(params_node));
+                        }
+
+                        // Collect type parameters if any
+                        if let Some(type_params_node) =
+                            declaration.child_by_field_name("type_parameters")
+                        {
+                            definitions.extend(self.collect_type_parameters(type_params_node));
+                        }
+                    }
+                }
+            }
+        }
+        definitions
+    }
+
+    fn collect_closure_parameters(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        let mut cursor = node.walk();
+        for child in node.children(&mut cursor) {
+            if child.kind() == "identifier" {
+                definitions.push(Definition::new(
+                    &child,
+                    self.source_code,
+                    DefinitionType::VariableDefinition,
+                ));
+            }
+        }
+        definitions
+    }
+
+    fn collect_use_list_items(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        let mut cursor = node.walk();
+
+        for child in node.children(&mut cursor) {
+            match child.kind() {
+                "identifier" => {
+                    definitions.push(Definition::new(
+                        &child,
+                        self.source_code,
+                        DefinitionType::ImportDefinition,
+                    ));
+                }
+                "use_list" => {
+                    definitions.extend(self.collect_use_list_items(child));
                 }
                 _ => {}
             }
@@ -400,166 +491,44 @@ impl<'a> RustDefinitionCollector<'a> {
         definitions
     }
 
-    fn collect_match_pattern_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition> {
+    fn collect_macro_metavariables(&self, node: Node<'a>) -> Vec<Definition> {
         let mut definitions = vec![];
+        let mut cursor = node.walk();
 
-        // Find pattern nodes in match_arm and extract identifiers bound in the pattern
-        if let Some(pattern_node) = node.child_by_field_name("pattern") {
-            self.extract_pattern_bindings(pattern_node)
-                .iter()
-                .for_each(|identifier_node| {
-                    definitions.push(Definition::new(
-                        identifier_node,
-                        self.source_code,
-                        DefinitionType::VariableDefinition,
-                        current_scope.clone(),
-                    ));
-                });
+        // Recursively search for token_binding_pattern nodes
+        for child in node.children(&mut cursor) {
+            definitions.extend(self.collect_metavariables_from_node(child));
         }
 
         definitions
     }
 
-    fn extract_pattern_bindings(&self, pattern_node: Node<'a>) -> Vec<Node<'a>> {
-        let mut bindings = vec![];
-        self.extract_pattern_bindings_recursive(pattern_node, &mut bindings);
-        bindings
-    }
+    fn collect_metavariables_from_node(&self, node: Node<'a>) -> Vec<Definition> {
+        let mut definitions = vec![];
+        let mut cursor = node.walk();
 
-    fn extract_pattern_bindings_recursive(&self, node: Node<'a>, bindings: &mut Vec<Node<'a>>) {
         match node.kind() {
-            // Simple identifier patterns (the variable being bound)
-            "identifier" => {
-                // Only add if this identifier is in a binding position, not a constructor position
-                if self.is_identifier_in_binding_position(node) {
-                    bindings.push(node);
-                }
-            }
-            // Match patterns: be conservative - only extract from complex patterns, not simple identifiers
-            "match_pattern" => {
-                let mut cursor = node.walk();
+            "token_binding_pattern" => {
+                // Look for metavariable child
                 for child in node.children(&mut cursor) {
-                    // Only recurse into non-identifier children to avoid simple identifier patterns
-                    if child.kind() != "identifier" {
-                        self.extract_pattern_bindings_recursive(child, bindings);
+                    if child.kind() == "metavariable" {
+                        definitions.push(Definition::new(
+                            &child,
+                            self.source_code,
+                            DefinitionType::MacroVariableDefinition,
+                        ));
+                        break;
                     }
                 }
             }
-            // Captured patterns: `var @ pattern` - the variable before @ is a binding
-            "captured_pattern" => {
-                // The first child is the binding variable name
-                let mut cursor = node.walk();
-                for child in node.children(&mut cursor) {
-                    if child.kind() == "identifier" {
-                        bindings.push(child);
-                        break; // Only take the first identifier (the binding name)
-                    }
-                }
-                // Continue with the pattern after @ but avoid extracting constructors
-                let mut cursor = node.walk();
-                for child in node.children(&mut cursor) {
-                    if child.kind() != "identifier" {
-                        self.extract_pattern_bindings_recursive(child, bindings);
-                    }
-                }
-            }
-            // Ref patterns: `ref var` or `ref mut var`
-            "ref_pattern" | "mut_pattern" => {
-                let mut cursor = node.walk();
-                for child in node.children(&mut cursor) {
-                    if child.kind() == "identifier" {
-                        bindings.push(child);
-                    } else {
-                        self.extract_pattern_bindings_recursive(child, bindings);
-                    }
-                }
-            }
-            // Tuple struct patterns: Skip the constructor name but extract bindings from parameters
-            "tuple_struct_pattern" => {
-                let mut cursor = node.walk();
-                let mut first_non_constructor_child = false;
-                for child in node.children(&mut cursor) {
-                    // Skip the first child entirely as it's always the constructor
-                    if !first_non_constructor_child {
-                        first_non_constructor_child = true;
-                        continue;
-                    }
-                    // Process all other children (parameters, patterns, etc.)
-                    self.extract_pattern_bindings_recursive(child, bindings);
-                }
-            }
-            // Scoped identifiers: These are paths/constructors, not bindings - skip completely
-            "scoped_identifier" | "generic_type" => {
-                // Don't recurse into these as they contain constructor/path names, not bindings
-            }
-            // Other patterns: recurse into children
-            "tuple_pattern" | "struct_pattern" | "slice_pattern" => {
-                let mut cursor = node.walk();
-                for child in node.children(&mut cursor) {
-                    self.extract_pattern_bindings_recursive(child, bindings);
-                }
-            }
-            // Wildcard and literal patterns don't bind variables
-            "_" | "literal_pattern" => {}
-            // For other patterns, recurse into children
             _ => {
-                let mut cursor = node.walk();
+                // Recursively search in children
                 for child in node.children(&mut cursor) {
-                    self.extract_pattern_bindings_recursive(child, bindings);
+                    definitions.extend(self.collect_metavariables_from_node(child));
                 }
             }
         }
+
+        definitions
     }
-
-    fn is_identifier_in_binding_position(&self, node: Node<'a>) -> bool {
-        // Check if this identifier is in a position where it binds a new variable
-        if let Some(parent) = node.parent() {
-            match parent.kind() {
-                // In captured_pattern, identifiers in name field are always bindings
-                "captured_pattern" => true,
-                // In tuple_struct_pattern, the first identifier is the constructor, others are bindings
-                "tuple_struct_pattern" => {
-                    // Check if this is the first child (constructor name)
-                    let mut cursor = parent.walk();
-                    if let Some(first_child) = parent.children(&mut cursor).next() {
-                        return node.id() != first_child.id();
-                    }
-                    false
-                }
-                // In struct patterns, field names are not bindings unless they're shorthand
-                "struct_pattern" => false,
-                // In scoped_identifier, identifiers are paths/names, not bindings
-                "scoped_identifier" => false,
-                // In generic_type, identifiers are type names, not bindings
-                "generic_type" => false,
-                // Simple patterns in match arms - be conservative and treat as usage, not definitions
-                // In Rust, distinguishing between variable bindings and value comparisons requires
-                // scope analysis, which is complex. For safety, treat simple identifiers as usage.
-                "match_pattern" => false,
-                // In most other contexts, identifier in patterns are bindings
-                _ => true,
-            }
-        } else {
-            true
-        }
-    }
-}
-
-fn run_query<'a>(query: &str, node: Node<'a>, source_code: &str) -> Vec<Node<'a>> {
-    let mut result: Vec<Node<'a>> = vec![];
-
-    let query = Query::new(&tree_sitter_rust::language(), query).unwrap();
-    let mut query_cursor = QueryCursor::new();
-
-    for m in query_cursor.matches(&query, node, source_code.as_bytes()) {
-        for capture in m.captures {
-            result.push(capture.node);
-        }
-    }
-
-    result
 }

@@ -26,30 +26,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "value22",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 15,
+                end_line: 1,
+                end_column: 22,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "key1",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 9,
-            end_line: 1,
-            end_column: 13,
+            position: Position {
+                start_line: 1,
+                start_column: 9,
+                end_line: 1,
+                end_column: 13,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "obj3",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 27,
-            end_line: 1,
-            end_column: 31,
+            position: Position {
+                start_line: 1,
+                start_column: 27,
+                end_line: 1,
+                end_column: 31,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

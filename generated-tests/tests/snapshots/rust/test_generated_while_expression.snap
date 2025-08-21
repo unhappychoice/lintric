@@ -31,39 +31,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "val4",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 20,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Some",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 11,
-            end_line: 1,
-            end_column: 15,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 15,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "val4",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 16,
-            end_line: 1,
-            end_column: 20,
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 20,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "opt2",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 24,
-            end_line: 1,
-            end_column: 28,
+            position: Position {
+                start_line: 1,
+                start_column: 24,
+                end_line: 1,
+                end_column: 28,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

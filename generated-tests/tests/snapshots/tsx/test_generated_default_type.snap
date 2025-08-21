@@ -38,42 +38,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "Test",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 10,
+            },
             definition_type: TypeDefinition,
-            scope: None,
         },
         Definition {
             name: "T1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 13,
+            },
             definition_type: TypeDefinition,
-            scope: None,
         },
         Definition {
             name: "value6",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 36,
+                end_line: 1,
+                end_column: 42,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "T1",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 28,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 28,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Test",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 44,
-            end_line: 1,
-            end_column: 48,
+            position: Position {
+                start_line: 1,
+                start_column: 44,
+                end_line: 1,
+                end_column: 48,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

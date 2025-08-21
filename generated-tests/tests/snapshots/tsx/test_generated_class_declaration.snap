@@ -44,63 +44,66 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestClass1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 17,
+            },
             definition_type: ClassDefinition,
-            scope: Some(
-                "TestClass1",
-            ),
         },
         Definition {
             name: "field",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 33,
+            },
             definition_type: PropertyDefinition,
-            scope: Some(
-                "TestClass1",
-            ),
         },
         Definition {
             name: "method1",
-            line_number: 1,
-            definition_type: MethodDefinition,
-            scope: Some(
-                "TestClass1",
-            ),
+            position: Position {
+                start_line: 1,
+                start_column: 55,
+                end_line: 1,
+                end_column: 62,
+            },
+            definition_type: FunctionDefinition,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "field",
             kind: FieldExpression,
-            scope: Some(
-                "TestClass1",
-            ),
-            start_line: 1,
-            start_column: 28,
-            end_line: 1,
-            end_column: 33,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 33,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "method1",
             kind: FieldExpression,
-            scope: Some(
-                "TestClass1",
-            ),
-            start_line: 1,
-            start_column: 55,
-            end_line: 1,
-            end_column: 62,
+            position: Position {
+                start_line: 1,
+                start_column: 55,
+                end_line: 1,
+                end_column: 62,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "field",
             kind: FieldExpression,
-            scope: Some(
-                "TestClass1",
-            ),
-            start_line: 1,
-            start_column: 87,
-            end_line: 1,
-            end_column: 92,
+            position: Position {
+                start_line: 1,
+                start_column: 87,
+                end_line: 1,
+                end_column: 92,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

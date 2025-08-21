@@ -1,22 +1,30 @@
 ---
 source: core/tests/rust/mod.rs
-assertion_line: 43
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/struct_field_access_dependency.rs",
   "line_metrics": [
     {
-      "line_number": 4,
-      "total_dependencies": 2,
+      "line_number": 3,
+      "total_dependencies": 1,
       "dependency_distance_cost": 0.4,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        3,
+        1
+      ]
+    },
+    {
+      "line_number": 4,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.2,
+      "depth": 2,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
         3
       ]
     }
   ],
-  "overall_complexity_score": 3.24
+  "overall_complexity_score": 5.66
 }

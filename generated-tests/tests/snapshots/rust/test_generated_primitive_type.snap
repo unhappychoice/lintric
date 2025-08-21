@@ -20,9 +20,13 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "var10",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 10,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],

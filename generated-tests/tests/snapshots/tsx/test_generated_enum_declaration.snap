@@ -22,32 +22,35 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "TestEnum",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 6,
-            end_line: 1,
-            end_column: 14,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 14,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "A",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 18,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 18,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "B",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 20,
-            end_line: 1,
-            end_column: 21,
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 21,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

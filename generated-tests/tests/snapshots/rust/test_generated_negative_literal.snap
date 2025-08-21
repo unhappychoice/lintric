@@ -22,30 +22,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "result",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 11,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "x10",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 14,
-            end_line: 1,
-            end_column: 17,
+            position: Position {
+                start_line: 1,
+                start_column: 14,
+                end_line: 1,
+                end_column: 17,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "y3",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 20,
-            end_line: 1,
-            end_column: 22,
+            position: Position {
+                start_line: 1,
+                start_column: 20,
+                end_line: 1,
+                end_column: 22,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

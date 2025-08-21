@@ -24,27 +24,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "prop12",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 9,
+                end_line: 1,
+                end_column: 15,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "prop21",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 23,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "object",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 28,
-            end_line: 1,
-            end_column: 34,
+            position: Position {
+                start_line: 1,
+                start_column: 28,
+                end_line: 1,
+                end_column: 34,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

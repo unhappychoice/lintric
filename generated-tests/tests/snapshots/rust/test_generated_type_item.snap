@@ -19,9 +19,13 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestType1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 15,
+            },
             definition_type: TypeDefinition,
-            scope: None,
         },
     ],
     dependencies: [],

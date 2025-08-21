@@ -20,21 +20,26 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test_fn4",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 12,
+            },
             definition_type: FunctionDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "test_fn4",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 4,
-            end_line: 1,
-            end_column: 12,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 12,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

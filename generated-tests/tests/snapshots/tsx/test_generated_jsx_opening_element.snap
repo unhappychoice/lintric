@@ -34,48 +34,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "element",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 14,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Component1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 18,
-            end_line: 1,
-            end_column: 28,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 28,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "prop2",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 29,
-            end_line: 1,
-            end_column: 34,
+            position: Position {
+                start_line: 1,
+                start_column: 29,
+                end_line: 1,
+                end_column: 34,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "value15",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 36,
-            end_line: 1,
-            end_column: 43,
+            position: Position {
+                start_line: 1,
+                start_column: 36,
+                end_line: 1,
+                end_column: 43,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Component1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 47,
-            end_line: 1,
-            end_column: 57,
+            position: Position {
+                start_line: 1,
+                start_column: 47,
+                end_line: 1,
+                end_column: 57,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

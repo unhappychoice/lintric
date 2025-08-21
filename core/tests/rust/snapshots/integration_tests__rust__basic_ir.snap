@@ -7,15 +7,23 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   "definitions": [
     {
       "name": "a",
-      "line_number": 1,
-      "definition_type": "VariableDefinition",
-      "scope": null
+      "position": {
+        "start_line": 1,
+        "start_column": 5,
+        "end_line": 1,
+        "end_column": 6
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "b",
-      "line_number": 2,
-      "definition_type": "VariableDefinition",
-      "scope": null
+      "position": {
+        "start_line": 2,
+        "start_column": 5,
+        "end_line": 2,
+        "end_column": 6
+      },
+      "definition_type": "VariableDefinition"
     }
   ],
   "dependencies": [
@@ -24,18 +32,19 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "target_line": 1,
       "symbol": "a",
       "dependency_type": "VariableUse",
-      "context": "binary_expression"
+      "context": "variable_use"
     }
   ],
   "usage": [
     {
       "name": "a",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 2,
-      "start_column": 9,
-      "end_line": 2,
-      "end_column": 10
+      "position": {
+        "start_line": 2,
+        "start_column": 9,
+        "end_line": 2,
+        "end_column": 10
+      }
     }
   ],
   "analysis_metadata": {

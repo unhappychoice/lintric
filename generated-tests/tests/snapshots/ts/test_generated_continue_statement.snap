@@ -35,30 +35,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "i",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 11,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "i",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 17,
-            end_line: 1,
-            end_column: 18,
+            position: Position {
+                start_line: 1,
+                start_column: 17,
+                end_line: 1,
+                end_column: 18,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "i",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 25,
-            end_line: 1,
-            end_column: 26,
+            position: Position {
+                start_line: 1,
+                start_column: 25,
+                end_line: 1,
+                end_column: 26,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

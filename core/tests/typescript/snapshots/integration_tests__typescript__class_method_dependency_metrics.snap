@@ -1,22 +1,41 @@
 ---
 source: core/tests/typescript/mod.rs
-assertion_line: 30
 expression: "serde_json::to_string_pretty(&result).unwrap()"
 ---
 {
   "file_path": "tests/typescript/fixtures/class_method_dependency.ts",
   "line_metrics": [
     {
-      "line_number": 6,
-      "total_dependencies": 2,
-      "dependency_distance_cost": 0.3333333333333333,
+      "line_number": 3,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.16666666666666666,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        5,
+        2
+      ]
+    },
+    {
+      "line_number": 5,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.6666666666666666,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 6,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.6666666666666666,
+      "depth": 2,
+      "transitive_dependencies": 4,
+      "dependent_lines": [
+        3,
         5
       ]
     }
   ],
-  "overall_complexity_score": 3.2333333333333334
+  "overall_complexity_score": 9.35
 }

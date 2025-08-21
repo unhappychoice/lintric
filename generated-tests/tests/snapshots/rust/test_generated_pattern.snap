@@ -23,32 +23,35 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Some(x)",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 8,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 8,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Some",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 5,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 5,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "x",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 6,
-            end_line: 1,
-            end_column: 7,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 7,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

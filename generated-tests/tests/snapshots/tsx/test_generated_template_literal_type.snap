@@ -50,42 +50,56 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "Test",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 10,
+            },
             definition_type: TypeDefinition,
-            scope: None,
         },
         Definition {
             name: "T3",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 13,
+            },
             definition_type: TypeDefinition,
-            scope: None,
         },
         Definition {
             name: "value30",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 39,
+                end_line: 1,
+                end_column: 46,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "T3",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 28,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 28,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Test",
             kind: TypeIdentifier,
-            scope: None,
-            start_line: 1,
-            start_column: 48,
-            end_line: 1,
-            end_column: 52,
+            position: Position {
+                start_line: 1,
+                start_column: 48,
+                end_line: 1,
+                end_column: 52,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -21,23 +21,25 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "obj.field",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 10,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 10,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "obj",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 4,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 4,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

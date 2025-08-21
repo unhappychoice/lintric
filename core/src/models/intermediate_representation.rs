@@ -1,4 +1,4 @@
-use super::{Definition, Dependency, SerializableUsage};
+use super::{Definition, Dependency, Usage};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -14,7 +14,7 @@ pub struct IntermediateRepresentation {
     pub file_path: String,
     pub definitions: Vec<Definition>,
     pub dependencies: Vec<Dependency>,
-    pub usage: Vec<SerializableUsage>,
+    pub usage: Vec<Usage>,
     pub analysis_metadata: AnalysisMetadata,
 }
 
@@ -23,7 +23,7 @@ impl IntermediateRepresentation {
         file_path: String,
         definitions: Vec<Definition>,
         dependencies: Vec<Dependency>,
-        usage: Vec<SerializableUsage>,
+        usage: Vec<Usage>,
         language: String,
         total_lines: usize,
     ) -> Self {

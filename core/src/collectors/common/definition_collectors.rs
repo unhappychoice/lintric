@@ -4,13 +4,11 @@ use tree_sitter::Node;
 pub trait DefinitionCollector<'a>: Send + Sync {
     fn collect_definitions_from_root(&self, root: Node<'a>) -> Result<Vec<Definition>, String> {
         let mut definitions = vec![];
-        let mut stack: Vec<(Node<'a>, Option<String>)> = Vec::new();
-        stack.push((root, None));
+        let mut stack: Vec<Node<'a>> = Vec::new();
+        stack.push(root);
 
-        while let Some((node, current_scope)) = stack.pop() {
-            let new_scope = self.determine_scope(&node, &current_scope);
-
-            definitions.extend(self.process_node(node, &new_scope));
+        while let Some(node) = stack.pop() {
+            definitions.extend(self.process_node(node));
 
             let mut cursor = node.walk();
             let mut children: Vec<Node<'a>> = Vec::new();
@@ -18,52 +16,26 @@ pub trait DefinitionCollector<'a>: Send + Sync {
                 children.push(child);
             }
             for child in children.into_iter().rev() {
-                stack.push((child, new_scope.clone()));
+                stack.push(child);
             }
         }
 
         Ok(definitions)
     }
 
-    fn process_node(&self, node: Node<'a>, current_scope: &Option<String>) -> Vec<Definition>;
+    fn process_node(&self, node: Node<'a>) -> Vec<Definition>;
 
-    fn determine_scope(&self, node: &Node<'a>, parent_scope: &Option<String>) -> Option<String>;
+    fn collect_variable_definitions(&self, node: Node<'a>) -> Vec<Definition>;
 
-    fn collect_variable_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition>;
+    fn collect_function_definitions(&self, node: Node<'a>) -> Vec<Definition>;
 
-    fn collect_function_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition>;
+    fn collect_type_definitions(&self, node: Node<'a>) -> Vec<Definition>;
 
-    fn collect_type_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition>;
+    fn collect_import_definitions(&self, node: Node<'a>) -> Vec<Definition>;
 
-    fn collect_import_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition>;
+    fn collect_closure_definitions(&self, node: Node<'a>) -> Vec<Definition>;
 
-    fn collect_closure_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition>;
-
-    fn collect_macro_definitions(
-        &self,
-        node: Node<'a>,
-        current_scope: &Option<String>,
-    ) -> Vec<Definition>;
+    fn collect_macro_definitions(&self, node: Node<'a>) -> Vec<Definition>;
 }
 
 pub fn find_identifier_nodes_in_node<'a>(node: Node<'a>) -> Vec<Node<'a>> {

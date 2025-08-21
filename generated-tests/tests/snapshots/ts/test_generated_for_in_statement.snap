@@ -32,59 +32,65 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "key",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 12,
-            end_line: 1,
-            end_column: 15,
+            position: Position {
+                start_line: 1,
+                start_column: 12,
+                end_line: 1,
+                end_column: 15,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "obj",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 19,
-            end_line: 1,
-            end_column: 22,
+            position: Position {
+                start_line: 1,
+                start_column: 19,
+                end_line: 1,
+                end_column: 22,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "console.log(key)",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 42,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 42,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "console",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 26,
-            end_line: 1,
-            end_column: 33,
+            position: Position {
+                start_line: 1,
+                start_column: 26,
+                end_line: 1,
+                end_column: 33,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "log",
             kind: FieldExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 34,
-            end_line: 1,
-            end_column: 37,
+            position: Position {
+                start_line: 1,
+                start_column: 34,
+                end_line: 1,
+                end_column: 37,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "key",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 38,
-            end_line: 1,
-            end_column: 41,
+            position: Position {
+                start_line: 1,
+                start_column: 38,
+                end_line: 1,
+                end_column: 41,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

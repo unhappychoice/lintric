@@ -23,13 +23,13 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestTrait",
-            line_number: 1,
-            definition_type: Other(
-                "trait_item",
-            ),
-            scope: Some(
-                "TestTrait",
-            ),
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 16,
+            },
+            definition_type: TypeDefinition,
         },
     ],
     dependencies: [],

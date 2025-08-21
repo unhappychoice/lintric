@@ -7,57 +7,133 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
   "definitions": [
     {
       "name": "my_module",
-      "line_number": 1,
-      "definition_type": "ModuleDefinition",
-      "scope": null
+      "position": {
+        "start_line": 1,
+        "start_column": 5,
+        "end_line": 1,
+        "end_column": 14
+      },
+      "definition_type": "ModuleDefinition"
     },
     {
       "name": "MyStruct",
-      "line_number": 2,
-      "definition_type": "StructDefinition",
-      "scope": "my_module.MyStruct"
+      "position": {
+        "start_line": 2,
+        "start_column": 16,
+        "end_line": 2,
+        "end_column": 24
+      },
+      "definition_type": "StructDefinition"
     },
     {
       "name": "my_function",
-      "line_number": 3,
-      "definition_type": "FunctionDefinition",
-      "scope": "my_module.my_function"
+      "position": {
+        "start_line": 3,
+        "start_column": 12,
+        "end_line": 3,
+        "end_column": 23
+      },
+      "definition_type": "FunctionDefinition"
     },
     {
       "name": "MY_CONST",
-      "line_number": 4,
-      "definition_type": "ConstDefinition",
-      "scope": "my_module"
+      "position": {
+        "start_line": 4,
+        "start_column": 15,
+        "end_line": 4,
+        "end_column": 23
+      },
+      "definition_type": "ConstDefinition"
     },
     {
       "name": "MyStruct",
-      "line_number": 7,
-      "definition_type": "ModuleDefinition",
-      "scope": null
+      "position": {
+        "start_line": 7,
+        "start_column": 16,
+        "end_line": 7,
+        "end_column": 24
+      },
+      "definition_type": "ImportDefinition"
+    },
+    {
+      "name": "my_module",
+      "position": {
+        "start_line": 8,
+        "start_column": 5,
+        "end_line": 8,
+        "end_column": 14
+      },
+      "definition_type": "ImportDefinition"
+    },
+    {
+      "name": "my_function",
+      "position": {
+        "start_line": 8,
+        "start_column": 17,
+        "end_line": 8,
+        "end_column": 28
+      },
+      "definition_type": "ImportDefinition"
+    },
+    {
+      "name": "MY_CONST",
+      "position": {
+        "start_line": 8,
+        "start_column": 30,
+        "end_line": 8,
+        "end_column": 38
+      },
+      "definition_type": "ImportDefinition"
+    },
+    {
+      "name": "mm",
+      "position": {
+        "start_line": 10,
+        "start_column": 18,
+        "end_line": 10,
+        "end_column": 20
+      },
+      "definition_type": "ImportDefinition"
     },
     {
       "name": "main",
-      "line_number": 12,
-      "definition_type": "FunctionDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 12,
+        "start_column": 4,
+        "end_line": 12,
+        "end_column": 8
+      },
+      "definition_type": "FunctionDefinition"
     },
     {
       "name": "s",
-      "line_number": 13,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 13,
+        "start_column": 9,
+        "end_line": 13,
+        "end_column": 10
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "c",
-      "line_number": 15,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 15,
+        "start_column": 9,
+        "end_line": 15,
+        "end_column": 10
+      },
+      "definition_type": "VariableDefinition"
     },
     {
       "name": "s2",
-      "line_number": 16,
-      "definition_type": "VariableDefinition",
-      "scope": "main"
+      "position": {
+        "start_line": 16,
+        "start_column": 9,
+        "end_line": 16,
+        "end_column": 11
+      },
+      "definition_type": "VariableDefinition"
     }
   ],
   "dependencies": [
@@ -66,170 +142,226 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
       "target_line": 1,
       "symbol": "my_module",
       "dependency_type": "VariableUse",
-      "context": "scoped_identifier"
+      "context": "variable_use"
+    },
+    {
+      "source_line": 7,
+      "target_line": 2,
+      "symbol": "MyStruct",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     },
     {
       "source_line": 8,
       "target_line": 1,
       "symbol": "my_module",
       "dependency_type": "VariableUse",
-      "context": "scoped_use_list"
+      "context": "variable_use"
+    },
+    {
+      "source_line": 8,
+      "target_line": 3,
+      "symbol": "my_function",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 8,
+      "target_line": 4,
+      "symbol": "MY_CONST",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     },
     {
       "source_line": 9,
       "target_line": 1,
       "symbol": "my_module",
       "dependency_type": "VariableUse",
-      "context": "use_wildcard"
+      "context": "variable_use"
     },
     {
       "source_line": 10,
       "target_line": 1,
       "symbol": "my_module",
       "dependency_type": "VariableUse",
-      "context": "use_as_clause"
+      "context": "variable_use"
     },
     {
       "source_line": 13,
-      "target_line": 7,
+      "target_line": 2,
       "symbol": "MyStruct",
       "dependency_type": "VariableUse",
-      "context": "let_declaration"
+      "context": "variable_use"
+    },
+    {
+      "source_line": 14,
+      "target_line": 3,
+      "symbol": "my_function",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 15,
+      "target_line": 4,
+      "symbol": "MY_CONST",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
     },
     {
       "source_line": 16,
-      "target_line": 7,
+      "target_line": 10,
+      "symbol": "mm",
+      "dependency_type": "VariableUse",
+      "context": "variable_use"
+    },
+    {
+      "source_line": 16,
+      "target_line": 2,
       "symbol": "MyStruct",
       "dependency_type": "VariableUse",
-      "context": "scoped_identifier"
+      "context": "variable_use"
     }
   ],
   "usage": [
     {
       "name": "my_module",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 7,
-      "start_column": 5,
-      "end_line": 7,
-      "end_column": 14
+      "position": {
+        "start_line": 7,
+        "start_column": 5,
+        "end_line": 7,
+        "end_column": 14
+      }
     },
     {
       "name": "MyStruct",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 7,
-      "start_column": 16,
-      "end_line": 7,
-      "end_column": 24
+      "position": {
+        "start_line": 7,
+        "start_column": 16,
+        "end_line": 7,
+        "end_column": 24
+      }
     },
     {
       "name": "my_module",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 8,
-      "start_column": 5,
-      "end_line": 8,
-      "end_column": 14
+      "position": {
+        "start_line": 8,
+        "start_column": 5,
+        "end_line": 8,
+        "end_column": 14
+      }
     },
     {
       "name": "my_function",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 8,
-      "start_column": 17,
-      "end_line": 8,
-      "end_column": 28
+      "position": {
+        "start_line": 8,
+        "start_column": 17,
+        "end_line": 8,
+        "end_column": 28
+      }
     },
     {
       "name": "MY_CONST",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 8,
-      "start_column": 30,
-      "end_line": 8,
-      "end_column": 38
+      "position": {
+        "start_line": 8,
+        "start_column": 30,
+        "end_line": 8,
+        "end_column": 38
+      }
     },
     {
       "name": "my_module",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 9,
-      "start_column": 5,
-      "end_line": 9,
-      "end_column": 14
+      "position": {
+        "start_line": 9,
+        "start_column": 5,
+        "end_line": 9,
+        "end_column": 14
+      }
     },
     {
       "name": "my_module",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 10,
-      "start_column": 5,
-      "end_line": 10,
-      "end_column": 14
+      "position": {
+        "start_line": 10,
+        "start_column": 5,
+        "end_line": 10,
+        "end_column": 14
+      }
     },
     {
       "name": "mm",
       "kind": "Identifier",
-      "scope": null,
-      "start_line": 10,
-      "start_column": 18,
-      "end_line": 10,
-      "end_column": 20
+      "position": {
+        "start_line": 10,
+        "start_column": 18,
+        "end_line": 10,
+        "end_column": 20
+      }
     },
     {
       "name": "MyStruct",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 13,
-      "start_column": 13,
-      "end_line": 13,
-      "end_column": 21
+      "position": {
+        "start_line": 13,
+        "start_column": 13,
+        "end_line": 13,
+        "end_column": 21
+      }
     },
     {
       "name": "my_function()",
       "kind": "CallExpression",
-      "scope": "main",
-      "start_line": 14,
-      "start_column": 5,
-      "end_line": 14,
-      "end_column": 18
+      "position": {
+        "start_line": 14,
+        "start_column": 5,
+        "end_line": 14,
+        "end_column": 18
+      }
     },
     {
       "name": "my_function",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 14,
-      "start_column": 5,
-      "end_line": 14,
-      "end_column": 16
+      "position": {
+        "start_line": 14,
+        "start_column": 5,
+        "end_line": 14,
+        "end_column": 16
+      }
     },
     {
       "name": "MY_CONST",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 15,
-      "start_column": 13,
-      "end_line": 15,
-      "end_column": 21
+      "position": {
+        "start_line": 15,
+        "start_column": 13,
+        "end_line": 15,
+        "end_column": 21
+      }
     },
     {
       "name": "mm",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 16,
-      "start_column": 14,
-      "end_line": 16,
-      "end_column": 16
+      "position": {
+        "start_line": 16,
+        "start_column": 14,
+        "end_line": 16,
+        "end_column": 16
+      }
     },
     {
       "name": "MyStruct",
       "kind": "Identifier",
-      "scope": "main",
-      "start_line": 16,
-      "start_column": 18,
-      "end_line": 16,
-      "end_column": 26
+      "position": {
+        "start_line": 16,
+        "start_column": 18,
+        "end_line": 16,
+        "end_column": 26
+      }
     }
   ],
   "analysis_metadata": {

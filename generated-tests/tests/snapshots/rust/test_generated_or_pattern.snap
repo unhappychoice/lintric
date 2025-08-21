@@ -31,14 +31,15 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "val1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 7,
-            end_line: 1,
-            end_column: 11,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 11,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

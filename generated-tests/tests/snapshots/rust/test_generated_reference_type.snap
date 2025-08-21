@@ -28,27 +28,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "source2",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 12,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "var7",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 27,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "source2",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 37,
-            end_line: 1,
-            end_column: 44,
+            position: Position {
+                start_line: 1,
+                start_column: 37,
+                end_line: 1,
+                end_column: 44,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

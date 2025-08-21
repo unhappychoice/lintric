@@ -24,27 +24,36 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "a",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 9,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
         Definition {
             name: "b",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 12,
+            },
             definition_type: VariableDefinition,
-            scope: None,
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "array",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 16,
-            end_line: 1,
-            end_column: 21,
+            position: Position {
+                start_line: 1,
+                start_column: 16,
+                end_line: 1,
+                end_column: 21,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

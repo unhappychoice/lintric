@@ -24,41 +24,45 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "test_fn2(a1, b1)",
             kind: CallExpression,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 17,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 17,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "test_fn2",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 1,
-            end_line: 1,
-            end_column: 9,
+            position: Position {
+                start_line: 1,
+                start_column: 1,
+                end_line: 1,
+                end_column: 9,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "a1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 10,
-            end_line: 1,
-            end_column: 12,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 12,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "b1",
             kind: Identifier,
-            scope: None,
-            start_line: 1,
-            start_column: 14,
-            end_line: 1,
-            end_column: 16,
+            position: Position {
+                start_line: 1,
+                start_column: 14,
+                end_line: 1,
+                end_column: 16,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

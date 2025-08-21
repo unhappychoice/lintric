@@ -36,47 +36,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 8,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "test",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "Vec",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 15,
-            end_line: 1,
-            end_column: 18,
+            position: Position {
+                start_line: 1,
+                start_column: 15,
+                end_line: 1,
+                end_column: 18,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "IntoIterator",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 27,
-            end_line: 1,
-            end_column: 39,
+            position: Position {
+                start_line: 1,
+                start_column: 27,
+                end_line: 1,
+                end_column: 39,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Item",
             kind: TypeIdentifier,
-            scope: Some(
-                "test",
-            ),
-            start_line: 1,
-            start_column: 42,
-            end_line: 1,
-            end_column: 46,
+            position: Position {
+                start_line: 1,
+                start_column: 42,
+                end_line: 1,
+                end_column: 46,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

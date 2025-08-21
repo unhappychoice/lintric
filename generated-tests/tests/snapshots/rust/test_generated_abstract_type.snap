@@ -31,47 +31,46 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "test_fn",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 11,
+            },
             definition_type: FunctionDefinition,
-            scope: Some(
-                "test_fn",
-            ),
         },
     ],
     dependencies: [],
     usage: [
-        SerializableUsage {
+        Usage {
             name: "std",
             kind: Identifier,
-            scope: Some(
-                "test_fn",
-            ),
-            start_line: 1,
-            start_column: 22,
-            end_line: 1,
-            end_column: 25,
+            position: Position {
+                start_line: 1,
+                start_column: 22,
+                end_line: 1,
+                end_column: 25,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "fmt",
             kind: Identifier,
-            scope: Some(
-                "test_fn",
-            ),
-            start_line: 1,
-            start_column: 27,
-            end_line: 1,
-            end_column: 30,
+            position: Position {
+                start_line: 1,
+                start_column: 27,
+                end_line: 1,
+                end_column: 30,
+            },
         },
-        SerializableUsage {
+        Usage {
             name: "Debug",
             kind: TypeIdentifier,
-            scope: Some(
-                "test_fn",
-            ),
-            start_line: 1,
-            start_column: 32,
-            end_line: 1,
-            end_column: 37,
+            position: Position {
+                start_line: 1,
+                start_column: 32,
+                end_line: 1,
+                end_column: 37,
+            },
         },
     ],
     analysis_metadata: AnalysisMetadata {

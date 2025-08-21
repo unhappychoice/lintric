@@ -24,11 +24,13 @@ IntermediateRepresentation {
     definitions: [
         Definition {
             name: "TestStruct1",
-            line_number: 1,
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 19,
+            },
             definition_type: StructDefinition,
-            scope: Some(
-                "TestStruct1",
-            ),
         },
     ],
     dependencies: [],
