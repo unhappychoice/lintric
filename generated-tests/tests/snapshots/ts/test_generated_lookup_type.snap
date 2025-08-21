@@ -49,6 +49,12 @@ IntermediateRepresentation {
             scope: None,
         },
         Definition {
+            name: "key",
+            line_number: 1,
+            definition_type: PropertyDefinition,
+            scope: None,
+        },
+        Definition {
             name: "value14",
             line_number: 1,
             definition_type: VariableDefinition,

@@ -24,6 +24,18 @@ expression: out
       "scope": "Point"
     },
     {
+      "name": "x",
+      "line_number": 6,
+      "definition_type": "PropertyDefinition",
+      "scope": "Point"
+    },
+    {
+      "name": "y",
+      "line_number": 7,
+      "definition_type": "PropertyDefinition",
+      "scope": "Point"
+    },
+    {
       "name": "add",
       "line_number": 10,
       "definition_type": "FunctionDefinition",

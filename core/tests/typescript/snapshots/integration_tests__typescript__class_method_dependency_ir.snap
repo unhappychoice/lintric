@@ -14,7 +14,7 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
     {
       "name": "constructor",
       "line_number": 2,
-      "definition_type": "FunctionDefinition",
+      "definition_type": "MethodDefinition",
       "scope": "MyClass"
     },
     {
@@ -26,7 +26,7 @@ expression: "serde_json::to_string_pretty(&ir).unwrap()"
     {
       "name": "greet",
       "line_number": 3,
-      "definition_type": "FunctionDefinition",
+      "definition_type": "MethodDefinition",
       "scope": "MyClass"
     },
     {
