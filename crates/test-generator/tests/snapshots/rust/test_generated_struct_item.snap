@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -31,6 +31,16 @@ IntermediateRepresentation {
                 end_column: 19,
             },
             definition_type: StructDefinition,
+        },
+        Definition {
+            name: "field3",
+            position: Position {
+                start_line: 1,
+                start_column: 22,
+                end_line: 1,
+                end_column: 28,
+            },
+            definition_type: StructFieldDefinition,
         },
     ],
     dependencies: [],

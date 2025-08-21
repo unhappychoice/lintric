@@ -1,6 +1,7 @@
 ---
-source: core/tests/rust/mod.rs
-expression: "serde_json::to_string_pretty(&result).unwrap()"
+source: crates/core/tests/rust/mod.rs
+assertion_line: 50
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/struct_field_access_dependency.rs",
@@ -17,14 +18,15 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     },
     {
       "line_number": 4,
-      "total_dependencies": 1,
-      "dependency_distance_cost": 0.2,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.8,
       "depth": 2,
       "transitive_dependencies": 2,
       "dependent_lines": [
-        3
+        3,
+        1
       ]
     }
   ],
-  "overall_complexity_score": 5.66
+  "overall_complexity_score": 6.720000000000001
 }

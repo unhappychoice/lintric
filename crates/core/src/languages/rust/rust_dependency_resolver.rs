@@ -1,5 +1,5 @@
 use crate::dependency_resolver::DependencyResolver;
-use crate::models::{Definition, Dependency, Usage};
+use crate::models::{Definition, Dependency, Usage, UsageKind};
 use tree_sitter::Node;
 
 pub struct RustDependencyResolver;
@@ -37,6 +37,50 @@ impl DependencyResolver for RustDependencyResolver {
 
     fn resolve_single_dependency(
         &self,
+        source_code: &str,
+        root_node: Node,
+        usage_node: &Usage,
+        definitions: &[Definition],
+    ) -> Vec<Dependency> {
+        let mut dependencies = Vec::new();
+
+        match usage_node.kind {
+            UsageKind::FieldExpression => {
+                // Handle field access like p.x
+                dependencies.extend(self.resolve_field_access_dependency(
+                    source_code,
+                    root_node,
+                    usage_node,
+                    definitions,
+                ));
+            }
+            _ => {
+                // Simple name-based matching for other cases
+                if let Some(def) = definitions.iter().find(|d| d.name == usage_node.name) {
+                    let source_line = usage_node.position.line_number();
+                    let target_line = def.line_number();
+
+                    // Don't create self-referential dependencies
+                    if source_line != target_line {
+                        dependencies.push(Dependency {
+                            source_line,
+                            target_line,
+                            symbol: usage_node.name.clone(),
+                            dependency_type: self.get_dependency_type(usage_node),
+                            context: self.get_context(usage_node),
+                        });
+                    }
+                }
+            }
+        }
+
+        dependencies
+    }
+}
+
+impl RustDependencyResolver {
+    fn resolve_field_access_dependency(
+        &self,
         _source_code: &str,
         _root_node: Node,
         usage_node: &Usage,
@@ -44,19 +88,24 @@ impl DependencyResolver for RustDependencyResolver {
     ) -> Vec<Dependency> {
         let mut dependencies = Vec::new();
 
-        // Simple name-based matching for now
-        if let Some(def) = definitions.iter().find(|d| d.name == usage_node.name) {
-            let source_line = usage_node.position.line_number();
-            let target_line = def.line_number();
+        // The usage_node name is "p.x", extract field name from it
+        if let Some(dot_pos) = usage_node.name.rfind('.') {
+            let field_name = &usage_node.name[dot_pos + 1..];
 
-            // Don't create self-referential dependencies
-            if source_line != target_line {
+            // Look for struct field definition with this name
+            if let Some(field_def) = definitions.iter().find(|d| {
+                d.name == field_name
+                    && matches!(
+                        d.definition_type,
+                        crate::models::DefinitionType::StructFieldDefinition
+                    )
+            }) {
                 dependencies.push(Dependency {
-                    source_line,
-                    target_line,
-                    symbol: usage_node.name.clone(),
-                    dependency_type: self.get_dependency_type(usage_node),
-                    context: self.get_context(usage_node),
+                    source_line: usage_node.position.line_number(),
+                    target_line: field_def.line_number(),
+                    symbol: field_name.to_string(),
+                    dependency_type: crate::models::DependencyType::StructFieldAccess,
+                    context: Some("field_access".to_string()),
                 });
             }
         }
