@@ -1,13 +1,17 @@
-pub mod collectors;
+pub mod ast_formatter;
+pub mod definition_collectors;
+pub mod definition_context;
+pub mod dependency_resolver;
 pub mod file_parser;
+pub mod languages;
 pub mod metric_calculator;
 pub mod models;
-pub mod s_expression_formatter;
+pub mod usage_collector;
 
 use serde::Serialize;
 
-use collectors::collector_factory;
 use file_parser::FileParser;
+use languages::language_factory;
 use metric_calculator::calculate_metrics;
 pub use models::{AnalysisResult, IntermediateRepresentation, Language, LineMetrics};
 
@@ -87,19 +91,19 @@ fn _get_intermediate_representation(
     let total_lines = file_content.lines().count();
 
     let def_collector_instance =
-        collector_factory::get_definition_collector(language.clone(), file_content)?;
+        language_factory::get_definition_collector(language.clone(), file_content)?;
     let definitions = def_collector_instance
         .collect_definitions_from_root(tree.root_node())
         .map_err(|e| format!("Failed to collect definitions: {e}"))?;
 
     let usage_collector_instance =
-        collector_factory::get_usage_node_collector(language.clone(), file_content)
+        language_factory::get_usage_node_collector(language.clone(), file_content)
             .map_err(|e| format!("Failed to get usage node collector: {e}"))?;
     let usage_nodes = usage_collector_instance
         .collect_usage_nodes(tree.root_node(), file_content)
         .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
 
-    let dependency_resolver_instance = collector_factory::get_dependency_resolver(language.clone())
+    let dependency_resolver_instance = language_factory::get_dependency_resolver(language.clone())
         .map_err(|e| format!("Failed to get dependency resolver: {e}"))?;
     let dependencies = dependency_resolver_instance
         .resolve_dependencies(file_content, tree.root_node(), &usage_nodes, &definitions)

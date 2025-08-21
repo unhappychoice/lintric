@@ -1,22 +1,22 @@
-use crate::collectors::common::dependency_resolver::DependencyResolver;
+use crate::dependency_resolver::DependencyResolver;
 use crate::models::{Definition, Dependency, Usage};
 use tree_sitter::Node;
 
-pub struct RustDependencyResolver;
+pub struct TypescriptDependencyResolver;
 
-impl RustDependencyResolver {
+impl TypescriptDependencyResolver {
     pub fn new() -> Self {
         Self
     }
 }
 
-impl Default for RustDependencyResolver {
+impl Default for TypescriptDependencyResolver {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl DependencyResolver for RustDependencyResolver {
+impl DependencyResolver for TypescriptDependencyResolver {
     fn resolve_dependencies(
         &self,
         source_code: &str,

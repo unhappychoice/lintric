@@ -1,6 +1,6 @@
-use crate::collectors::common::definition_context::{DefinitionContextChecker, DefinitionPattern};
-use crate::collectors::common::usage_node_collector::UsageNodeCollector;
+use crate::definition_context::{DefinitionContextChecker, DefinitionPattern};
 use crate::models::{Usage, UsageKind};
+use crate::usage_collector::UsageCollector;
 use tree_sitter::Node;
 
 pub struct TypescriptUsageNodeCollector {
@@ -45,7 +45,7 @@ impl TypescriptUsageNodeCollector {
     }
 }
 
-impl UsageNodeCollector for TypescriptUsageNodeCollector {
+impl UsageCollector for TypescriptUsageNodeCollector {
     fn extract_node_if_usage(&self, node: Node, source_code: &str) -> Option<Usage> {
         let kind = match node.kind() {
             "identifier" => {

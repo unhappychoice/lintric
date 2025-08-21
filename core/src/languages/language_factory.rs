@@ -1,13 +1,13 @@
-use super::common::definition_collectors::DefinitionCollector;
-use super::common::dependency_resolver::DependencyResolver;
-use super::common::usage_node_collector::UsageNodeCollector;
 use super::rust::rust_definition_collector::RustDefinitionCollector;
 use super::rust::rust_dependency_resolver::RustDependencyResolver;
 use super::rust::rust_usage_node_collector::RustUsageNodeCollector;
 use super::typescript::typescript_definition_collector::TypescriptDefinitionCollector;
 use super::typescript::typescript_dependency_resolver::TypescriptDependencyResolver;
 use super::typescript::typescript_usage_node_collector::TypescriptUsageNodeCollector;
+use crate::definition_collectors::DefinitionCollector;
+use crate::dependency_resolver::DependencyResolver;
 use crate::models::Language;
+use crate::usage_collector::UsageCollector;
 
 pub fn get_definition_collector<'a>(
     language: Language,
@@ -24,7 +24,7 @@ pub fn get_definition_collector<'a>(
 pub fn get_usage_node_collector(
     language: Language,
     source_code: &str,
-) -> Result<Box<dyn UsageNodeCollector>, String> {
+) -> Result<Box<dyn UsageCollector>, String> {
     match language {
         Language::Rust => Ok(Box::new(RustUsageNodeCollector::new(source_code))),
         Language::TypeScript | Language::TSX => {

@@ -1,6 +1,4 @@
-use crate::collectors::common::definition_collectors::{
-    find_identifier_nodes_in_node, DefinitionCollector,
-};
+use crate::definition_collectors::{find_identifier_nodes_in_node, DefinitionCollector};
 use crate::models::{Definition, DefinitionType};
 use tree_sitter::Node;
 
