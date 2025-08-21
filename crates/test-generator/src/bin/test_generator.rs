@@ -1,4 +1,4 @@
-use lintric_generated_tests::{
+use lintric_test_generator::{
     language_plugin::{LanguagePlugin, LanguagePluginRegistry},
     plugins::{RustPlugin, TsxPlugin, TypeScriptPlugin},
     test_helpers::generate_helper_functions,

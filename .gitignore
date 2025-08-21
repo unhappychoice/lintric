@@ -6,6 +6,6 @@ target/
 .idea/
 
 # Custom
-/cli/tmp/
+tmp/
 .lintric/output/
 .claude/

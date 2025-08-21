@@ -1,9 +1,5 @@
 [workspace]
-members = [
-    "core",
-    "cli",
-    "generated-tests",
-]
+members = ["crates/core", "crates/cli", "crates/test-generator"]
 
 [package]
 name = "lintric-workspace"

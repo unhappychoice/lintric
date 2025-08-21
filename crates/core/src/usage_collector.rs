@@ -1,7 +1,7 @@
 use crate::models::Usage;
 use tree_sitter::Node;
 
-pub trait UsageNodeCollector: Send + Sync {
+pub trait UsageCollector: Send + Sync {
     fn collect_usage_nodes(&self, root: Node, source_code: &str) -> Result<Vec<Usage>, String> {
         let mut candidates = Vec::new();
         let mut stack: Vec<Node> = Vec::new();

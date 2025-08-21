@@ -1,11 +1,13 @@
+use crate::languages::rust::formatter as rust_formatter;
+use crate::languages::typescript::formatter as typescript_formatter;
 use crate::models::Language;
 
-pub struct SExpressionFormatter<'a> {
+pub struct AstFormatter<'a> {
     file_content: &'a str,
     language: Language,
 }
 
-impl<'a> SExpressionFormatter<'a> {
+impl<'a> AstFormatter<'a> {
     pub fn new(file_content: &'a str, language: Language) -> Self {
         Self {
             file_content,
@@ -88,54 +90,11 @@ impl<'a> SExpressionFormatter<'a> {
     }
 
     fn should_display_node_text(&self, node_kind: &str, text: &str) -> bool {
-        // Dispatch to language-specific logic
         match self.language {
-            Language::Rust => self.should_display_rust_node_text(node_kind, text),
-            Language::TypeScript => self.should_display_typescript_node_text(node_kind, text),
-            Language::TSX => self.should_display_tsx_node_text(node_kind, text),
+            Language::Rust => rust_formatter::should_display_node_text(node_kind, text),
+            Language::TypeScript => typescript_formatter::should_display_node_text(node_kind, text),
+            Language::TSX => typescript_formatter::should_display_tsx_node_text(node_kind, text),
         }
-    }
-
-    fn should_display_rust_node_text(&self, node_kind: &str, text: &str) -> bool {
-        matches!(
-            node_kind,
-            // Identifiers and names
-            "identifier" | "type_identifier" | "field_identifier" | 
-            "scoped_identifier" | "scoped_type_identifier" |
-            // Literals
-            "string_literal" | "raw_string_literal" | "integer_literal" | 
-            "float_literal" | "boolean_literal" | "char_literal" |
-            // Types
-            "primitive_type" |
-            // Keywords that might have text content
-            "self" | "super" | "crate"
-        ) && !text.trim().is_empty()
-    }
-
-    fn should_display_typescript_node_text(&self, node_kind: &str, text: &str) -> bool {
-        matches!(
-            node_kind,
-            // Identifiers and names
-            "identifier" | "type_identifier" | "property_identifier" | 
-            "shorthand_property_identifier" | "shorthand_property_identifier_pattern" |
-            // Literals
-            "string_literal" | "number" | "true" | "false" | "null" | "undefined" |
-            // Types
-            "predefined_type" |
-            // Keywords and modifiers
-            "this" | "super" | "accessibility_modifier" | "async" | "static" |
-            "readonly" | "abstract" | "const" | "let" | "var"
-        ) && !text.trim().is_empty()
-    }
-
-    fn should_display_tsx_node_text(&self, node_kind: &str, text: &str) -> bool {
-        // TSX inherits TypeScript behavior and adds JSX-specific nodes
-        self.should_display_typescript_node_text(node_kind, text)
-            || matches!(
-                node_kind,
-                // JSX-specific identifiers
-                "jsx_identifier" | "jsx_attribute_name" | "jsx_property_identifier"
-            ) && !text.trim().is_empty()
     }
 
     fn should_show_position_info(&self, _node_kind: &str) -> bool {

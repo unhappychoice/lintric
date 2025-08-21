@@ -32,7 +32,7 @@ pub trait LanguagePlugin {
         let input_path = base_path
             .parent()
             .unwrap()
-            .join("tmp/node_types")
+            .join("../tmp/node_types")
             .join(lang_info.folder_name)
             .join("node-types.json");
 

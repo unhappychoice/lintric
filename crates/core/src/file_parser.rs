@@ -2,8 +2,8 @@ use std::fs;
 use std::path::PathBuf;
 use tree_sitter::{Parser as TreeSitterParser, Tree};
 
+use crate::ast_formatter::AstFormatter;
 use crate::models::Language;
-use crate::s_expression_formatter::SExpressionFormatter;
 
 pub struct FileParser {
     file_content: String,
@@ -36,7 +36,7 @@ impl FileParser {
 
     pub fn parse_as_s_expression(&self) -> Result<String, String> {
         let tree = self.parse_file()?;
-        let formatter = SExpressionFormatter::new(&self.file_content, self.language.clone());
+        let formatter = AstFormatter::new(&self.file_content, self.language.clone());
         Ok(formatter.format_node(tree.root_node(), 0))
     }
 
