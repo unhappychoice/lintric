@@ -25,7 +25,7 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "{ key1: value22 }",
+            name: "value22",
             line_number: 1,
             definition_type: VariableDefinition,
             scope: None,

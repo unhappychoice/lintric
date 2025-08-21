@@ -65,14 +65,22 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
         node: Node<'a>,
         current_scope: &Option<String>,
     ) -> Vec<Definition> {
-        Definition::from_naming_node(
-            &node,
-            self.source_code,
-            DefinitionType::VariableDefinition,
-            current_scope.clone(),
-        )
-        .into_iter()
-        .collect()
+        // For variable_declarator, extract identifiers from patterns (array_pattern, object_pattern, etc.)
+        if let Some(name_node) = node.child_by_field_name("name") {
+            find_identifier_nodes_in_node(name_node)
+                .iter()
+                .map(|identifier_node| {
+                    Definition::new(
+                        identifier_node,
+                        self.source_code,
+                        DefinitionType::VariableDefinition,
+                        current_scope.clone(),
+                    )
+                })
+                .collect()
+        } else {
+            vec![]
+        }
     }
 
     fn collect_function_definitions(

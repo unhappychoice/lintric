@@ -25,7 +25,7 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "{ prop3 = defaultVal }",
+            name: "prop3",
             line_number: 1,
             definition_type: VariableDefinition,
             scope: None,
@@ -33,6 +33,15 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
+        SerializableUsage {
+            name: "defaultVal",
+            kind: Identifier,
+            scope: None,
+            start_line: 1,
+            start_column: 17,
+            end_line: 1,
+            end_column: 27,
+        },
         SerializableUsage {
             name: "obj2",
             kind: Identifier,

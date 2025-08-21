@@ -23,7 +23,13 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "[a, b]",
+            name: "a",
+            line_number: 1,
+            definition_type: VariableDefinition,
+            scope: None,
+        },
+        Definition {
+            name: "b",
             line_number: 1,
             definition_type: VariableDefinition,
             scope: None,

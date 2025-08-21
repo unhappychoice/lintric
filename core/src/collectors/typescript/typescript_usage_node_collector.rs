@@ -31,6 +31,20 @@ impl<'a> TypescriptUsageNodeCollector<'a> {
             definition_checker: DefinitionContextChecker::new(patterns),
         }
     }
+
+    fn is_default_value_in_assignment_pattern(&self, node: Node<'a>) -> bool {
+        // Check if this identifier is the default value (right side) in an assignment pattern
+        if let Some(parent) = node.parent() {
+            if parent.kind() == "object_assignment_pattern" || parent.kind() == "assignment_pattern"
+            {
+                // Check if this node is the right side (value field) of the assignment pattern
+                if let Some(right_node) = parent.child_by_field_name("right") {
+                    return node == right_node;
+                }
+            }
+        }
+        false
+    }
 }
 
 impl<'a> UsageNodeCollector<'a> for TypescriptUsageNodeCollector<'a> {
@@ -41,8 +55,12 @@ impl<'a> UsageNodeCollector<'a> for TypescriptUsageNodeCollector<'a> {
     ) -> Option<Usage<'a>> {
         let kind = match node.kind() {
             "identifier" => {
+                // Special case: default values in object assignment patterns are always usage
+                if self.is_default_value_in_assignment_pattern(node) {
+                    Some(UsageKind::Identifier)
+                }
                 // Only treat identifier as usage if it's not in a definition context
-                if self
+                else if self
                     .definition_checker
                     .is_identifier_in_definition_context(node)
                 {

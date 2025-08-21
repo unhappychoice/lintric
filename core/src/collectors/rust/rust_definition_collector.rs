@@ -30,6 +30,7 @@ impl<'a> DefinitionCollector<'a> for RustDefinitionCollector<'a> {
             "closure_expression" => self.collect_closure_definitions(node, current_scope),
             "const_item" | "static_item" => self.collect_variable_definitions(node, current_scope),
             "macro_definition" => self.collect_macro_definitions(node, current_scope),
+            "match_arm" => self.collect_match_pattern_definitions(node, current_scope),
             _ => Vec::new(),
         }
     }
@@ -397,6 +398,154 @@ impl<'a> RustDefinitionCollector<'a> {
         }
 
         definitions
+    }
+
+    fn collect_match_pattern_definitions(
+        &self,
+        node: Node<'a>,
+        current_scope: &Option<String>,
+    ) -> Vec<Definition> {
+        let mut definitions = vec![];
+
+        // Find pattern nodes in match_arm and extract identifiers bound in the pattern
+        if let Some(pattern_node) = node.child_by_field_name("pattern") {
+            self.extract_pattern_bindings(pattern_node)
+                .iter()
+                .for_each(|identifier_node| {
+                    definitions.push(Definition::new(
+                        identifier_node,
+                        self.source_code,
+                        DefinitionType::VariableDefinition,
+                        current_scope.clone(),
+                    ));
+                });
+        }
+
+        definitions
+    }
+
+    fn extract_pattern_bindings(&self, pattern_node: Node<'a>) -> Vec<Node<'a>> {
+        let mut bindings = vec![];
+        self.extract_pattern_bindings_recursive(pattern_node, &mut bindings);
+        bindings
+    }
+
+    fn extract_pattern_bindings_recursive(&self, node: Node<'a>, bindings: &mut Vec<Node<'a>>) {
+        match node.kind() {
+            // Simple identifier patterns (the variable being bound)
+            "identifier" => {
+                // Only add if this identifier is in a binding position, not a constructor position
+                if self.is_identifier_in_binding_position(node) {
+                    bindings.push(node);
+                }
+            }
+            // Match patterns: be conservative - only extract from complex patterns, not simple identifiers
+            "match_pattern" => {
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    // Only recurse into non-identifier children to avoid simple identifier patterns
+                    if child.kind() != "identifier" {
+                        self.extract_pattern_bindings_recursive(child, bindings);
+                    }
+                }
+            }
+            // Captured patterns: `var @ pattern` - the variable before @ is a binding
+            "captured_pattern" => {
+                // The first child is the binding variable name
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    if child.kind() == "identifier" {
+                        bindings.push(child);
+                        break; // Only take the first identifier (the binding name)
+                    }
+                }
+                // Continue with the pattern after @ but avoid extracting constructors
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    if child.kind() != "identifier" {
+                        self.extract_pattern_bindings_recursive(child, bindings);
+                    }
+                }
+            }
+            // Ref patterns: `ref var` or `ref mut var`
+            "ref_pattern" | "mut_pattern" => {
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    if child.kind() == "identifier" {
+                        bindings.push(child);
+                    } else {
+                        self.extract_pattern_bindings_recursive(child, bindings);
+                    }
+                }
+            }
+            // Tuple struct patterns: Skip the constructor name but extract bindings from parameters
+            "tuple_struct_pattern" => {
+                let mut cursor = node.walk();
+                let mut first_non_constructor_child = false;
+                for child in node.children(&mut cursor) {
+                    // Skip the first child entirely as it's always the constructor
+                    if !first_non_constructor_child {
+                        first_non_constructor_child = true;
+                        continue;
+                    }
+                    // Process all other children (parameters, patterns, etc.)
+                    self.extract_pattern_bindings_recursive(child, bindings);
+                }
+            }
+            // Scoped identifiers: These are paths/constructors, not bindings - skip completely
+            "scoped_identifier" | "generic_type" => {
+                // Don't recurse into these as they contain constructor/path names, not bindings
+            }
+            // Other patterns: recurse into children
+            "tuple_pattern" | "struct_pattern" | "slice_pattern" => {
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    self.extract_pattern_bindings_recursive(child, bindings);
+                }
+            }
+            // Wildcard and literal patterns don't bind variables
+            "_" | "literal_pattern" => {}
+            // For other patterns, recurse into children
+            _ => {
+                let mut cursor = node.walk();
+                for child in node.children(&mut cursor) {
+                    self.extract_pattern_bindings_recursive(child, bindings);
+                }
+            }
+        }
+    }
+
+    fn is_identifier_in_binding_position(&self, node: Node<'a>) -> bool {
+        // Check if this identifier is in a position where it binds a new variable
+        if let Some(parent) = node.parent() {
+            match parent.kind() {
+                // In captured_pattern, identifiers in name field are always bindings
+                "captured_pattern" => true,
+                // In tuple_struct_pattern, the first identifier is the constructor, others are bindings
+                "tuple_struct_pattern" => {
+                    // Check if this is the first child (constructor name)
+                    let mut cursor = parent.walk();
+                    if let Some(first_child) = parent.children(&mut cursor).next() {
+                        return node.id() != first_child.id();
+                    }
+                    false
+                }
+                // In struct patterns, field names are not bindings unless they're shorthand
+                "struct_pattern" => false,
+                // In scoped_identifier, identifiers are paths/names, not bindings
+                "scoped_identifier" => false,
+                // In generic_type, identifiers are type names, not bindings
+                "generic_type" => false,
+                // Simple patterns in match arms - be conservative and treat as usage, not definitions
+                // In Rust, distinguishing between variable bindings and value comparisons requires
+                // scope analysis, which is complex. For safety, treat simple identifiers as usage.
+                "match_pattern" => false,
+                // In most other contexts, identifier in patterns are bindings
+                _ => true,
+            }
+        } else {
+            true
+        }
     }
 }
 
