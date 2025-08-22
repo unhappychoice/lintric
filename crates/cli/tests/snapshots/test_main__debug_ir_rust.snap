@@ -312,21 +312,21 @@ expression: out
     },
     {
       "source_line": 27,
-      "target_line": 2,
+      "target_line": 26,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "variable_use"
     },
     {
       "source_line": 28,
-      "target_line": 3,
+      "target_line": 27,
       "symbol": "y",
       "dependency_type": "VariableUse",
       "context": "variable_use"
     },
     {
       "source_line": 28,
-      "target_line": 2,
+      "target_line": 26,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "variable_use"

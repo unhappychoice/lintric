@@ -119,22 +119,22 @@ expression: out
         {
           "line_number": 27,
           "total_dependencies": 1,
-          "dependency_distance_cost": 0.78125,
+          "dependency_distance_cost": 0.03125,
           "depth": 1,
           "transitive_dependencies": 1,
           "dependent_lines": [
-            2
+            26
           ]
         },
         {
           "line_number": 28,
           "total_dependencies": 2,
-          "dependency_distance_cost": 1.59375,
-          "depth": 1,
+          "dependency_distance_cost": 0.09375,
+          "depth": 2,
           "transitive_dependencies": 2,
           "dependent_lines": [
-            2,
-            3
+            26,
+            27
           ]
         },
         {
@@ -158,10 +158,10 @@ expression: out
           ]
         }
       ],
-      "overall_complexity_score": 51.403125
+      "overall_complexity_score": 52.178125
     }
   ],
   "total_files_analyzed": 1,
-  "total_overall_complexity_score": 51.403125,
-  "average_complexity_score": 51.403125
+  "total_overall_complexity_score": 52.178125,
+  "average_complexity_score": 52.178125
 }

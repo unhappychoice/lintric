@@ -1,0 +1,40 @@
+---
+source: crates/core/tests/rust/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
+---
+{
+  "file_path": "tests/rust/fixtures/forward_reference_scope.rs",
+  "line_metrics": [
+    {
+      "line_number": 8,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.029411764705882353,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        7
+      ]
+    },
+    {
+      "line_number": 14,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.058823529411764705,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        12
+      ]
+    },
+    {
+      "line_number": 24,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.14705882352941177,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        19
+      ]
+    }
+  ],
+  "overall_complexity_score": 6.623529411764706
+}

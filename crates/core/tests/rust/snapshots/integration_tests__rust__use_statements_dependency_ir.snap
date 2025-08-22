@@ -282,7 +282,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 9,
-            target_line: 1,
+            target_line: 8,
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
@@ -291,7 +291,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 10,
-            target_line: 1,
+            target_line: 8,
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
@@ -300,7 +300,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 13,
-            target_line: 2,
+            target_line: 7,
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
@@ -309,7 +309,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 14,
-            target_line: 3,
+            target_line: 8,
             symbol: "my_function",
             dependency_type: FunctionCall,
             context: Some(
@@ -318,7 +318,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 15,
-            target_line: 4,
+            target_line: 8,
             symbol: "MY_CONST",
             dependency_type: VariableUse,
             context: Some(
@@ -336,7 +336,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 16,
-            target_line: 2,
+            target_line: 7,
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
