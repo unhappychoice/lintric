@@ -7,6 +7,7 @@ pub mod file_parser;
 pub mod languages;
 pub mod metric_calculator;
 pub mod models;
+pub mod module_resolver;
 pub mod nested_scope_resolver;
 pub mod scope_aware_resolver;
 pub mod scope_builder;

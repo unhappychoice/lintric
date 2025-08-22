@@ -18,6 +18,7 @@ pub enum DefinitionType {
     MethodDefinition,
     StructFieldDefinition,
     ImportDefinition,
+    Module,
     Other(String),
 }
 
