@@ -23,7 +23,7 @@ fn main() {
     let result = analyze_content_with_scope_awareness(rust_code.to_string(), Language::Rust);
 
     assert!(result.is_ok());
-    let (_ir, _analysis_result, symbol_table) = result.unwrap();
+    let (_ir, _analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Verify we have a global scope
     assert!(symbol_table.scopes.get_scope(0).is_some());
@@ -72,7 +72,7 @@ function globalFunction() {
         analyze_content_with_scope_awareness(typescript_code.to_string(), Language::TypeScript);
 
     assert!(result.is_ok());
-    let (_ir, _analysis_result, symbol_table) = result.unwrap();
+    let (_ir, _analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Verify we have a global scope
     assert!(symbol_table.scopes.get_scope(0).is_some());
@@ -104,7 +104,7 @@ fn test_fallback_to_traditional_resolution() {
     let result = analyze_content_with_scope_awareness(simple_code.to_string(), Language::Rust);
 
     assert!(result.is_ok());
-    let (_ir, analysis_result, symbol_table) = result.unwrap();
+    let (_ir, analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Should always have at least a global scope
     assert!(symbol_table.scopes.get_scope(0).is_some());
@@ -132,7 +132,7 @@ fn outer() {
         analyze_content_with_scope_awareness(code_with_dependencies.to_string(), Language::Rust);
 
     assert!(result.is_ok());
-    let (ir, analysis_result, symbol_table) = result.unwrap();
+    let (ir, analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Should have found some dependencies
     assert!(ir.dependencies.len() > 0);
@@ -158,7 +158,7 @@ fn main() {
     let result = analyze_content_with_scope_awareness(code.to_string(), Language::Rust);
 
     assert!(result.is_ok());
-    let (_ir, _analysis_result, symbol_table) = result.unwrap();
+    let (_ir, _analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Should be able to look up symbols
     if let Some(global_scope) = symbol_table.scopes.get_scope(0) {
