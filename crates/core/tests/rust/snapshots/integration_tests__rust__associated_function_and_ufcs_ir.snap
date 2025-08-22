@@ -410,7 +410,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "MyStruct::new()",
+            name: "MyStruct::new",
             kind: CallExpression,
             position: Position {
                 start_line: 22,
@@ -440,7 +440,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "MyType::my_function()",
+            name: "MyType::my_function",
             kind: CallExpression,
             position: Position {
                 start_line: 23,
@@ -470,7 +470,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "<MyType as MyTrait>::my_function()",
+            name: "<MyType as MyTrait>::my_function",
             kind: CallExpression,
             position: Position {
                 start_line: 24,

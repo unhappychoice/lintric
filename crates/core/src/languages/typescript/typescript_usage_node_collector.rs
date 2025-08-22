@@ -17,6 +17,10 @@ impl TypescriptUsageNodeCollector {
             // Type parameters
             DefinitionPattern::with_any_field("type_parameters"),
             DefinitionPattern::with_any_field("type_parameter"),
+            // Import declarations
+            DefinitionPattern::new("import_specifier", "name"),
+            DefinitionPattern::new("namespace_import", "name"),
+            DefinitionPattern::new("import_clause", "name"),
             // Named declarations
             DefinitionPattern::new("function_declaration", "name"),
             DefinitionPattern::new("class_declaration", "name"),
@@ -43,6 +47,23 @@ impl TypescriptUsageNodeCollector {
         }
         false
     }
+
+    fn is_identifier_in_call_expression(&self, node: Node) -> bool {
+        let mut current = node.parent();
+        while let Some(parent) = current {
+            match parent.kind() {
+                "call_expression" => {
+                    // Check if this identifier is the function name (first child of call_expression)
+                    if let Some(function_node) = parent.child(0) {
+                        return function_node.id() == node.id();
+                    }
+                    return false;
+                }
+                _ => current = parent.parent(),
+            }
+        }
+        false
+    }
 }
 
 impl UsageCollector for TypescriptUsageNodeCollector {
@@ -54,9 +75,11 @@ impl UsageCollector for TypescriptUsageNodeCollector {
                     Some(UsageKind::Identifier)
                 }
                 // Only treat identifier as usage if it's not in a definition context
+                // and not inside a call_expression
                 else if self
                     .definition_checker
                     .is_identifier_in_definition_context(node)
+                    || self.is_identifier_in_call_expression(node)
                 {
                     None
                 } else {
@@ -74,7 +97,10 @@ impl UsageCollector for TypescriptUsageNodeCollector {
                     Some(UsageKind::TypeIdentifier)
                 }
             }
-            "call_expression" => Some(UsageKind::CallExpression),
+            "call_expression" => {
+                // Use special handling for call expressions to extract function name
+                return Some(Usage::new_call_expression(&node, source_code));
+            }
             "property_identifier" => Some(UsageKind::FieldExpression),
             _ => None,
         };

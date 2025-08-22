@@ -1,5 +1,5 @@
 ---
-source: cli/tests/test_main.rs
+source: crates/cli/tests/test_main.rs
 expression: out
 ---
 {
@@ -298,8 +298,8 @@ expression: out
       "source_line": 20,
       "target_line": 10,
       "symbol": "add",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
     },
     {
       "source_line": 20,
@@ -340,8 +340,8 @@ expression: out
       "source_line": 21,
       "target_line": 10,
       "symbol": "add",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
     },
     {
       "source_line": 21,
@@ -464,16 +464,6 @@ expression: out
     }
   ],
   "usage": [
-    {
-      "name": "SomeClass",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 1,
-        "start_column": 10,
-        "end_line": 1,
-        "end_column": 19
-      }
-    },
     {
       "name": "Utils",
       "kind": "Identifier",
@@ -625,23 +615,13 @@ expression: out
       }
     },
     {
-      "name": "add(p1.x, p2.x)",
+      "name": "add",
       "kind": "CallExpression",
       "position": {
         "start_line": 20,
         "start_column": 12,
         "end_line": 20,
         "end_column": 27
-      }
-    },
-    {
-      "name": "add",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 20,
-        "start_column": 12,
-        "end_line": 20,
-        "end_column": 15
       }
     },
     {
@@ -695,23 +675,13 @@ expression: out
       }
     },
     {
-      "name": "add(p1.y, p2.y)",
+      "name": "add",
       "kind": "CallExpression",
       "position": {
         "start_line": 21,
         "start_column": 12,
         "end_line": 21,
         "end_column": 27
-      }
-    },
-    {
-      "name": "add",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 21,
-        "start_column": 12,
-        "end_line": 21,
-        "end_column": 15
       }
     },
     {
@@ -755,7 +725,7 @@ expression: out
       }
     },
     {
-      "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })()",
+      "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })",
       "kind": "CallExpression",
       "position": {
         "start_line": 24,
@@ -845,7 +815,7 @@ expression: out
       }
     },
     {
-      "name": "console.log(p3)",
+      "name": "console.log",
       "kind": "CallExpression",
       "position": {
         "start_line": 34,
@@ -885,7 +855,7 @@ expression: out
       }
     },
     {
-      "name": "console.log(p4)",
+      "name": "console.log",
       "kind": "CallExpression",
       "position": {
         "start_line": 35,
@@ -935,7 +905,7 @@ expression: out
       }
     },
     {
-      "name": "Utils.helperFunction()",
+      "name": "Utils.helperFunction",
       "kind": "CallExpression",
       "position": {
         "start_line": 39,
@@ -965,7 +935,7 @@ expression: out
       }
     },
     {
-      "name": "DefaultExport.init()",
+      "name": "DefaultExport.init",
       "kind": "CallExpression",
       "position": {
         "start_line": 40,
@@ -995,7 +965,7 @@ expression: out
       }
     },
     {
-      "name": "console.log(instance, result)",
+      "name": "console.log",
       "kind": "CallExpression",
       "position": {
         "start_line": 43,

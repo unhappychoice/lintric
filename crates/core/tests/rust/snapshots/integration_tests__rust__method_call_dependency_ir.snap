@@ -1,6 +1,5 @@
 ---
 source: crates/core/tests/rust/mod.rs
-assertion_line: 99
 expression: ir_snapshot_content
 ---
 Source Code:
@@ -225,7 +224,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "s.my_method()",
+            name: "s.my_method",
             kind: CallExpression,
             position: Position {
                 start_line: 13,

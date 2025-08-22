@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -56,7 +56,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "\"test\".to_string()",
+            name: "\"test\".to_string",
             kind: CallExpression,
             position: Position {
                 start_line: 1,

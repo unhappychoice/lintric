@@ -107,15 +107,6 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 6,
-            target_line: 2,
-            symbol: "add_one",
-            dependency_type: VariableUse,
-            context: Some(
-                "variable_use",
-            ),
-        },
-        Dependency {
-            source_line: 6,
             target_line: 5,
             symbol: "y",
             dependency_type: VariableUse,
@@ -136,23 +127,13 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "add_one(y)",
+            name: "add_one",
             kind: CallExpression,
             position: Position {
                 start_line: 6,
                 start_column: 5,
                 end_line: 6,
                 end_column: 15,
-            },
-        },
-        Usage {
-            name: "add_one",
-            kind: Identifier,
-            position: Position {
-                start_line: 6,
-                start_column: 5,
-                end_line: 6,
-                end_column: 12,
             },
         },
         Usage {

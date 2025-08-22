@@ -316,23 +316,13 @@ IntermediateRepresentation {
     ],
     usage: [
         Usage {
-            name: "Some(10)",
+            name: "Some",
             kind: CallExpression,
             position: Position {
                 start_line: 2,
                 start_column: 24,
                 end_line: 2,
                 end_column: 32,
-            },
-        },
-        Usage {
-            name: "Some",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 24,
-                end_line: 2,
-                end_column: 28,
             },
         },
         Usage {
@@ -426,23 +416,13 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "Some(5)",
+            name: "Some",
             kind: CallExpression,
             position: Position {
                 start_line: 12,
                 start_column: 20,
                 end_line: 12,
                 end_column: 27,
-            },
-        },
-        Usage {
-            name: "Some",
-            kind: Identifier,
-            position: Position {
-                start_line: 12,
-                start_column: 20,
-                end_line: 12,
-                end_column: 24,
             },
         },
         Usage {
@@ -516,23 +496,13 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "Some(i - 1)",
+            name: "Some",
             kind: CallExpression,
             position: Position {
                 start_line: 15,
                 start_column: 27,
                 end_line: 15,
                 end_column: 38,
-            },
-        },
-        Usage {
-            name: "Some",
-            kind: Identifier,
-            position: Position {
-                start_line: 15,
-                start_column: 27,
-                end_line: 15,
-                end_column: 31,
             },
         },
         Usage {

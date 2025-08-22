@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/typescript.rs
+source: crates/test-generator/tests/typescript.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -56,23 +56,13 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage {
-            name: "riskyOperation()",
+            name: "riskyOperation",
             kind: CallExpression,
             position: Position {
                 start_line: 1,
                 start_column: 23,
                 end_line: 1,
                 end_column: 39,
-            },
-        },
-        Usage {
-            name: "riskyOperation",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 37,
             },
         },
         Usage {
@@ -86,7 +76,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "console.log(error1)",
+            name: "console.log",
             kind: CallExpression,
             position: Position {
                 start_line: 1,

@@ -128,9 +128,9 @@ IntermediateRepresentation {
             source_line: 5,
             target_line: 1,
             symbol: "add",
-            dependency_type: VariableUse,
+            dependency_type: FunctionCall,
             context: Some(
-                "variable_use",
+                "call_expression",
             ),
         },
     ],
@@ -156,23 +156,13 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "add(1, 2)",
+            name: "add",
             kind: CallExpression,
             position: Position {
                 start_line: 5,
                 start_column: 13,
                 end_line: 5,
                 end_column: 22,
-            },
-        },
-        Usage {
-            name: "add",
-            kind: Identifier,
-            position: Position {
-                start_line: 5,
-                start_column: 13,
-                end_line: 5,
-                end_column: 16,
             },
         },
     ],

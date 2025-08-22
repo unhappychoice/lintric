@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/tsx.rs
+source: crates/test-generator/tests/tsx.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -69,7 +69,7 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage {
-            name: "x.toString()",
+            name: "x.toString",
             kind: CallExpression,
             position: Position {
                 start_line: 1,
