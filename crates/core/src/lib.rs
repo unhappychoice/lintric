@@ -1,3 +1,4 @@
+pub mod advanced_shadowing_system;
 pub mod ast_formatter;
 pub mod definition_collectors;
 pub mod definition_context;
@@ -7,9 +8,13 @@ pub mod languages;
 pub mod metric_calculator;
 pub mod models;
 pub mod nested_scope_resolver;
+pub mod optimized_shadowing_resolver;
 pub mod scope_aware_resolver;
+pub mod scope_aware_symbol_lookup;
 pub mod scope_builder;
 pub mod scope_integration;
+pub mod shadowing_aware_dependency_resolver;
+pub mod shadowing_resolver;
 pub mod usage_collector;
 
 use serde::Serialize;
