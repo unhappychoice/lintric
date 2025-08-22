@@ -2,6 +2,7 @@ pub mod ast_formatter;
 pub mod definition_collectors;
 pub mod definition_context;
 pub mod dependency_resolver;
+pub mod enhanced_dependency_resolver;
 pub mod file_parser;
 pub mod languages;
 pub mod metric_calculator;
@@ -14,6 +15,10 @@ pub mod usage_collector;
 
 use serde::Serialize;
 
+use dependency_resolver::DependencyResolver;
+pub use enhanced_dependency_resolver::{
+    EnhancedDependencyResolver, ResolutionCandidate, ShadowingWarning,
+};
 use file_parser::FileParser;
 use languages::language_factory;
 use metric_calculator::calculate_metrics;
@@ -92,7 +97,15 @@ pub fn get_s_expression_from_content(
 
 pub fn analyze_with_scope_awareness(
     file_path: String,
-) -> Result<(IntermediateRepresentation, AnalysisResult, SymbolTable), String> {
+) -> Result<
+    (
+        IntermediateRepresentation,
+        AnalysisResult,
+        SymbolTable,
+        Vec<ShadowingWarning>,
+    ),
+    String,
+> {
     let file_parser = FileParser::new(file_path.clone())?;
     let (file_content, language, tree) = file_parser.parse()?;
 
@@ -113,12 +126,30 @@ pub fn analyze_with_scope_awareness(
         .collect_usage_nodes(tree.root_node(), &file_content)
         .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
 
-    let (symbol_table, dependencies) = scope_resolver.analyze_with_scope_awareness(
+    let (symbol_table, _) = scope_resolver.analyze_with_scope_awareness(
         &file_content,
         tree.root_node(),
         &usage_nodes,
         &definitions,
     )?;
+
+    // Create enhanced resolver with all integrated functionality
+    let enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
+        symbol_table.clone(),
+        language.to_string(),
+    );
+
+    // Resolve dependencies with enhanced capabilities
+    let dependencies = enhanced_resolver
+        .resolve_dependencies(&file_content, tree.root_node(), &usage_nodes, &definitions)
+        .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
+
+    // Check for shadowing conflicts across all scopes
+    let mut all_warnings = Vec::new();
+    for scope_id in symbol_table.scopes.scopes.keys() {
+        let warnings = enhanced_resolver.check_shadowing_conflicts(*scope_id);
+        all_warnings.extend(warnings);
+    }
 
     let total_lines = file_content.lines().count();
     let ir = IntermediateRepresentation::new(
@@ -135,13 +166,21 @@ pub fn analyze_with_scope_awareness(
         .line_metrics
         .retain(|line_metrics| line_metrics.total_dependencies > 0);
 
-    Ok((ir, result, symbol_table))
+    Ok((ir, result, symbol_table, all_warnings))
 }
 
 pub fn analyze_content_with_scope_awareness(
     content: String,
     language: Language,
-) -> Result<(IntermediateRepresentation, AnalysisResult, SymbolTable), String> {
+) -> Result<
+    (
+        IntermediateRepresentation,
+        AnalysisResult,
+        SymbolTable,
+        Vec<ShadowingWarning>,
+    ),
+    String,
+> {
     let file_parser = FileParser::from_content(content.clone(), language);
     let (file_content, language, tree) = file_parser.parse()?;
 
@@ -162,12 +201,30 @@ pub fn analyze_content_with_scope_awareness(
         .collect_usage_nodes(tree.root_node(), &file_content)
         .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
 
-    let (symbol_table, dependencies) = scope_resolver.analyze_with_scope_awareness(
+    let (symbol_table, _) = scope_resolver.analyze_with_scope_awareness(
         &file_content,
         tree.root_node(),
         &usage_nodes,
         &definitions,
     )?;
+
+    // Create enhanced resolver with all integrated functionality
+    let enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
+        symbol_table.clone(),
+        language.to_string(),
+    );
+
+    // Resolve dependencies with enhanced capabilities
+    let dependencies = enhanced_resolver
+        .resolve_dependencies(&file_content, tree.root_node(), &usage_nodes, &definitions)
+        .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
+
+    // Check for shadowing conflicts across all scopes
+    let mut all_warnings = Vec::new();
+    for scope_id in symbol_table.scopes.scopes.keys() {
+        let warnings = enhanced_resolver.check_shadowing_conflicts(*scope_id);
+        all_warnings.extend(warnings);
+    }
 
     let total_lines = file_content.lines().count();
     let ir = IntermediateRepresentation::new(
@@ -184,7 +241,7 @@ pub fn analyze_content_with_scope_awareness(
         .line_metrics
         .retain(|line_metrics| line_metrics.total_dependencies > 0);
 
-    Ok((ir, result, symbol_table))
+    Ok((ir, result, symbol_table, all_warnings))
 }
 
 fn _get_intermediate_representation(

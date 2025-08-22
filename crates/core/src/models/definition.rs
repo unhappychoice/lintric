@@ -21,7 +21,7 @@ pub enum DefinitionType {
     Other(String),
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
 pub struct Definition {
     pub name: String,
     pub position: Position,
