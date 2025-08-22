@@ -26,6 +26,7 @@ pub trait DependencyResolver: Send + Sync {
             UsageKind::FieldExpression => DependencyType::StructFieldAccess,
             UsageKind::StructExpression => DependencyType::TypeReference,
             UsageKind::Metavariable => DependencyType::MacroVariable,
+            UsageKind::Read => DependencyType::VariableUse,
         }
     }
 
@@ -37,6 +38,7 @@ pub trait DependencyResolver: Send + Sync {
             UsageKind::Metavariable => Some("metavariable_use".to_string()),
             UsageKind::TypeIdentifier => Some("type_reference".to_string()),
             UsageKind::Identifier => Some("variable_use".to_string()),
+            UsageKind::Read => Some("variable_read".to_string()),
         }
     }
 }
