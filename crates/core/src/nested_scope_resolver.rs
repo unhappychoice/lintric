@@ -479,8 +479,8 @@ mod tests {
         let mut analyzer = ClosureAnalyzer::new();
         let scope_tree = create_test_scope_tree();
 
-        let captures = analyzer.analyze_closure_captures(2, &scope_tree); // inner_func_scope
-                                                                          // This test would be more meaningful with actual closure detection logic
-        assert!(captures.len() >= 0);
+        let _captures = analyzer.analyze_closure_captures(2, &scope_tree); // inner_func_scope
+                                                                           // This test would be more meaningful with actual closure detection logic
+                                                                           // Captures should always be a valid vector
     }
 }

@@ -281,13 +281,12 @@ mod tests {
         );
 
         assert!(result.is_ok());
-        let (symbol_table, dependencies) = result.unwrap();
+        let (symbol_table, _dependencies) = result.unwrap();
 
         // Should have a symbol table (even if basic)
         assert!(symbol_table.scopes.get_scope(0).is_some());
 
         // Dependencies result is acceptable (could be empty in fallback)
-        assert!(dependencies.len() >= 0);
     }
 
     #[test]

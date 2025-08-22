@@ -228,14 +228,11 @@ fn main() {
             end_column: 23,
         };
         if let Some(closure_scope_id) = scope_tree.find_scope_at_position(&closure_position) {
-            let captures = analyzer.analyze_closure_captures(closure_scope_id, &scope_tree);
+            let _captures = analyzer.analyze_closure_captures(closure_scope_id, &scope_tree);
 
             // Should detect capture of 'captured' variable
             // Note: This requires proper symbol table population to work fully
-            assert!(
-                captures.len() >= 0,
-                "Closure capture analysis should complete"
-            );
+            // Closure capture analysis should complete successfully
         }
     }
 
@@ -277,13 +274,10 @@ fn complex_nesting() {
 
         // Test complex nesting analysis
         let root_scope = 0; // Global scope
-        let all_captures = resolver.analyze_complex_nesting(root_scope);
+        let _all_captures = resolver.analyze_complex_nesting(root_scope);
 
         // Should have analyzed all nested scopes
-        assert!(
-            all_captures.len() >= 0,
-            "Complex nesting analysis should complete"
-        );
+        // Complex nesting analysis should complete successfully
 
         // Test accessibility validation
         let level_1_usage = Usage::new_simple(
@@ -579,11 +573,8 @@ fn factorial(n: u32) -> u32 {
             UsageKind::Read,
         );
 
-        let results = resolver.resolve_nested_access(&factorial_usage);
+        let _results = resolver.resolve_nested_access(&factorial_usage);
         // Should be able to resolve recursive call
-        assert!(
-            results.len() >= 0,
-            "Recursive function resolution should complete"
-        );
+        // Recursive function resolution should complete successfully
     }
 }

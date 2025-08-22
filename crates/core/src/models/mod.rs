@@ -6,6 +6,7 @@ pub mod metrics;
 pub mod module;
 pub mod position;
 pub mod scope;
+pub mod type_system;
 pub mod usage;
 
 // Re-export all public types for convenient access
@@ -17,4 +18,5 @@ pub use metrics::{AnalysisResult, LineMetrics, OverallAnalysisReport};
 pub use module::{ImportInfo, ImportType, Module, ModuleId, ModuleTree, Visibility};
 pub use position::Position;
 pub use scope::{Accessibility, Scope, ScopeId, ScopeTree, ScopeType, SymbolEntry, SymbolTable};
+pub use type_system::{InferenceContext, Type};
 pub use usage::{Usage, UsageKind};

@@ -104,13 +104,12 @@ fn test_fallback_to_traditional_resolution() {
     let result = analyze_content_with_scope_awareness(simple_code.to_string(), Language::Rust);
 
     assert!(result.is_ok());
-    let (_ir, analysis_result, symbol_table, _warnings) = result.unwrap();
+    let (_ir, _analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Should always have at least a global scope
     assert!(symbol_table.scopes.get_scope(0).is_some());
 
     // Analysis result should be valid (even if dependencies are empty)
-    assert!(analysis_result.line_metrics.len() >= 0);
 }
 
 #[test]
