@@ -54,6 +54,15 @@ impl DependencyResolver for RustDependencyResolver {
                     definitions,
                 ));
             }
+            UsageKind::CallExpression => {
+                // Handle call expressions like add(1, 2)
+                dependencies.extend(self.resolve_call_expression_dependency(
+                    source_code,
+                    root_node,
+                    usage_node,
+                    definitions,
+                ));
+            }
             _ => {
                 // Simple name-based matching for other cases
                 if let Some(def) = definitions.iter().find(|d| d.name == usage_node.name) {
@@ -79,6 +88,45 @@ impl DependencyResolver for RustDependencyResolver {
 }
 
 impl RustDependencyResolver {
+    fn resolve_call_expression_dependency(
+        &self,
+        _source_code: &str,
+        _root_node: Node,
+        usage_node: &Usage,
+        definitions: &[Definition],
+    ) -> Vec<Dependency> {
+        let mut dependencies = Vec::new();
+
+        // The usage_node.name should now contain only the function name (extracted during usage collection)
+        let function_name = &usage_node.name;
+
+        // Look for function definition or import with this name
+        if let Some(function_def) = definitions.iter().find(|d| {
+            d.name == *function_name
+                && matches!(
+                    d.definition_type,
+                    crate::models::DefinitionType::FunctionDefinition
+                        | crate::models::DefinitionType::ImportDefinition
+                )
+        }) {
+            let source_line = usage_node.position.line_number();
+            let target_line = function_def.line_number();
+
+            // Don't create self-referential dependencies
+            if source_line != target_line {
+                dependencies.push(Dependency {
+                    source_line,
+                    target_line,
+                    symbol: function_name.to_string(),
+                    dependency_type: self.get_dependency_type(usage_node),
+                    context: self.get_context(usage_node),
+                });
+            }
+        }
+
+        dependencies
+    }
+
     fn resolve_field_access_dependency(
         &self,
         _source_code: &str,

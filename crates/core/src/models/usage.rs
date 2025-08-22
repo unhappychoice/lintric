@@ -33,4 +33,27 @@ impl Usage {
             position: Position::from_node(node),
         }
     }
+
+    pub fn new_call_expression(node: &Node, source_code: &str) -> Self {
+        // Extract function name from call_expression by getting the first child (function)
+        let function_name = if let Some(function_node) = node.child(0) {
+            function_node
+                .utf8_text(source_code.as_bytes())
+                .unwrap_or("")
+                .trim()
+                .replace("\r\n", "\n")
+        } else {
+            // Fallback to full text if we can't get the function child
+            node.utf8_text(source_code.as_bytes())
+                .unwrap_or("")
+                .trim()
+                .replace("\r\n", "\n")
+        };
+
+        Usage {
+            name: function_name,
+            kind: UsageKind::CallExpression,
+            position: Position::from_node(node),
+        }
+    }
 }

@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/tsx.rs
+source: crates/test-generator/tests/tsx.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -25,23 +25,13 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage {
-            name: "testFn(a2, b2)",
+            name: "testFn",
             kind: CallExpression,
             position: Position {
                 start_line: 1,
                 start_column: 1,
                 end_line: 1,
                 end_column: 15,
-            },
-        },
-        Usage {
-            name: "testFn",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 7,
             },
         },
         Usage {

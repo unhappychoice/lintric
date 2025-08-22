@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/typescript.rs
+source: crates/test-generator/tests/typescript.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -53,7 +53,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "console.log(key)",
+            name: "console.log",
             kind: CallExpression,
             position: Position {
                 start_line: 1,

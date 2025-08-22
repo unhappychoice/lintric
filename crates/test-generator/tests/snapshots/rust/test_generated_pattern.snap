@@ -1,17 +1,34 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-Some(x)
+match option {
+    Some(x) => x,
+    None => 0,
+}
 
 AST:
 (source_file
-  (ERROR
-    (call_expression
-      function: (identifier "Some")
-      arguments: (arguments
-        (identifier "x")
+  (expression_statement
+    (match_expression
+      value: (identifier "option")
+      body: (match_block
+        (match_arm
+          pattern: (match_pattern
+            (tuple_struct_pattern
+              type: (identifier "Some")
+              (identifier "x")
+            )
+          )
+          value: (identifier "x")
+        )
+        (match_arm
+          pattern: (match_pattern
+            (identifier "None")
+          )
+          value: (integer_literal "0")
+        )
       )
     )
   )
@@ -20,43 +37,74 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition {
+            name: "x",
+            position: Position {
+                start_line: 2,
+                start_column: 10,
+                end_line: 2,
+                end_column: 11,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
     dependencies: [],
     usage: [
         Usage {
-            name: "Some(x)",
-            kind: CallExpression,
+            name: "option",
+            kind: Identifier,
             position: Position {
                 start_line: 1,
-                start_column: 1,
+                start_column: 7,
                 end_line: 1,
-                end_column: 8,
+                end_column: 13,
             },
         },
         Usage {
             name: "Some",
             kind: Identifier,
             position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 5,
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 9,
             },
         },
         Usage {
             name: "x",
             kind: Identifier,
             position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 7,
+                start_line: 2,
+                start_column: 10,
+                end_line: 2,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "x",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 16,
+                end_line: 2,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "None",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 5,
+                end_line: 3,
+                end_column: 9,
             },
         },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
-        total_lines: 1,
+        total_lines: 4,
         analysis_timestamp: "now",
         lintric_version: "0.1.0",
     },

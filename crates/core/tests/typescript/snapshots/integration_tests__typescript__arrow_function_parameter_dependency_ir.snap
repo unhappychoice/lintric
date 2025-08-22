@@ -77,7 +77,7 @@ IntermediateRepresentation {
     ],
     usage: [
         Usage {
-            name: "console.log(b)",
+            name: "console.log",
             kind: CallExpression,
             position: Position {
                 start_line: 2,

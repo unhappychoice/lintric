@@ -329,7 +329,10 @@ fn test_generated_literal_pattern() {
 
 #[test]
 fn test_generated_pattern() {
-    let source_code = r#"Some(x)"#;
+    let source_code = r#"match option {
+    Some(x) => x,
+    None => 0,
+}"#;
 
     assert_code_analysis_and_snapshot(
         source_code,

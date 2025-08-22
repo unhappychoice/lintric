@@ -1,6 +1,6 @@
 ---
-source: core/tests/rust/mod.rs
-expression: "serde_json::to_string_pretty(&result).unwrap()"
+source: crates/core/tests/rust/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/closure_dependency.rs",
@@ -17,15 +17,14 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     },
     {
       "line_number": 6,
-      "total_dependencies": 2,
-      "dependency_distance_cost": 0.7142857142857142,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.14285714285714285,
       "depth": 1,
-      "transitive_dependencies": 2,
+      "transitive_dependencies": 1,
       "dependent_lines": [
-        5,
-        2
+        5
       ]
     }
   ],
-  "overall_complexity_score": 5.685714285714286
+  "overall_complexity_score": 4.428571428571429
 }

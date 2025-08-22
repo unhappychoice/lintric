@@ -223,8 +223,8 @@ expression: out
       "source_line": 16,
       "target_line": 6,
       "symbol": "add",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
     },
     {
       "source_line": 16,
@@ -258,8 +258,8 @@ expression: out
       "source_line": 17,
       "target_line": 6,
       "symbol": "add",
-      "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "dependency_type": "FunctionCall",
+      "context": "call_expression"
     },
     {
       "source_line": 17,
@@ -438,23 +438,13 @@ expression: out
       }
     },
     {
-      "name": "add(p1.x, p2.x)",
+      "name": "add",
       "kind": "CallExpression",
       "position": {
         "start_line": 16,
         "start_column": 12,
         "end_line": 16,
         "end_column": 27
-      }
-    },
-    {
-      "name": "add",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 16,
-        "start_column": 12,
-        "end_line": 16,
-        "end_column": 15
       }
     },
     {
@@ -498,23 +488,13 @@ expression: out
       }
     },
     {
-      "name": "add(p1.y, p2.y)",
+      "name": "add",
       "kind": "CallExpression",
       "position": {
         "start_line": 17,
         "start_column": 12,
         "end_line": 17,
         "end_column": 27
-      }
-    },
-    {
-      "name": "add",
-      "kind": "Identifier",
-      "position": {
-        "start_line": 17,
-        "start_column": 12,
-        "end_line": 17,
-        "end_column": 15
       }
     },
     {

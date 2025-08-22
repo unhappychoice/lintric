@@ -311,9 +311,9 @@ IntermediateRepresentation {
             source_line: 14,
             target_line: 3,
             symbol: "my_function",
-            dependency_type: VariableUse,
+            dependency_type: FunctionCall,
             context: Some(
-                "variable_use",
+                "call_expression",
             ),
         },
         Dependency {
@@ -436,23 +436,13 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "my_function()",
+            name: "my_function",
             kind: CallExpression,
             position: Position {
                 start_line: 14,
                 start_column: 5,
                 end_line: 14,
                 end_column: 18,
-            },
-        },
-        Usage {
-            name: "my_function",
-            kind: Identifier,
-            position: Position {
-                start_line: 14,
-                start_column: 5,
-                end_line: 14,
-                end_column: 16,
             },
         },
         Usage {

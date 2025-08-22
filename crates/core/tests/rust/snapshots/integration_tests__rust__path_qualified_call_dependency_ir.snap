@@ -78,7 +78,7 @@ IntermediateRepresentation {
     ],
     usage: [
         Usage {
-            name: "m::f()",
+            name: "m::f",
             kind: CallExpression,
             position: Position {
                 start_line: 2,

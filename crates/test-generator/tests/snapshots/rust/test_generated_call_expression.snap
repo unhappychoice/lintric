@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -25,23 +25,13 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage {
-            name: "test_fn2(a1, b1)",
+            name: "test_fn2",
             kind: CallExpression,
             position: Position {
                 start_line: 1,
                 start_column: 1,
                 end_line: 1,
                 end_column: 17,
-            },
-        },
-        Usage {
-            name: "test_fn2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 9,
             },
         },
         Usage {
