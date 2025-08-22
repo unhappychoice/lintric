@@ -5,6 +5,7 @@ use crate::models::{
 use tree_sitter::Node;
 
 pub struct TypeScriptEnhancedResolver {
+    #[allow(dead_code)]
     symbol_table: SymbolTable,
 }
 

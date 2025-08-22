@@ -10,6 +10,7 @@ use crate::models::{
 use tree_sitter::Node;
 
 pub struct RustEnhancedResolver {
+    #[allow(dead_code)]
     symbol_table: SymbolTable,
     generic_type_resolver: GenericTypeResolver,
     associated_type_resolver: AssociatedTypeResolver,
