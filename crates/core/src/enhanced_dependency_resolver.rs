@@ -3,6 +3,7 @@ use crate::models::{
     scope::{ScopeId, SymbolTable},
     Definition, Dependency, Usage,
 };
+use crate::module_resolver::ModuleResolver;
 use crate::nested_scope_resolver::NestedScopeResolver;
 use tree_sitter::Node;
 
@@ -11,9 +12,11 @@ use tree_sitter::Node;
 /// - Scope awareness (#107)
 /// - Nested scope resolution (#102/#108)  
 /// - Shadowing resolution (#103)
+/// - Module system integration and visibility rules (#104)
 pub struct EnhancedDependencyResolver {
     symbol_table: SymbolTable,
     nested_scope_resolver: NestedScopeResolver,
+    module_resolver: ModuleResolver,
     #[allow(dead_code)]
     language: String,
 }
@@ -59,12 +62,37 @@ impl ResolutionCandidate {
 impl EnhancedDependencyResolver {
     pub fn new(symbol_table: SymbolTable, language: String) -> Self {
         let nested_scope_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
+        let module_resolver = ModuleResolver::new();
 
         Self {
             symbol_table,
             nested_scope_resolver,
+            module_resolver,
             language,
         }
+    }
+
+    pub fn with_module_resolver(
+        symbol_table: SymbolTable,
+        language: String,
+        module_resolver: ModuleResolver,
+    ) -> Self {
+        let nested_scope_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
+
+        Self {
+            symbol_table,
+            nested_scope_resolver,
+            module_resolver,
+            language,
+        }
+    }
+
+    pub fn get_module_resolver(&self) -> &ModuleResolver {
+        &self.module_resolver
+    }
+
+    pub fn get_module_resolver_mut(&mut self) -> &mut ModuleResolver {
+        &mut self.module_resolver
     }
 
     /// Resolve symbol with shadowing awareness
@@ -225,6 +253,19 @@ impl EnhancedDependencyResolver {
 
         None
     }
+
+    /// Filter dependencies by module visibility rules
+    fn filter_by_module_visibility(
+        &self,
+        _source_code: &str,
+        _root_node: Node,
+        dependencies: Vec<Dependency>,
+        _definitions: &[Definition],
+    ) -> Result<Vec<Dependency>, String> {
+        // For now, return all dependencies without filtering
+        // TODO: Implement actual module visibility checking
+        Ok(dependencies)
+    }
 }
 
 impl DependencyResolver for EnhancedDependencyResolver {
@@ -240,6 +281,10 @@ impl DependencyResolver for EnhancedDependencyResolver {
         for usage_node in usage_nodes {
             let mut deps =
                 self.resolve_single_dependency(source_code, root_node, usage_node, definitions);
+
+            // Filter by module visibility
+            deps = self.filter_by_module_visibility(source_code, root_node, deps, definitions)?;
+
             all_dependencies.append(&mut deps);
         }
 
