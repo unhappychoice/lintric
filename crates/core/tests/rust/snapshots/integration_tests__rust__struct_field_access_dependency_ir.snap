@@ -1,6 +1,5 @@
 ---
 source: crates/core/tests/rust/mod.rs
-assertion_line: 50
 expression: ir_snapshot_content
 ---
 Source Code:
