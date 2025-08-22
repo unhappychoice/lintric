@@ -241,7 +241,7 @@ IntermediateRepresentation {
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:7:5",
             ),
         },
         Dependency {
@@ -250,7 +250,7 @@ IntermediateRepresentation {
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:7:16",
             ),
         },
         Dependency {
@@ -259,7 +259,7 @@ IntermediateRepresentation {
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:8:5",
             ),
         },
         Dependency {
@@ -268,7 +268,7 @@ IntermediateRepresentation {
             symbol: "my_function",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:8:17",
             ),
         },
         Dependency {
@@ -277,7 +277,7 @@ IntermediateRepresentation {
             symbol: "MY_CONST",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:8:30",
             ),
         },
         Dependency {
@@ -286,7 +286,7 @@ IntermediateRepresentation {
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:9:5",
             ),
         },
         Dependency {
@@ -295,7 +295,7 @@ IntermediateRepresentation {
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:10:5",
             ),
         },
         Dependency {
@@ -304,7 +304,7 @@ IntermediateRepresentation {
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:13:13",
             ),
         },
         Dependency {
@@ -313,7 +313,7 @@ IntermediateRepresentation {
             symbol: "my_function",
             dependency_type: FunctionCall,
             context: Some(
-                "call_expression",
+                "CallExpression:14:5",
             ),
         },
         Dependency {
@@ -322,7 +322,7 @@ IntermediateRepresentation {
             symbol: "MY_CONST",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:15:13",
             ),
         },
         Dependency {
@@ -331,7 +331,7 @@ IntermediateRepresentation {
             symbol: "mm",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:16:14",
             ),
         },
         Dependency {
@@ -340,7 +340,7 @@ IntermediateRepresentation {
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:16:18",
             ),
         },
     ],

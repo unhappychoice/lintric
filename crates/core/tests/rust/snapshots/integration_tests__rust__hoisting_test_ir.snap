@@ -300,7 +300,7 @@ IntermediateRepresentation {
             symbol: "helper",
             dependency_type: FunctionCall,
             context: Some(
-                "call_expression",
+                "CallExpression:3:18",
             ),
         },
         Dependency {
@@ -309,7 +309,7 @@ IntermediateRepresentation {
             symbol: "MyStruct",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:17:20",
             ),
         },
         Dependency {
@@ -318,7 +318,7 @@ IntermediateRepresentation {
             symbol: "MyEnum",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:26:17",
             ),
         },
         Dependency {
@@ -327,7 +327,7 @@ IntermediateRepresentation {
             symbol: "MyType",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:35:18",
             ),
         },
     ],

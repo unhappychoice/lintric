@@ -31,14 +31,10 @@ pub trait DependencyResolver: Send + Sync {
     }
 
     fn get_context(&self, usage_node: &Usage) -> Option<String> {
-        match usage_node.kind {
-            UsageKind::CallExpression => Some("call_expression".to_string()),
-            UsageKind::FieldExpression => Some("field_access".to_string()),
-            UsageKind::StructExpression => Some("struct_instantiation".to_string()),
-            UsageKind::Metavariable => Some("metavariable_use".to_string()),
-            UsageKind::TypeIdentifier => Some("type_reference".to_string()),
-            UsageKind::Identifier => Some("variable_use".to_string()),
-            UsageKind::Read => Some("variable_read".to_string()),
-        }
+        // Default implementation, can be overridden
+        Some(format!(
+            "{:?}:{}:{}",
+            usage_node.kind, usage_node.position.start_line, usage_node.position.start_column
+        ))
     }
 }

@@ -6,365 +6,19 @@ use crate::models::{
 };
 use crate::module_resolver::ModuleResolver;
 use crate::nested_scope_resolver::NestedScopeResolver;
-use std::collections::HashMap;
 use tree_sitter::Node;
 
-// Generic Type System Structures
+// Re-export types from the new dependency_resolver module
+pub use crate::dependency_resolver::{
+    AssociatedTypeResolver, Constraint, ConstraintError, ConstraintSolver, GenericTypeResolver,
+    LifetimeId, LifetimeResolver, LifetimeScope, ResolutionCandidate, ShadowingWarning, TraitBound,
+    TraitDatabase, TraitDefinition, TraitImplementation, TypeParam, Variance,
+};
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct TypeParam {
-    pub name: String,
-    pub bounds: Vec<TraitBound>,
-    pub default: Option<Type>,
-    pub variance: Variance,
-}
+// Generic Type System Structures - moved to dependency_resolver module
+// Types are now re-exported from the new modular structure
 
-#[derive(Debug, Clone, PartialEq)]
-pub struct LifetimeParam {
-    pub name: String,
-    pub bounds: Vec<LifetimeBound>,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub enum Variance {
-    Covariant,
-    Contravariant,
-    Invariant,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct TraitBound {
-    pub trait_name: String,
-    pub type_args: Vec<Type>,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct LifetimeBound {
-    pub lifetime: LifetimeId,
-    pub outlives: LifetimeId,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub enum LifetimeId {
-    Named(String),
-    Anonymous(u32),
-    Static,
-    Infer(u32),
-}
-
-pub type TypeVarId = u32;
-pub type TraitId = u32;
-
-#[derive(Debug, Clone)]
-pub enum Constraint {
-    TraitBound {
-        type_var: TypeVarId,
-        trait_def: TraitId,
-    },
-    Equality {
-        left: Type,
-        right: Type,
-    },
-    Lifetime {
-        lifetime: LifetimeId,
-        outlives: LifetimeId,
-    },
-    Associated {
-        type_var: TypeVarId,
-        trait_def: TraitId,
-        assoc_type: String,
-    },
-}
-
-#[derive(Debug, Clone)]
-pub struct TypeSubstitution {
-    pub type_vars: HashMap<TypeVarId, Type>,
-    pub lifetimes: HashMap<LifetimeId, LifetimeId>,
-}
-
-#[derive(Debug, Clone)]
-pub struct AssociatedType {
-    pub name: String,
-    pub trait_def: TraitId,
-    pub bounds: Vec<TraitBound>,
-    pub default: Option<Type>,
-}
-
-#[derive(Debug, Clone)]
-pub struct LifetimeScope {
-    pub lifetimes: HashMap<String, LifetimeId>,
-    pub parent: Option<ScopeId>,
-}
-
-/// Generic Type Resolver for handling complex generic scenarios
-#[derive(Debug, Clone)]
-pub struct GenericTypeResolver {
-    pub type_parameters: HashMap<ScopeId, Vec<TypeParam>>,
-    pub lifetime_parameters: HashMap<ScopeId, Vec<LifetimeParam>>,
-    pub constraint_solver: ConstraintSolver,
-}
-
-/// Constraint solving engine for generic type constraints
-#[derive(Debug, Clone)]
-pub struct ConstraintSolver {
-    pub active_constraints: HashMap<TypeVarId, Vec<Constraint>>,
-    pub trait_database: TraitDatabase,
-}
-
-/// Database for trait definitions and implementations
-#[derive(Debug, Clone)]
-pub struct TraitDatabase {
-    pub traits: HashMap<TraitId, TraitDefinition>,
-    pub implementations: HashMap<TraitId, Vec<TraitImplementation>>,
-}
-
-#[derive(Debug, Clone)]
-pub struct TraitDefinition {
-    pub id: TraitId,
-    pub name: String,
-    pub type_params: Vec<TypeParam>,
-    pub associated_types: Vec<AssociatedType>,
-    pub methods: Vec<Definition>,
-}
-
-#[derive(Debug, Clone)]
-pub struct TraitImplementation {
-    pub trait_id: TraitId,
-    pub target_type: Type,
-    pub type_args: Vec<Type>,
-    pub associated_type_mappings: HashMap<String, Type>,
-}
-
-/// Associated Type Resolver
-#[derive(Debug, Clone)]
-pub struct AssociatedTypeResolver {
-    pub trait_database: TraitDatabase,
-    pub impl_database: ImplDatabase,
-}
-
-#[derive(Debug, Clone)]
-pub struct ImplDatabase {
-    pub implementations: HashMap<String, Vec<TraitImplementation>>,
-}
-
-/// Lifetime Resolver for handling lifetime parameters
-#[derive(Debug, Clone)]
-pub struct LifetimeResolver {
-    pub lifetime_scopes: HashMap<ScopeId, LifetimeScope>,
-    pub borrow_checker: BorrowChecker,
-}
-
-#[derive(Debug, Clone)]
-pub struct BorrowChecker {
-    // Placeholder for borrow checking functionality
-}
-
-#[derive(Debug)]
-pub enum ConstraintError {
-    UnsatisfiedTraitBound(String),
-    LifetimeError(String),
-    TypeMismatch(String),
-    RecursiveConstraint(String),
-}
-
-impl Default for GenericTypeResolver {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl GenericTypeResolver {
-    pub fn new() -> Self {
-        Self {
-            type_parameters: HashMap::new(),
-            lifetime_parameters: HashMap::new(),
-            constraint_solver: ConstraintSolver::new(),
-        }
-    }
-
-    pub fn add_type_parameters(&mut self, scope_id: ScopeId, params: Vec<TypeParam>) {
-        self.type_parameters.insert(scope_id, params);
-    }
-
-    pub fn add_lifetime_parameters(&mut self, scope_id: ScopeId, params: Vec<LifetimeParam>) {
-        self.lifetime_parameters.insert(scope_id, params);
-    }
-
-    pub fn resolve_generic_type(&self, type_name: &str, scope_id: ScopeId) -> Option<TypeParam> {
-        if let Some(params) = self.type_parameters.get(&scope_id) {
-            params.iter().find(|p| p.name == type_name).cloned()
-        } else {
-            None
-        }
-    }
-}
-
-impl Default for ConstraintSolver {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl ConstraintSolver {
-    pub fn new() -> Self {
-        Self {
-            active_constraints: HashMap::new(),
-            trait_database: TraitDatabase::new(),
-        }
-    }
-
-    pub fn add_constraint(&mut self, type_var: TypeVarId, constraint: Constraint) {
-        self.active_constraints
-            .entry(type_var)
-            .or_default()
-            .push(constraint);
-    }
-
-    pub fn solve_constraints(&mut self) -> Result<TypeSubstitution, ConstraintError> {
-        // Basic constraint solving implementation
-        let substitution = TypeSubstitution {
-            type_vars: HashMap::new(),
-            lifetimes: HashMap::new(),
-        };
-
-        // Simplified solving logic - to be enhanced
-        for constraints in self.active_constraints.values() {
-            for constraint in constraints {
-                match constraint {
-                    Constraint::TraitBound { .. } => {
-                        // Check trait bounds
-                    }
-                    Constraint::Equality { .. } => {
-                        // Handle type equality
-                    }
-                    Constraint::Lifetime { .. } => {
-                        // Handle lifetime constraints
-                    }
-                    Constraint::Associated { .. } => {
-                        // Handle associated type constraints
-                    }
-                }
-            }
-        }
-
-        Ok(substitution)
-    }
-
-    pub fn check_trait_bounds(&self, type_args: &[Type], bounds: &[TraitBound]) -> bool {
-        // Basic trait bound checking - to be enhanced
-        for _bound in bounds {
-            // Check if each type argument satisfies the bound
-            for _type_arg in type_args {
-                // Implement trait bound validation
-            }
-        }
-        true
-    }
-}
-
-impl Default for TraitDatabase {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl TraitDatabase {
-    pub fn new() -> Self {
-        Self {
-            traits: HashMap::new(),
-            implementations: HashMap::new(),
-        }
-    }
-
-    pub fn add_trait(&mut self, trait_def: TraitDefinition) {
-        self.traits.insert(trait_def.id, trait_def);
-    }
-
-    pub fn add_implementation(&mut self, trait_id: TraitId, implementation: TraitImplementation) {
-        self.implementations
-            .entry(trait_id)
-            .or_default()
-            .push(implementation);
-    }
-}
-
-impl Default for AssociatedTypeResolver {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl AssociatedTypeResolver {
-    pub fn new() -> Self {
-        Self {
-            trait_database: TraitDatabase::new(),
-            impl_database: ImplDatabase::new(),
-        }
-    }
-
-    pub fn resolve_associated_type(
-        &self,
-        trait_impl: &TraitImplementation,
-        assoc_name: &str,
-    ) -> Option<Type> {
-        trait_impl.associated_type_mappings.get(assoc_name).cloned()
-    }
-
-    pub fn project_type(
-        &self,
-        _base_type: &Type,
-        _trait_def: TraitId,
-        _assoc_name: &str,
-    ) -> Option<Type> {
-        // Implement type projection for associated types
-        None
-    }
-}
-
-impl Default for ImplDatabase {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl ImplDatabase {
-    pub fn new() -> Self {
-        Self {
-            implementations: HashMap::new(),
-        }
-    }
-}
-
-impl Default for LifetimeResolver {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl LifetimeResolver {
-    pub fn new() -> Self {
-        Self {
-            lifetime_scopes: HashMap::new(),
-            borrow_checker: BorrowChecker::new(),
-        }
-    }
-
-    pub fn add_lifetime_scope(&mut self, scope_id: ScopeId, scope: LifetimeScope) {
-        self.lifetime_scopes.insert(scope_id, scope);
-    }
-}
-
-impl Default for BorrowChecker {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl BorrowChecker {
-    pub fn new() -> Self {
-        Self {}
-    }
-}
+// Implementation moved to dependency_resolver module
 
 /// Enhanced dependency resolver that combines:
 /// - Base dependency resolution
@@ -378,7 +32,7 @@ pub struct EnhancedDependencyResolver {
     symbol_table: SymbolTable,
     nested_scope_resolver: NestedScopeResolver,
     module_resolver: ModuleResolver,
-    method_resolver: MethodResolver,
+    pub method_resolver: MethodResolver,
     generic_type_resolver: GenericTypeResolver,
     associated_type_resolver: AssociatedTypeResolver,
     lifetime_resolver: LifetimeResolver,
@@ -386,43 +40,7 @@ pub struct EnhancedDependencyResolver {
     language: String,
 }
 
-#[derive(Debug, Clone)]
-pub struct ShadowingWarning {
-    pub message: String,
-    pub shadowing_definition: Definition,
-    pub shadowed_definition: Definition,
-}
-
-#[derive(Debug, Clone)]
-pub struct ResolutionCandidate {
-    pub definition: Definition,
-    pub scope_distance: usize,
-    pub shadowing_level: usize,
-    pub priority_score: f64,
-}
-
-impl ResolutionCandidate {
-    pub fn new(
-        definition: Definition,
-        _scope_id: ScopeId,
-        scope_distance: usize,
-        shadowing_level: usize,
-    ) -> Self {
-        let priority_score = Self::calculate_priority_score(scope_distance, shadowing_level);
-        Self {
-            definition,
-            scope_distance,
-            shadowing_level,
-            priority_score,
-        }
-    }
-
-    fn calculate_priority_score(scope_distance: usize, shadowing_level: usize) -> f64 {
-        let distance_weight = 1.0 / (scope_distance as f64 + 1.0);
-        let shadowing_weight = 10.0 / (shadowing_level as f64 + 1.0);
-        distance_weight + shadowing_weight
-    }
-}
+// ShadowingWarning and ResolutionCandidate moved to dependency_resolver module
 
 impl EnhancedDependencyResolver {
     pub fn new(symbol_table: SymbolTable, language: String) -> Self {
@@ -483,32 +101,11 @@ impl EnhancedDependencyResolver {
             return Ok(());
         }
 
-        let mut impl_collector =
-            crate::languages::rust::rust_impl_collector::RustImplCollector::new();
-
-        // Collect impl blocks
-        let impl_blocks = impl_collector.collect_impl_blocks(source_code, root_node)?;
-        for impl_block in impl_blocks {
-            self.method_resolver
-                .impl_block_analyzer
-                .add_impl_block(impl_block);
-        }
-
-        // Collect traits
-        let traits = impl_collector.collect_traits(source_code, root_node)?;
-        for trait_def in traits {
-            self.method_resolver.trait_resolver.add_trait(trait_def);
-        }
-
-        // Collect trait implementations
-        let trait_impls = impl_collector.collect_trait_impl_blocks(source_code, root_node)?;
-        for trait_impl in trait_impls {
-            self.method_resolver
-                .trait_resolver
-                .add_trait_impl(trait_impl);
-        }
-
-        Ok(())
+        let mut rust_resolver =
+            crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                self.symbol_table.clone(),
+            );
+        rust_resolver.analyze_impl_blocks(self, source_code, root_node)
     }
 
     /// Analyze generic type parameters in Rust code
@@ -521,58 +118,16 @@ impl EnhancedDependencyResolver {
             return Ok(());
         }
 
-        // Collect generic parameters from function definitions
-        let function_generics = self.collect_function_generics(source_code, root_node)?;
-        for (scope_id, params) in function_generics {
-            self.generic_type_resolver
-                .add_type_parameters(scope_id, params);
-        }
+        let mut rust_resolver =
+            crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                self.symbol_table.clone(),
+            );
+        rust_resolver.analyze_generic_parameters(source_code, root_node)?;
 
-        // Collect generic parameters from struct/enum definitions
-        let type_generics = self.collect_type_generics(source_code, root_node)?;
-        for (scope_id, params) in type_generics {
-            self.generic_type_resolver
-                .add_type_parameters(scope_id, params);
-        }
-
-        // Collect generic parameters from impl blocks
-        let impl_generics = self.collect_impl_generics(source_code, root_node)?;
-        for (scope_id, params) in impl_generics {
-            self.generic_type_resolver
-                .add_type_parameters(scope_id, params);
-        }
+        // Transfer the analyzed data back to this resolver
+        self.generic_type_resolver = rust_resolver.get_generic_type_resolver().clone();
 
         Ok(())
-    }
-
-    fn collect_function_generics(
-        &self,
-        _source_code: &str,
-        _root_node: Node,
-    ) -> Result<Vec<(ScopeId, Vec<TypeParam>)>, String> {
-        // Placeholder implementation
-        // TODO: Parse function signatures and extract generic parameters
-        Ok(Vec::new())
-    }
-
-    fn collect_type_generics(
-        &self,
-        _source_code: &str,
-        _root_node: Node,
-    ) -> Result<Vec<(ScopeId, Vec<TypeParam>)>, String> {
-        // Placeholder implementation
-        // TODO: Parse struct/enum definitions and extract generic parameters
-        Ok(Vec::new())
-    }
-
-    fn collect_impl_generics(
-        &self,
-        _source_code: &str,
-        _root_node: Node,
-    ) -> Result<Vec<(ScopeId, Vec<TypeParam>)>, String> {
-        // Placeholder implementation
-        // TODO: Parse impl blocks and extract generic parameters
-        Ok(Vec::new())
     }
 
     /// Resolve generic method calls with type parameter constraints
@@ -583,36 +138,31 @@ impl EnhancedDependencyResolver {
         root_node: Node,
         definitions: &[Definition],
     ) -> Option<MethodResolutionResult> {
-        // First try normal method resolution
-        if let Some(result) =
-            self.method_resolver
-                .resolve_method_call(usage, source_code, root_node, definitions)
-        {
-            // Enhanced with generic constraint checking
-            if self.validate_generic_constraints(&result) {
-                return Some(result);
-            }
+        if self.language == "Rust" {
+            let rust_resolver =
+                crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                    self.symbol_table.clone(),
+                );
+            return rust_resolver.resolve_generic_method_call(
+                self,
+                usage,
+                source_code,
+                root_node,
+                definitions,
+            );
         }
 
         None
     }
 
-    fn validate_generic_constraints(&self, _result: &MethodResolutionResult) -> bool {
-        // Placeholder for generic constraint validation
-        // TODO: Check that all type parameters satisfy their trait bounds
-        true
-    }
-
     /// Resolve associated types in generic contexts
-    pub fn resolve_associated_type_usage(&self, usage: &Usage, _scope_id: ScopeId) -> Option<Type> {
-        // Check if this usage refers to an associated type
-        if usage.name.contains("::") {
-            let parts: Vec<&str> = usage.name.split("::").collect();
-            if parts.len() >= 2 {
-                let _trait_name = parts[0];
-                let _assoc_type_name = parts[1];
-                // TODO: Implement associated type resolution
-            }
+    pub fn resolve_associated_type_usage(&self, usage: &Usage, scope_id: ScopeId) -> Option<Type> {
+        if self.language == "Rust" {
+            let rust_resolver =
+                crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                    self.symbol_table.clone(),
+                );
+            return rust_resolver.resolve_associated_type_usage(usage, scope_id);
         }
 
         None
@@ -633,11 +183,17 @@ impl EnhancedDependencyResolver {
     /// Check for higher-ranked trait bounds (HRTB)
     pub fn check_higher_ranked_bounds(
         &self,
-        _usage: &Usage,
-        _scope_id: ScopeId,
+        usage: &Usage,
+        scope_id: ScopeId,
     ) -> Result<bool, ConstraintError> {
-        // Placeholder for HRTB checking
-        // TODO: Implement for<'a> Fn(&'a str) -> &'a str patterns
+        if self.language == "Rust" {
+            let rust_resolver =
+                crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                    self.symbol_table.clone(),
+                );
+            return rust_resolver.check_higher_ranked_bounds(usage, scope_id);
+        }
+
         Ok(true)
     }
 
@@ -970,6 +526,7 @@ impl DependencyResolver for EnhancedDependencyResolver {
 mod tests {
     use super::*;
     use crate::models::{scope::ScopeType, DefinitionType, Position, UsageKind};
+    use std::collections::HashMap;
 
     fn create_test_position(line: usize, column: usize) -> Position {
         Position {

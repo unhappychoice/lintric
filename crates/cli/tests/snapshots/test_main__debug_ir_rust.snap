@@ -182,49 +182,49 @@ expression: out
       "target_line": 6,
       "symbol": "a",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:7:18"
     },
     {
       "source_line": 7,
       "target_line": 6,
       "symbol": "b",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:7:22"
     },
     {
       "source_line": 8,
       "target_line": 7,
       "symbol": "result",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:8:5"
     },
     {
       "source_line": 12,
       "target_line": 1,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:12:14"
     },
     {
       "source_line": 13,
       "target_line": 1,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:13:14"
     },
     {
       "source_line": 15,
       "target_line": 1,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:15:14"
     },
     {
       "source_line": 16,
       "target_line": 6,
       "symbol": "add",
       "dependency_type": "FunctionCall",
-      "context": "call_expression"
+      "context": "CallExpression:16:12"
     },
     {
       "source_line": 16,
@@ -238,7 +238,7 @@ expression: out
       "target_line": 12,
       "symbol": "p1",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:16:16"
     },
     {
       "source_line": 16,
@@ -252,14 +252,14 @@ expression: out
       "target_line": 13,
       "symbol": "p2",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:16:22"
     },
     {
       "source_line": 17,
       "target_line": 6,
       "symbol": "add",
       "dependency_type": "FunctionCall",
-      "context": "call_expression"
+      "context": "CallExpression:17:12"
     },
     {
       "source_line": 17,
@@ -273,7 +273,7 @@ expression: out
       "target_line": 12,
       "symbol": "p1",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:17:16"
     },
     {
       "source_line": 17,
@@ -287,63 +287,63 @@ expression: out
       "target_line": 13,
       "symbol": "p2",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:17:22"
     },
     {
       "source_line": 21,
       "target_line": 1,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:21:18"
     },
     {
       "source_line": 22,
       "target_line": 21,
       "symbol": "p5",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:22:18"
     },
     {
       "source_line": 23,
       "target_line": 22,
       "symbol": "p6",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:23:9"
     },
     {
       "source_line": 27,
       "target_line": 26,
       "symbol": "x",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:27:13"
     },
     {
       "source_line": 28,
       "target_line": 27,
       "symbol": "y",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:28:13"
     },
     {
       "source_line": 28,
       "target_line": 26,
       "symbol": "x",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:28:17"
     },
     {
       "source_line": 30,
       "target_line": 15,
       "symbol": "p3",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:30:22"
     },
     {
       "source_line": 31,
       "target_line": 20,
       "symbol": "p4",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:31:22"
     }
   ],
   "usage": [

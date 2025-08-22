@@ -95,7 +95,7 @@ IntermediateRepresentation {
             symbol: "$e",
             dependency_type: MacroVariable,
             context: Some(
-                "metavariable_use",
+                "Metavariable:3:24",
             ),
         },
         Dependency {
@@ -104,7 +104,7 @@ IntermediateRepresentation {
             symbol: "my_macro",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:8:5",
             ),
         },
     ],

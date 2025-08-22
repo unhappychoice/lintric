@@ -381,7 +381,7 @@ IntermediateRepresentation {
             symbol: "helper",
             dependency_type: FunctionCall,
             context: Some(
-                "call_expression",
+                "CallExpression:3:20",
             ),
         },
         Dependency {
@@ -390,7 +390,7 @@ IntermediateRepresentation {
             symbol: "MyInterface",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:17:16",
             ),
         },
         Dependency {
@@ -399,7 +399,7 @@ IntermediateRepresentation {
             symbol: "MyClass",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:26:26",
             ),
         },
         Dependency {
@@ -408,7 +408,7 @@ IntermediateRepresentation {
             symbol: "MyType",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:34:21",
             ),
         },
     ],
