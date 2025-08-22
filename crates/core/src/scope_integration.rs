@@ -2,6 +2,7 @@ use tree_sitter::Node;
 
 use crate::dependency_resolver::DependencyResolver;
 use crate::models::{Definition, Dependency, SymbolTable, Usage};
+use crate::nested_scope_resolver::NestedScopeResolver;
 use crate::scope_aware_resolver::{DefaultScopeAwareResolver, ScopeAwareDependencyResolver};
 use crate::scope_builder::ScopeAwareDefinitionCollector;
 
@@ -29,8 +30,8 @@ impl ScopeIntegratedResolver {
         let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
         match scope_resolver.create_enhanced_symbol_table(root_node, source_code) {
             Ok(symbol_table) => {
-                // Use scope-aware resolution
-                let dependencies = scope_resolver.resolve_dependencies_with_scope(
+                // Use enhanced nested scope resolution
+                let dependencies = self.resolve_with_nested_scope_analysis(
                     source_code,
                     root_node,
                     usage_nodes,
@@ -60,6 +61,52 @@ impl ScopeIntegratedResolver {
         }
     }
 
+    fn resolve_with_nested_scope_analysis(
+        &self,
+        _source_code: &str,
+        _root_node: Node,
+        usage_nodes: &[Usage],
+        symbol_table: &SymbolTable,
+    ) -> Result<Vec<Dependency>, String> {
+        let nested_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
+        let mut dependencies = Vec::new();
+
+        for usage in usage_nodes {
+            // Try nested scope resolution first
+            let search_results = nested_resolver.resolve_nested_access(usage);
+
+            if !search_results.is_empty() {
+                // Use the best match (closest scope)
+                let best_match = search_results
+                    .iter()
+                    .min_by_key(|result| result.scope_distance)
+                    .unwrap();
+
+                dependencies.push(Dependency::new_with_scope(
+                    usage.position,
+                    best_match.definition.position,
+                    usage.clone(),
+                    best_match.definition.clone(),
+                ));
+            } else {
+                // Fall back to traditional scope-aware resolution
+                let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
+                if let Some(definition) =
+                    scope_resolver.find_definition_in_scope(usage, symbol_table)
+                {
+                    dependencies.push(Dependency::new_with_scope(
+                        usage.position,
+                        definition.position,
+                        usage.clone(),
+                        definition,
+                    ));
+                }
+            }
+        }
+
+        Ok(dependencies)
+    }
+
     pub fn collect_scope_aware_definitions(
         &self,
         root_node: Node,
@@ -67,6 +114,53 @@ impl ScopeIntegratedResolver {
     ) -> Result<SymbolTable, String> {
         let mut collector = ScopeAwareDefinitionCollector::new(self.language.to_lowercase());
         collector.collect_with_scopes(root_node, source_code)
+    }
+
+    pub fn analyze_complex_nested_structures(
+        &self,
+        source_code: &str,
+        root_node: Node,
+    ) -> Result<
+        (
+            SymbolTable,
+            std::collections::HashMap<
+                crate::models::ScopeId,
+                Vec<crate::nested_scope_resolver::CaptureInfo>,
+            >,
+        ),
+        String,
+    > {
+        let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
+        let symbol_table = scope_resolver.create_enhanced_symbol_table(root_node, source_code)?;
+
+        let mut nested_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
+        let complex_analysis = nested_resolver.analyze_complex_nesting(0); // Start from global scope
+
+        Ok((symbol_table, complex_analysis))
+    }
+
+    pub fn validate_nested_access_patterns(
+        &self,
+        source_code: &str,
+        root_node: Node,
+        usage_nodes: &[Usage],
+    ) -> Result<Vec<(Usage, bool)>, String> {
+        let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
+        let symbol_table = scope_resolver.create_enhanced_symbol_table(root_node, source_code)?;
+
+        let nested_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
+        let mut validation_results = Vec::new();
+
+        for usage in usage_nodes {
+            let search_results = nested_resolver.resolve_nested_access(usage);
+            let is_valid = !search_results.is_empty()
+                && search_results.iter().any(|result| {
+                    nested_resolver.validate_nested_access(usage, &result.definition)
+                });
+            validation_results.push((usage.clone(), is_valid));
+        }
+
+        Ok(validation_results)
     }
 }
 
