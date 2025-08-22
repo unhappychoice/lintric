@@ -34,9 +34,7 @@ pub trait DependencyResolver: Send + Sync {
         // Default implementation, can be overridden
         Some(format!(
             "{:?}:{}:{}",
-            usage_node.kind,
-            usage_node.position.start_line,
-            usage_node.position.start_column
+            usage_node.kind, usage_node.position.start_line, usage_node.position.start_column
         ))
     }
 }

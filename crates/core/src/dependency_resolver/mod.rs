@@ -13,7 +13,7 @@ pub use lifetime_resolver::LifetimeResolver;
 pub use resolution_candidate::{ResolutionCandidate, ShadowingWarning};
 pub use trait_database::{TraitDatabase, TraitDefinition, TraitImplementation};
 pub use type_system::{
-    AssociatedType, Constraint, ConstraintError, GenericTypeResolver, LifetimeBound,
-    LifetimeId, LifetimeParam, LifetimeScope, TraitBound, TraitId, TypeParam, TypeSubstitution,
-    TypeVarId, Variance,
+    AssociatedType, Constraint, ConstraintError, GenericTypeResolver, LifetimeBound, LifetimeId,
+    LifetimeParam, LifetimeScope, TraitBound, TraitId, TypeParam, TypeSubstitution, TypeVarId,
+    Variance,
 };

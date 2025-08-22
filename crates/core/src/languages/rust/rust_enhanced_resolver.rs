@@ -1,6 +1,5 @@
 use crate::dependency_resolver::{
-    AssociatedTypeResolver, ConstraintError, GenericTypeResolver,
-    LifetimeResolver, TypeParam,
+    AssociatedTypeResolver, ConstraintError, GenericTypeResolver, LifetimeResolver, TypeParam,
 };
 use crate::enhanced_dependency_resolver::EnhancedDependencyResolver;
 use crate::method_resolver::MethodResolutionResult;
@@ -137,10 +136,12 @@ impl RustEnhancedResolver {
         definitions: &[Definition],
     ) -> Option<MethodResolutionResult> {
         // First try normal method resolution
-        if let Some(result) = enhanced_resolver
-            .method_resolver
-            .resolve_method_call(usage, source_code, root_node, definitions)
-        {
+        if let Some(result) = enhanced_resolver.method_resolver.resolve_method_call(
+            usage,
+            source_code,
+            root_node,
+            definitions,
+        ) {
             // Enhanced with generic constraint checking
             if self.validate_generic_constraints(&result) {
                 return Some(result);

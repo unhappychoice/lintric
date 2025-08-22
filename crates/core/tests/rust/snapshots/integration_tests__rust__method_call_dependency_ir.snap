@@ -151,7 +151,7 @@ IntermediateRepresentation {
             symbol: "MyStruct",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:5:6",
             ),
         },
         Dependency {
@@ -169,7 +169,7 @@ IntermediateRepresentation {
             symbol: "MyStruct",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:12:13",
             ),
         },
         Dependency {
@@ -178,7 +178,7 @@ IntermediateRepresentation {
             symbol: "s",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:13:5",
             ),
         },
     ],

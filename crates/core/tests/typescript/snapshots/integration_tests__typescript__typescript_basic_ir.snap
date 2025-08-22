@@ -79,7 +79,7 @@ IntermediateRepresentation {
             symbol: "x",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:2:9",
             ),
         },
         Dependency {
@@ -88,7 +88,7 @@ IntermediateRepresentation {
             symbol: "y",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:4:12",
             ),
         },
     ],

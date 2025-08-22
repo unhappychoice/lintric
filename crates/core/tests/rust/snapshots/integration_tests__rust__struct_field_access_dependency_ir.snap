@@ -127,7 +127,7 @@ IntermediateRepresentation {
             symbol: "Point",
             dependency_type: TypeReference,
             context: Some(
-                "type_reference",
+                "TypeIdentifier:3:13",
             ),
         },
         Dependency {
@@ -145,7 +145,7 @@ IntermediateRepresentation {
             symbol: "p",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:4:15",
             ),
         },
     ],

@@ -316,7 +316,7 @@ IntermediateRepresentation {
             symbol: "x",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:8:13",
             ),
         },
         Dependency {
@@ -325,7 +325,7 @@ IntermediateRepresentation {
             symbol: "outer",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:14:21",
             ),
         },
         Dependency {
@@ -334,7 +334,7 @@ IntermediateRepresentation {
             symbol: "helper",
             dependency_type: FunctionCall,
             context: Some(
-                "call_expression",
+                "CallExpression:24:18",
             ),
         },
     ],

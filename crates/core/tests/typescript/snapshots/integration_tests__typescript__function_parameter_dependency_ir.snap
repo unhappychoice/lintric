@@ -67,7 +67,7 @@ IntermediateRepresentation {
             symbol: "b",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:2:15",
             ),
         },
     ],

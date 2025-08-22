@@ -10,9 +10,9 @@ use tree_sitter::Node;
 
 // Re-export types from the new dependency_resolver module
 pub use crate::dependency_resolver::{
-    AssociatedTypeResolver, Constraint, ConstraintError, ConstraintSolver, GenericTypeResolver, 
-    LifetimeId, LifetimeResolver, LifetimeScope, ResolutionCandidate, ShadowingWarning, 
-    TraitBound, TraitDatabase, TraitDefinition, TraitImplementation, TypeParam, Variance,
+    AssociatedTypeResolver, Constraint, ConstraintError, ConstraintSolver, GenericTypeResolver,
+    LifetimeId, LifetimeResolver, LifetimeScope, ResolutionCandidate, ShadowingWarning, TraitBound,
+    TraitDatabase, TraitDefinition, TraitImplementation, TypeParam, Variance,
 };
 
 // Generic Type System Structures - moved to dependency_resolver module
@@ -101,7 +101,10 @@ impl EnhancedDependencyResolver {
             return Ok(());
         }
 
-        let mut rust_resolver = crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(self.symbol_table.clone());
+        let mut rust_resolver =
+            crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                self.symbol_table.clone(),
+            );
         rust_resolver.analyze_impl_blocks(self, source_code, root_node)
     }
 
@@ -115,12 +118,15 @@ impl EnhancedDependencyResolver {
             return Ok(());
         }
 
-        let mut rust_resolver = crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(self.symbol_table.clone());
+        let mut rust_resolver =
+            crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                self.symbol_table.clone(),
+            );
         rust_resolver.analyze_generic_parameters(source_code, root_node)?;
-        
+
         // Transfer the analyzed data back to this resolver
         self.generic_type_resolver = rust_resolver.get_generic_type_resolver().clone();
-        
+
         Ok(())
     }
 
@@ -133,20 +139,32 @@ impl EnhancedDependencyResolver {
         definitions: &[Definition],
     ) -> Option<MethodResolutionResult> {
         if self.language == "Rust" {
-            let rust_resolver = crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(self.symbol_table.clone());
-            return rust_resolver.resolve_generic_method_call(self, usage, source_code, root_node, definitions);
+            let rust_resolver =
+                crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                    self.symbol_table.clone(),
+                );
+            return rust_resolver.resolve_generic_method_call(
+                self,
+                usage,
+                source_code,
+                root_node,
+                definitions,
+            );
         }
-        
+
         None
     }
 
     /// Resolve associated types in generic contexts
     pub fn resolve_associated_type_usage(&self, usage: &Usage, scope_id: ScopeId) -> Option<Type> {
         if self.language == "Rust" {
-            let rust_resolver = crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(self.symbol_table.clone());
+            let rust_resolver =
+                crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                    self.symbol_table.clone(),
+                );
             return rust_resolver.resolve_associated_type_usage(usage, scope_id);
         }
-        
+
         None
     }
 
@@ -169,10 +187,13 @@ impl EnhancedDependencyResolver {
         scope_id: ScopeId,
     ) -> Result<bool, ConstraintError> {
         if self.language == "Rust" {
-            let rust_resolver = crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(self.symbol_table.clone());
+            let rust_resolver =
+                crate::languages::rust::rust_enhanced_resolver::RustEnhancedResolver::new(
+                    self.symbol_table.clone(),
+                );
             return rust_resolver.check_higher_ranked_bounds(usage, scope_id);
         }
-        
+
         Ok(true)
     }
 
@@ -505,6 +526,7 @@ impl DependencyResolver for EnhancedDependencyResolver {
 mod tests {
     use super::*;
     use crate::models::{scope::ScopeType, DefinitionType, Position, UsageKind};
+    use std::collections::HashMap;
 
     fn create_test_position(line: usize, column: usize) -> Position {
         Position {

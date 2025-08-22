@@ -238,7 +238,7 @@ IntermediateRepresentation {
             symbol: "option_value",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:3:26",
             ),
         },
         Dependency {
@@ -247,7 +247,7 @@ IntermediateRepresentation {
             symbol: "value",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:4:31",
             ),
         },
         Dependency {
@@ -256,7 +256,7 @@ IntermediateRepresentation {
             symbol: "numbers",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:8:16",
             ),
         },
         Dependency {
@@ -265,7 +265,7 @@ IntermediateRepresentation {
             symbol: "num",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:9:32",
             ),
         },
         Dependency {
@@ -274,7 +274,7 @@ IntermediateRepresentation {
             symbol: "iter",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:13:25",
             ),
         },
         Dependency {
@@ -283,7 +283,7 @@ IntermediateRepresentation {
             symbol: "i",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:14:35",
             ),
         },
         Dependency {
@@ -292,7 +292,7 @@ IntermediateRepresentation {
             symbol: "iter",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:15:9",
             ),
         },
         Dependency {
@@ -301,7 +301,7 @@ IntermediateRepresentation {
             symbol: "i",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:15:19",
             ),
         },
         Dependency {
@@ -310,7 +310,7 @@ IntermediateRepresentation {
             symbol: "i",
             dependency_type: VariableUse,
             context: Some(
-                "variable_use",
+                "Identifier:15:32",
             ),
         },
     ],

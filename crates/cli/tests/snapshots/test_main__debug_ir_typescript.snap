@@ -222,245 +222,245 @@ expression: out
       "target_line": 10,
       "symbol": "a",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:11:20"
     },
     {
       "source_line": 11,
       "target_line": 10,
       "symbol": "b",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:11:24"
     },
     {
       "source_line": 12,
       "target_line": 11,
       "symbol": "result",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:12:12"
     },
     {
       "source_line": 16,
       "target_line": 5,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:16:15"
     },
     {
       "source_line": 16,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:16:25"
     },
     {
       "source_line": 16,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:16:31"
     },
     {
       "source_line": 17,
       "target_line": 5,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:17:15"
     },
     {
       "source_line": 17,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:17:25"
     },
     {
       "source_line": 17,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:17:31"
     },
     {
       "source_line": 19,
       "target_line": 5,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:19:15"
     },
     {
       "source_line": 20,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:20:9"
     },
     {
       "source_line": 20,
       "target_line": 10,
       "symbol": "add",
       "dependency_type": "FunctionCall",
-      "context": "call_expression"
+      "context": "CallExpression:20:12"
     },
     {
       "source_line": 20,
       "target_line": 16,
       "symbol": "p1",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:20:16"
     },
     {
       "source_line": 20,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:20:19"
     },
     {
       "source_line": 20,
       "target_line": 17,
       "symbol": "p2",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:20:22"
     },
     {
       "source_line": 20,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:20:25"
     },
     {
       "source_line": 21,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:21:9"
     },
     {
       "source_line": 21,
       "target_line": 10,
       "symbol": "add",
       "dependency_type": "FunctionCall",
-      "context": "call_expression"
+      "context": "CallExpression:21:12"
     },
     {
       "source_line": 21,
       "target_line": 16,
       "symbol": "p1",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:21:16"
     },
     {
       "source_line": 21,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:21:19"
     },
     {
       "source_line": 21,
       "target_line": 17,
       "symbol": "p2",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:21:22"
     },
     {
       "source_line": 21,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:21:25"
     },
     {
       "source_line": 25,
       "target_line": 5,
       "symbol": "Point",
       "dependency_type": "TypeReference",
-      "context": "type_reference"
+      "context": "TypeIdentifier:25:19"
     },
     {
       "source_line": 25,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:25:29"
     },
     {
       "source_line": 25,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:25:35"
     },
     {
       "source_line": 26,
       "target_line": 25,
       "symbol": "p5",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:26:20"
     },
     {
       "source_line": 27,
       "target_line": 26,
       "symbol": "p6",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:27:16"
     },
     {
       "source_line": 31,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:31:13"
     },
     {
       "source_line": 32,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:32:13"
     },
     {
       "source_line": 32,
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:32:17"
     },
     {
       "source_line": 34,
       "target_line": 19,
       "symbol": "p3",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:34:17"
     },
     {
       "source_line": 35,
       "target_line": 24,
       "symbol": "p4",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:35:17"
     },
     {
       "source_line": 38,
       "target_line": 1,
       "symbol": "SomeClass",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:38:22"
     },
     {
       "source_line": 43,
       "target_line": 38,
       "symbol": "instance",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:43:17"
     },
     {
       "source_line": 43,
       "target_line": 11,
       "symbol": "result",
       "dependency_type": "VariableUse",
-      "context": "variable_use"
+      "context": "Identifier:43:27"
     }
   ],
   "usage": [

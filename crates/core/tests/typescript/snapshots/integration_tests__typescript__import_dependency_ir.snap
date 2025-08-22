@@ -63,7 +63,7 @@ IntermediateRepresentation {
             symbol: "someFunction",
             dependency_type: FunctionCall,
             context: Some(
-                "call_expression",
+                "CallExpression:2:16",
             ),
         },
     ],
