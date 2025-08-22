@@ -5,6 +5,7 @@ pub mod dependency_resolver;
 pub mod enhanced_dependency_resolver;
 pub mod file_parser;
 pub mod languages;
+pub mod method_resolver;
 pub mod metric_calculator;
 pub mod models;
 pub mod module_resolver;
@@ -135,10 +136,15 @@ pub fn analyze_with_scope_awareness(
     )?;
 
     // Create enhanced resolver with all integrated functionality
-    let enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
+    let mut enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
         symbol_table.clone(),
         language.to_string(),
     );
+
+    // Initialize method resolution for Rust code
+    enhanced_resolver
+        .analyze_impl_blocks(&file_content, tree.root_node())
+        .map_err(|e| format!("Failed to analyze impl blocks: {e}"))?;
 
     // Resolve dependencies with enhanced capabilities
     let dependencies = enhanced_resolver
@@ -210,10 +216,15 @@ pub fn analyze_content_with_scope_awareness(
     )?;
 
     // Create enhanced resolver with all integrated functionality
-    let enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
+    let mut enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
         symbol_table.clone(),
         language.to_string(),
     );
+
+    // Initialize method resolution for Rust code
+    enhanced_resolver
+        .analyze_impl_blocks(&file_content, tree.root_node())
+        .map_err(|e| format!("Failed to analyze impl blocks: {e}"))?;
 
     // Resolve dependencies with enhanced capabilities
     let dependencies = enhanced_resolver

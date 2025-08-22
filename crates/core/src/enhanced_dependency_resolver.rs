@@ -1,7 +1,8 @@
 use crate::dependency_resolver::DependencyResolver;
+use crate::method_resolver::MethodResolver;
 use crate::models::{
     scope::{ScopeId, SymbolTable},
-    Definition, Dependency, Usage,
+    Definition, Dependency, Usage, UsageKind,
 };
 use crate::module_resolver::ModuleResolver;
 use crate::nested_scope_resolver::NestedScopeResolver;
@@ -13,10 +14,12 @@ use tree_sitter::Node;
 /// - Nested scope resolution (#102/#108)  
 /// - Shadowing resolution (#103)
 /// - Module system integration and visibility rules (#104)
+/// - Method resolution system (#105)
 pub struct EnhancedDependencyResolver {
     symbol_table: SymbolTable,
     nested_scope_resolver: NestedScopeResolver,
     module_resolver: ModuleResolver,
+    method_resolver: MethodResolver,
     #[allow(dead_code)]
     language: String,
 }
@@ -63,26 +66,13 @@ impl EnhancedDependencyResolver {
     pub fn new(symbol_table: SymbolTable, language: String) -> Self {
         let nested_scope_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
         let module_resolver = ModuleResolver::new();
+        let method_resolver = MethodResolver::new();
 
         Self {
             symbol_table,
             nested_scope_resolver,
             module_resolver,
-            language,
-        }
-    }
-
-    pub fn with_module_resolver(
-        symbol_table: SymbolTable,
-        language: String,
-        module_resolver: ModuleResolver,
-    ) -> Self {
-        let nested_scope_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
-
-        Self {
-            symbol_table,
-            nested_scope_resolver,
-            module_resolver,
+            method_resolver,
             language,
         }
     }
@@ -93,6 +83,48 @@ impl EnhancedDependencyResolver {
 
     pub fn get_module_resolver_mut(&mut self) -> &mut ModuleResolver {
         &mut self.module_resolver
+    }
+
+    pub fn get_method_resolver(&self) -> &MethodResolver {
+        &self.method_resolver
+    }
+
+    /// Initialize method resolution for Rust code by analyzing impl blocks and traits
+    pub fn analyze_impl_blocks(
+        &mut self,
+        source_code: &str,
+        root_node: Node,
+    ) -> Result<(), String> {
+        if self.language != "Rust" {
+            return Ok(());
+        }
+
+        let mut impl_collector =
+            crate::languages::rust::rust_impl_collector::RustImplCollector::new();
+
+        // Collect impl blocks
+        let impl_blocks = impl_collector.collect_impl_blocks(source_code, root_node)?;
+        for impl_block in impl_blocks {
+            self.method_resolver
+                .impl_block_analyzer
+                .add_impl_block(impl_block);
+        }
+
+        // Collect traits
+        let traits = impl_collector.collect_traits(source_code, root_node)?;
+        for trait_def in traits {
+            self.method_resolver.trait_resolver.add_trait(trait_def);
+        }
+
+        // Collect trait implementations
+        let trait_impls = impl_collector.collect_trait_impl_blocks(source_code, root_node)?;
+        for trait_impl in trait_impls {
+            self.method_resolver
+                .trait_resolver
+                .add_trait_impl(trait_impl);
+        }
+
+        Ok(())
     }
 
     /// Resolve symbol with shadowing awareness
@@ -254,6 +286,10 @@ impl EnhancedDependencyResolver {
         None
     }
 
+    fn is_method_call(&self, usage: &Usage) -> bool {
+        usage.kind == UsageKind::CallExpression && usage.name.contains('.')
+    }
+
     /// Filter dependencies by module visibility rules
     fn filter_by_module_visibility(
         &self,
@@ -293,14 +329,37 @@ impl DependencyResolver for EnhancedDependencyResolver {
 
     fn resolve_single_dependency(
         &self,
-        _source_code: &str,
-        _root_node: Node,
+        source_code: &str,
+        root_node: Node,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
         let mut dependencies = Vec::new();
 
-        // Try shadowing-aware resolution first
+        // Try method resolution for method calls (Rust only)
+        if self.language == "Rust" && self.is_method_call(usage_node) {
+            if let Some(resolution_result) = self.method_resolver.resolve_method_call(
+                usage_node,
+                source_code,
+                root_node,
+                definitions,
+            ) {
+                let dependency = Dependency {
+                    source_line: usage_node.position.start_line,
+                    target_line: resolution_result.resolved_method.position.start_line,
+                    symbol: resolution_result.resolved_method.name,
+                    dependency_type: crate::models::DependencyType::FunctionCall,
+                    context: Some(format!(
+                        "method_call::{}",
+                        resolution_result.receiver_type.name()
+                    )),
+                };
+                dependencies.push(dependency);
+                return dependencies;
+            }
+        }
+
+        // Try shadowing-aware resolution
         if let Some(resolved_def) = self.resolve_shadowed_symbol(usage_node) {
             let dependency = Dependency {
                 source_line: usage_node.position.start_line,

@@ -210,11 +210,10 @@ fn test_variable_hoisting_validation_typescript() {
     let symbol_table = SymbolTable::new();
 
     let validator = ScopeValidator::new("typescript".to_string());
-    let errors = validator.validate_variable_hoisting(&symbol_table).unwrap();
+    let _errors = validator.validate_variable_hoisting(&symbol_table).unwrap();
 
     // For now, just ensure the method works without errors
     // More specific hoisting validation can be added later
-    assert!(errors.len() >= 0);
 }
 
 #[test]
