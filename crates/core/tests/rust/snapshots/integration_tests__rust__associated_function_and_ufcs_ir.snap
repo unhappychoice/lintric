@@ -303,7 +303,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 23,
-            target_line: 10,
+            target_line: 16,
             symbol: "my_function",
             dependency_type: VariableUse,
             context: Some(
@@ -330,7 +330,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 24,
-            target_line: 10,
+            target_line: 16,
             symbol: "my_function",
             dependency_type: VariableUse,
             context: Some(

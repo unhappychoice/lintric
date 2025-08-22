@@ -68,3 +68,10 @@ test_typescript_analysis!(
     "arrow_function_parameter_dependency_ir",
     "arrow_function_parameter_dependency_metrics"
 );
+
+test_typescript_analysis!(
+    test_typescript_hoisting,
+    "hoisting_test",
+    "hoisting_test_ir",
+    "hoisting_test_metrics"
+);

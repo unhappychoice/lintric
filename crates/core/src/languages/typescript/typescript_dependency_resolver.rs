@@ -60,8 +60,8 @@ impl DependencyResolver for TypescriptDependencyResolver {
                     let source_line = usage_node.position.line_number();
                     let target_line = def.line_number();
 
-                    // Don't create self-referential dependencies
-                    if source_line != target_line {
+                    // Don't create self-referential dependencies and check scope accessibility
+                    if source_line != target_line && self.is_accessible(usage_node, def) {
                         dependencies.push(Dependency {
                             source_line,
                             target_line,
@@ -79,6 +79,46 @@ impl DependencyResolver for TypescriptDependencyResolver {
 }
 
 impl TypescriptDependencyResolver {
+    fn is_accessible(&self, usage: &Usage, definition: &Definition) -> bool {
+        // Check for hoisting rules first
+        if self.is_hoisted(definition) {
+            return true; // Hoisted definitions are always accessible
+        }
+
+        // Basic position check: definition must come before usage
+        if definition.position.start_line < usage.position.start_line {
+            return true;
+        }
+
+        if definition.position.start_line == usage.position.start_line {
+            return definition.position.start_column < usage.position.start_column;
+        }
+
+        // Definition comes after usage - not accessible for basic forward reference check
+        false
+    }
+
+    fn is_hoisted(&self, definition: &Definition) -> bool {
+        use crate::models::DefinitionType;
+        match definition.definition_type {
+            // In JavaScript/TypeScript, function declarations are hoisted
+            DefinitionType::FunctionDefinition => true,
+            // var declarations are also hoisted (but not let/const)
+            DefinitionType::VariableDefinition => {
+                // Note: We can't distinguish var from let/const without more context
+                // For now, assume all variable definitions follow position-based rules
+                // This could be improved by checking the actual declaration syntax
+                false
+            }
+            // Type definitions are also accessible from anywhere in TypeScript
+            DefinitionType::TypeDefinition => true,
+            DefinitionType::InterfaceDefinition => true,
+            DefinitionType::ClassDefinition => true,
+            DefinitionType::EnumDefinition => true,
+            _ => false,
+        }
+    }
+
     fn resolve_call_expression_dependency(
         &self,
         _source_code: &str,
@@ -103,8 +143,8 @@ impl TypescriptDependencyResolver {
             let source_line = usage_node.position.line_number();
             let target_line = function_def.line_number();
 
-            // Don't create self-referential dependencies
-            if source_line != target_line {
+            // Don't create self-referential dependencies and check scope accessibility
+            if source_line != target_line && self.is_accessible(usage_node, function_def) {
                 dependencies.push(Dependency {
                     source_line,
                     target_line,

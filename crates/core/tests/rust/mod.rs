@@ -109,3 +109,17 @@ test_rust_analysis!(
     "associated_function_and_ufcs_ir",
     "associated_function_and_ufcs_metrics"
 );
+
+test_rust_analysis!(
+    test_forward_reference_scope,
+    "forward_reference_scope",
+    "forward_reference_scope_ir",
+    "forward_reference_scope_metrics"
+);
+
+test_rust_analysis!(
+    test_hoisting,
+    "hoisting_test",
+    "hoisting_test_ir",
+    "hoisting_test_metrics"
+);

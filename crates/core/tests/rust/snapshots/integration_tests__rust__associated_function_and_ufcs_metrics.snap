@@ -1,6 +1,6 @@
 ---
-source: core/tests/rust/mod.rs
-expression: "serde_json::to_string_pretty(&result).unwrap()"
+source: crates/core/tests/rust/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
 ---
 {
   "file_path": "tests/rust/fixtures/associated_function_and_ufcs.rs",
@@ -60,26 +60,26 @@ expression: "serde_json::to_string_pretty(&result).unwrap()"
     {
       "line_number": 23,
       "total_dependencies": 2,
-      "dependency_distance_cost": 0.92,
+      "dependency_distance_cost": 0.68,
       "depth": 1,
       "transitive_dependencies": 2,
       "dependent_lines": [
-        10,
+        16,
         13
       ]
     },
     {
       "line_number": 24,
       "total_dependencies": 3,
-      "dependency_distance_cost": 1.6,
+      "dependency_distance_cost": 1.3599999999999999,
       "depth": 1,
       "transitive_dependencies": 3,
       "dependent_lines": [
-        10,
+        16,
         9,
         13
       ]
     }
   ],
-  "overall_complexity_score": 22.875999999999998
+  "overall_complexity_score": 22.828
 }
