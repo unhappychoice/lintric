@@ -10,6 +10,7 @@ pub enum UsageKind {
     FieldExpression,
     StructExpression,
     Metavariable,
+    Read, // Added for testing
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -31,6 +32,15 @@ impl Usage {
             name,
             kind,
             position: Position::from_node(node),
+        }
+    }
+
+    // Helper function for testing
+    pub fn new_simple(name: String, position: Position, kind: UsageKind) -> Self {
+        Usage {
+            name,
+            kind,
+            position,
         }
     }
 
