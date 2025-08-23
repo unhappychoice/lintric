@@ -311,6 +311,15 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency {
+            source_line: 2,
+            target_line: 3,
+            symbol: "x",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:2:13",
+            ),
+        },
+        Dependency {
             source_line: 8,
             target_line: 7,
             symbol: "x",

@@ -43,7 +43,7 @@ fn main() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Block))
         .collect();
-    assert!(block_scopes.len() >= 1); // The block with block_var
+    assert!(!block_scopes.is_empty()); // The block with block_var
 }
 
 #[test]
@@ -84,7 +84,7 @@ function globalFunction() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Class))
         .collect();
-    assert!(class_scopes.len() >= 1);
+    assert!(!class_scopes.is_empty());
 
     let function_scopes: Vec<_> = symbol_table
         .scopes
@@ -134,7 +134,7 @@ fn outer() {
     let (ir, analysis_result, symbol_table, _warnings) = result.unwrap();
 
     // Should have found some dependencies
-    assert!(ir.dependencies.len() > 0);
+    assert!(!ir.dependencies.is_empty());
 
     // Should have scope structure
     assert!(symbol_table.scopes.scopes.len() > 1);

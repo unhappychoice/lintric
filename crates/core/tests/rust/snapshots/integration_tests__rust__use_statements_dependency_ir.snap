@@ -245,15 +245,6 @@ IntermediateRepresentation {
             ),
         },
         Dependency {
-            source_line: 7,
-            target_line: 2,
-            symbol: "MyStruct",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:7:16",
-            ),
-        },
-        Dependency {
             source_line: 8,
             target_line: 1,
             symbol: "my_module",
@@ -282,7 +273,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 9,
-            target_line: 8,
+            target_line: 1,
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
@@ -291,7 +282,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 10,
-            target_line: 8,
+            target_line: 1,
             symbol: "my_module",
             dependency_type: VariableUse,
             context: Some(
@@ -309,7 +300,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 14,
-            target_line: 8,
+            target_line: 3,
             symbol: "my_function",
             dependency_type: FunctionCall,
             context: Some(
@@ -341,6 +332,33 @@ IntermediateRepresentation {
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:16:18",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 2,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:7:16",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 3,
+            symbol: "my_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:8:17",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 4,
+            symbol: "MY_CONST",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:8:30",
             ),
         },
     ],

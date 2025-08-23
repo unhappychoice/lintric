@@ -2,24 +2,18 @@ pub mod ast_formatter;
 pub mod definition_collectors;
 pub mod definition_context;
 pub mod dependency_resolver;
-pub mod enhanced_dependency_resolver;
 pub mod file_parser;
 pub mod languages;
-pub mod method_resolver;
 pub mod metric_calculator;
 pub mod models;
-pub mod module_resolver;
-pub mod nested_scope_resolver;
-pub mod scope_aware_resolver;
-pub mod scope_builder;
-pub mod scope_integration;
 pub mod usage_collector;
 
 use serde::Serialize;
 
-use dependency_resolver::DependencyResolver;
-pub use enhanced_dependency_resolver::{
-    EnhancedDependencyResolver, ResolutionCandidate, ShadowingWarning,
+use dependency_resolver::DependencyResolverTrait;
+pub use dependency_resolver::{
+    create_scope_integrated_resolver, DependencyResolver, ResolutionCandidate,
+    ScopeIntegratedResolver, ShadowingWarning,
 };
 use file_parser::FileParser;
 use languages::language_factory;
@@ -28,7 +22,6 @@ pub use models::{
     Accessibility, AnalysisResult, IntermediateRepresentation, Language, LineMetrics, ScopeId,
     ScopeTree, ScopeType, SymbolTable,
 };
-pub use scope_integration::{create_scope_integrated_resolver, ScopeIntegratedResolver};
 
 #[derive(Debug, Serialize)]
 pub struct DependencyEdge {
@@ -111,7 +104,7 @@ pub fn analyze_with_scope_awareness(
     let file_parser = FileParser::new(file_path.clone())?;
     let (file_content, language, tree) = file_parser.parse()?;
 
-    let scope_resolver = scope_integration::create_scope_integrated_resolver(
+    let scope_resolver = dependency_resolver::create_scope_integrated_resolver(
         language.to_string(),
         languages::language_factory::get_dependency_resolver(language.clone())?,
     );
@@ -135,26 +128,24 @@ pub fn analyze_with_scope_awareness(
         &definitions,
     )?;
 
-    // Create enhanced resolver with all integrated functionality
-    let mut enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
-        symbol_table.clone(),
-        language.to_string(),
-    );
+    // Create dependency resolver with all integrated functionality
+    let mut resolver =
+        dependency_resolver::DependencyResolver::new(symbol_table.clone(), language.to_string());
 
     // Initialize method resolution for Rust code
-    enhanced_resolver
+    resolver
         .analyze_impl_blocks(&file_content, tree.root_node())
         .map_err(|e| format!("Failed to analyze impl blocks: {e}"))?;
 
-    // Resolve dependencies with enhanced capabilities
-    let dependencies = enhanced_resolver
+    // Resolve dependencies with full capabilities
+    let dependencies = resolver
         .resolve_dependencies(&file_content, tree.root_node(), &usage_nodes, &definitions)
         .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
     // Check for shadowing conflicts across all scopes
     let mut all_warnings = Vec::new();
     for scope_id in symbol_table.scopes.scopes.keys() {
-        let warnings = enhanced_resolver.check_shadowing_conflicts(*scope_id);
+        let warnings = resolver.check_shadowing_conflicts(*scope_id);
         all_warnings.extend(warnings);
     }
 
@@ -191,7 +182,7 @@ pub fn analyze_content_with_scope_awareness(
     let file_parser = FileParser::from_content(content.clone(), language);
     let (file_content, language, tree) = file_parser.parse()?;
 
-    let scope_resolver = scope_integration::create_scope_integrated_resolver(
+    let scope_resolver = dependency_resolver::create_scope_integrated_resolver(
         language.to_string(),
         language_factory::get_dependency_resolver(language.clone())?,
     );
@@ -215,26 +206,24 @@ pub fn analyze_content_with_scope_awareness(
         &definitions,
     )?;
 
-    // Create enhanced resolver with all integrated functionality
-    let mut enhanced_resolver = enhanced_dependency_resolver::EnhancedDependencyResolver::new(
-        symbol_table.clone(),
-        language.to_string(),
-    );
+    // Create dependency resolver with all integrated functionality
+    let mut resolver =
+        dependency_resolver::DependencyResolver::new(symbol_table.clone(), language.to_string());
 
     // Initialize method resolution for Rust code
-    enhanced_resolver
+    resolver
         .analyze_impl_blocks(&file_content, tree.root_node())
         .map_err(|e| format!("Failed to analyze impl blocks: {e}"))?;
 
-    // Resolve dependencies with enhanced capabilities
-    let dependencies = enhanced_resolver
+    // Resolve dependencies with full capabilities
+    let dependencies = resolver
         .resolve_dependencies(&file_content, tree.root_node(), &usage_nodes, &definitions)
         .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
     // Check for shadowing conflicts across all scopes
     let mut all_warnings = Vec::new();
     for scope_id in symbol_table.scopes.scopes.keys() {
-        let warnings = enhanced_resolver.check_shadowing_conflicts(*scope_id);
+        let warnings = resolver.check_shadowing_conflicts(*scope_id);
         all_warnings.extend(warnings);
     }
 
@@ -277,13 +266,30 @@ fn _get_intermediate_representation(
         .collect_usage_nodes(tree.root_node(), file_content)
         .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
 
-    let dependency_resolver_instance = language_factory::get_dependency_resolver(language.clone())
-        .map_err(|e| format!("Failed to get dependency resolver: {e}"))?;
-    let dependencies = dependency_resolver_instance
+    // Use comprehensive dependency resolver
+    let scope_resolver = dependency_resolver::create_scope_integrated_resolver(
+        language.to_string(),
+        language_factory::get_dependency_resolver(language.clone())?,
+    );
+
+    let (symbol_table, _) = scope_resolver.analyze_with_scope_awareness(
+        file_content,
+        tree.root_node(),
+        &usage_nodes,
+        &definitions,
+    )?;
+
+    let mut resolver =
+        dependency_resolver::DependencyResolver::new(symbol_table, language.to_string());
+
+    // Initialize language-specific features
+    resolver
+        .analyze_impl_blocks(file_content, tree.root_node())
+        .map_err(|e| format!("Failed to analyze impl blocks: {e}"))?;
+
+    let dependencies = resolver
         .resolve_dependencies(file_content, tree.root_node(), &usage_nodes, &definitions)
         .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
-
-    // Usage is now directly serializable
 
     Ok(IntermediateRepresentation::new(
         file_path,

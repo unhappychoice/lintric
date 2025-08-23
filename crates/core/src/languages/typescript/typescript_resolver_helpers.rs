@@ -1,17 +1,71 @@
 use crate::models::{
     scope::{ScopeId, SymbolTable},
-    Definition, Type, Usage,
+    Definition, Dependency, Type, Usage, UsageKind,
 };
 use tree_sitter::Node;
 
-pub struct TypeScriptEnhancedResolver {
+pub struct TypeScriptResolverHelpers {
     #[allow(dead_code)]
     symbol_table: SymbolTable,
 }
 
-impl TypeScriptEnhancedResolver {
+impl TypeScriptResolverHelpers {
     pub fn new(symbol_table: SymbolTable) -> Self {
         Self { symbol_table }
+    }
+
+    /// Resolve struct/interface field access dependencies for TypeScript
+    pub fn resolve_struct_field_access(
+        &self,
+        usage_node: &Usage,
+        definitions: &[Definition],
+    ) -> Vec<Dependency> {
+        let mut dependencies = Vec::new();
+
+        // Only handle FieldExpression usage
+        if usage_node.kind != UsageKind::FieldExpression {
+            return dependencies;
+        }
+
+        // For field expressions like "obj.field", extract the field name "field"
+        let field_name = if usage_node.name.contains('.') {
+            usage_node
+                .name
+                .split('.')
+                .next_back()
+                .unwrap_or(&usage_node.name)
+                .to_string()
+        } else {
+            usage_node.name.clone()
+        };
+
+        // Find interface/class field definitions by the extracted field name
+        for definition in definitions {
+            if definition.name == field_name
+                && matches!(
+                    definition.definition_type,
+                    crate::models::DefinitionType::StructFieldDefinition
+                        | crate::models::DefinitionType::PropertyDefinition
+                )
+            {
+                let source_line = usage_node.position.start_line;
+                let target_line = definition.position.start_line;
+
+                // Don't create self-referential dependencies
+                if source_line != target_line {
+                    let dependency = Dependency {
+                        source_line,
+                        target_line,
+                        symbol: field_name.clone(),
+                        dependency_type: crate::models::DependencyType::StructFieldAccess,
+                        context: Some("field_access".to_string()),
+                    };
+                    dependencies.push(dependency);
+                }
+            }
+        }
+
+        dependencies
     }
 
     /// Analyze TypeScript-specific type parameters and generics
@@ -429,6 +483,58 @@ impl TypeScriptEnhancedResolver {
 
         resolved_exports
     }
+
+    /// Check if two positions are within the same function scope (TypeScript-specific)
+    pub fn are_in_same_function_scope(&self, usage: &Usage, definition: &Definition) -> bool {
+        // TypeScript has different scope rules - for now, allow all
+        // In a real implementation, this would handle TypeScript-specific scoping
+        let _ = (usage, definition);
+        true
+    }
+
+    /// Check if a dependency is valid according to TypeScript-specific rules
+    pub fn is_valid_dependency(&self, usage: &Usage, definition: &Definition) -> bool {
+        // TypeScript-specific dependency validation - for now, allow all
+        // In a real implementation, this would handle TypeScript-specific rules like import/export
+        let _ = (usage, definition);
+        true
+    }
+
+    /// Select the most appropriate definition from multiple candidates (TypeScript-specific)
+    pub fn select_preferred_definition<'a>(
+        &self,
+        usage_node: &Usage,
+        matching_definitions: &[&'a Definition],
+    ) -> Option<&'a Definition> {
+        if matching_definitions.is_empty() {
+            return None;
+        }
+
+        // For TypeScript, we could implement interface/type preference logic
+        // For now, use simple closest accessible definition
+        self.find_closest_by_line_ts(usage_node, matching_definitions)
+    }
+
+    fn find_closest_by_line_ts<'a>(
+        &self,
+        usage_node: &Usage,
+        definitions: &[&'a Definition],
+    ) -> Option<&'a Definition> {
+        let mut closest_definition: Option<&'a Definition> = None;
+        let mut closest_distance = usize::MAX;
+
+        for definition in definitions {
+            if definition.position.start_line <= usage_node.position.start_line {
+                let distance = usage_node.position.start_line - definition.position.start_line;
+                if distance < closest_distance {
+                    closest_distance = distance;
+                    closest_definition = Some(definition);
+                }
+            }
+        }
+
+        closest_definition.or_else(|| definitions.first().copied())
+    }
 }
 
 #[cfg(test)]
@@ -468,7 +574,7 @@ mod tests {
     #[test]
     fn test_resolve_interface_type_basic() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let usage = Usage {
             name: "TestInterface".to_string(),
@@ -486,7 +592,7 @@ mod tests {
     #[test]
     fn test_resolve_generic_interface_type() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let usage = Usage {
             name: "Array<string>".to_string(),
@@ -502,7 +608,7 @@ mod tests {
     #[test]
     fn test_resolve_module_import_named() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let usage = Usage {
             name: "testFunction".to_string(),
@@ -523,7 +629,7 @@ mod tests {
     #[test]
     fn test_resolve_namespace_import() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let usage = Usage {
             name: "myNamespace.someFunction".to_string(),
@@ -541,7 +647,7 @@ mod tests {
     #[test]
     fn test_resolve_module_path_relative() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let result = resolver.resolve_module_path("./relative/path");
         assert_eq!(result, Some("./relative/path".to_string()));
@@ -550,7 +656,7 @@ mod tests {
     #[test]
     fn test_resolve_module_path_package() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let result = resolver.resolve_module_path("lodash");
         assert_eq!(result, Some("node_modules/lodash".to_string()));
@@ -559,7 +665,7 @@ mod tests {
     #[test]
     fn test_parse_type_argument_primitive() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let result = resolver.parse_type_argument("string", 0);
         assert_eq!(result, Some(Type::Concrete("string".to_string())));
@@ -574,7 +680,7 @@ mod tests {
     #[test]
     fn test_interface_inheritance_basic() {
         let symbol_table = create_test_symbol_table();
-        let resolver = TypeScriptEnhancedResolver::new(symbol_table);
+        let resolver = TypeScriptResolverHelpers::new(symbol_table);
 
         let result = resolver.resolve_interface_inheritance("TestInterface", 0);
         assert_eq!(result, vec!["TestInterface".to_string()]);

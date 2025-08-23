@@ -1,7 +1,7 @@
+use lintric_core::dependency_resolver::{ImportResolver, VisibilityChecker};
 use lintric_core::models::{
     Definition, DefinitionType, ImportInfo, ImportType, ModuleTree, Position, Visibility,
 };
-use lintric_core::module_resolver::{ImportResolver, VisibilityChecker};
 use std::collections::HashMap;
 
 #[cfg(test)]

@@ -1,7 +1,7 @@
+use lintric_core::dependency_resolver::{ImportResolver, ModuleResolver, VisibilityChecker};
 use lintric_core::models::{
     Definition, DefinitionType, ImportInfo, ImportType, ModuleTree, Position, Visibility,
 };
-use lintric_core::module_resolver::{ImportResolver, ModuleResolver, VisibilityChecker};
 
 mod integration_tests;
 
@@ -102,9 +102,9 @@ mod tests {
         let import_resolver = ImportResolver::new(module_tree);
 
         // Basic test to ensure ImportResolver is properly constructed
-        assert!(!import_resolver
+        assert!(import_resolver
             .find_symbol_in_imports("nonexistent", 0)
-            .is_some());
+            .is_none());
     }
 
     #[test]

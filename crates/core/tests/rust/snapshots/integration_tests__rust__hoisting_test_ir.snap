@@ -304,6 +304,15 @@ IntermediateRepresentation {
             ),
         },
         Dependency {
+            source_line: 6,
+            target_line: 7,
+            symbol: "x",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:6:13",
+            ),
+        },
+        Dependency {
             source_line: 17,
             target_line: 20,
             symbol: "MyStruct",

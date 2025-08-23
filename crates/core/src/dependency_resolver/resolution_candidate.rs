@@ -33,7 +33,9 @@ impl ResolutionCandidate {
 
     fn calculate_priority_score(scope_distance: usize, shadowing_level: usize) -> f64 {
         let distance_weight = 1.0 / (scope_distance as f64 + 1.0);
-        let shadowing_weight = 10.0 / (shadowing_level as f64 + 1.0);
+        // For Rust, prioritize definitions within the same function scope
+        // Lower shadowing_level means closer to the usage context (higher priority)
+        let shadowing_weight = 100.0 / (shadowing_level as f64 + 1.0);
         distance_weight + shadowing_weight
     }
 }

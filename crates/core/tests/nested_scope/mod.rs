@@ -1,8 +1,9 @@
+use lintric_core::dependency_resolver::{
+    ClosureAnalyzer, NestedScopeResolver, ScopeBuilder, ScopeChainWalker,
+};
 use lintric_core::models::{
     Definition, DefinitionType, Position, ScopeTree, ScopeType, Usage, UsageKind,
 };
-use lintric_core::nested_scope_resolver::{ClosureAnalyzer, NestedScopeResolver, ScopeChainWalker};
-use lintric_core::scope_builder::ScopeBuilder;
 use tree_sitter::{Language, Parser};
 
 extern "C" {

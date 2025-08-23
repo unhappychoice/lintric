@@ -1,8 +1,8 @@
 use tree_sitter::{Language, Parser};
 
 use lintric_core::{
+    dependency_resolver::ScopeBuilder,
     models::{Position, ScopeType},
-    scope_builder::ScopeBuilder,
 };
 
 use super::fixtures;
@@ -43,7 +43,7 @@ fn test_rust_nested_scope_building() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Block))
         .collect();
-    assert!(block_scopes.len() >= 1);
+    assert!(!block_scopes.is_empty());
 
     // Should have module scopes
     let module_scopes: Vec<_> = scope_tree
@@ -51,7 +51,7 @@ fn test_rust_nested_scope_building() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Module))
         .collect();
-    assert!(module_scopes.len() >= 1);
+    assert!(!module_scopes.is_empty());
 }
 
 #[test]
@@ -76,7 +76,7 @@ fn test_typescript_class_interface_scope_building() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Class))
         .collect();
-    assert!(class_scopes.len() >= 1);
+    assert!(!class_scopes.is_empty());
 
     // Should have interface scopes
     let interface_scopes: Vec<_> = scope_tree
@@ -84,7 +84,7 @@ fn test_typescript_class_interface_scope_building() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Interface))
         .collect();
-    assert!(interface_scopes.len() >= 1);
+    assert!(!interface_scopes.is_empty());
 
     // Should have function scopes
     let function_scopes: Vec<_> = scope_tree
@@ -123,7 +123,7 @@ fn test_rust_impl_trait_scope_building() {
         .values()
         .filter(|s| matches!(s.scope_type, ScopeType::Trait))
         .collect();
-    assert!(trait_scopes.len() >= 1);
+    assert!(!trait_scopes.is_empty());
 
     // Should have function scopes within impl blocks
     let function_scopes: Vec<_> = scope_tree

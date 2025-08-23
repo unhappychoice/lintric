@@ -232,15 +232,72 @@ impl ScopeAwareDefinitionCollector {
         Ok(())
     }
 
+    fn is_node_within(&self, child: Node, parent: Node) -> bool {
+        let child_start = child.start_byte();
+        let child_end = child.end_byte();
+        let parent_start = parent.start_byte();
+        let parent_end = parent.end_byte();
+
+        child_start >= parent_start && child_end <= parent_end
+    }
+
+    fn is_imported_identifier(&self, node: Node) -> bool {
+        // Check if this identifier is the imported name in a use declaration
+        // For example, in `use module::MyStruct` or `use module::{Item1, Item2}`
+        if let Some(parent) = node.parent() {
+            match parent.kind() {
+                "scoped_identifier" => {
+                    // In `use module::Item`, Item is the imported identifier
+                    node == parent.child_by_field_name("name").unwrap_or(node)
+                }
+                "use_list" => {
+                    // In `use module::{Item1, Item2}`, each item is imported
+                    true
+                }
+                "use_as_clause" => {
+                    // In `use module::Item as Alias`, the alias is imported
+                    node == parent.child_by_field_name("alias").unwrap_or(node)
+                }
+                _ => false,
+            }
+        } else {
+            false
+        }
+    }
+
     fn is_definition_context(&self, node: Node) -> bool {
         if let Some(parent) = node.parent() {
-            matches!(
-                parent.kind(),
-                "let_declaration"
-                    | "variable_declaration"
-                    | "function_item"
-                    | "function_declaration"
-            )
+            match parent.kind() {
+                "let_declaration" => {
+                    // Only consider identifiers in the pattern field as definitions
+                    if let Some(pattern_node) = parent.child_by_field_name("pattern") {
+                        self.is_node_within(node, pattern_node)
+                    } else {
+                        false
+                    }
+                }
+                "variable_declaration" | "function_item" | "function_declaration" | "mod_item" => {
+                    true
+                }
+                "use_declaration" => {
+                    // For use_declaration, check if this identifier is being imported
+                    self.is_imported_identifier(node)
+                }
+                "scoped_identifier" => {
+                    // Check if this identifier is part of an import like `use module::Item`
+                    if let Some(grandparent) = parent.parent() {
+                        grandparent.kind() == "use_declaration"
+                    } else {
+                        false
+                    }
+                }
+                "use_as_clause" => {
+                    // Handle alias in `use module as alias`
+                    node.kind() == "identifier"
+                        && node == parent.child_by_field_name("alias").unwrap_or(node)
+                }
+                _ => false,
+            }
         } else {
             false
         }
@@ -252,6 +309,18 @@ impl ScopeAwareDefinitionCollector {
                 "function_item" | "function_declaration" => DefinitionType::FunctionDefinition,
                 "let_declaration" | "variable_declaration" => DefinitionType::VariableDefinition,
                 "struct_item" | "class_declaration" => DefinitionType::TypeDefinition,
+                "mod_item" => DefinitionType::ModuleDefinition,
+                "scoped_identifier" => {
+                    // For use declarations like `use module::Item`
+                    if let Some(grandparent) = parent.parent() {
+                        if grandparent.kind() == "use_declaration" {
+                            return DefinitionType::ImportDefinition;
+                        }
+                    }
+                    DefinitionType::VariableDefinition
+                }
+                "use_as_clause" => DefinitionType::ImportDefinition,
+                "use_list" => DefinitionType::ImportDefinition,
                 _ => DefinitionType::VariableDefinition,
             }
         } else {
@@ -299,14 +368,14 @@ fn main() {
             .values()
             .filter(|s| matches!(s.scope_type, ScopeType::Function))
             .collect();
-        assert!(function_scopes.len() >= 1);
+        assert!(!function_scopes.is_empty());
 
         let block_scopes: Vec<_> = scope_tree
             .scopes
             .values()
             .filter(|s| matches!(s.scope_type, ScopeType::Block))
             .collect();
-        assert!(block_scopes.len() >= 1);
+        assert!(!block_scopes.is_empty());
     }
 
     #[test]

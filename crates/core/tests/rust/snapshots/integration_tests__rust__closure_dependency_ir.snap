@@ -107,6 +107,15 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 6,
+            target_line: 2,
+            symbol: "add_one",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:6:5",
+            ),
+        },
+        Dependency {
+            source_line: 6,
             target_line: 5,
             symbol: "y",
             dependency_type: VariableUse,
