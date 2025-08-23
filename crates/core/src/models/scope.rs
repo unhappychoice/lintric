@@ -251,9 +251,18 @@ impl SymbolEntry {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TypeParameter {
+    pub name: String,
+    pub constraint_type: Option<String>,
+    pub default_type: Option<String>,
+    pub scope_id: ScopeId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SymbolTable {
     symbols: HashMap<String, Vec<SymbolEntry>>,
     pub scopes: ScopeTree,
+    type_parameters: HashMap<String, Vec<TypeParameter>>,
 }
 
 impl SymbolTable {
@@ -261,6 +270,7 @@ impl SymbolTable {
         Self {
             symbols: HashMap::new(),
             scopes: ScopeTree::new(),
+            type_parameters: HashMap::new(),
         }
     }
 
@@ -297,6 +307,33 @@ impl SymbolTable {
 
     pub fn get_all_symbols(&self) -> &HashMap<String, Vec<SymbolEntry>> {
         &self.symbols
+    }
+
+    pub fn add_type_parameter(
+        &mut self,
+        name: String,
+        constraint_type: Option<String>,
+        default_type: Option<String>,
+    ) {
+        let scope_id = self.scopes.root; // For now, add to global scope
+        let type_param = TypeParameter {
+            name: name.clone(),
+            constraint_type,
+            default_type,
+            scope_id,
+        };
+        self.type_parameters
+            .entry(name)
+            .or_default()
+            .push(type_param);
+    }
+
+    pub fn lookup_type_parameter(&self, name: &str) -> Option<&Vec<TypeParameter>> {
+        self.type_parameters.get(name)
+    }
+
+    pub fn get_all_type_parameters(&self) -> &HashMap<String, Vec<TypeParameter>> {
+        &self.type_parameters
     }
 }
 
