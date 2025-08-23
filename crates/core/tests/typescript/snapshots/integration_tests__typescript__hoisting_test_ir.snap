@@ -385,12 +385,30 @@ IntermediateRepresentation {
             ),
         },
         Dependency {
+            source_line: 6,
+            target_line: 7,
+            symbol: "x",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:6:15",
+            ),
+        },
+        Dependency {
             source_line: 17,
             target_line: 20,
             symbol: "MyInterface",
             dependency_type: TypeReference,
             context: Some(
                 "TypeIdentifier:17:16",
+            ),
+        },
+        Dependency {
+            source_line: 17,
+            target_line: 21,
+            symbol: "field",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
             ),
         },
         Dependency {

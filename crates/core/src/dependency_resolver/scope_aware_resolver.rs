@@ -1,10 +1,10 @@
 // use std::collections::HashMap; // Unused for now
 use tree_sitter::Node;
 
+use crate::dependency_resolver::scope_builder::ScopeAwareDefinitionCollector;
 use crate::models::{
     Accessibility, Definition, Dependency, Position, ScopeId, ScopeType, SymbolTable, Usage,
 };
-use crate::scope_builder::ScopeAwareDefinitionCollector;
 
 pub trait ScopeAwareDependencyResolver {
     fn resolve_dependencies_with_scope(
@@ -38,7 +38,7 @@ impl DefaultScopeAwareResolver {
         Self { language }
     }
 
-    pub fn create_enhanced_symbol_table(
+    pub fn create_symbol_table(
         &self,
         root_node: Node,
         source_code: &str,

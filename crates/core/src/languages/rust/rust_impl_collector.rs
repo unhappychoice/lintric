@@ -1,4 +1,6 @@
-use crate::method_resolver::{ImplBlock, ImplBlockId, TraitDef, TraitId, TraitImpl, TraitImplId};
+use crate::dependency_resolver::method_resolver::{
+    ImplBlock, ImplBlockId, TraitDef, TraitId, TraitImpl, TraitImplId,
+};
 use crate::models::{Definition, DefinitionType, Position, Type};
 use tree_sitter::{Node, Query, QueryCursor};
 

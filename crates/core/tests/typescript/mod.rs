@@ -1,6 +1,5 @@
 use insta::assert_snapshot;
 use lintric_core::analyze_code;
-use serde_json;
 use std::env;
 use std::fs;
 

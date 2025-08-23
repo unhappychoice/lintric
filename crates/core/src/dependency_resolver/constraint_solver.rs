@@ -38,7 +38,7 @@ impl ConstraintSolver {
             lifetimes: HashMap::new(),
         };
 
-        // Simplified solving logic - to be enhanced
+        // Simplified solving logic - to be improved
         for constraints in self.active_constraints.values() {
             for constraint in constraints {
                 match constraint {
@@ -62,7 +62,7 @@ impl ConstraintSolver {
     }
 
     pub fn check_trait_bounds(&self, type_args: &[Type], bounds: &[TraitBound]) -> bool {
-        // Basic trait bound checking - to be enhanced
+        // Basic trait bound checking - to be improved
         for _bound in bounds {
             // Check if each type argument satisfies the bound
             for _type_arg in type_args {

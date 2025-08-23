@@ -1,9 +1,9 @@
 use lintric_core::{
+    dependency_resolver::{DefaultScopeAwareResolver, ScopeAwareDependencyResolver},
     models::{
         Accessibility, Definition, DefinitionType, Position, ScopeType, SymbolTable, Usage,
         UsageKind,
     },
-    scope_aware_resolver::{DefaultScopeAwareResolver, ScopeAwareDependencyResolver},
 };
 
 #[test]

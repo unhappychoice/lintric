@@ -1,5 +1,5 @@
 ---
-source: cli/tests/test_main.rs
+source: crates/cli/tests/test_main.rs
 expression: out
 ---
 --- Analysis for temp_test_file.rs ---

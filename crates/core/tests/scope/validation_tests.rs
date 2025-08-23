@@ -1,6 +1,6 @@
 use lintric_core::{
+    dependency_resolver::ScopeValidator,
     models::{Accessibility, Definition, DefinitionType, Position, Scope, ScopeType, SymbolTable},
-    scope_aware_resolver::ScopeValidator,
 };
 
 #[test]
@@ -76,7 +76,7 @@ fn test_scope_structure_validation_invalid_parent() {
     let validator = ScopeValidator::new("rust".to_string());
     let errors = validator.validate_scope_structure(&symbol_table).unwrap();
 
-    assert!(errors.len() > 0); // Should have validation errors
+    assert!(!errors.is_empty()); // Should have validation errors
     assert!(errors
         .iter()
         .any(|e| e.message.contains("non-existent parent")));

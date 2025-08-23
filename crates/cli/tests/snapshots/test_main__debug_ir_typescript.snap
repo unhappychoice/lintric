@@ -250,14 +250,14 @@ expression: out
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:16:25"
+      "context": "field_access"
     },
     {
       "source_line": 16,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:16:31"
+      "context": "field_access"
     },
     {
       "source_line": 17,
@@ -271,14 +271,14 @@ expression: out
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:17:25"
+      "context": "field_access"
     },
     {
       "source_line": 17,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:17:31"
+      "context": "field_access"
     },
     {
       "source_line": 19,
@@ -292,7 +292,7 @@ expression: out
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:20:9"
+      "context": "field_access"
     },
     {
       "source_line": 20,
@@ -313,7 +313,7 @@ expression: out
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:20:19"
+      "context": "field_access"
     },
     {
       "source_line": 20,
@@ -327,14 +327,14 @@ expression: out
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:20:25"
+      "context": "field_access"
     },
     {
       "source_line": 21,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:21:9"
+      "context": "field_access"
     },
     {
       "source_line": 21,
@@ -355,7 +355,7 @@ expression: out
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:21:19"
+      "context": "field_access"
     },
     {
       "source_line": 21,
@@ -369,7 +369,7 @@ expression: out
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:21:25"
+      "context": "field_access"
     },
     {
       "source_line": 25,
@@ -383,14 +383,14 @@ expression: out
       "target_line": 6,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:25:29"
+      "context": "field_access"
     },
     {
       "source_line": 25,
       "target_line": 7,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "FieldExpression:25:35"
+      "context": "field_access"
     },
     {
       "source_line": 26,
@@ -408,21 +408,21 @@ expression: out
     },
     {
       "source_line": 31,
-      "target_line": 6,
+      "target_line": 30,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "Identifier:31:13"
     },
     {
       "source_line": 32,
-      "target_line": 7,
+      "target_line": 31,
       "symbol": "y",
       "dependency_type": "VariableUse",
       "context": "Identifier:32:13"
     },
     {
       "source_line": 32,
-      "target_line": 6,
+      "target_line": 30,
       "symbol": "x",
       "dependency_type": "VariableUse",
       "context": "Identifier:32:17"
@@ -457,7 +457,7 @@ expression: out
     },
     {
       "source_line": 43,
-      "target_line": 11,
+      "target_line": 39,
       "symbol": "result",
       "dependency_type": "VariableUse",
       "context": "Identifier:43:27"

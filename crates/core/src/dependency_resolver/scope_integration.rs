@@ -1,18 +1,20 @@
 use tree_sitter::Node;
 
-use crate::dependency_resolver::DependencyResolver;
+use crate::dependency_resolver::nested_scope_resolver::NestedScopeResolver;
+use crate::dependency_resolver::scope_aware_resolver::{
+    DefaultScopeAwareResolver, ScopeAwareDependencyResolver,
+};
+use crate::dependency_resolver::scope_builder::ScopeAwareDefinitionCollector;
+use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{Definition, Dependency, SymbolTable, Usage};
-use crate::nested_scope_resolver::NestedScopeResolver;
-use crate::scope_aware_resolver::{DefaultScopeAwareResolver, ScopeAwareDependencyResolver};
-use crate::scope_builder::ScopeAwareDefinitionCollector;
 
 pub struct ScopeIntegratedResolver {
     language: String,
-    fallback_resolver: Box<dyn DependencyResolver>,
+    fallback_resolver: Box<dyn DependencyResolverTrait>,
 }
 
 impl ScopeIntegratedResolver {
-    pub fn new(language: String, fallback_resolver: Box<dyn DependencyResolver>) -> Self {
+    pub fn new(language: String, fallback_resolver: Box<dyn DependencyResolverTrait>) -> Self {
         Self {
             language,
             fallback_resolver,
@@ -28,9 +30,9 @@ impl ScopeIntegratedResolver {
     ) -> Result<(SymbolTable, Vec<Dependency>), String> {
         // Try to create scope-aware symbol table first
         let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
-        match scope_resolver.create_enhanced_symbol_table(root_node, source_code) {
+        match scope_resolver.create_symbol_table(root_node, source_code) {
             Ok(symbol_table) => {
-                // Use enhanced nested scope resolution
+                // Use comprehensive nested scope resolution
                 let dependencies = self.resolve_with_nested_scope_analysis(
                     source_code,
                     root_node,
@@ -125,13 +127,13 @@ impl ScopeIntegratedResolver {
             SymbolTable,
             std::collections::HashMap<
                 crate::models::ScopeId,
-                Vec<crate::nested_scope_resolver::CaptureInfo>,
+                Vec<crate::dependency_resolver::nested_scope_resolver::CaptureInfo>,
             >,
         ),
         String,
     > {
         let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
-        let symbol_table = scope_resolver.create_enhanced_symbol_table(root_node, source_code)?;
+        let symbol_table = scope_resolver.create_symbol_table(root_node, source_code)?;
 
         let mut nested_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
         let complex_analysis = nested_resolver.analyze_complex_nesting(0); // Start from global scope
@@ -146,7 +148,7 @@ impl ScopeIntegratedResolver {
         usage_nodes: &[Usage],
     ) -> Result<Vec<(Usage, bool)>, String> {
         let scope_resolver = DefaultScopeAwareResolver::new(self.language.to_lowercase());
-        let symbol_table = scope_resolver.create_enhanced_symbol_table(root_node, source_code)?;
+        let symbol_table = scope_resolver.create_symbol_table(root_node, source_code)?;
 
         let nested_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
         let mut validation_results = Vec::new();
@@ -164,7 +166,7 @@ impl ScopeIntegratedResolver {
     }
 }
 
-impl DependencyResolver for ScopeIntegratedResolver {
+impl DependencyResolverTrait for ScopeIntegratedResolver {
     fn resolve_dependencies(
         &self,
         source_code: &str,
@@ -198,7 +200,7 @@ impl DependencyResolver for ScopeIntegratedResolver {
 
 pub fn create_scope_integrated_resolver(
     language: String,
-    fallback_resolver: Box<dyn DependencyResolver>,
+    fallback_resolver: Box<dyn DependencyResolverTrait>,
 ) -> ScopeIntegratedResolver {
     ScopeIntegratedResolver::new(language, fallback_resolver)
 }
@@ -215,7 +217,7 @@ mod tests {
 
     struct MockFallbackResolver;
 
-    impl DependencyResolver for MockFallbackResolver {
+    impl DependencyResolverTrait for MockFallbackResolver {
         fn resolve_dependencies(
             &self,
             _source_code: &str,

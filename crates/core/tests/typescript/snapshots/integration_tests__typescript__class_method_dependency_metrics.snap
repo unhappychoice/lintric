@@ -1,6 +1,6 @@
 ---
-source: core/tests/typescript/mod.rs
-expression: "serde_json::to_string_pretty(&result).unwrap()"
+source: crates/core/tests/typescript/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
 ---
 {
   "file_path": "tests/typescript/fixtures/class_method_dependency.ts",
