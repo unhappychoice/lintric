@@ -1,0 +1,657 @@
+---
+source: crates/core/tests/integration/language/typescript/dependency_resolver/typescript_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+namespace Utils {
+    export function helper(): number {
+        return 42;
+    }
+    
+    export class Calculator {
+        add(a: number, b: number): number {
+            return a + b;
+        }
+    }
+    
+    export namespace Inner {
+        export function deepFunction(): number {
+            return helper() + 1;
+        }
+    }
+}
+
+function main() {
+    const result = Utils.helper();
+    const calc = new Utils.Calculator();
+    const sum = calc.add(1, 2);
+    const deep = Utils.Inner.deepFunction();
+    
+    console.log(result, sum, deep);
+}
+
+AST:
+(program
+  (expression_statement
+    (internal_module
+      name: (identifier "Utils")
+      body: (statement_block
+        (export_statement
+          declaration: (function_declaration
+            name: (identifier "helper")
+            parameters: (formal_parameters)
+            return_type: (type_annotation
+              (predefined_type "number")
+            )
+            body: (statement_block
+              (return_statement
+                (number "42")
+              )
+            )
+          )
+        )
+        (export_statement
+          declaration: (class_declaration
+            name: (type_identifier "Calculator")
+            body: (class_body
+              (method_definition
+                name: (property_identifier "add")
+                parameters: (formal_parameters
+                  (required_parameter
+                    pattern: (identifier "a")
+                    type: (type_annotation
+                      (predefined_type "number")
+                    )
+                  )
+                  (required_parameter
+                    pattern: (identifier "b")
+                    type: (type_annotation
+                      (predefined_type "number")
+                    )
+                  )
+                )
+                return_type: (type_annotation
+                  (predefined_type "number")
+                )
+                body: (statement_block
+                  (return_statement
+                    (binary_expression
+                      left: (identifier "a")
+                      right: (identifier "b")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+        (export_statement
+          declaration: (internal_module
+            name: (identifier "Inner")
+            body: (statement_block
+              (export_statement
+                declaration: (function_declaration
+                  name: (identifier "deepFunction")
+                  parameters: (formal_parameters)
+                  return_type: (type_annotation
+                    (predefined_type "number")
+                  )
+                  body: (statement_block
+                    (return_statement
+                      (binary_expression
+                        left: (call_expression
+                          function: (identifier "helper")
+                          arguments: (arguments)
+                        )
+                        right: (number "1")
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_declaration
+    name: (identifier "main")
+    parameters: (formal_parameters)
+    body: (statement_block
+      (lexical_declaration
+        (variable_declarator
+          name: (identifier "result")
+          value: (call_expression
+            function: (member_expression
+              object: (identifier "Utils")
+              property: (property_identifier "helper")
+            )
+            arguments: (arguments)
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          name: (identifier "calc")
+          value: (new_expression
+            constructor: (member_expression
+              object: (identifier "Utils")
+              property: (property_identifier "Calculator")
+            )
+            arguments: (arguments)
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          name: (identifier "sum")
+          value: (call_expression
+            function: (member_expression
+              object: (identifier "calc")
+              property: (property_identifier "add")
+            )
+            arguments: (arguments
+              (number "1")
+              (number "2")
+            )
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          name: (identifier "deep")
+          value: (call_expression
+            function: (member_expression
+              object: (member_expression
+                object: (identifier "Utils")
+                property: (property_identifier "Inner")
+              )
+              property: (property_identifier "deepFunction")
+            )
+            arguments: (arguments)
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
+          )
+          arguments: (arguments
+            (identifier "result")
+            (identifier "sum")
+            (identifier "deep")
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_namespaces.ts",
+    definitions: [
+        Definition {
+            name: "helper",
+            position: Position {
+                start_line: 2,
+                start_column: 21,
+                end_line: 2,
+                end_column: 27,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "Calculator",
+            position: Position {
+                start_line: 6,
+                start_column: 18,
+                end_line: 6,
+                end_column: 28,
+            },
+            definition_type: ClassDefinition,
+        },
+        Definition {
+            name: "add",
+            position: Position {
+                start_line: 7,
+                start_column: 9,
+                end_line: 7,
+                end_column: 12,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "a",
+            position: Position {
+                start_line: 7,
+                start_column: 13,
+                end_line: 7,
+                end_column: 14,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "b",
+            position: Position {
+                start_line: 7,
+                start_column: 24,
+                end_line: 7,
+                end_column: 25,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "deepFunction",
+            position: Position {
+                start_line: 13,
+                start_column: 25,
+                end_line: 13,
+                end_column: 37,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 19,
+                start_column: 10,
+                end_line: 19,
+                end_column: 14,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "result",
+            position: Position {
+                start_line: 20,
+                start_column: 11,
+                end_line: 20,
+                end_column: 17,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "calc",
+            position: Position {
+                start_line: 21,
+                start_column: 11,
+                end_line: 21,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "sum",
+            position: Position {
+                start_line: 22,
+                start_column: 11,
+                end_line: 22,
+                end_column: 14,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "deep",
+            position: Position {
+                start_line: 23,
+                start_column: 11,
+                end_line: 23,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 8,
+            target_line: 7,
+            symbol: "a",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:8:20",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 7,
+            symbol: "b",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:8:24",
+            ),
+        },
+        Dependency {
+            source_line: 14,
+            target_line: 2,
+            symbol: "helper",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:14:20",
+            ),
+        },
+        Dependency {
+            source_line: 20,
+            target_line: 2,
+            symbol: "helper",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:20:26",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 6,
+            symbol: "Calculator",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:21:28",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 21,
+            symbol: "calc",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:17",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 7,
+            symbol: "add",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:22:22",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 13,
+            symbol: "deepFunction",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:23:30",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 20,
+            symbol: "result",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:25:17",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 22,
+            symbol: "sum",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:25:25",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 23,
+            symbol: "deep",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:25:30",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "Utils",
+            kind: Identifier,
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "add",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 7,
+                start_column: 9,
+                end_line: 7,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "a",
+            kind: Identifier,
+            position: Position {
+                start_line: 8,
+                start_column: 20,
+                end_line: 8,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "b",
+            kind: Identifier,
+            position: Position {
+                start_line: 8,
+                start_column: 24,
+                end_line: 8,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "Inner",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 22,
+                end_line: 12,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "helper",
+            kind: CallExpression,
+            position: Position {
+                start_line: 14,
+                start_column: 20,
+                end_line: 14,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "Utils.helper",
+            kind: CallExpression,
+            position: Position {
+                start_line: 20,
+                start_column: 20,
+                end_line: 20,
+                end_column: 34,
+            },
+        },
+        Usage {
+            name: "Utils",
+            kind: Identifier,
+            position: Position {
+                start_line: 20,
+                start_column: 20,
+                end_line: 20,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "helper",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 20,
+                start_column: 26,
+                end_line: 20,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "Utils",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 22,
+                end_line: 21,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "Calculator",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 21,
+                start_column: 28,
+                end_line: 21,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "calc.add",
+            kind: CallExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 17,
+                end_line: 22,
+                end_column: 31,
+            },
+        },
+        Usage {
+            name: "calc",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 17,
+                end_line: 22,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "add",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 22,
+                end_line: 22,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "Utils.Inner.deepFunction",
+            kind: CallExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 18,
+                end_line: 23,
+                end_column: 44,
+            },
+        },
+        Usage {
+            name: "Utils",
+            kind: Identifier,
+            position: Position {
+                start_line: 23,
+                start_column: 18,
+                end_line: 23,
+                end_column: 23,
+            },
+        },
+        Usage {
+            name: "Inner",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 24,
+                end_line: 23,
+                end_column: 29,
+            },
+        },
+        Usage {
+            name: "deepFunction",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 30,
+                end_line: 23,
+                end_column: 42,
+            },
+        },
+        Usage {
+            name: "console.log",
+            kind: CallExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 5,
+                end_line: 25,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "console",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 5,
+                end_line: 25,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "log",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 13,
+                end_line: 25,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "result",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 17,
+                end_line: 25,
+                end_column: 23,
+            },
+        },
+        Usage {
+            name: "sum",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 25,
+                end_line: 25,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "deep",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 30,
+                end_line: 25,
+                end_column: 34,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 26,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

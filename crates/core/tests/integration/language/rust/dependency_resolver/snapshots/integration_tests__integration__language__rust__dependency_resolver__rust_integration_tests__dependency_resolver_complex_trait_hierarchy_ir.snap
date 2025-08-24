@@ -1,0 +1,978 @@
+---
+source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+trait Animal {
+    fn name(&self) -> &str;
+    fn speak(&self) -> String;
+}
+
+trait Mammal: Animal {
+    fn fur_color(&self) -> &str;
+}
+
+struct Dog {
+    name: String,
+    fur: String,
+}
+
+impl Animal for Dog {
+    fn name(&self) -> &str {
+        &self.name
+    }
+    
+    fn speak(&self) -> String {
+        format!("{} barks", self.name())
+    }
+}
+
+impl Mammal for Dog {
+    fn fur_color(&self) -> &str {
+        &self.fur
+    }
+}
+
+fn print_mammal_info<T: Mammal>(animal: &T) {
+    println!("{} has {} fur and says: {}", 
+        animal.name(), 
+        animal.fur_color(), 
+        animal.speak()
+    );
+}
+
+fn main() {
+    let dog = Dog {
+        name: "Buddy".to_string(),
+        fur: "brown".to_string(),
+    };
+    print_mammal_info(&dog);
+}
+
+AST:
+(source_file
+  (trait_item
+    name: (type_identifier "Animal")
+    body: (declaration_list
+      (function_signature_item
+        name: (identifier "name")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (reference_type
+          type: (primitive_type "str")
+        )
+      )
+      (function_signature_item
+        name: (identifier "speak")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (type_identifier "String")
+      )
+    )
+  )
+  (trait_item
+    name: (type_identifier "Mammal")
+    bounds: (trait_bounds
+      (type_identifier "Animal")
+    )
+    body: (declaration_list
+      (function_signature_item
+        name: (identifier "fur_color")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (reference_type
+          type: (primitive_type "str")
+        )
+      )
+    )
+  )
+  (struct_item
+    name: (type_identifier "Dog")
+    body: (field_declaration_list
+      (field_declaration
+        name: (field_identifier "name")
+        type: (type_identifier "String")
+      )
+      (field_declaration
+        name: (field_identifier "fur")
+        type: (type_identifier "String")
+      )
+    )
+  )
+  (impl_item
+    trait: (type_identifier "Animal")
+    type: (type_identifier "Dog")
+    body: (declaration_list
+      (function_item
+        name: (identifier "name")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (reference_type
+          type: (primitive_type "str")
+        )
+        body: (block
+          (reference_expression
+            value: (field_expression
+              value: (self "self")
+              field: (field_identifier "name")
+            )
+          )
+        )
+      )
+      (function_item
+        name: (identifier "speak")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (type_identifier "String")
+        body: (block
+          (macro_invocation
+            macro: (identifier "format")
+            (token_tree
+              (string_literal ""{} barks""
+                (string_content)
+              )
+              (self "self")
+              (identifier "name")
+              (token_tree)
+            )
+          )
+        )
+      )
+    )
+  )
+  (impl_item
+    trait: (type_identifier "Mammal")
+    type: (type_identifier "Dog")
+    body: (declaration_list
+      (function_item
+        name: (identifier "fur_color")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (reference_type
+          type: (primitive_type "str")
+        )
+        body: (block
+          (reference_expression
+            value: (field_expression
+              value: (self "self")
+              field: (field_identifier "fur")
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "print_mammal_info")
+    type_parameters: (type_parameters
+      (constrained_type_parameter
+        left: (type_identifier "T")
+        bounds: (trait_bounds
+          (type_identifier "Mammal")
+        )
+      )
+    )
+    parameters: (parameters
+      (parameter
+        pattern: (identifier "animal")
+        type: (reference_type
+          type: (type_identifier "T")
+        )
+      )
+    )
+    body: (block
+      (expression_statement
+        (macro_invocation
+          macro: (identifier "println")
+          (token_tree
+            (string_literal ""{} has {} fur and says: {}""
+              (string_content)
+            )
+            (identifier "animal")
+            (identifier "name")
+            (token_tree)
+            (identifier "animal")
+            (identifier "fur_color")
+            (token_tree)
+            (identifier "animal")
+            (identifier "speak")
+            (token_tree)
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "dog")
+        value: (struct_expression
+          name: (type_identifier "Dog")
+          body: (field_initializer_list
+            (field_initializer
+              field: (field_identifier "name")
+              value: (call_expression
+                function: (field_expression
+                  value: (string_literal ""Buddy""
+                    (string_content)
+                  )
+                  field: (field_identifier "to_string")
+                )
+                arguments: (arguments)
+              )
+            )
+            (field_initializer
+              field: (field_identifier "fur")
+              value: (call_expression
+                function: (field_expression
+                  value: (string_literal ""brown""
+                    (string_content)
+                  )
+                  field: (field_identifier "to_string")
+                )
+                arguments: (arguments)
+              )
+            )
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (identifier "print_mammal_info")
+          arguments: (arguments
+            (reference_expression
+              value: (identifier "dog")
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/dependency_resolver/fixtures/complex_trait_hierarchy.rs",
+    definitions: [
+        Definition {
+            name: "Animal",
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 13,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 2,
+                start_column: 8,
+                end_line: 2,
+                end_column: 12,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "speak",
+            position: Position {
+                start_line: 3,
+                start_column: 8,
+                end_line: 3,
+                end_column: 13,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "Mammal",
+            position: Position {
+                start_line: 6,
+                start_column: 7,
+                end_line: 6,
+                end_column: 13,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "fur_color",
+            position: Position {
+                start_line: 7,
+                start_column: 8,
+                end_line: 7,
+                end_column: 17,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "Dog",
+            position: Position {
+                start_line: 10,
+                start_column: 8,
+                end_line: 10,
+                end_column: 11,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 11,
+                start_column: 5,
+                end_line: 11,
+                end_column: 9,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "fur",
+            position: Position {
+                start_line: 12,
+                start_column: 5,
+                end_line: 12,
+                end_column: 8,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 16,
+                start_column: 8,
+                end_line: 16,
+                end_column: 12,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "speak",
+            position: Position {
+                start_line: 20,
+                start_column: 8,
+                end_line: 20,
+                end_column: 13,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 16,
+                start_column: 8,
+                end_line: 16,
+                end_column: 12,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "speak",
+            position: Position {
+                start_line: 20,
+                start_column: 8,
+                end_line: 20,
+                end_column: 13,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "fur_color",
+            position: Position {
+                start_line: 26,
+                start_column: 8,
+                end_line: 26,
+                end_column: 17,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "fur_color",
+            position: Position {
+                start_line: 26,
+                start_column: 8,
+                end_line: 26,
+                end_column: 17,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "print_mammal_info",
+            position: Position {
+                start_line: 31,
+                start_column: 4,
+                end_line: 31,
+                end_column: 21,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "T",
+            position: Position {
+                start_line: 31,
+                start_column: 22,
+                end_line: 31,
+                end_column: 23,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "animal",
+            position: Position {
+                start_line: 31,
+                start_column: 33,
+                end_line: 31,
+                end_column: 39,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 39,
+                start_column: 4,
+                end_line: 39,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "dog",
+            position: Position {
+                start_line: 40,
+                start_column: 9,
+                end_line: 40,
+                end_column: 12,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 2,
+            target_line: 16,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:2:8",
+            ),
+        },
+        Dependency {
+            source_line: 3,
+            target_line: 20,
+            symbol: "speak",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:3:8",
+            ),
+        },
+        Dependency {
+            source_line: 6,
+            target_line: 1,
+            symbol: "Animal",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:6:15",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 26,
+            symbol: "fur_color",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:7:8",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 1,
+            symbol: "Animal",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:6",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 10,
+            symbol: "Dog",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:17",
+            ),
+        },
+        Dependency {
+            source_line: 17,
+            target_line: 11,
+            symbol: "name",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 16,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:21:34",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 6,
+            symbol: "Mammal",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:25:6",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 10,
+            symbol: "Dog",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:25:17",
+            ),
+        },
+        Dependency {
+            source_line: 27,
+            target_line: 12,
+            symbol: "fur",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 33,
+            target_line: 31,
+            symbol: "animal",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:33:9",
+            ),
+        },
+        Dependency {
+            source_line: 33,
+            target_line: 16,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:33:16",
+            ),
+        },
+        Dependency {
+            source_line: 34,
+            target_line: 31,
+            symbol: "animal",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:34:9",
+            ),
+        },
+        Dependency {
+            source_line: 34,
+            target_line: 26,
+            symbol: "fur_color",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:34:16",
+            ),
+        },
+        Dependency {
+            source_line: 35,
+            target_line: 31,
+            symbol: "animal",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:35:9",
+            ),
+        },
+        Dependency {
+            source_line: 35,
+            target_line: 20,
+            symbol: "speak",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:35:16",
+            ),
+        },
+        Dependency {
+            source_line: 40,
+            target_line: 10,
+            symbol: "Dog",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:40:15",
+            ),
+        },
+        Dependency {
+            source_line: 44,
+            target_line: 31,
+            symbol: "print_mammal_info",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:44:5",
+            ),
+        },
+        Dependency {
+            source_line: 44,
+            target_line: 40,
+            symbol: "dog",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:44:24",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 8,
+                end_line: 2,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "speak",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 8,
+                end_line: 3,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 3,
+                start_column: 24,
+                end_line: 3,
+                end_column: 30,
+            },
+        },
+        Usage {
+            name: "Animal",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 6,
+                start_column: 15,
+                end_line: 6,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "fur_color",
+            kind: Identifier,
+            position: Position {
+                start_line: 7,
+                start_column: 8,
+                end_line: 7,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 11,
+                start_column: 11,
+                end_line: 11,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 12,
+                start_column: 10,
+                end_line: 12,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "Animal",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 6,
+                end_line: 15,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "Dog",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 17,
+                end_line: 15,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "self.name",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 17,
+                start_column: 10,
+                end_line: 17,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 20,
+                start_column: 24,
+                end_line: 20,
+                end_column: 30,
+            },
+        },
+        Usage {
+            name: "format",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 9,
+                end_line: 21,
+                end_column: 15,
+            },
+        },
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 34,
+                end_line: 21,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "Mammal",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 25,
+                start_column: 6,
+                end_line: 25,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "Dog",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 25,
+                start_column: 17,
+                end_line: 25,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "self.fur",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 27,
+                start_column: 10,
+                end_line: 27,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 31,
+                start_column: 42,
+                end_line: 31,
+                end_column: 43,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 32,
+                start_column: 5,
+                end_line: 32,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "animal",
+            kind: Identifier,
+            position: Position {
+                start_line: 33,
+                start_column: 9,
+                end_line: 33,
+                end_column: 15,
+            },
+        },
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 33,
+                start_column: 16,
+                end_line: 33,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "animal",
+            kind: Identifier,
+            position: Position {
+                start_line: 34,
+                start_column: 9,
+                end_line: 34,
+                end_column: 15,
+            },
+        },
+        Usage {
+            name: "fur_color",
+            kind: Identifier,
+            position: Position {
+                start_line: 34,
+                start_column: 16,
+                end_line: 34,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "animal",
+            kind: Identifier,
+            position: Position {
+                start_line: 35,
+                start_column: 9,
+                end_line: 35,
+                end_column: 15,
+            },
+        },
+        Usage {
+            name: "speak",
+            kind: Identifier,
+            position: Position {
+                start_line: 35,
+                start_column: 16,
+                end_line: 35,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "Dog {\n        name: \"Buddy\".to_string(),\n        fur: \"brown\".to_string(),\n    }",
+            kind: StructExpression,
+            position: Position {
+                start_line: 40,
+                start_column: 15,
+                end_line: 43,
+                end_column: 6,
+            },
+        },
+        Usage {
+            name: "Dog",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 40,
+                start_column: 15,
+                end_line: 40,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "\"Buddy\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 41,
+                start_column: 15,
+                end_line: 41,
+                end_column: 34,
+            },
+        },
+        Usage {
+            name: "\"Buddy\".to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 41,
+                start_column: 15,
+                end_line: 41,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "\"brown\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 42,
+                start_column: 14,
+                end_line: 42,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "\"brown\".to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 42,
+                start_column: 14,
+                end_line: 42,
+                end_column: 31,
+            },
+        },
+        Usage {
+            name: "print_mammal_info",
+            kind: CallExpression,
+            position: Position {
+                start_line: 44,
+                start_column: 5,
+                end_line: 44,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "dog",
+            kind: Identifier,
+            position: Position {
+                start_line: 44,
+                start_column: 24,
+                end_line: 44,
+                end_column: 27,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 45,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

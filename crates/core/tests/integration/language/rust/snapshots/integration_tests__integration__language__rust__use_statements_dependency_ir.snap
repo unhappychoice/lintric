@@ -1,0 +1,494 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: ir_snapshot_content
+---
+Source Code:
+mod my_module {
+    pub struct MyStruct;
+    pub fn my_function() {}
+    pub const MY_CONST: i32 = 1;
+}
+
+use my_module::MyStruct;
+use my_module::{my_function, MY_CONST};
+use my_module::*;
+use my_module as mm;
+
+fn main() {
+    let s = MyStruct;
+    my_function();
+    let c = MY_CONST;
+    let s2 = mm::MyStruct;
+}
+
+AST:
+(source_file
+  (mod_item
+    name: (identifier "my_module")
+    body: (declaration_list
+      (struct_item
+        (visibility_modifier)
+        name: (type_identifier "MyStruct")
+      )
+      (function_item
+        (visibility_modifier)
+        name: (identifier "my_function")
+        parameters: (parameters)
+        body: (block)
+      )
+      (const_item
+        (visibility_modifier)
+        name: (identifier "MY_CONST")
+        type: (primitive_type "i32")
+        value: (integer_literal "1")
+      )
+    )
+  )
+  (use_declaration
+    argument: (scoped_identifier "my_module::MyStruct"
+      path: (identifier "my_module")
+      name: (identifier "MyStruct")
+    )
+  )
+  (use_declaration
+    argument: (scoped_use_list
+      path: (identifier "my_module")
+      list: (use_list
+        (identifier "my_function")
+        (identifier "MY_CONST")
+      )
+    )
+  )
+  (use_declaration
+    argument: (use_wildcard
+      (identifier "my_module")
+    )
+  )
+  (use_declaration
+    argument: (use_as_clause
+      path: (identifier "my_module")
+      alias: (identifier "mm")
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "s")
+        value: (identifier "MyStruct")
+      )
+      (expression_statement
+        (call_expression
+          function: (identifier "my_function")
+          arguments: (arguments)
+        )
+      )
+      (let_declaration
+        pattern: (identifier "c")
+        value: (identifier "MY_CONST")
+      )
+      (let_declaration
+        pattern: (identifier "s2")
+        value: (scoped_identifier "mm::MyStruct"
+          path: (identifier "mm")
+          name: (identifier "MyStruct")
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/fixtures/use_statements_dependency.rs",
+    definitions: [
+        Definition {
+            name: "my_module",
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 14,
+            },
+            definition_type: ModuleDefinition,
+        },
+        Definition {
+            name: "MyStruct",
+            position: Position {
+                start_line: 2,
+                start_column: 16,
+                end_line: 2,
+                end_column: 24,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "my_function",
+            position: Position {
+                start_line: 3,
+                start_column: 12,
+                end_line: 3,
+                end_column: 23,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "MY_CONST",
+            position: Position {
+                start_line: 4,
+                start_column: 15,
+                end_line: 4,
+                end_column: 23,
+            },
+            definition_type: ConstDefinition,
+        },
+        Definition {
+            name: "MyStruct",
+            position: Position {
+                start_line: 7,
+                start_column: 16,
+                end_line: 7,
+                end_column: 24,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "my_module",
+            position: Position {
+                start_line: 8,
+                start_column: 5,
+                end_line: 8,
+                end_column: 14,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "my_function",
+            position: Position {
+                start_line: 8,
+                start_column: 17,
+                end_line: 8,
+                end_column: 28,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "MY_CONST",
+            position: Position {
+                start_line: 8,
+                start_column: 30,
+                end_line: 8,
+                end_column: 38,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "mm",
+            position: Position {
+                start_line: 10,
+                start_column: 18,
+                end_line: 10,
+                end_column: 20,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 12,
+                start_column: 4,
+                end_line: 12,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "s",
+            position: Position {
+                start_line: 13,
+                start_column: 9,
+                end_line: 13,
+                end_column: 10,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "c",
+            position: Position {
+                start_line: 15,
+                start_column: 9,
+                end_line: 15,
+                end_column: 10,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "s2",
+            position: Position {
+                start_line: 16,
+                start_column: 9,
+                end_line: 16,
+                end_column: 11,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 7,
+            target_line: 1,
+            symbol: "my_module",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:7:5",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 13,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:7:16",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 1,
+            symbol: "my_module",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:8:5",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 3,
+            symbol: "my_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:8:17",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 15,
+            symbol: "MY_CONST",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:8:30",
+            ),
+        },
+        Dependency {
+            source_line: 9,
+            target_line: 1,
+            symbol: "my_module",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:9:5",
+            ),
+        },
+        Dependency {
+            source_line: 10,
+            target_line: 1,
+            symbol: "my_module",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:10:5",
+            ),
+        },
+        Dependency {
+            source_line: 14,
+            target_line: 3,
+            symbol: "my_function",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:14:5",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 10,
+            symbol: "mm",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:16:14",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 13,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:16:18",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 2,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:7:16",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 3,
+            symbol: "my_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:8:17",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 4,
+            symbol: "MY_CONST",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:8:30",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "my_module",
+            kind: Identifier,
+            position: Position {
+                start_line: 7,
+                start_column: 5,
+                end_line: 7,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: Identifier,
+            position: Position {
+                start_line: 7,
+                start_column: 16,
+                end_line: 7,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "my_module",
+            kind: Identifier,
+            position: Position {
+                start_line: 8,
+                start_column: 5,
+                end_line: 8,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "my_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 8,
+                start_column: 17,
+                end_line: 8,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "MY_CONST",
+            kind: Identifier,
+            position: Position {
+                start_line: 8,
+                start_column: 30,
+                end_line: 8,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "my_module",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 5,
+                end_line: 9,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "my_module",
+            kind: Identifier,
+            position: Position {
+                start_line: 10,
+                start_column: 5,
+                end_line: 10,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "mm",
+            kind: Identifier,
+            position: Position {
+                start_line: 10,
+                start_column: 18,
+                end_line: 10,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 13,
+                end_line: 13,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "my_function",
+            kind: CallExpression,
+            position: Position {
+                start_line: 14,
+                start_column: 5,
+                end_line: 14,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "MY_CONST",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 13,
+                end_line: 15,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "mm",
+            kind: Identifier,
+            position: Position {
+                start_line: 16,
+                start_column: 14,
+                end_line: 16,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: Identifier,
+            position: Position {
+                start_line: 16,
+                start_column: 18,
+                end_line: 16,
+                end_column: 26,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 17,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

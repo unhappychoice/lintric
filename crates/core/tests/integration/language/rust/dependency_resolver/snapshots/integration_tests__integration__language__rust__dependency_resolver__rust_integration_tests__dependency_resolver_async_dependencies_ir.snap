@@ -1,0 +1,666 @@
+---
+source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+use std::future::Future;
+
+async fn fetch_data() -> Result<String, String> {
+    Ok("data".to_string())
+}
+
+async fn process_data() -> Result<(), String> {
+    let data = fetch_data().await?;
+    println!("Processed: {}", data);
+    Ok(())
+}
+
+fn spawn_task<F: Future<Output = ()>>(future: F) {
+    // Simulate spawning async task
+    std::hint::black_box(future);
+}
+
+async fn main() {
+    let _ = process_data().await;
+    
+    spawn_task(async {
+        let data = fetch_data().await.unwrap();
+        println!("In spawn: {}", data);
+    });
+}
+
+AST:
+(source_file
+  (use_declaration
+    argument: (scoped_identifier "std::future::Future"
+      path: (scoped_identifier "std::future"
+        path: (identifier "std")
+        name: (identifier "future")
+      )
+      name: (identifier "Future")
+    )
+  )
+  (function_item
+    (function_modifiers)
+    name: (identifier "fetch_data")
+    parameters: (parameters)
+    return_type: (generic_type
+      type: (type_identifier "Result")
+      type_arguments: (type_arguments
+        (type_identifier "String")
+        (type_identifier "String")
+      )
+    )
+    body: (block
+      (call_expression
+        function: (identifier "Ok")
+        arguments: (arguments
+          (call_expression
+            function: (field_expression
+              value: (string_literal ""data""
+                (string_content)
+              )
+              field: (field_identifier "to_string")
+            )
+            arguments: (arguments)
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    (function_modifiers)
+    name: (identifier "process_data")
+    parameters: (parameters)
+    return_type: (generic_type
+      type: (type_identifier "Result")
+      type_arguments: (type_arguments
+        (unit_type)
+        (type_identifier "String")
+      )
+    )
+    body: (block
+      (let_declaration
+        pattern: (identifier "data")
+        value: (try_expression
+          (await_expression
+            (call_expression
+              function: (identifier "fetch_data")
+              arguments: (arguments)
+            )
+          )
+        )
+      )
+      (expression_statement
+        (macro_invocation
+          macro: (identifier "println")
+          (token_tree
+            (string_literal ""Processed: {}""
+              (string_content)
+            )
+            (identifier "data")
+          )
+        )
+      )
+      (call_expression
+        function: (identifier "Ok")
+        arguments: (arguments
+          (unit_expression)
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "spawn_task")
+    type_parameters: (type_parameters
+      (constrained_type_parameter
+        left: (type_identifier "F")
+        bounds: (trait_bounds
+          (generic_type
+            type: (type_identifier "Future")
+            type_arguments: (type_arguments
+              (type_binding
+                name: (type_identifier "Output")
+                type: (unit_type)
+              )
+            )
+          )
+        )
+      )
+    )
+    parameters: (parameters
+      (parameter
+        pattern: (identifier "future")
+        type: (type_identifier "F")
+      )
+    )
+    body: (block
+      (line_comment)
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier "std::hint::black_box"
+            path: (scoped_identifier "std::hint"
+              path: (identifier "std")
+              name: (identifier "hint")
+            )
+            name: (identifier "black_box")
+          )
+          arguments: (arguments
+            (identifier "future")
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    (function_modifiers)
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        value: (await_expression
+          (call_expression
+            function: (identifier "process_data")
+            arguments: (arguments)
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (identifier "spawn_task")
+          arguments: (arguments
+            (async_block
+              (block
+                (let_declaration
+                  pattern: (identifier "data")
+                  value: (call_expression
+                    function: (field_expression
+                      value: (await_expression
+                        (call_expression
+                          function: (identifier "fetch_data")
+                          arguments: (arguments)
+                        )
+                      )
+                      field: (field_identifier "unwrap")
+                    )
+                    arguments: (arguments)
+                  )
+                )
+                (expression_statement
+                  (macro_invocation
+                    macro: (identifier "println")
+                    (token_tree
+                      (string_literal ""In spawn: {}""
+                        (string_content)
+                      )
+                      (identifier "data")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/dependency_resolver/fixtures/async_dependencies.rs",
+    definitions: [
+        Definition {
+            name: "Future",
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 24,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "fetch_data",
+            position: Position {
+                start_line: 3,
+                start_column: 10,
+                end_line: 3,
+                end_column: 20,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "process_data",
+            position: Position {
+                start_line: 7,
+                start_column: 10,
+                end_line: 7,
+                end_column: 22,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "data",
+            position: Position {
+                start_line: 8,
+                start_column: 9,
+                end_line: 8,
+                end_column: 13,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "spawn_task",
+            position: Position {
+                start_line: 13,
+                start_column: 4,
+                end_line: 13,
+                end_column: 14,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "F",
+            position: Position {
+                start_line: 13,
+                start_column: 15,
+                end_line: 13,
+                end_column: 16,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "future",
+            position: Position {
+                start_line: 13,
+                start_column: 39,
+                end_line: 13,
+                end_column: 45,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 18,
+                start_column: 10,
+                end_line: 18,
+                end_column: 14,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "data",
+            position: Position {
+                start_line: 22,
+                start_column: 13,
+                end_line: 22,
+                end_column: 17,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 1,
+            target_line: 13,
+            symbol: "future",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:1:10",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 3,
+            symbol: "fetch_data",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:8:16",
+            ),
+        },
+        Dependency {
+            source_line: 9,
+            target_line: 8,
+            symbol: "data",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:9:31",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 13,
+            symbol: "future",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:15:26",
+            ),
+        },
+        Dependency {
+            source_line: 19,
+            target_line: 7,
+            symbol: "process_data",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:19:13",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 13,
+            symbol: "spawn_task",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:21:5",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 3,
+            symbol: "fetch_data",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:22:20",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 8,
+            symbol: "data",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:23:34",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "std",
+            kind: Identifier,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 8,
+            },
+        },
+        Usage {
+            name: "future",
+            kind: Identifier,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "Future",
+            kind: Identifier,
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "Result",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 3,
+                start_column: 26,
+                end_line: 3,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 3,
+                start_column: 33,
+                end_line: 3,
+                end_column: 39,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 3,
+                start_column: 41,
+                end_line: 3,
+                end_column: 47,
+            },
+        },
+        Usage {
+            name: "Ok",
+            kind: CallExpression,
+            position: Position {
+                start_line: 4,
+                start_column: 5,
+                end_line: 4,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "\"data\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 4,
+                start_column: 8,
+                end_line: 4,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "\"data\".to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 4,
+                start_column: 8,
+                end_line: 4,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "Result",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 7,
+                start_column: 28,
+                end_line: 7,
+                end_column: 34,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 7,
+                start_column: 39,
+                end_line: 7,
+                end_column: 45,
+            },
+        },
+        Usage {
+            name: "fetch_data",
+            kind: CallExpression,
+            position: Position {
+                start_line: 8,
+                start_column: 16,
+                end_line: 8,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 5,
+                end_line: 9,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "data",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 31,
+                end_line: 9,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "Ok",
+            kind: CallExpression,
+            position: Position {
+                start_line: 10,
+                start_column: 5,
+                end_line: 10,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "F",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 13,
+                start_column: 47,
+                end_line: 13,
+                end_column: 48,
+            },
+        },
+        Usage {
+            name: "std::hint::black_box",
+            kind: CallExpression,
+            position: Position {
+                start_line: 15,
+                start_column: 5,
+                end_line: 15,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "std",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 5,
+                end_line: 15,
+                end_column: 8,
+            },
+        },
+        Usage {
+            name: "hint",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 10,
+                end_line: 15,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "black_box",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 16,
+                end_line: 15,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "future",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 26,
+                end_line: 15,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "process_data",
+            kind: CallExpression,
+            position: Position {
+                start_line: 19,
+                start_column: 13,
+                end_line: 19,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "spawn_task",
+            kind: CallExpression,
+            position: Position {
+                start_line: 21,
+                start_column: 5,
+                end_line: 24,
+                end_column: 7,
+            },
+        },
+        Usage {
+            name: "fetch_data().await.unwrap",
+            kind: CallExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 20,
+                end_line: 22,
+                end_column: 47,
+            },
+        },
+        Usage {
+            name: "fetch_data().await.unwrap",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 20,
+                end_line: 22,
+                end_column: 45,
+            },
+        },
+        Usage {
+            name: "fetch_data",
+            kind: CallExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 20,
+                end_line: 22,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 23,
+                start_column: 9,
+                end_line: 23,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "data",
+            kind: Identifier,
+            position: Position {
+                start_line: 23,
+                start_column: 34,
+                end_line: 23,
+                end_column: 38,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 25,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

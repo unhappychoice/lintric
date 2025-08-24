@@ -1,0 +1,60 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
+---
+{
+  "file_path": "tests/integration/language/rust/fixtures/hoisting_test.rs",
+  "line_metrics": [
+    {
+      "line_number": 3,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.20512820512820512,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        11
+      ]
+    },
+    {
+      "line_number": 6,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.02564102564102564,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        7
+      ]
+    },
+    {
+      "line_number": 17,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.07692307692307693,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        20
+      ]
+    },
+    {
+      "line_number": 26,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.07692307692307693,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        29
+      ]
+    },
+    {
+      "line_number": 35,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.10256410256410256,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        39
+      ]
+    }
+  ],
+  "overall_complexity_score": 11.04871794871795
+}

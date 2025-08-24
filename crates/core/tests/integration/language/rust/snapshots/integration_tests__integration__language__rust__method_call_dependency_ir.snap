@@ -1,0 +1,263 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: ir_snapshot_content
+---
+Source Code:
+struct MyStruct {
+    value: i32,
+}
+
+impl MyStruct {
+    fn my_method(&self) -> i32 {
+        self.value
+    }
+}
+
+fn main() {
+    let s = MyStruct { value: 10 };
+    s.my_method();
+}
+
+
+AST:
+(source_file
+  (struct_item
+    name: (type_identifier "MyStruct")
+    body: (field_declaration_list
+      (field_declaration
+        name: (field_identifier "value")
+        type: (primitive_type "i32")
+      )
+    )
+  )
+  (impl_item
+    type: (type_identifier "MyStruct")
+    body: (declaration_list
+      (function_item
+        name: (identifier "my_method")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (primitive_type "i32")
+        body: (block
+          (field_expression
+            value: (self "self")
+            field: (field_identifier "value")
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "s")
+        value: (struct_expression
+          name: (type_identifier "MyStruct")
+          body: (field_initializer_list
+            (field_initializer
+              field: (field_identifier "value")
+              value: (integer_literal "10")
+            )
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (field_expression
+            value: (identifier "s")
+            field: (field_identifier "my_method")
+          )
+          arguments: (arguments)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/fixtures/method_call_dependency.rs",
+    definitions: [
+        Definition {
+            name: "MyStruct",
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 16,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "value",
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 10,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "my_method",
+            position: Position {
+                start_line: 6,
+                start_column: 8,
+                end_line: 6,
+                end_column: 17,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "my_method",
+            position: Position {
+                start_line: 6,
+                start_column: 8,
+                end_line: 6,
+                end_column: 17,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 11,
+                start_column: 4,
+                end_line: 11,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "s",
+            position: Position {
+                start_line: 12,
+                start_column: 9,
+                end_line: 12,
+                end_column: 10,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "MyStruct",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:5:6",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 2,
+            symbol: "value",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 12,
+            target_line: 1,
+            symbol: "MyStruct",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:12:13",
+            ),
+        },
+        Dependency {
+            source_line: 13,
+            target_line: 12,
+            symbol: "s",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:13:5",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "MyStruct",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 5,
+                start_column: 6,
+                end_line: 5,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "self.value",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 7,
+                start_column: 9,
+                end_line: 7,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "MyStruct { value: 10 }",
+            kind: StructExpression,
+            position: Position {
+                start_line: 12,
+                start_column: 13,
+                end_line: 12,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 12,
+                start_column: 13,
+                end_line: 12,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "s.my_method",
+            kind: CallExpression,
+            position: Position {
+                start_line: 13,
+                start_column: 5,
+                end_line: 13,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "s.my_method",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 13,
+                start_column: 5,
+                end_line: 13,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "s",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 5,
+                end_line: 13,
+                end_column: 6,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 14,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

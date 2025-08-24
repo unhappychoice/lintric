@@ -1,0 +1,746 @@
+---
+source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+struct Container<T> {
+    item: T,
+}
+
+impl<T> Container<T> {
+    fn new(item: T) -> Self {
+        Container { item }
+    }
+    
+    fn get(&self) -> &T {
+        &self.item
+    }
+}
+
+fn process<T: Clone>(container: &Container<T>) -> T {
+    container.get().clone()
+}
+
+fn main() {
+    let container = Container::new(42);
+    let value = process(&container);
+    println!("{}", value);
+}
+
+AST:
+(source_file
+  (struct_item
+    name: (type_identifier "Container")
+    type_parameters: (type_parameters
+      (type_identifier "T")
+    )
+    body: (field_declaration_list
+      (field_declaration
+        name: (field_identifier "item")
+        type: (type_identifier "T")
+      )
+    )
+  )
+  (impl_item
+    type_parameters: (type_parameters
+      (type_identifier "T")
+    )
+    type: (generic_type
+      type: (type_identifier "Container")
+      type_arguments: (type_arguments
+        (type_identifier "T")
+      )
+    )
+    body: (declaration_list
+      (function_item
+        name: (identifier "new")
+        parameters: (parameters
+          (parameter
+            pattern: (identifier "item")
+            type: (type_identifier "T")
+          )
+        )
+        return_type: (type_identifier "Self")
+        body: (block
+          (struct_expression
+            name: (type_identifier "Container")
+            body: (field_initializer_list
+              (shorthand_field_initializer
+                (identifier "item")
+              )
+            )
+          )
+        )
+      )
+      (function_item
+        name: (identifier "get")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+        )
+        return_type: (reference_type
+          type: (type_identifier "T")
+        )
+        body: (block
+          (reference_expression
+            value: (field_expression
+              value: (self "self")
+              field: (field_identifier "item")
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "process")
+    type_parameters: (type_parameters
+      (constrained_type_parameter
+        left: (type_identifier "T")
+        bounds: (trait_bounds
+          (type_identifier "Clone")
+        )
+      )
+    )
+    parameters: (parameters
+      (parameter
+        pattern: (identifier "container")
+        type: (reference_type
+          type: (generic_type
+            type: (type_identifier "Container")
+            type_arguments: (type_arguments
+              (type_identifier "T")
+            )
+          )
+        )
+      )
+    )
+    return_type: (type_identifier "T")
+    body: (block
+      (call_expression
+        function: (field_expression
+          value: (call_expression
+            function: (field_expression
+              value: (identifier "container")
+              field: (field_identifier "get")
+            )
+            arguments: (arguments)
+          )
+          field: (field_identifier "clone")
+        )
+        arguments: (arguments)
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "container")
+        value: (call_expression
+          function: (scoped_identifier "Container::new"
+            path: (identifier "Container")
+            name: (identifier "new")
+          )
+          arguments: (arguments
+            (integer_literal "42")
+          )
+        )
+      )
+      (let_declaration
+        pattern: (identifier "value")
+        value: (call_expression
+          function: (identifier "process")
+          arguments: (arguments
+            (reference_expression
+              value: (identifier "container")
+            )
+          )
+        )
+      )
+      (expression_statement
+        (macro_invocation
+          macro: (identifier "println")
+          (token_tree
+            (string_literal ""{}""
+              (string_content)
+            )
+            (identifier "value")
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/dependency_resolver/fixtures/generic_resolution.rs",
+    definitions: [
+        Definition {
+            name: "Container",
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 17,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "T",
+            position: Position {
+                start_line: 1,
+                start_column: 18,
+                end_line: 1,
+                end_column: 19,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "item",
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 9,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 6,
+                start_column: 8,
+                end_line: 6,
+                end_column: 11,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "item",
+            position: Position {
+                start_line: 6,
+                start_column: 12,
+                end_line: 6,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "get",
+            position: Position {
+                start_line: 10,
+                start_column: 8,
+                end_line: 10,
+                end_column: 11,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 6,
+                start_column: 8,
+                end_line: 6,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "item",
+            position: Position {
+                start_line: 6,
+                start_column: 12,
+                end_line: 6,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "get",
+            position: Position {
+                start_line: 10,
+                start_column: 8,
+                end_line: 10,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "process",
+            position: Position {
+                start_line: 15,
+                start_column: 4,
+                end_line: 15,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "T",
+            position: Position {
+                start_line: 15,
+                start_column: 12,
+                end_line: 15,
+                end_column: 13,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "container",
+            position: Position {
+                start_line: 15,
+                start_column: 22,
+                end_line: 15,
+                end_column: 31,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 19,
+                start_column: 4,
+                end_line: 19,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "container",
+            position: Position {
+                start_line: 20,
+                start_column: 9,
+                end_line: 20,
+                end_column: 18,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "value",
+            position: Position {
+                start_line: 21,
+                start_column: 9,
+                end_line: 21,
+                end_column: 14,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 2,
+            target_line: 1,
+            symbol: "T",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:2:11",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "Container",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:5:9",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "T",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:5:19",
+            ),
+        },
+        Dependency {
+            source_line: 6,
+            target_line: 1,
+            symbol: "T",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:6:18",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 1,
+            symbol: "Container",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:7:9",
+            ),
+        },
+        Dependency {
+            source_line: 7,
+            target_line: 2,
+            symbol: "item",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:7:21",
+            ),
+        },
+        Dependency {
+            source_line: 10,
+            target_line: 1,
+            symbol: "T",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:10:23",
+            ),
+        },
+        Dependency {
+            source_line: 11,
+            target_line: 2,
+            symbol: "item",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 1,
+            symbol: "Container",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:34",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 1,
+            symbol: "T",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:44",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 1,
+            symbol: "T",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:51",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 20,
+            symbol: "container",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:16:5",
+            ),
+        },
+        Dependency {
+            source_line: 20,
+            target_line: 1,
+            symbol: "Container",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:20:21",
+            ),
+        },
+        Dependency {
+            source_line: 20,
+            target_line: 6,
+            symbol: "new",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:20:32",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 15,
+            symbol: "process",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:21:17",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 20,
+            symbol: "container",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:21:26",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 21,
+            symbol: "value",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:20",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 2,
+                start_column: 11,
+                end_line: 2,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "Container",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 5,
+                start_column: 9,
+                end_line: 5,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 5,
+                start_column: 19,
+                end_line: 5,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 6,
+                start_column: 18,
+                end_line: 6,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "Self",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 6,
+                start_column: 24,
+                end_line: 6,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "Container { item }",
+            kind: StructExpression,
+            position: Position {
+                start_line: 7,
+                start_column: 9,
+                end_line: 7,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "Container",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 7,
+                start_column: 9,
+                end_line: 7,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "item",
+            kind: Identifier,
+            position: Position {
+                start_line: 7,
+                start_column: 21,
+                end_line: 7,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 10,
+                start_column: 23,
+                end_line: 10,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "self.item",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 11,
+                start_column: 10,
+                end_line: 11,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "Container",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 34,
+                end_line: 15,
+                end_column: 43,
+            },
+        },
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 44,
+                end_line: 15,
+                end_column: 45,
+            },
+        },
+        Usage {
+            name: "T",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 51,
+                end_line: 15,
+                end_column: 52,
+            },
+        },
+        Usage {
+            name: "container.get().clone",
+            kind: CallExpression,
+            position: Position {
+                start_line: 16,
+                start_column: 5,
+                end_line: 16,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "container.get().clone",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 16,
+                start_column: 5,
+                end_line: 16,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "container.get",
+            kind: CallExpression,
+            position: Position {
+                start_line: 16,
+                start_column: 5,
+                end_line: 16,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "container.get",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 16,
+                start_column: 5,
+                end_line: 16,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "container",
+            kind: Identifier,
+            position: Position {
+                start_line: 16,
+                start_column: 5,
+                end_line: 16,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "Container::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 20,
+                start_column: 21,
+                end_line: 20,
+                end_column: 39,
+            },
+        },
+        Usage {
+            name: "Container",
+            kind: Identifier,
+            position: Position {
+                start_line: 20,
+                start_column: 21,
+                end_line: 20,
+                end_column: 30,
+            },
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 20,
+                start_column: 32,
+                end_line: 20,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "process",
+            kind: CallExpression,
+            position: Position {
+                start_line: 21,
+                start_column: 17,
+                end_line: 21,
+                end_column: 36,
+            },
+        },
+        Usage {
+            name: "container",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 26,
+                end_line: 21,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 5,
+                end_line: 22,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "value",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 20,
+                end_line: 22,
+                end_column: 25,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 23,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

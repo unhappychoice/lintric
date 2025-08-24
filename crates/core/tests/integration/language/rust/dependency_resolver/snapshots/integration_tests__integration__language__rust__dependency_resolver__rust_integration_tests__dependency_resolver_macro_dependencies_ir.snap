@@ -1,0 +1,738 @@
+---
+source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+macro_rules! create_function {
+    ($name:ident, $return_type:ty) => {
+        fn $name() -> $return_type {
+            Default::default()
+        }
+    };
+}
+
+macro_rules! impl_display {
+    ($type:ty) => {
+        impl std::fmt::Display for $type {
+            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                write!(f, "Custom Display")
+            }
+        }
+    };
+}
+
+create_function!(get_number, i32);
+create_function!(get_string, String);
+
+struct CustomType;
+
+impl_display!(CustomType);
+
+fn main() {
+    let num = get_number();
+    let s = get_string();
+    let custom = CustomType;
+    
+    println!("{} {} {}", num, s, custom);
+}
+
+AST:
+(source_file
+  (macro_definition
+    name: (identifier "create_function")
+    (macro_rule
+      left: (token_tree_pattern
+        (token_binding_pattern
+          name: (metavariable)
+          type: (fragment_specifier)
+        )
+        (token_binding_pattern
+          name: (metavariable)
+          type: (fragment_specifier)
+        )
+      )
+      right: (token_tree
+        (metavariable)
+        (token_tree)
+        (metavariable)
+        (token_tree
+          (identifier "Default")
+          (token_tree)
+        )
+      )
+    )
+  )
+  (macro_definition
+    name: (identifier "impl_display")
+    (macro_rule
+      left: (token_tree_pattern
+        (token_binding_pattern
+          name: (metavariable)
+          type: (fragment_specifier)
+        )
+      )
+      right: (token_tree
+        (identifier "std")
+        (identifier "fmt")
+        (identifier "Display")
+        (metavariable)
+        (token_tree
+          (identifier "fmt")
+          (token_tree
+            (self "self")
+            (identifier "f")
+            (mutable_specifier)
+            (identifier "std")
+            (identifier "fmt")
+            (identifier "Formatter")
+          )
+          (identifier "std")
+          (identifier "fmt")
+          (identifier "Result")
+          (token_tree
+            (identifier "write")
+            (token_tree
+              (identifier "f")
+              (string_literal ""Custom Display""
+                (string_content)
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (expression_statement
+    (macro_invocation
+      macro: (identifier "create_function")
+      (token_tree
+        (identifier "get_number")
+        (primitive_type "i32")
+      )
+    )
+  )
+  (expression_statement
+    (macro_invocation
+      macro: (identifier "create_function")
+      (token_tree
+        (identifier "get_string")
+        (identifier "String")
+      )
+    )
+  )
+  (struct_item
+    name: (type_identifier "CustomType")
+  )
+  (expression_statement
+    (macro_invocation
+      macro: (identifier "impl_display")
+      (token_tree
+        (identifier "CustomType")
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "num")
+        value: (call_expression
+          function: (identifier "get_number")
+          arguments: (arguments)
+        )
+      )
+      (let_declaration
+        pattern: (identifier "s")
+        value: (call_expression
+          function: (identifier "get_string")
+          arguments: (arguments)
+        )
+      )
+      (let_declaration
+        pattern: (identifier "custom")
+        value: (identifier "CustomType")
+      )
+      (expression_statement
+        (macro_invocation
+          macro: (identifier "println")
+          (token_tree
+            (string_literal ""{} {} {}""
+              (string_content)
+            )
+            (identifier "num")
+            (identifier "s")
+            (identifier "custom")
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/dependency_resolver/fixtures/macro_dependencies.rs",
+    definitions: [
+        Definition {
+            name: "create_function",
+            position: Position {
+                start_line: 1,
+                start_column: 14,
+                end_line: 1,
+                end_column: 29,
+            },
+            definition_type: MacroDefinition,
+        },
+        Definition {
+            name: "$name",
+            position: Position {
+                start_line: 2,
+                start_column: 6,
+                end_line: 2,
+                end_column: 11,
+            },
+            definition_type: MacroVariableDefinition,
+        },
+        Definition {
+            name: "$return_type",
+            position: Position {
+                start_line: 2,
+                start_column: 19,
+                end_line: 2,
+                end_column: 31,
+            },
+            definition_type: MacroVariableDefinition,
+        },
+        Definition {
+            name: "impl_display",
+            position: Position {
+                start_line: 9,
+                start_column: 14,
+                end_line: 9,
+                end_column: 26,
+            },
+            definition_type: MacroDefinition,
+        },
+        Definition {
+            name: "$type",
+            position: Position {
+                start_line: 10,
+                start_column: 6,
+                end_line: 10,
+                end_column: 11,
+            },
+            definition_type: MacroVariableDefinition,
+        },
+        Definition {
+            name: "CustomType",
+            position: Position {
+                start_line: 22,
+                start_column: 8,
+                end_line: 22,
+                end_column: 18,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 26,
+                start_column: 4,
+                end_line: 26,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "num",
+            position: Position {
+                start_line: 27,
+                start_column: 9,
+                end_line: 27,
+                end_column: 12,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "s",
+            position: Position {
+                start_line: 28,
+                start_column: 9,
+                end_line: 28,
+                end_column: 10,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "custom",
+            position: Position {
+                start_line: 29,
+                start_column: 9,
+                end_line: 29,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 3,
+            target_line: 2,
+            symbol: "$name",
+            dependency_type: MacroVariable,
+            context: Some(
+                "Metavariable:3:12",
+            ),
+        },
+        Dependency {
+            source_line: 3,
+            target_line: 2,
+            symbol: "$return_type",
+            dependency_type: MacroVariable,
+            context: Some(
+                "Metavariable:3:23",
+            ),
+        },
+        Dependency {
+            source_line: 11,
+            target_line: 10,
+            symbol: "$type",
+            dependency_type: MacroVariable,
+            context: Some(
+                "Metavariable:11:36",
+            ),
+        },
+        Dependency {
+            source_line: 19,
+            target_line: 1,
+            symbol: "create_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:19:1",
+            ),
+        },
+        Dependency {
+            source_line: 20,
+            target_line: 1,
+            symbol: "create_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:20:1",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 9,
+            symbol: "impl_display",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:24:1",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 29,
+            symbol: "CustomType",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:24:15",
+            ),
+        },
+        Dependency {
+            source_line: 31,
+            target_line: 27,
+            symbol: "num",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:31:26",
+            ),
+        },
+        Dependency {
+            source_line: 31,
+            target_line: 28,
+            symbol: "s",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:31:31",
+            ),
+        },
+        Dependency {
+            source_line: 31,
+            target_line: 29,
+            symbol: "custom",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:31:34",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "create_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 1,
+                start_column: 14,
+                end_line: 1,
+                end_column: 29,
+            },
+        },
+        Usage {
+            name: "$name",
+            kind: Metavariable,
+            position: Position {
+                start_line: 2,
+                start_column: 6,
+                end_line: 2,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "$return_type",
+            kind: Metavariable,
+            position: Position {
+                start_line: 2,
+                start_column: 19,
+                end_line: 2,
+                end_column: 31,
+            },
+        },
+        Usage {
+            name: "$name",
+            kind: Metavariable,
+            position: Position {
+                start_line: 3,
+                start_column: 12,
+                end_line: 3,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "$return_type",
+            kind: Metavariable,
+            position: Position {
+                start_line: 3,
+                start_column: 23,
+                end_line: 3,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "Default",
+            kind: Identifier,
+            position: Position {
+                start_line: 4,
+                start_column: 13,
+                end_line: 4,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "impl_display",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 14,
+                end_line: 9,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "$type",
+            kind: Metavariable,
+            position: Position {
+                start_line: 10,
+                start_column: 6,
+                end_line: 10,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "std",
+            kind: Identifier,
+            position: Position {
+                start_line: 11,
+                start_column: 14,
+                end_line: 11,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "fmt",
+            kind: Identifier,
+            position: Position {
+                start_line: 11,
+                start_column: 19,
+                end_line: 11,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "Display",
+            kind: Identifier,
+            position: Position {
+                start_line: 11,
+                start_column: 24,
+                end_line: 11,
+                end_column: 31,
+            },
+        },
+        Usage {
+            name: "$type",
+            kind: Metavariable,
+            position: Position {
+                start_line: 11,
+                start_column: 36,
+                end_line: 11,
+                end_column: 41,
+            },
+        },
+        Usage {
+            name: "fmt",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 16,
+                end_line: 12,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "f",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 27,
+                end_line: 12,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "std",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 35,
+                end_line: 12,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "fmt",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 40,
+                end_line: 12,
+                end_column: 43,
+            },
+        },
+        Usage {
+            name: "Formatter",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 45,
+                end_line: 12,
+                end_column: 54,
+            },
+        },
+        Usage {
+            name: "std",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 59,
+                end_line: 12,
+                end_column: 62,
+            },
+        },
+        Usage {
+            name: "fmt",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 64,
+                end_line: 12,
+                end_column: 67,
+            },
+        },
+        Usage {
+            name: "Result",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 69,
+                end_line: 12,
+                end_column: 75,
+            },
+        },
+        Usage {
+            name: "write",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 17,
+                end_line: 13,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "f",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 24,
+                end_line: 13,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "create_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 19,
+                start_column: 1,
+                end_line: 19,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "get_number",
+            kind: Identifier,
+            position: Position {
+                start_line: 19,
+                start_column: 18,
+                end_line: 19,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "create_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 20,
+                start_column: 1,
+                end_line: 20,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "get_string",
+            kind: Identifier,
+            position: Position {
+                start_line: 20,
+                start_column: 18,
+                end_line: 20,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: Identifier,
+            position: Position {
+                start_line: 20,
+                start_column: 30,
+                end_line: 20,
+                end_column: 36,
+            },
+        },
+        Usage {
+            name: "impl_display",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 1,
+                end_line: 24,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "CustomType",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 15,
+                end_line: 24,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "get_number",
+            kind: CallExpression,
+            position: Position {
+                start_line: 27,
+                start_column: 15,
+                end_line: 27,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "get_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 28,
+                start_column: 13,
+                end_line: 28,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "CustomType",
+            kind: Identifier,
+            position: Position {
+                start_line: 29,
+                start_column: 18,
+                end_line: 29,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 31,
+                start_column: 5,
+                end_line: 31,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "num",
+            kind: Identifier,
+            position: Position {
+                start_line: 31,
+                start_column: 26,
+                end_line: 31,
+                end_column: 29,
+            },
+        },
+        Usage {
+            name: "s",
+            kind: Identifier,
+            position: Position {
+                start_line: 31,
+                start_column: 31,
+                end_line: 31,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "custom",
+            kind: Identifier,
+            position: Position {
+                start_line: 31,
+                start_column: 34,
+                end_line: 31,
+                end_column: 40,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 32,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

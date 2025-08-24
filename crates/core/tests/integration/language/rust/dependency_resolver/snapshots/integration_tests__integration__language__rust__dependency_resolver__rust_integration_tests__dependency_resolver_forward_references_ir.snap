@@ -1,0 +1,433 @@
+---
+source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+fn main() {
+    helper();
+    
+    let result = is_even(4);
+    println!("{}", result);
+}
+
+fn helper() {
+    println!("Helper function");
+}
+
+fn is_even(n: i32) -> bool {
+    if n == 0 {
+        true
+    } else {
+        is_odd(n - 1)
+    }
+}
+
+fn is_odd(n: i32) -> bool {
+    if n == 0 {
+        false
+    } else {
+        is_even(n - 1)
+    }
+}
+
+AST:
+(source_file
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (expression_statement
+        (call_expression
+          function: (identifier "helper")
+          arguments: (arguments)
+        )
+      )
+      (let_declaration
+        pattern: (identifier "result")
+        value: (call_expression
+          function: (identifier "is_even")
+          arguments: (arguments
+            (integer_literal "4")
+          )
+        )
+      )
+      (expression_statement
+        (macro_invocation
+          macro: (identifier "println")
+          (token_tree
+            (string_literal ""{}""
+              (string_content)
+            )
+            (identifier "result")
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "helper")
+    parameters: (parameters)
+    body: (block
+      (expression_statement
+        (macro_invocation
+          macro: (identifier "println")
+          (token_tree
+            (string_literal ""Helper function""
+              (string_content)
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "is_even")
+    parameters: (parameters
+      (parameter
+        pattern: (identifier "n")
+        type: (primitive_type "i32")
+      )
+    )
+    return_type: (primitive_type "bool")
+    body: (block
+      (expression_statement
+        (if_expression
+          condition: (binary_expression
+            left: (identifier "n")
+            right: (integer_literal "0")
+          )
+          consequence: (block
+            (boolean_literal "true")
+          )
+          alternative: (else_clause
+            (block
+              (call_expression
+                function: (identifier "is_odd")
+                arguments: (arguments
+                  (binary_expression
+                    left: (identifier "n")
+                    right: (integer_literal "1")
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "is_odd")
+    parameters: (parameters
+      (parameter
+        pattern: (identifier "n")
+        type: (primitive_type "i32")
+      )
+    )
+    return_type: (primitive_type "bool")
+    body: (block
+      (expression_statement
+        (if_expression
+          condition: (binary_expression
+            left: (identifier "n")
+            right: (integer_literal "0")
+          )
+          consequence: (block
+            (boolean_literal "false")
+          )
+          alternative: (else_clause
+            (block
+              (call_expression
+                function: (identifier "is_even")
+                arguments: (arguments
+                  (binary_expression
+                    left: (identifier "n")
+                    right: (integer_literal "1")
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/dependency_resolver/fixtures/forward_references.rs",
+    definitions: [
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "result",
+            position: Position {
+                start_line: 4,
+                start_column: 9,
+                end_line: 4,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "helper",
+            position: Position {
+                start_line: 8,
+                start_column: 4,
+                end_line: 8,
+                end_column: 10,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "is_even",
+            position: Position {
+                start_line: 12,
+                start_column: 4,
+                end_line: 12,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "n",
+            position: Position {
+                start_line: 12,
+                start_column: 12,
+                end_line: 12,
+                end_column: 13,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "is_odd",
+            position: Position {
+                start_line: 20,
+                start_column: 4,
+                end_line: 20,
+                end_column: 10,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "n",
+            position: Position {
+                start_line: 20,
+                start_column: 11,
+                end_line: 20,
+                end_column: 12,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 2,
+            target_line: 8,
+            symbol: "helper",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:2:5",
+            ),
+        },
+        Dependency {
+            source_line: 4,
+            target_line: 12,
+            symbol: "is_even",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:4:18",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 4,
+            symbol: "result",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:5:20",
+            ),
+        },
+        Dependency {
+            source_line: 13,
+            target_line: 12,
+            symbol: "n",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:13:8",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 20,
+            symbol: "is_odd",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:16:9",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 12,
+            symbol: "n",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:16:16",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 12,
+            symbol: "n",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:21:8",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 12,
+            symbol: "is_even",
+            dependency_type: FunctionCall,
+            context: Some(
+                "CallExpression:24:9",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 12,
+            symbol: "n",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:24:17",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "helper",
+            kind: CallExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "is_even",
+            kind: CallExpression,
+            position: Position {
+                start_line: 4,
+                start_column: 18,
+                end_line: 4,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 5,
+                start_column: 5,
+                end_line: 5,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "result",
+            kind: Identifier,
+            position: Position {
+                start_line: 5,
+                start_column: 20,
+                end_line: 5,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 5,
+                end_line: 9,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "n",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 8,
+                end_line: 13,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "is_odd",
+            kind: CallExpression,
+            position: Position {
+                start_line: 16,
+                start_column: 9,
+                end_line: 16,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "n",
+            kind: Identifier,
+            position: Position {
+                start_line: 16,
+                start_column: 16,
+                end_line: 16,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "n",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 8,
+                end_line: 21,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "is_even",
+            kind: CallExpression,
+            position: Position {
+                start_line: 24,
+                start_column: 9,
+                end_line: 24,
+                end_column: 23,
+            },
+        },
+        Usage {
+            name: "n",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 17,
+                end_line: 24,
+                end_column: 18,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 26,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}
