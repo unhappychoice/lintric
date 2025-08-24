@@ -5,16 +5,21 @@ use tree_sitter::Parser;
 
 fn setup_rust_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(&tree_sitter_rust::language()).expect("Error loading Rust grammar");
+    parser
+        .set_language(&tree_sitter_rust::language())
+        .expect("Error loading Rust grammar");
     parser
 }
 
 #[test]
 fn test_rust_scope_collector_creation() {
     let collector = RustScopeCollector::new();
-    
+
     // Test that collector can be created
-    assert_eq!(collector.scope_tree.get_scope(0).unwrap().scope_type, ScopeType::Global);
+    assert_eq!(
+        collector.scope_tree.get_scope(0).unwrap().scope_type,
+        ScopeType::Global
+    );
 }
 
 #[test]
@@ -30,19 +35,23 @@ fn another_function(param: i32) -> i32 {
     result
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Should have global scope and function scopes
     let scopes = scope_tree.get_all_scopes();
-    assert!(scopes.len() >= 3, "Should have at least global and two function scopes");
-    
+    assert!(
+        scopes.len() >= 3,
+        "Should have at least global and two function scopes"
+    );
+
     // Should have function scopes
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
     assert!(!function_scopes.is_empty(), "Should have function scopes");
@@ -65,19 +74,20 @@ fn main() {
     }
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Should have global, function, and block scopes
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should have at least 4 scopes");
-    
+
     // Should have block scopes
-    let block_scopes: Vec<_> = scopes.iter()
+    let block_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Block)
         .collect();
     assert!(!block_scopes.is_empty(), "Should have block scopes");
@@ -102,22 +112,26 @@ fn outer() {
     inner();
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Should handle nested function scopes
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should handle nested function scopes");
-    
+
     // Should have multiple function scopes
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
-    assert!(function_scopes.len() >= 3, "Should have at least 3 function scopes");
+    assert!(
+        function_scopes.len() >= 3,
+        "Should have at least 3 function scopes"
+    );
 }
 
 #[test]
@@ -141,18 +155,22 @@ impl TestStruct {
     }
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
-    assert!(scopes.len() >= 4, "Should handle impl block and method scopes");
-    
+    assert!(
+        scopes.len() >= 4,
+        "Should handle impl block and method scopes"
+    );
+
     // Should have function scopes for methods
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
     assert!(function_scopes.len() >= 3, "Should have method scopes");
@@ -179,18 +197,22 @@ mod network {
     }
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
-    assert!(scopes.len() >= 6, "Should handle module and function scopes");
-    
+    assert!(
+        scopes.len() >= 6,
+        "Should handle module and function scopes"
+    );
+
     // Should have module scopes
-    let module_scopes: Vec<_> = scopes.iter()
+    let module_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Module)
         .collect();
     assert!(!module_scopes.is_empty(), "Should have module scopes");
@@ -220,21 +242,25 @@ fn main() {
     }
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 5, "Should handle loop and block scopes");
-    
+
     // Should have block scopes for loops
-    let block_scopes: Vec<_> = scopes.iter()
+    let block_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Block)
         .collect();
-    assert!(!block_scopes.is_empty(), "Should have block scopes for loops");
+    assert!(
+        !block_scopes.is_empty(),
+        "Should have block scopes for loops"
+    );
 }
 
 #[test]
@@ -252,21 +278,25 @@ fn main() {
     println!("result = {}", result);
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 2, "Should handle closure scopes");
-    
+
     // Should have function scope
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
-    assert!(function_scopes.len() >= 1, "Should have at least one function scope");
+    assert!(
+        function_scopes.len() >= 1,
+        "Should have at least one function scope"
+    );
 }
 
 #[test]
@@ -287,21 +317,25 @@ fn main() {
     }
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should handle match arm scopes");
-    
+
     // Should have block scopes for match arms
-    let block_scopes: Vec<_> = scopes.iter()
+    let block_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Block)
         .collect();
-    assert!(!block_scopes.is_empty(), "Should have block scopes for match arms");
+    assert!(
+        !block_scopes.is_empty(),
+        "Should have block scopes for match arms"
+    );
 }
 
 #[test]
@@ -319,22 +353,28 @@ fn outer() {
     }
 }
     "#;
-    
+
     let mut collector = RustScopeCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Test that scopes have proper parent-child relationships
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should have proper scope hierarchy");
-    
+
     // Global scope should be the root
     let global_scope = scope_tree.get_scope(0).unwrap();
     assert_eq!(global_scope.scope_type, ScopeType::Global);
-    assert!(global_scope.parent.is_none(), "Global scope should have no parent");
-    
+    assert!(
+        global_scope.parent.is_none(),
+        "Global scope should have no parent"
+    );
+
     // Should have children
-    assert!(!global_scope.children.is_empty(), "Global scope should have children");
+    assert!(
+        !global_scope.children.is_empty(),
+        "Global scope should have children"
+    );
 }

@@ -299,4 +299,3 @@ impl Default for RustImplCollector {
         Self::new()
     }
 }
-

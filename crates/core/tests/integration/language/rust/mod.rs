@@ -7,7 +7,10 @@ macro_rules! test_rust_analysis {
     ($test_name:ident, $fixture_name:literal, $ir_snapshot:literal, $metrics_snapshot:literal) => {
         #[test]
         fn $test_name() {
-            let file_path = format!("tests/integration/language/rust/fixtures/{}.rs", $fixture_name);
+            let file_path = format!(
+                "tests/integration/language/rust/fixtures/{}.rs",
+                $fixture_name
+            );
             let (ir, result) = analyze_code(file_path.clone()).unwrap();
 
             // Read source code for snapshot

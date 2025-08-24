@@ -438,7 +438,6 @@ impl Default for TraitResolver {
     }
 }
 
-
 impl MethodResolver {
     /// Resolve struct field access dependencies for Rust
     pub fn resolve_struct_field_access(

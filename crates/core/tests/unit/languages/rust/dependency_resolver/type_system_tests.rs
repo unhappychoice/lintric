@@ -1,5 +1,5 @@
 use lintric_core::languages::rust::dependency_resolver::method_resolver::*;
-use lintric_core::models::{Type, InferenceContext};
+use lintric_core::models::{InferenceContext, Type};
 use std::collections::HashMap;
 
 #[test]
@@ -17,7 +17,10 @@ fn test_type_inference_basic() {
 fn test_type_inference_with_symbols() {
     let mut symbols = HashMap::new();
     symbols.insert("my_var".to_string(), Type::Concrete("MyStruct".to_string()));
-    symbols.insert("another_var".to_string(), Type::Concrete("AnotherStruct".to_string()));
+    symbols.insert(
+        "another_var".to_string(),
+        Type::Concrete("AnotherStruct".to_string()),
+    );
 
     let engine = TypeInferenceEngine::new().with_symbols(symbols);
 
@@ -44,7 +47,9 @@ fn test_type_system_concrete_types() {
 fn test_resolution_path_variants() {
     let inherent_path = ResolutionPath::InherentMethod { impl_block_id: 1 };
     let trait_path = ResolutionPath::TraitMethod { trait_impl_id: 2 };
-    let associated_path = ResolutionPath::Associated { type_name: "MyStruct".to_string() };
+    let associated_path = ResolutionPath::Associated {
+        type_name: "MyStruct".to_string(),
+    };
 
     // Verify the enum variants can be created and compared
     match inherent_path {

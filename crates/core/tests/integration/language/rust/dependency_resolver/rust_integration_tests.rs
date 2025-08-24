@@ -6,7 +6,10 @@ macro_rules! test_dependency_resolver_analysis {
     ($test_name:ident, $fixture_name:literal, $ir_snapshot:literal) => {
         #[test]
         fn $test_name() {
-            let file_path = format!("tests/integration/language/rust/dependency_resolver/fixtures/{}.rs", $fixture_name);
+            let file_path = format!(
+                "tests/integration/language/rust/dependency_resolver/fixtures/{}.rs",
+                $fixture_name
+            );
             let (ir, _result) = analyze_code(file_path.clone()).unwrap();
 
             let source_code = fs::read_to_string(&file_path).unwrap();
@@ -22,7 +25,7 @@ macro_rules! test_dependency_resolver_analysis {
             );
 
             assert_snapshot!($ir_snapshot, ir_snapshot_content);
-            
+
             // Verify dependencies are detected
             assert!(!ir.dependencies.is_empty(), "Should have dependencies");
         }
@@ -37,7 +40,7 @@ test_dependency_resolver_analysis!(
 
 test_dependency_resolver_analysis!(
     test_method_resolution,
-    "method_resolution", 
+    "method_resolution",
     "dependency_resolver_method_resolution_ir"
 );
 
@@ -85,7 +88,7 @@ test_dependency_resolver_analysis!(
 
 test_dependency_resolver_analysis!(
     test_macro_dependencies,
-    "macro_dependencies", 
+    "macro_dependencies",
     "dependency_resolver_macro_dependencies_ir"
 );
 
@@ -103,7 +106,8 @@ test_dependency_resolver_analysis!(
 
 #[test]
 fn test_specific_dependency_types() {
-    let file_path = "tests/integration/language/rust/dependency_resolver/fixtures/method_resolution.rs";
+    let file_path =
+        "tests/integration/language/rust/dependency_resolver/fixtures/method_resolution.rs";
     let (ir, _result) = analyze_code(file_path.to_string()).unwrap();
 
     // Check that we have some dependencies
@@ -112,26 +116,38 @@ fn test_specific_dependency_types() {
 
 #[test]
 fn test_trait_method_dependencies() {
-    let file_path = "tests/integration/language/rust/dependency_resolver/fixtures/complex_trait_hierarchy.rs";
+    let file_path =
+        "tests/integration/language/rust/dependency_resolver/fixtures/complex_trait_hierarchy.rs";
     let (ir, _result) = analyze_code(file_path.to_string()).unwrap();
 
     // Verify trait method dependencies are resolved
-    let trait_methods: Vec<_> = ir.dependencies.iter()
+    let trait_methods: Vec<_> = ir
+        .dependencies
+        .iter()
         .filter(|d| d.symbol == "name" || d.symbol == "speak" || d.symbol == "fur_color")
         .collect();
 
-    assert!(!trait_methods.is_empty(), "Should resolve trait method dependencies");
+    assert!(
+        !trait_methods.is_empty(),
+        "Should resolve trait method dependencies"
+    );
 }
 
 #[test]
 fn test_generic_type_dependencies() {
-    let file_path = "tests/integration/language/rust/dependency_resolver/fixtures/generic_resolution.rs";
+    let file_path =
+        "tests/integration/language/rust/dependency_resolver/fixtures/generic_resolution.rs";
     let (ir, _result) = analyze_code(file_path.to_string()).unwrap();
 
     // Check for generic-related dependencies
-    let generic_deps: Vec<_> = ir.dependencies.iter()
+    let generic_deps: Vec<_> = ir
+        .dependencies
+        .iter()
         .filter(|d| d.symbol.contains("Container") || d.symbol == "process")
         .collect();
 
-    assert!(!generic_deps.is_empty(), "Should resolve generic type dependencies");
+    assert!(
+        !generic_deps.is_empty(),
+        "Should resolve generic type dependencies"
+    );
 }

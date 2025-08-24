@@ -1,5 +1,7 @@
 use lintric_core::languages::rust::dependency_resolver::nested_scope_resolver::*;
-use lintric_core::models::{Definition, DefinitionType, Position, ScopeTree, ScopeType, Usage, UsageKind};
+use lintric_core::models::{
+    Definition, DefinitionType, Position, ScopeTree, ScopeType, Usage, UsageKind,
+};
 use tree_sitter::Parser;
 
 fn create_test_scope_tree() -> ScopeTree {
@@ -76,7 +78,9 @@ fn create_test_scope_tree() -> ScopeTree {
 
 fn setup_rust_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(&tree_sitter_rust::language()).expect("Error loading Rust grammar");
+    parser
+        .set_language(&tree_sitter_rust::language())
+        .expect("Error loading Rust grammar");
     parser
 }
 
@@ -171,12 +175,12 @@ fn main() {
     println!("Result: {}, Mutable: {}", result, mutable_var);
 }
     "#;
-    
+
     let _parser = setup_rust_parser();
     // This test verifies the closure analyzer can be created and used
     let mut analyzer = ClosureAnalyzer::new();
     let scope_tree = create_test_scope_tree();
-    
+
     // Test capture analysis infrastructure
     let _captures = analyzer.analyze_closure_captures(2, &scope_tree);
     assert!(_captures.is_empty() || !_captures.is_empty());
@@ -202,11 +206,11 @@ fn outer_function() {
     inner_function();
 }
     "#;
-    
+
     let _parser = setup_rust_parser();
     let scope_tree = create_test_scope_tree();
     let resolver = NestedScopeResolver::new(scope_tree);
-    
+
     // Test nested function scope infrastructure
     let accessible_scopes = resolver.get_accessible_scopes(2);
     assert!(!accessible_scopes.is_empty());
@@ -228,11 +232,11 @@ fn main() {
     println!("Outer x: {}", x);
 }
     "#;
-    
+
     let _parser = setup_rust_parser();
     let scope_tree = create_test_scope_tree();
     let resolver = NestedScopeResolver::new(scope_tree);
-    
+
     // Test variable shadowing resolution infrastructure
     let accessible_scopes = resolver.get_accessible_scopes(1);
     assert!(!accessible_scopes.is_empty());
@@ -241,7 +245,7 @@ fn main() {
 #[test]
 fn test_capture_type_inference() {
     let mut analyzer = ClosureAnalyzer::new();
-    
+
     let _definition = Definition::new_simple(
         "test_var".to_string(),
         DefinitionType::VariableDefinition,
@@ -252,7 +256,7 @@ fn test_capture_type_inference() {
             end_column: 1,
         },
     );
-    
+
     // Test capture type inference through analyze_closure_captures
     let scope_tree = create_test_scope_tree();
     let _captures = analyzer.analyze_closure_captures(2, &scope_tree);
@@ -272,13 +276,13 @@ fn test_scope_search_result() {
             end_column: 1,
         },
     );
-    
+
     let result = ScopeSearchResult {
         definition: definition.clone(),
         scope_id: 1,
         scope_distance: 2,
     };
-    
+
     assert_eq!(result.definition.name, "test_symbol");
     assert_eq!(result.scope_id, 1);
     assert_eq!(result.scope_distance, 2);
@@ -296,7 +300,7 @@ fn test_capture_info() {
             end_column: 1,
         },
     );
-    
+
     let capture_info = CaptureInfo {
         captured_symbol: "captured".to_string(),
         capture_type: CaptureType::ByReference,
@@ -304,7 +308,7 @@ fn test_capture_info() {
         target_scope: 2,
         definition: definition.clone(),
     };
-    
+
     assert_eq!(capture_info.captured_symbol, "captured");
     assert_eq!(capture_info.capture_type, CaptureType::ByReference);
     assert_eq!(capture_info.source_scope, 1);

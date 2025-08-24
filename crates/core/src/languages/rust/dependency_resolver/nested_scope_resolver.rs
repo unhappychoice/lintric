@@ -321,7 +321,6 @@ impl NestedScopeResolver {
     }
 }
 
-
 // Additional scope utility functions from RustHelpers
 use crate::models::{scope::SymbolTable, Position};
 

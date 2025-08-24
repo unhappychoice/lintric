@@ -1,5 +1,5 @@
-use lintric_core::languages::typescript::typescript_definition_collector::TypescriptDefinitionCollector;
 use lintric_core::definition_collectors::DefinitionCollector;
+use lintric_core::languages::typescript::typescript_definition_collector::TypescriptDefinitionCollector;
 use lintric_core::models::DefinitionType;
 use tree_sitter::Parser;
 
@@ -9,7 +9,9 @@ extern "C" {
 
 fn setup_typescript_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(unsafe { &tree_sitter_typescript() }).expect("Error loading TypeScript grammar");
+    parser
+        .set_language(unsafe { &tree_sitter_typescript() })
+        .expect("Error loading TypeScript grammar");
     parser
 }
 
@@ -33,21 +35,27 @@ function anotherFunction(param: number): number {
 
 const arrowFunction = (x: number) => x * 2;
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
     // Should find function definitions
     assert!(!definitions.is_empty(), "Should find function definitions");
-    
-    let function_defs: Vec<_> = definitions.iter()
+
+    let function_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::FunctionDefinition))
         .collect();
-    
-    assert!(!function_defs.is_empty(), "Should find function definitions");
+
+    assert!(
+        !function_defs.is_empty(),
+        "Should find function definitions"
+    );
 }
 
 #[test]
@@ -60,26 +68,35 @@ var z = "hello";
 const { a, b } = { a: 1, b: 2 };
 const [first, second] = [1, 2];
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
     // Should find variable definitions
     assert!(!definitions.is_empty(), "Should find variable definitions");
-    
-    let var_defs: Vec<_> = definitions.iter()
+
+    let var_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::VariableDefinition))
         .collect();
-    
+
     assert!(!var_defs.is_empty(), "Should find variable definitions");
-    
+
     // Check for specific variable names
     let def_names: Vec<_> = definitions.iter().map(|d| &d.name).collect();
-    assert!(def_names.contains(&&"x".to_string()), "Should find variable x definition");
-    assert!(def_names.contains(&&"y".to_string()), "Should find variable y definition");
+    assert!(
+        def_names.contains(&&"x".to_string()),
+        "Should find variable x definition"
+    );
+    assert!(
+        def_names.contains(&&"y".to_string()),
+        "Should find variable y definition"
+    );
 }
 
 #[test]
@@ -107,27 +124,31 @@ abstract class AbstractBase {
     abstract doSomething(): void;
 }
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
     // Should find class definitions
-    let class_defs: Vec<_> = definitions.iter()
+    let class_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::ClassDefinition))
         .collect();
-    
+
     assert!(!class_defs.is_empty(), "Should find class definitions");
-    
+
     // Should find property definitions
-    let prop_defs: Vec<_> = definitions.iter()
+    let prop_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::PropertyDefinition))
         .collect();
-    
+
     assert!(!prop_defs.is_empty(), "Should find property definitions");
-    
+
     // Should at least find some class-related definitions
     assert!(!definitions.is_empty(), "Should find some definitions");
 }
@@ -149,23 +170,35 @@ interface Admin extends User {
     permissions: string[];
 }
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
     // Should find interface definitions
-    let interface_defs: Vec<_> = definitions.iter()
+    let interface_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::InterfaceDefinition))
         .collect();
-    
-    assert!(!interface_defs.is_empty(), "Should find interface definitions");
-    
+
+    assert!(
+        !interface_defs.is_empty(),
+        "Should find interface definitions"
+    );
+
     let def_names: Vec<_> = definitions.iter().map(|d| &d.name).collect();
-    assert!(def_names.contains(&&"User".to_string()), "Should find User interface definition");
-    assert!(def_names.contains(&&"Admin".to_string()), "Should find Admin interface definition");
+    assert!(
+        def_names.contains(&&"User".to_string()),
+        "Should find User interface definition"
+    );
+    assert!(
+        def_names.contains(&&"Admin".to_string()),
+        "Should find Admin interface definition"
+    );
 }
 
 #[test]
@@ -181,23 +214,32 @@ type ComplexType = {
     callback: () => void;
 };
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
     // Should find type definitions
-    let type_defs: Vec<_> = definitions.iter()
+    let type_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::TypeDefinition))
         .collect();
-    
+
     assert!(!type_defs.is_empty(), "Should find type definitions");
-    
+
     let def_names: Vec<_> = definitions.iter().map(|d| &d.name).collect();
-    assert!(def_names.contains(&&"StringOrNumber".to_string()), "Should find StringOrNumber type definition");
-    assert!(def_names.contains(&&"UserID".to_string()), "Should find UserID type definition");
+    assert!(
+        def_names.contains(&&"StringOrNumber".to_string()),
+        "Should find StringOrNumber type definition"
+    );
+    assert!(
+        def_names.contains(&&"UserID".to_string()),
+        "Should find UserID type definition"
+    );
 }
 
 #[test]
@@ -208,15 +250,20 @@ import * as fs from 'fs';
 import path from 'path';
 import { default as express, Router } from 'express';
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
-    // Should at least find some import definitions  
-    assert!(!definitions.is_empty(), "Should find some import definitions");
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
+    // Should at least find some import definitions
+    assert!(
+        !definitions.is_empty(),
+        "Should find some import definitions"
+    );
 }
 
 #[test]
@@ -241,19 +288,28 @@ interface Repository<T> {
     save(entity: T): void;
 }
     "#;
-    
+
     let collector = TypescriptDefinitionCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let definitions = collector.collect_definitions_from_root(tree.root_node()).unwrap();
-    
+
+    let definitions = collector
+        .collect_definitions_from_root(tree.root_node())
+        .unwrap();
+
     // Should find generic type parameter definitions
-    assert!(!definitions.is_empty(), "Should find type parameter definitions");
-    
-    let type_defs: Vec<_> = definitions.iter()
+    assert!(
+        !definitions.is_empty(),
+        "Should find type parameter definitions"
+    );
+
+    let type_defs: Vec<_> = definitions
+        .iter()
         .filter(|def| matches!(def.definition_type, DefinitionType::TypeDefinition))
         .collect();
-    
-    assert!(!type_defs.is_empty(), "Should find type definitions including type parameters");
+
+    assert!(
+        !type_defs.is_empty(),
+        "Should find type definitions including type parameters"
+    );
 }

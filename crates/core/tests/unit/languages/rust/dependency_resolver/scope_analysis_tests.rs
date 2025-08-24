@@ -10,24 +10,54 @@ fn create_complex_scope_tree() -> ScopeTree {
     let func_scope = tree.create_scope(
         Some(0),
         ScopeType::Function,
-        Position { start_line: 1, start_column: 1, end_line: 1, end_column: 1 },
-        Position { start_line: 20, start_column: 1, end_line: 20, end_column: 1 },
+        Position {
+            start_line: 1,
+            start_column: 1,
+            end_line: 1,
+            end_column: 1,
+        },
+        Position {
+            start_line: 20,
+            start_column: 1,
+            end_line: 20,
+            end_column: 1,
+        },
     );
 
     // Block scope within function
     let block_scope = tree.create_scope(
         Some(func_scope),
         ScopeType::Block,
-        Position { start_line: 5, start_column: 5, end_line: 5, end_column: 5 },
-        Position { start_line: 10, start_column: 5, end_line: 10, end_column: 5 },
+        Position {
+            start_line: 5,
+            start_column: 5,
+            end_line: 5,
+            end_column: 5,
+        },
+        Position {
+            start_line: 10,
+            start_column: 5,
+            end_line: 10,
+            end_column: 5,
+        },
     );
 
     // Nested function scope
     let nested_func_scope = tree.create_scope(
         Some(func_scope),
         ScopeType::Function,
-        Position { start_line: 12, start_column: 8, end_line: 12, end_column: 8 },
-        Position { start_line: 16, start_column: 8, end_line: 16, end_column: 8 },
+        Position {
+            start_line: 12,
+            start_column: 8,
+            end_line: 12,
+            end_column: 8,
+        },
+        Position {
+            start_line: 16,
+            start_column: 8,
+            end_line: 16,
+            end_column: 8,
+        },
     );
 
     // Add symbols to different scopes
@@ -37,7 +67,12 @@ fn create_complex_scope_tree() -> ScopeTree {
             Definition::new_simple(
                 "func_var".to_string(),
                 DefinitionType::VariableDefinition,
-                Position { start_line: 2, start_column: 10, end_line: 2, end_column: 10 },
+                Position {
+                    start_line: 2,
+                    start_column: 10,
+                    end_line: 2,
+                    end_column: 10,
+                },
             ),
         );
     }
@@ -48,7 +83,12 @@ fn create_complex_scope_tree() -> ScopeTree {
             Definition::new_simple(
                 "block_var".to_string(),
                 DefinitionType::VariableDefinition,
-                Position { start_line: 6, start_column: 10, end_line: 6, end_column: 10 },
+                Position {
+                    start_line: 6,
+                    start_column: 10,
+                    end_line: 6,
+                    end_column: 10,
+                },
             ),
         );
     }
@@ -59,7 +99,12 @@ fn create_complex_scope_tree() -> ScopeTree {
             Definition::new_simple(
                 "nested_var".to_string(),
                 DefinitionType::VariableDefinition,
-                Position { start_line: 13, start_column: 10, end_line: 13, end_column: 10 },
+                Position {
+                    start_line: 13,
+                    start_column: 10,
+                    end_line: 13,
+                    end_column: 10,
+                },
             ),
         );
     }
@@ -132,7 +177,7 @@ fn test_closure_capture_types() {
     assert_eq!(by_value, CaptureType::ByValue);
     assert_eq!(by_ref, CaptureType::ByReference);
     assert_eq!(by_mut_ref, CaptureType::ByMutableReference);
-    
+
     assert_ne!(by_value, by_ref);
     assert_ne!(by_ref, by_mut_ref);
 }
@@ -142,7 +187,12 @@ fn test_scope_search_result() {
     let definition = Definition::new_simple(
         "test_var".to_string(),
         DefinitionType::VariableDefinition,
-        Position { start_line: 5, start_column: 10, end_line: 5, end_column: 10 },
+        Position {
+            start_line: 5,
+            start_column: 10,
+            end_line: 5,
+            end_column: 10,
+        },
     );
 
     let search_result = ScopeSearchResult {

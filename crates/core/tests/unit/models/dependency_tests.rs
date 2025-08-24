@@ -9,7 +9,7 @@ fn test_dependency_creation() {
         dependency_type: DependencyType::FunctionCall,
         context: Some("test context".to_string()),
     };
-    
+
     assert_eq!(dependency.source_line, 1);
     assert_eq!(dependency.target_line, 5);
     assert_eq!(dependency.symbol, "function_call");
@@ -26,7 +26,7 @@ fn test_dependency_types() {
         dependency_type: DependencyType::FunctionCall,
         context: None,
     };
-    
+
     let variable_dep = Dependency {
         source_line: 2,
         target_line: 6,
@@ -34,7 +34,7 @@ fn test_dependency_types() {
         dependency_type: DependencyType::VariableUse,
         context: None,
     };
-    
+
     let type_dep = Dependency {
         source_line: 3,
         target_line: 7,
@@ -42,10 +42,19 @@ fn test_dependency_types() {
         dependency_type: DependencyType::TypeReference,
         context: None,
     };
-    
-    assert!(matches!(function_dep.dependency_type, DependencyType::FunctionCall));
-    assert!(matches!(variable_dep.dependency_type, DependencyType::VariableUse));
-    assert!(matches!(type_dep.dependency_type, DependencyType::TypeReference));
+
+    assert!(matches!(
+        function_dep.dependency_type,
+        DependencyType::FunctionCall
+    ));
+    assert!(matches!(
+        variable_dep.dependency_type,
+        DependencyType::VariableUse
+    ));
+    assert!(matches!(
+        type_dep.dependency_type,
+        DependencyType::TypeReference
+    ));
 }
 
 #[test]
@@ -57,9 +66,9 @@ fn test_dependency_clone() {
         dependency_type: DependencyType::VariableUse,
         context: Some("context".to_string()),
     };
-    
+
     let cloned = original.clone();
-    
+
     assert_eq!(original.source_line, cloned.source_line);
     assert_eq!(original.target_line, cloned.target_line);
     assert_eq!(original.symbol, cloned.symbol);
@@ -76,7 +85,7 @@ fn test_dependency_debug() {
         dependency_type: DependencyType::Import,
         context: None,
     };
-    
+
     let debug_str = format!("{:?}", dependency);
     assert!(debug_str.contains("debug_test"));
     assert!(debug_str.contains("10"));

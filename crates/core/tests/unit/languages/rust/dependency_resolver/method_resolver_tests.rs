@@ -1,7 +1,9 @@
 use lintric_core::languages::rust::dependency_resolver::method_resolver::*;
-use lintric_core::models::{Definition, DefinitionType, InferenceContext, Position, Type, Usage, UsageKind};
-use tree_sitter::Parser;
+use lintric_core::models::{
+    Definition, DefinitionType, InferenceContext, Position, Type, Usage, UsageKind,
+};
 use std::collections::HashMap;
+use tree_sitter::Parser;
 
 fn create_test_position(line: usize) -> Position {
     Position {
@@ -14,7 +16,9 @@ fn create_test_position(line: usize) -> Position {
 
 fn setup_rust_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(&tree_sitter_rust::language()).expect("Error loading Rust grammar");
+    parser
+        .set_language(&tree_sitter_rust::language())
+        .expect("Error loading Rust grammar");
     parser
 }
 
@@ -90,10 +94,8 @@ fn test_trait_resolver() {
     resolver.add_trait(trait_def);
     resolver.add_trait_impl(trait_impl);
 
-    let methods = resolver.find_trait_methods_for_type(
-        &Type::Concrete("MyStruct".to_string()),
-        "display"
-    );
+    let methods =
+        resolver.find_trait_methods_for_type(&Type::Concrete("MyStruct".to_string()), "display");
     assert_eq!(methods.len(), 1);
     assert_eq!(methods[0].name, "display");
 }
@@ -142,25 +144,23 @@ fn main() {
     let dist = p1.distance(&p2);
 }
     "#;
-    
+
     let resolver = MethodResolver::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let usage = Usage {
         name: "distance".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(20),
     };
-    
-    let definitions = vec![
-        Definition {
-            name: "distance".to_string(),
-            definition_type: DefinitionType::MethodDefinition,
-            position: create_test_position(12),
-        }
-    ];
-    
+
+    let definitions = vec![Definition {
+        name: "distance".to_string(),
+        definition_type: DefinitionType::MethodDefinition,
+        position: create_test_position(12),
+    }];
+
     // This test verifies the method resolution infrastructure
     let _result = resolver.resolve_method_call(&usage, source_code, tree.root_node(), &definitions);
     // Even if the resolution returns None due to incomplete implementation,
@@ -170,7 +170,7 @@ fn main() {
 #[test]
 fn test_associated_function_call_parsing() {
     let resolver = MethodResolver::new();
-    
+
     // Test that the resolver can be created and used
     // The actual parsing methods are private, so we test the public interface
     let usage = Usage {
@@ -178,20 +178,19 @@ fn test_associated_function_call_parsing() {
         kind: UsageKind::CallExpression,
         position: create_test_position(1),
     };
-    
-    let definitions = vec![
-        Definition {
-            name: "new".to_string(),
-            definition_type: DefinitionType::FunctionDefinition,
-            position: create_test_position(1),
-        }
-    ];
-    
+
+    let definitions = vec![Definition {
+        name: "new".to_string(),
+        definition_type: DefinitionType::FunctionDefinition,
+        position: create_test_position(1),
+    }];
+
     let mut parser = setup_rust_parser();
     let tree = parser.parse("fn main() {}", None).unwrap();
-    
+
     // Test the public interface
-    let _result = resolver.resolve_method_call(&usage, "fn main() {}", tree.root_node(), &definitions);
+    let _result =
+        resolver.resolve_method_call(&usage, "fn main() {}", tree.root_node(), &definitions);
 }
 
 #[test]
@@ -221,25 +220,23 @@ fn main() {
     container.set(100);
 }
     "#;
-    
+
     let resolver = MethodResolver::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let usage = Usage {
         name: "get".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(21),
     };
-    
-    let definitions = vec![
-        Definition {
-            name: "get".to_string(),
-            definition_type: DefinitionType::MethodDefinition,
-            position: create_test_position(11),
-        }
-    ];
-    
+
+    let definitions = vec![Definition {
+        name: "get".to_string(),
+        definition_type: DefinitionType::MethodDefinition,
+        position: create_test_position(11),
+    }];
+
     // Test generic method resolution infrastructure
     let _result = resolver.resolve_method_call(&usage, source_code, tree.root_node(), &definitions);
 }
@@ -266,25 +263,23 @@ fn main() {
     let text = user.display();
 }
     "#;
-    
+
     let resolver = MethodResolver::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let usage = Usage {
         name: "display".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(17),
     };
-    
-    let definitions = vec![
-        Definition {
-            name: "display".to_string(),
-            definition_type: DefinitionType::MethodDefinition,
-            position: create_test_position(11),
-        }
-    ];
-    
+
+    let definitions = vec![Definition {
+        name: "display".to_string(),
+        definition_type: DefinitionType::MethodDefinition,
+        position: create_test_position(11),
+    }];
+
     // Test trait method resolution infrastructure
     let _result = resolver.resolve_method_call(&usage, source_code, tree.root_node(), &definitions);
 }
@@ -318,11 +313,11 @@ fn main() {
         .build();
 }
     "#;
-    
+
     let resolver = MethodResolver::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     // Test resolution of chained method calls
     for method_name in ["new", "add", "build"] {
         let usage = Usage {
@@ -330,15 +325,14 @@ fn main() {
             kind: UsageKind::CallExpression,
             position: create_test_position(22),
         };
-        
-        let definitions = vec![
-            Definition {
-                name: method_name.to_string(),
-                definition_type: DefinitionType::MethodDefinition,
-                position: create_test_position(7),
-            }
-        ];
-        
-        let _result = resolver.resolve_method_call(&usage, source_code, tree.root_node(), &definitions);
+
+        let definitions = vec![Definition {
+            name: method_name.to_string(),
+            definition_type: DefinitionType::MethodDefinition,
+            position: create_test_position(7),
+        }];
+
+        let _result =
+            resolver.resolve_method_call(&usage, source_code, tree.root_node(), &definitions);
     }
 }

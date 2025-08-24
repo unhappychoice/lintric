@@ -3,7 +3,9 @@ use tree_sitter::Parser;
 
 fn setup_rust_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(&tree_sitter_rust::language()).expect("Error loading Rust grammar");
+    parser
+        .set_language(&tree_sitter_rust::language())
+        .expect("Error loading Rust grammar");
     parser
 }
 
@@ -34,16 +36,18 @@ impl MyStruct {
     }
 }
     "#;
-    
+
     let mut collector = RustImplCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let impl_blocks = collector.collect_impl_blocks(source_code, tree.root_node()).unwrap();
-    
+
+    let impl_blocks = collector
+        .collect_impl_blocks(source_code, tree.root_node())
+        .unwrap();
+
     assert!(!impl_blocks.is_empty(), "Should find impl blocks");
     assert_eq!(impl_blocks.len(), 1, "Should find exactly one impl block");
-    
+
     let impl_block = &impl_blocks[0];
     assert_eq!(impl_block.methods.len(), 3, "Should find 3 methods");
 }
@@ -66,20 +70,31 @@ trait Clone {
     fn clone(&self) -> Self;
 }
     "#;
-    
+
     let mut collector = RustImplCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let traits = collector.collect_traits(source_code, tree.root_node()).unwrap();
-    
+
+    let traits = collector
+        .collect_traits(source_code, tree.root_node())
+        .unwrap();
+
     assert!(!traits.is_empty(), "Should find trait definitions");
     assert_eq!(traits.len(), 3, "Should find exactly 3 traits");
-    
+
     let trait_names: Vec<_> = traits.iter().map(|t| &t.name).collect();
-    assert!(trait_names.contains(&&"Display".to_string()), "Should find Display trait");
-    assert!(trait_names.contains(&&"Debug".to_string()), "Should find Debug trait");
-    assert!(trait_names.contains(&&"Clone".to_string()), "Should find Clone trait");
+    assert!(
+        trait_names.contains(&&"Display".to_string()),
+        "Should find Display trait"
+    );
+    assert!(
+        trait_names.contains(&&"Debug".to_string()),
+        "Should find Debug trait"
+    );
+    assert!(
+        trait_names.contains(&&"Clone".to_string()),
+        "Should find Clone trait"
+    );
 }
 
 #[test]
@@ -109,17 +124,22 @@ impl Clone for User {
     }
 }
     "#;
-    
+
     let mut collector = RustImplCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let trait_impls = collector.collect_trait_impl_blocks(source_code, tree.root_node()).unwrap();
-    
-    assert!(!trait_impls.is_empty(), "Should find trait implementations");
-    assert_eq!(trait_impls.len(), 2, "Should find exactly 2 trait implementations");
-}
 
+    let trait_impls = collector
+        .collect_trait_impl_blocks(source_code, tree.root_node())
+        .unwrap();
+
+    assert!(!trait_impls.is_empty(), "Should find trait implementations");
+    assert_eq!(
+        trait_impls.len(),
+        2,
+        "Should find exactly 2 trait implementations"
+    );
+}
 
 #[test]
 fn test_associated_function_vs_method() {
@@ -152,15 +172,21 @@ impl Point {
     }
 }
     "#;
-    
+
     let mut collector = RustImplCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let impl_blocks = collector.collect_impl_blocks(source_code, tree.root_node()).unwrap();
-    
+
+    let impl_blocks = collector
+        .collect_impl_blocks(source_code, tree.root_node())
+        .unwrap();
+
     assert_eq!(impl_blocks.len(), 1, "Should find exactly one impl block");
-    assert_eq!(impl_blocks[0].methods.len(), 4, "Should find 4 methods/functions");
+    assert_eq!(
+        impl_blocks[0].methods.len(),
+        4,
+        "Should find 4 methods/functions"
+    );
 }
 
 #[test]
@@ -192,16 +218,26 @@ impl Vector {
     }
 }
     "#;
-    
+
     let mut collector = RustImplCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let impl_blocks = collector.collect_impl_blocks(source_code, tree.root_node()).unwrap();
-    
+
+    let impl_blocks = collector
+        .collect_impl_blocks(source_code, tree.root_node())
+        .unwrap();
+
     assert_eq!(impl_blocks.len(), 2, "Should find exactly 2 impl blocks");
-    assert_eq!(impl_blocks[0].methods.len(), 2, "First impl block should have 2 methods");
-    assert_eq!(impl_blocks[1].methods.len(), 2, "Second impl block should have 2 methods");
+    assert_eq!(
+        impl_blocks[0].methods.len(),
+        2,
+        "First impl block should have 2 methods"
+    );
+    assert_eq!(
+        impl_blocks[1].methods.len(),
+        2,
+        "Second impl block should have 2 methods"
+    );
 }
 
 #[test]
@@ -247,14 +283,18 @@ impl Printable for Rectangle {
     }
 }
     "#;
-    
+
     let mut collector = RustImplCollector::new();
     let mut parser = setup_rust_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let traits = collector.collect_traits(source_code, tree.root_node()).unwrap();
-    let trait_impls = collector.collect_trait_impl_blocks(source_code, tree.root_node()).unwrap();
-    
+
+    let traits = collector
+        .collect_traits(source_code, tree.root_node())
+        .unwrap();
+    let trait_impls = collector
+        .collect_trait_impl_blocks(source_code, tree.root_node())
+        .unwrap();
+
     assert_eq!(traits.len(), 3, "Should find 3 trait definitions");
     assert_eq!(trait_impls.len(), 3, "Should find 3 trait implementations");
 }

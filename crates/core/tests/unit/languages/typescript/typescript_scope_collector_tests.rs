@@ -9,16 +9,21 @@ extern "C" {
 
 fn setup_typescript_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(unsafe { &tree_sitter_typescript() }).expect("Error loading TypeScript grammar");
+    parser
+        .set_language(unsafe { &tree_sitter_typescript() })
+        .expect("Error loading TypeScript grammar");
     parser
 }
 
 #[test]
 fn test_typescript_scope_collector_creation() {
     let collector = TypeScriptScopeCollector::new();
-    
+
     // Test that collector can be created
-    assert_eq!(collector.scope_tree.get_scope(0).unwrap().scope_type, ScopeType::Global);
+    assert_eq!(
+        collector.scope_tree.get_scope(0).unwrap().scope_type,
+        ScopeType::Global
+    );
 }
 
 #[test]
@@ -39,19 +44,23 @@ const arrowFunction = (a: number) => {
     return doubled;
 };
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Should have global scope and function scopes
     let scopes = scope_tree.get_all_scopes();
-    assert!(scopes.len() >= 3, "Should have at least global and function scopes");
-    
+    assert!(
+        scopes.len() >= 3,
+        "Should have at least global and function scopes"
+    );
+
     // Should have function scopes
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
     assert!(!function_scopes.is_empty(), "Should have function scopes");
@@ -79,19 +88,20 @@ function main() {
     }
 }
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Should have global, function, and block scopes
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 2, "Should have at least 2 scopes");
-    
+
     // Should have function scopes at minimum
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
     assert!(!function_scopes.is_empty(), "Should have function scopes");
@@ -125,24 +135,26 @@ abstract class BaseClass {
     }
 }
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should handle class and method scopes");
-    
+
     // Should have class scopes
-    let class_scopes: Vec<_> = scopes.iter()
+    let class_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Class)
         .collect();
     assert!(!class_scopes.is_empty(), "Should have class scopes");
-    
+
     // Should have function scopes for methods
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
     assert!(function_scopes.len() >= 3, "Should have method scopes");
@@ -166,18 +178,19 @@ interface Admin extends User {
     hasPermission(permission: string): boolean;
 }
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 3, "Should handle interface scopes");
-    
+
     // Should have interface scopes
-    let interface_scopes: Vec<_> = scopes.iter()
+    let interface_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Interface)
         .collect();
     assert!(!interface_scopes.is_empty(), "Should have interface scopes");
@@ -203,18 +216,19 @@ namespace Utils {
     }
 }
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 2, "Should handle module scopes");
-    
+
     // Should have function scopes at minimum (namespace functions)
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
     assert!(!function_scopes.is_empty(), "Should have function scopes");
@@ -240,22 +254,26 @@ function outer() {
     return inner();
 }
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Should handle nested function scopes
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should handle nested function scopes");
-    
+
     // Should have multiple function scopes
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
-    assert!(function_scopes.len() >= 3, "Should have at least 3 function scopes");
+    assert!(
+        function_scopes.len() >= 3,
+        "Should have at least 3 function scopes"
+    );
 }
 
 #[test]
@@ -276,21 +294,25 @@ const asyncOperation = async (id: string) => {
     return data;
 };
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 4, "Should handle arrow function scopes");
-    
+
     // Should have function scopes for arrow functions
-    let function_scopes: Vec<_> = scopes.iter()
+    let function_scopes: Vec<_> = scopes
+        .iter()
         .filter(|scope| scope.scope_type == ScopeType::Function)
         .collect();
-    assert!(!function_scopes.is_empty(), "Should have function scopes for arrow functions");
+    assert!(
+        !function_scopes.is_empty(),
+        "Should have function scopes for arrow functions"
+    );
 }
 
 #[test]
@@ -316,22 +338,28 @@ class Container {
     }
 }
     "#;
-    
+
     let mut collector = TypeScriptScopeCollector::new();
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let scope_tree = collector.scopes(tree.root_node(), source_code).unwrap();
-    
+
     // Test that scopes have proper parent-child relationships
     let scopes = scope_tree.get_all_scopes();
     assert!(scopes.len() >= 5, "Should have proper scope hierarchy");
-    
+
     // Global scope should be the root
     let global_scope = scope_tree.get_scope(0).unwrap();
     assert_eq!(global_scope.scope_type, ScopeType::Global);
-    assert!(global_scope.parent.is_none(), "Global scope should have no parent");
-    
+    assert!(
+        global_scope.parent.is_none(),
+        "Global scope should have no parent"
+    );
+
     // Should have children
-    assert!(!global_scope.children.is_empty(), "Global scope should have children");
+    assert!(
+        !global_scope.children.is_empty(),
+        "Global scope should have children"
+    );
 }

@@ -8,7 +8,9 @@ extern "C" {
 
 fn setup_typescript_parser() -> Parser {
     let mut parser = Parser::new();
-    parser.set_language(unsafe { &tree_sitter_typescript() }).expect("Error loading TypeScript grammar");
+    parser
+        .set_language(unsafe { &tree_sitter_typescript() })
+        .expect("Error loading TypeScript grammar");
     parser
 }
 
@@ -16,11 +18,11 @@ fn setup_typescript_parser() -> Parser {
 fn test_typescript_usage_collector_creation() {
     let source_code = "function main() {}";
     let collector = TypescriptUsageNodeCollector::new(source_code);
-    
+
     // Test that collector can be created with source code
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
+
     let result = collector.collect_usage_nodes(tree.root_node(), source_code);
     assert!(result.is_ok(), "Should successfully collect usage nodes");
 }
@@ -38,19 +40,24 @@ function helperFunction() {
     console.error("Debug message");
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find identifier usages
     assert!(!usages.is_empty(), "Should find usage nodes");
-    
+
     // Look for specific function calls
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"helperFunction".to_string()), "Should find helperFunction usage");
+    assert!(
+        usage_names.contains(&&"helperFunction".to_string()),
+        "Should find helperFunction usage"
+    );
 }
 
 #[test]
@@ -67,22 +74,36 @@ function main() {
     counter *= 2;
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find variable usages
     assert!(!usages.is_empty(), "Should find variable usages");
-    
+
     // Look for specific variable names
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"x".to_string()), "Should find variable x usage");
-    assert!(usage_names.contains(&&"y".to_string()), "Should find variable y usage");
-    assert!(usage_names.contains(&&"sum".to_string()), "Should find variable sum usage");
-    assert!(usage_names.contains(&&"counter".to_string()), "Should find variable counter usage");
+    assert!(
+        usage_names.contains(&&"x".to_string()),
+        "Should find variable x usage"
+    );
+    assert!(
+        usage_names.contains(&&"y".to_string()),
+        "Should find variable y usage"
+    );
+    assert!(
+        usage_names.contains(&&"sum".to_string()),
+        "Should find variable sum usage"
+    );
+    assert!(
+        usage_names.contains(&&"counter".to_string()),
+        "Should find variable counter usage"
+    );
 }
 
 #[test]
@@ -97,19 +118,27 @@ function main() {
     arr.map(x => x * 2).filter(x => x > 2);
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find method call usages
     assert!(!usages.is_empty(), "Should find method usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"length".to_string()), "Should find length property usage");
-    assert!(usage_names.contains(&&"charAt".to_string()), "Should find charAt method usage");
+    assert!(
+        usage_names.contains(&&"length".to_string()),
+        "Should find length property usage"
+    );
+    assert!(
+        usage_names.contains(&&"charAt".to_string()),
+        "Should find charAt method usage"
+    );
 }
 
 #[test]
@@ -129,20 +158,31 @@ function main() {
     console.log(`x: ${x}, y: ${y}`);
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find property access usages
     assert!(!usages.is_empty(), "Should find property access usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"x".to_string()), "Should find x property usage");
-    assert!(usage_names.contains(&&"y".to_string()), "Should find y property usage");
-    assert!(usage_names.contains(&&"p".to_string()), "Should find p object usage");
+    assert!(
+        usage_names.contains(&&"x".to_string()),
+        "Should find x property usage"
+    );
+    assert!(
+        usage_names.contains(&&"y".to_string()),
+        "Should find y property usage"
+    );
+    assert!(
+        usage_names.contains(&&"p".to_string()),
+        "Should find p object usage"
+    );
 }
 
 #[test]
@@ -160,19 +200,27 @@ function main() {
     console.log(`result: ${result}`);
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find arrow function variable captures and usages
     assert!(!usages.is_empty(), "Should find arrow function usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"captured".to_string()), "Should find captured variable usage");
-    assert!(usage_names.contains(&&"arrowFn".to_string()), "Should find arrow function usage");
+    assert!(
+        usage_names.contains(&&"captured".to_string()),
+        "Should find captured variable usage"
+    );
+    assert!(
+        usage_names.contains(&&"arrowFn".to_string()),
+        "Should find arrow function usage"
+    );
 }
 
 #[test]
@@ -196,19 +244,27 @@ function main() {
     console.log(userName);
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find class and method usages
     assert!(!usages.is_empty(), "Should find class usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"User".to_string()), "Should find User class usage");
-    assert!(usage_names.contains(&&"getName".to_string()), "Should find getName method usage");
+    assert!(
+        usage_names.contains(&&"User".to_string()),
+        "Should find User class usage"
+    );
+    assert!(
+        usage_names.contains(&&"getName".to_string()),
+        "Should find getName method usage"
+    );
 }
 
 #[test]
@@ -224,20 +280,31 @@ function main() {
     const app = express();
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find import usages
     assert!(!usages.is_empty(), "Should find import usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"readFileSync".to_string()), "Should find readFileSync usage");
-    assert!(usage_names.contains(&&"path".to_string()), "Should find path usage");
-    assert!(usage_names.contains(&&"express".to_string()), "Should find express usage");
+    assert!(
+        usage_names.contains(&&"readFileSync".to_string()),
+        "Should find readFileSync usage"
+    );
+    assert!(
+        usage_names.contains(&&"path".to_string()),
+        "Should find path usage"
+    );
+    assert!(
+        usage_names.contains(&&"express".to_string()),
+        "Should find express usage"
+    );
 }
 
 #[test]
@@ -259,19 +326,27 @@ function main() {
     console.log(user);
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find type usages
     assert!(!usages.is_empty(), "Should find type usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"UserID".to_string()), "Should find UserID type usage");
-    assert!(usage_names.contains(&&"User".to_string()), "Should find User interface usage");
+    assert!(
+        usage_names.contains(&&"UserID".to_string()),
+        "Should find UserID type usage"
+    );
+    assert!(
+        usage_names.contains(&&"User".to_string()),
+        "Should find User interface usage"
+    );
 }
 
 #[test]
@@ -299,18 +374,29 @@ function main() {
     const value = container.getValue();
 }
     "#;
-    
+
     let collector = TypescriptUsageNodeCollector::new(source_code);
     let mut parser = setup_typescript_parser();
     let tree = parser.parse(source_code, None).unwrap();
-    
-    let usages = collector.collect_usage_nodes(tree.root_node(), source_code).unwrap();
-    
+
+    let usages = collector
+        .collect_usage_nodes(tree.root_node(), source_code)
+        .unwrap();
+
     // Should find generic function and class usages
     assert!(!usages.is_empty(), "Should find generic usages");
-    
+
     let usage_names: Vec<_> = usages.iter().map(|u| &u.name).collect();
-    assert!(usage_names.contains(&&"identity".to_string()), "Should find identity function usage");
-    assert!(usage_names.contains(&&"Container".to_string()), "Should find Container class usage");
-    assert!(usage_names.contains(&&"getValue".to_string()), "Should find getValue method usage");
+    assert!(
+        usage_names.contains(&&"identity".to_string()),
+        "Should find identity function usage"
+    );
+    assert!(
+        usage_names.contains(&&"Container".to_string()),
+        "Should find Container class usage"
+    );
+    assert!(
+        usage_names.contains(&&"getValue".to_string()),
+        "Should find getValue method usage"
+    );
 }

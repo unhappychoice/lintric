@@ -6,7 +6,10 @@ macro_rules! test_typescript_dependency_resolver {
     ($test_name:ident, $fixture_name:literal, $ir_snapshot:literal) => {
         #[test]
         fn $test_name() {
-            let file_path = format!("tests/integration/language/typescript/dependency_resolver/fixtures/{}.ts", $fixture_name);
+            let file_path = format!(
+                "tests/integration/language/typescript/dependency_resolver/fixtures/{}.ts",
+                $fixture_name
+            );
             let (ir, _result) = analyze_code(file_path.clone()).unwrap();
 
             let source_code = fs::read_to_string(&file_path).unwrap();
@@ -22,7 +25,7 @@ macro_rules! test_typescript_dependency_resolver {
             );
 
             assert_snapshot!($ir_snapshot, ir_snapshot_content);
-            
+
             // Verify dependencies are detected
             assert!(!ir.dependencies.is_empty(), "Should have dependencies");
         }
@@ -68,25 +71,36 @@ fn test_typescript_interface_implementation_dependencies() {
     let (ir, _result) = analyze_code(file_path.to_string()).unwrap();
 
     // Check for interface-related dependencies
-    let _interface_deps: Vec<_> = ir.dependencies.iter()
+    let _interface_deps: Vec<_> = ir
+        .dependencies
+        .iter()
         .filter(|d| d.symbol == "Drawable" || d.symbol == "draw")
         .collect();
 
     // Should have some form of interface-related dependencies
-    assert!(!ir.dependencies.is_empty(), "Should resolve interface dependencies");
+    assert!(
+        !ir.dependencies.is_empty(),
+        "Should resolve interface dependencies"
+    );
 }
 
 #[test]
 fn test_typescript_generic_type_dependencies() {
-    let file_path = "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_generics.ts";
+    let file_path =
+        "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_generics.ts";
     let (ir, _result) = analyze_code(file_path.to_string()).unwrap();
 
     // Verify generic type resolution
-    let _generic_deps: Vec<_> = ir.dependencies.iter()
+    let _generic_deps: Vec<_> = ir
+        .dependencies
+        .iter()
         .filter(|d| d.symbol.contains("Repository") || d.symbol.contains("User"))
         .collect();
 
-    assert!(!ir.dependencies.is_empty(), "Should resolve generic dependencies");
+    assert!(
+        !ir.dependencies.is_empty(),
+        "Should resolve generic dependencies"
+    );
 }
 
 #[test]
@@ -95,9 +109,14 @@ fn test_typescript_namespace_dependencies() {
     let (ir, _result) = analyze_code(file_path.to_string()).unwrap();
 
     // Check for namespace member access
-    let _namespace_deps: Vec<_> = ir.dependencies.iter()
+    let _namespace_deps: Vec<_> = ir
+        .dependencies
+        .iter()
         .filter(|d| d.symbol.contains("Utils") || d.symbol == "helper" || d.symbol == "Calculator")
         .collect();
 
-    assert!(!ir.dependencies.is_empty(), "Should resolve namespace dependencies");
+    assert!(
+        !ir.dependencies.is_empty(),
+        "Should resolve namespace dependencies"
+    );
 }
