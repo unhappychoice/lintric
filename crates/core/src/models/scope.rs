@@ -218,6 +218,10 @@ impl ScopeTree {
 
         definitions
     }
+
+    pub fn get_all_scopes(&self) -> Vec<&Scope> {
+        self.scopes.values().collect()
+    }
 }
 
 impl Default for ScopeTree {
