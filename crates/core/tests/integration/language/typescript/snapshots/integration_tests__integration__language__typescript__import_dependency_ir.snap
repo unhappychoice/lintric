@@ -77,6 +77,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 30,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

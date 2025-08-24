@@ -51,6 +51,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 25,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "fmt",
@@ -61,6 +64,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 30,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Debug",
@@ -71,6 +77,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 37,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

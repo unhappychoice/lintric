@@ -22,6 +22,7 @@ fn test_usage_creation() {
         name: "variable_name".to_string(),
         kind: UsageKind::Identifier,
         position: position.clone(),
+        context: None,
     };
 
     assert_eq!(usage.name, "variable_name");
@@ -42,18 +43,21 @@ fn test_usage_kinds() {
         name: "var".to_string(),
         kind: UsageKind::Identifier,
         position: position.clone(),
+        context: None,
     };
 
     let call_usage = Usage {
         name: "function_call".to_string(),
         kind: UsageKind::CallExpression,
         position: position.clone(),
+        context: None,
     };
 
     let field_usage = Usage {
         name: "field".to_string(),
         kind: UsageKind::FieldExpression,
         position: position.clone(),
+        context: None,
     };
 
     assert!(matches!(identifier_usage.kind, UsageKind::Identifier));
@@ -135,6 +139,7 @@ fn test_usage_fields_access() {
         name: "test".to_string(),
         kind: UsageKind::Identifier,
         position: position.clone(),
+        context: None,
     };
 
     assert_eq!(usage.name, "test");

@@ -30,6 +30,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 10,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "obj",
@@ -40,6 +43,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 4,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

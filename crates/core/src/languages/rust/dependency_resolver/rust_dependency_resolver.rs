@@ -1,8 +1,7 @@
 use super::nested_scope_resolver::ScopeUtilities;
 use super::{
-    AssociatedTypeResolver, ConstraintError, GenericTypeResolver, LifetimeResolver,
-    MethodResolutionResult, MethodResolver, ModuleResolver, NestedScopeResolver,
-    ResolutionCandidate, ShadowingWarning, TraitBound,
+    AssociatedTypeResolver, GenericTypeResolver, LifetimeResolver, MethodResolver, ModuleResolver,
+    NestedScopeResolver, ResolutionCandidate, ShadowingWarning, TraitBound,
 };
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
@@ -71,49 +70,6 @@ impl RustDependencyResolver {
         &self.lifetime_resolver
     }
 
-    /// Initialize method resolution for Rust code by analyzing impl blocks and traits
-    pub fn analyze_impl_blocks(
-        &mut self,
-        _source_code: &str,
-        _root_node: Node,
-    ) -> Result<(), String> {
-        // TODO: Implement analyze_impl_blocks using impl_collector
-        Ok(())
-    }
-
-    /// Analyze generic type parameters in Rust code
-    pub fn analyze_generic_parameters(
-        &mut self,
-        _source_code: &str,
-        _root_node: Node,
-    ) -> Result<(), String> {
-        // TODO: Implement analyze_generic_parameters using type_system components
-
-        Ok(())
-    }
-
-    /// Resolve generic method calls with type parameter constraints
-    pub fn resolve_generic_method_call(
-        &self,
-        _usage: &Usage,
-        _source_code: &str,
-        _root_node: Node,
-        _definitions: &[Definition],
-    ) -> Option<MethodResolutionResult> {
-        // TODO: Implement resolve_generic_method_call using method_resolver
-        None
-    }
-
-    /// Resolve associated types in generic contexts
-    pub fn resolve_associated_type_usage(
-        &self,
-        _usage: &Usage,
-        _scope_id: ScopeId,
-    ) -> Option<Type> {
-        // TODO: Implement resolve_associated_type_usage in RustHelpers
-        None
-    }
-
     /// Validate trait bounds for a given type
     pub fn validate_trait_bounds(
         &self,
@@ -124,16 +80,6 @@ impl RustDependencyResolver {
         self.generic_type_resolver
             .constraint_solver
             .check_trait_bounds(std::slice::from_ref(type_arg), bounds)
-    }
-
-    /// Check for higher-ranked trait bounds (HRTB)
-    pub fn check_higher_ranked_bounds(
-        &self,
-        _usage: &Usage,
-        _scope_id: ScopeId,
-    ) -> Result<bool, ConstraintError> {
-        // TODO: Implement check_higher_ranked_bounds in RustHelpers
-        Ok(true)
     }
 
     /// Resolve symbol with shadowing awareness (Rust-specific)
@@ -678,38 +624,6 @@ impl DependencyResolverTrait for RustDependencyResolver {
             .find_scope_at_position(&usage_node.position)
             .unwrap_or(0);
 
-        // Try generic method resolution for method calls
-        if self.is_method_call(usage_node) {
-            if let Some(resolution_result) =
-                self.resolve_generic_method_call(usage_node, source_code, root_node, definitions)
-            {
-                let source_line = usage_node.position.start_line;
-                let target_line = resolution_result.resolved_method.position.start_line;
-
-                if source_line != target_line {
-                    let dependency = Dependency {
-                        source_line,
-                        target_line,
-                        symbol: resolution_result.resolved_method.name,
-                        dependency_type: crate::models::DependencyType::FunctionCall,
-                        context: Some(format!(
-                            "generic_method_call::{}",
-                            resolution_result.receiver_type.name()
-                        )),
-                    };
-                    dependencies.push(dependency);
-                }
-                return dependencies;
-            }
-        }
-
-        // Try associated type resolution
-        if let Some(_associated_type) =
-            self.resolve_associated_type_usage(usage_node, usage_scope_id)
-        {
-            return dependencies;
-        }
-
         // Try generic type parameter resolution
         if let Some(_type_param) = self
             .generic_type_resolver
@@ -900,21 +814,40 @@ impl RustDependencyResolver {
         let mut all_dependencies = Vec::new();
 
         for usage_node in usage_nodes {
-            let mut deps = self.resolve_single_dependency_basic(usage_node, definitions);
+            let mut deps = self.resolve_single_dependency_with_scope_aware_external_filtering(
+                usage_node,
+                definitions,
+                usage_nodes,
+            );
             all_dependencies.append(&mut deps);
         }
 
         Ok(all_dependencies)
     }
 
-    fn resolve_single_dependency_basic(
+    fn resolve_single_dependency_with_scope_aware_external_filtering(
         &self,
         usage_node: &Usage,
         definitions: &[Definition],
+        all_usage_nodes: &[Usage],
     ) -> Vec<Dependency> {
         let mut dependencies = Vec::new();
 
-        // Find the most appropriate definition (closest accessible one)
+        // Check if this usage is a method name in a qualified call that has no accessible definition
+        // But don't skip if it's a type reference (like in use statements or type annotations)
+        if self.is_method_name_in_qualified_call(usage_node, all_usage_nodes)
+            && self.is_method_in_scoped_identifier_without_definition(
+                usage_node,
+                definitions,
+                all_usage_nodes,
+            )
+            && !self.is_type_reference_in_scoped_identifier(usage_node)
+        {
+            // Skip creating dependency for method calls that are not defined in accessible scopes
+            return dependencies;
+        }
+
+        // Proceed with normal resolution
         if let Some(def) = self.find_closest_accessible_definition_basic(usage_node, definitions) {
             let source_line = usage_node.position.line_number();
             let target_line = def.line_number();
@@ -1115,5 +1048,108 @@ impl RustDependencyResolver {
             }
         }
         false
+    }
+
+    /// Check if this usage should be skipped because it has no definition
+    /// in the qualifier's scope
+    fn is_method_in_scoped_identifier_without_definition(
+        &self,
+        usage_node: &Usage,
+        definitions: &[Definition],
+        all_usage_nodes: &[Usage],
+    ) -> bool {
+        // Only apply to scoped identifiers
+        if usage_node.context.as_ref() != Some(&"scoped_identifier".to_string()) {
+            return false;
+        }
+
+        // Find the qualifier (type part) of this scoped identifier
+        let qualifier = all_usage_nodes
+            .iter()
+            .filter(|u| {
+                u.position.start_line == usage_node.position.start_line
+                    && u.position.end_column < usage_node.position.start_column
+                    && u.context.as_ref() == Some(&"scoped_identifier".to_string())
+                    && matches!(u.kind, crate::models::UsageKind::Identifier)
+            })
+            .max_by_key(|u| u.position.start_column);
+
+        if let Some(qualifier) = qualifier {
+            // Find the qualifier's definition in symbol_table
+            let qualifier_scope_id = self
+                .symbol_table
+                .scopes
+                .find_scope_at_position(&qualifier.position)
+                .unwrap_or(0);
+
+            let mut current_scope_id = qualifier_scope_id;
+            while let Some(scope) = self.symbol_table.scopes.get_scope(current_scope_id) {
+                if let Some(qualifier_definitions) = scope.symbols.get(&qualifier.name) {
+                    // Look for the method in definitions that are related to this qualifier
+                    let has_method_definition = definitions.iter().any(|def| {
+                        def.name == usage_node.name
+                            && qualifier_definitions.iter().any(|qual_def| {
+                                // Check if this method definition is related to the qualifier's scope
+                                match qual_def.definition_type {
+                                    crate::models::DefinitionType::StructDefinition
+                                    | crate::models::DefinitionType::EnumDefinition
+                                    | crate::models::DefinitionType::TypeDefinition => {
+                                        // For local types, check if method is in nearby lines (impl block)
+                                        (def.position.start_line as i32
+                                            - qual_def.position.start_line as i32)
+                                            .abs()
+                                            < 20
+                                    }
+                                    _ => false, // For imports, no local method definitions
+                                }
+                            })
+                    });
+
+                    return !has_method_definition;
+                }
+                if let Some(parent_id) = scope.parent {
+                    current_scope_id = parent_id;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        // If we can't find qualifier or determine scope, don't skip
+        false
+    }
+
+    /// Check if this usage is likely a method name in a qualified call (Type::method)
+    fn is_method_name_in_qualified_call(
+        &self,
+        usage_node: &Usage,
+        all_usage_nodes: &[Usage],
+    ) -> bool {
+        // Must be in scoped_identifier context
+        if usage_node.context.as_ref() != Some(&"scoped_identifier".to_string()) {
+            return false;
+        }
+
+        // Must be an identifier, not a type identifier
+        if !matches!(usage_node.kind, crate::models::UsageKind::Identifier) {
+            return false;
+        }
+
+        // Check if there's a qualifier before this on the same line
+        let has_qualifier_before = all_usage_nodes.iter().any(|u| {
+            u.position.start_line == usage_node.position.start_line
+                && u.position.end_column < usage_node.position.start_column
+                && u.context.as_ref() == Some(&"scoped_identifier".to_string())
+                && (matches!(u.kind, crate::models::UsageKind::Identifier)
+                    || matches!(u.kind, crate::models::UsageKind::TypeIdentifier))
+        });
+
+        has_qualifier_before
+    }
+
+    /// Check if this usage is a type reference in a scoped identifier context
+    fn is_type_reference_in_scoped_identifier(&self, usage_node: &Usage) -> bool {
+        // If it's a TypeIdentifier, it's definitely a type reference
+        matches!(usage_node.kind, crate::models::UsageKind::TypeIdentifier)
     }
 }

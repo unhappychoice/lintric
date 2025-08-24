@@ -1,0 +1,144 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
+---
+{
+  "file_path": "tests/integration/language/rust/fixtures/dependency_resolution_bugs.rs",
+  "line_metrics": [
+    {
+      "line_number": 5,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.14285714285714285,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 8,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.14285714285714285,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        4
+      ]
+    },
+    {
+      "line_number": 9,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.2857142857142857,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 10,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.2857142857142857,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        2
+      ]
+    },
+    {
+      "line_number": 11,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.25,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        4
+      ]
+    },
+    {
+      "line_number": 12,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.10714285714285714,
+      "depth": 2,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        9
+      ]
+    },
+    {
+      "line_number": 17,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.46428571428571425,
+      "depth": 2,
+      "transitive_dependencies": 3,
+      "dependent_lines": [
+        16,
+        5
+      ]
+    },
+    {
+      "line_number": 22,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.75,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    },
+    {
+      "line_number": 23,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.03571428571428571,
+      "depth": 2,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        22
+      ]
+    },
+    {
+      "line_number": 24,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.7857142857142857,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        2
+      ]
+    },
+    {
+      "line_number": 25,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.03571428571428571,
+      "depth": 2,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        24
+      ]
+    },
+    {
+      "line_number": 26,
+      "total_dependencies": 3,
+      "dependency_distance_cost": 1.5357142857142856,
+      "depth": 2,
+      "transitive_dependencies": 4,
+      "dependent_lines": [
+        22,
+        9,
+        4
+      ]
+    },
+    {
+      "line_number": 27,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.42857142857142855,
+      "depth": 3,
+      "transitive_dependencies": 6,
+      "dependent_lines": [
+        26,
+        16
+      ]
+    }
+  ],
+  "overall_complexity_score": 42.724999999999994
+}

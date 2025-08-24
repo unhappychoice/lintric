@@ -81,6 +81,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 59,
             },
+            context: None,
         },
         Usage {
             name: "second",
@@ -91,6 +92,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 68,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

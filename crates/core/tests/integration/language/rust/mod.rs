@@ -127,4 +127,12 @@ test_rust_analysis!(
     "hoisting_test_metrics"
 );
 
+test_rust_analysis!(
+    test_dependency_resolution_bugs,
+    "dependency_resolution_bugs",
+    "dependency_resolution_bugs_ir",
+    "dependency_resolution_bugs_metrics"
+);
+
+pub mod dependency_resolution_validation_tests;
 pub mod dependency_resolver;

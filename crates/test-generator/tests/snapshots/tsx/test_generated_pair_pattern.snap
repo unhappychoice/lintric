@@ -46,6 +46,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "obj3",
@@ -56,6 +57,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 31,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

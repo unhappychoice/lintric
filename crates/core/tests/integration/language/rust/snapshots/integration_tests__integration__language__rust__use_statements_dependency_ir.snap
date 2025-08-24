@@ -239,63 +239,63 @@ IntermediateRepresentation {
             source_line: 7,
             target_line: 1,
             symbol: "my_module",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:7:5",
+                "TypeIdentifier:7:5",
             ),
         },
         Dependency {
             source_line: 7,
             target_line: 2,
             symbol: "MyStruct",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:7:16",
+                "TypeIdentifier:7:16",
             ),
         },
         Dependency {
             source_line: 8,
             target_line: 1,
             symbol: "my_module",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:8:5",
+                "TypeIdentifier:8:5",
             ),
         },
         Dependency {
             source_line: 8,
             target_line: 3,
             symbol: "my_function",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:8:17",
+                "TypeIdentifier:8:17",
             ),
         },
         Dependency {
             source_line: 8,
             target_line: 4,
             symbol: "MY_CONST",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:8:30",
+                "TypeIdentifier:8:30",
             ),
         },
         Dependency {
             source_line: 9,
             target_line: 1,
             symbol: "my_module",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:9:5",
+                "TypeIdentifier:9:5",
             ),
         },
         Dependency {
             source_line: 10,
             target_line: 1,
             symbol: "my_module",
-            dependency_type: VariableUse,
+            dependency_type: TypeReference,
             context: Some(
-                "Identifier:10:5",
+                "TypeIdentifier:10:5",
             ),
         },
         Dependency {
@@ -332,15 +332,6 @@ IntermediateRepresentation {
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:16:14",
-            ),
-        },
-        Dependency {
-            source_line: 16,
-            target_line: 7,
-            symbol: "MyStruct",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:16:18",
             ),
         },
         Dependency {
@@ -383,83 +374,95 @@ IntermediateRepresentation {
     usage: [
         Usage {
             name: "my_module",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 7,
                 start_column: 5,
                 end_line: 7,
                 end_column: 14,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "MyStruct",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 7,
                 start_column: 16,
                 end_line: 7,
                 end_column: 24,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "my_module",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 8,
                 start_column: 5,
                 end_line: 8,
                 end_column: 14,
             },
+            context: None,
         },
         Usage {
             name: "my_function",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 8,
                 start_column: 17,
                 end_line: 8,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "MY_CONST",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 8,
                 start_column: 30,
                 end_line: 8,
                 end_column: 38,
             },
+            context: None,
         },
         Usage {
             name: "my_module",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 9,
                 start_column: 5,
                 end_line: 9,
                 end_column: 14,
             },
+            context: None,
         },
         Usage {
             name: "my_module",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 10,
                 start_column: 5,
                 end_line: 10,
                 end_column: 14,
             },
+            context: None,
         },
         Usage {
             name: "mm",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 10,
                 start_column: 18,
                 end_line: 10,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "MyStruct",
@@ -470,6 +473,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "my_function",
@@ -480,6 +484,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 18,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "MY_CONST",
@@ -490,6 +497,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "mm",
@@ -500,6 +508,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 16,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "MyStruct",
@@ -510,6 +521,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

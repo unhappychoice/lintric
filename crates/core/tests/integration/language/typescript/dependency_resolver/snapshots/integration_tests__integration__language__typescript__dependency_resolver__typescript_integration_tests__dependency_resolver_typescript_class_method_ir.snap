@@ -540,6 +540,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "add",
@@ -550,6 +551,7 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 8,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -560,6 +562,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 19,
             },
+            context: None,
         },
         Usage {
             name: "n",
@@ -570,6 +573,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "getValue",
@@ -580,6 +584,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -590,6 +595,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 26,
             },
+            context: None,
         },
         Usage {
             name: "draw",
@@ -600,6 +606,7 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "Drawable",
@@ -610,6 +617,7 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 33,
             },
+            context: None,
         },
         Usage {
             name: "radius",
@@ -620,6 +628,7 @@ IntermediateRepresentation {
                 end_line: 18,
                 end_column: 11,
             },
+            context: None,
         },
         Usage {
             name: "constructor",
@@ -630,6 +639,7 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "radius",
@@ -640,6 +650,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "radius",
@@ -650,6 +661,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 29,
             },
+            context: None,
         },
         Usage {
             name: "draw",
@@ -660,6 +672,7 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "console.log",
@@ -670,6 +683,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 65,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console",
@@ -680,6 +696,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "log",
@@ -690,6 +709,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 20,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "radius",
@@ -700,6 +722,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 62,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Calculator",
@@ -710,6 +735,7 @@ IntermediateRepresentation {
                 end_line: 30,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "calc.add",
@@ -720,6 +746,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "calc",
@@ -730,6 +759,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 9,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "add",
@@ -740,6 +772,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 13,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console.log",
@@ -750,6 +785,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console",
@@ -760,6 +798,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 12,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "log",
@@ -770,6 +811,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "calc.getValue",
@@ -780,6 +824,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 32,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "calc",
@@ -790,6 +837,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 21,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "getValue",
@@ -800,6 +850,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 30,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Circle",
@@ -810,6 +863,7 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 30,
             },
+            context: None,
         },
         Usage {
             name: "circle.draw",
@@ -820,6 +874,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 18,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "circle",
@@ -830,6 +887,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 11,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "draw",
@@ -840,6 +900,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

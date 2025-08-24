@@ -18,6 +18,7 @@ pub struct Usage {
     pub name: String,
     pub kind: UsageKind,
     pub position: Position,
+    pub context: Option<String>,
 }
 
 impl Usage {
@@ -28,11 +29,28 @@ impl Usage {
             .trim()
             .replace("\r\n", "\n");
 
+        // Check if this node is part of a scoped_identifier
+        let context = Self::get_node_context(node);
+
         Usage {
             name,
             kind,
             position: Position::from_node(node),
+            context,
         }
+    }
+
+    fn get_node_context(node: &Node) -> Option<String> {
+        let mut current = node.parent();
+        while let Some(parent) = current {
+            match parent.kind() {
+                "scoped_identifier" => return Some("scoped_identifier".to_string()),
+                "field_expression" => return Some("field_expression".to_string()),
+                "call_expression" => return Some("call_expression".to_string()),
+                _ => current = parent.parent(),
+            }
+        }
+        None
     }
 
     // Helper function for testing
@@ -41,6 +59,7 @@ impl Usage {
             name,
             kind,
             position,
+            context: None,
         }
     }
 
@@ -64,6 +83,7 @@ impl Usage {
             name: function_name,
             kind: UsageKind::CallExpression,
             position: Position::from_node(node),
+            context: Some("call_expression".to_string()),
         }
     }
 
@@ -95,6 +115,7 @@ impl Usage {
             name: field_name,
             kind: UsageKind::FieldExpression,
             position: Position::from_node(node),
+            context: Some("field_expression".to_string()),
         }
     }
 }

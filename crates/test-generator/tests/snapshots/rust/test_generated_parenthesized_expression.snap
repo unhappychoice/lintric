@@ -32,6 +32,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 4,
             },
+            context: None,
         },
         Usage {
             name: "b3",
@@ -42,6 +43,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 9,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

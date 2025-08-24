@@ -630,6 +630,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "speak",
@@ -640,6 +641,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -650,6 +652,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 30,
             },
+            context: None,
         },
         Usage {
             name: "Animal",
@@ -660,6 +663,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "fur_color",
@@ -670,6 +674,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 17,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -680,6 +685,7 @@ IntermediateRepresentation {
                 end_line: 11,
                 end_column: 17,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -690,6 +696,7 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "Animal",
@@ -700,6 +707,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "Dog",
@@ -710,6 +718,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -720,6 +729,9 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "String",
@@ -730,6 +742,7 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 30,
             },
+            context: None,
         },
         Usage {
             name: "format",
@@ -740,6 +753,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 15,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -750,6 +764,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 38,
             },
+            context: None,
         },
         Usage {
             name: "Mammal",
@@ -760,6 +775,7 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "Dog",
@@ -770,6 +786,7 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "fur",
@@ -780,6 +797,9 @@ IntermediateRepresentation {
                 end_line: 27,
                 end_column: 18,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "T",
@@ -790,6 +810,7 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 43,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -800,6 +821,7 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "animal",
@@ -810,6 +832,7 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 15,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -820,6 +843,7 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "animal",
@@ -830,6 +854,7 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 15,
             },
+            context: None,
         },
         Usage {
             name: "fur_color",
@@ -840,6 +865,7 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "animal",
@@ -850,6 +876,7 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 15,
             },
+            context: None,
         },
         Usage {
             name: "speak",
@@ -860,6 +887,7 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "Dog {\n        name: \"Buddy\".to_string(),\n        fur: \"brown\".to_string(),\n    }",
@@ -870,6 +898,7 @@ IntermediateRepresentation {
                 end_line: 43,
                 end_column: 6,
             },
+            context: None,
         },
         Usage {
             name: "Dog",
@@ -880,6 +909,7 @@ IntermediateRepresentation {
                 end_line: 40,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "\"Buddy\".to_string",
@@ -890,6 +920,9 @@ IntermediateRepresentation {
                 end_line: 41,
                 end_column: 34,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "to_string",
@@ -900,6 +933,9 @@ IntermediateRepresentation {
                 end_line: 41,
                 end_column: 32,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "\"brown\".to_string",
@@ -910,6 +946,9 @@ IntermediateRepresentation {
                 end_line: 42,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "to_string",
@@ -920,6 +959,9 @@ IntermediateRepresentation {
                 end_line: 42,
                 end_column: 31,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "print_mammal_info",
@@ -930,6 +972,9 @@ IntermediateRepresentation {
                 end_line: 44,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "dog",
@@ -940,6 +985,9 @@ IntermediateRepresentation {
                 end_line: 44,
                 end_column: 27,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

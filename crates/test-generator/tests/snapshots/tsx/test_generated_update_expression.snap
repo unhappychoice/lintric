@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/tsx.rs
+source: crates/test-generator/tests/tsx.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -29,6 +29,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 8,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

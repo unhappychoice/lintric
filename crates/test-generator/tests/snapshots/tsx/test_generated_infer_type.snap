@@ -87,6 +87,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 19,
             },
+            context: None,
         },
         Usage {
             name: "U",
@@ -97,6 +98,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 35,
             },
+            context: None,
         },
         Usage {
             name: "U",
@@ -107,6 +109,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 39,
             },
+            context: None,
         },
         Usage {
             name: "Test",
@@ -117,6 +120,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 68,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

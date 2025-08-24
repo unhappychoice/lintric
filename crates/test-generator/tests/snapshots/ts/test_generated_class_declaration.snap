@@ -84,6 +84,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 33,
             },
+            context: None,
         },
         Usage {
             name: "method1",
@@ -94,6 +95,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 62,
             },
+            context: None,
         },
         Usage {
             name: "field",
@@ -104,6 +106,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 92,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

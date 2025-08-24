@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/typescript.rs
+source: crates/test-generator/tests/typescript.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -36,6 +36,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "value16",
@@ -46,6 +47,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "prop2",
@@ -56,6 +58,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "value21",
@@ -66,6 +69,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 34,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

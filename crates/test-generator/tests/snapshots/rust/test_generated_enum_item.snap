@@ -46,6 +46,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 24,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

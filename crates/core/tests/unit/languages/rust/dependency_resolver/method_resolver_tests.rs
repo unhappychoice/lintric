@@ -153,6 +153,7 @@ fn main() {
         name: "distance".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(20),
+        context: None,
     };
 
     let definitions = vec![Definition {
@@ -177,6 +178,7 @@ fn test_associated_function_call_parsing() {
         name: "String::new".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(1),
+        context: None,
     };
 
     let definitions = vec![Definition {
@@ -229,6 +231,7 @@ fn main() {
         name: "get".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(21),
+        context: None,
     };
 
     let definitions = vec![Definition {
@@ -272,6 +275,7 @@ fn main() {
         name: "display".to_string(),
         kind: UsageKind::CallExpression,
         position: create_test_position(17),
+        context: None,
     };
 
     let definitions = vec![Definition {
@@ -324,6 +328,7 @@ fn main() {
             name: method_name.to_string(),
             kind: UsageKind::CallExpression,
             position: create_test_position(22),
+            context: None,
         };
 
         let definitions = vec![Definition {

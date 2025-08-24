@@ -1,5 +1,5 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
@@ -40,6 +40,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 8,
             },
+            context: None,
         },
         Usage {
             name: "label1",
@@ -50,6 +51,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 33,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

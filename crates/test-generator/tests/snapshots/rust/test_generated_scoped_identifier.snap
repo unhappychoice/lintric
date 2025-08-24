@@ -39,6 +39,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "std",
@@ -49,6 +52,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 4,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "collections",
@@ -59,6 +65,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 17,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "HashMap",
@@ -69,6 +78,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "new",
@@ -79,6 +91,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 31,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -35,6 +35,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 30,
             },
+            context: None,
         },
         Usage {
             name: "TestStruct",
@@ -45,6 +46,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 11,
             },
+            context: None,
         },
         Usage {
             name: "value7",
@@ -55,6 +57,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 28,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -29,6 +29,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 9,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

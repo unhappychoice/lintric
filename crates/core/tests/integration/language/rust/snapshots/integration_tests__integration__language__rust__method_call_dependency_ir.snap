@@ -201,6 +201,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 14,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -211,6 +212,9 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "MyStruct { value: 10 }",
@@ -221,6 +225,7 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 35,
             },
+            context: None,
         },
         Usage {
             name: "MyStruct",
@@ -231,6 +236,7 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "s.my_method",
@@ -241,6 +247,9 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 18,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "my_method",
@@ -251,6 +260,9 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 16,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "s",
@@ -261,6 +273,9 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 6,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

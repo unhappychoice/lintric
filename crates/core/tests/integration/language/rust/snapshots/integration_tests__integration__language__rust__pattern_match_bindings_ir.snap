@@ -324,6 +324,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 32,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Some",
@@ -334,6 +337,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -344,6 +348,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 22,
             },
+            context: None,
         },
         Usage {
             name: "option_value",
@@ -354,6 +359,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 38,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -364,6 +370,7 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -374,6 +381,7 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 36,
             },
+            context: None,
         },
         Usage {
             name: "vec",
@@ -384,6 +392,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 22,
             },
+            context: None,
         },
         Usage {
             name: "numbers",
@@ -394,6 +403,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 23,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -404,6 +414,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "num",
@@ -414,6 +425,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 35,
             },
+            context: None,
         },
         Usage {
             name: "Some",
@@ -424,6 +436,9 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 27,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Some",
@@ -434,6 +449,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 19,
             },
+            context: None,
         },
         Usage {
             name: "i",
@@ -444,6 +460,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "iter",
@@ -454,6 +471,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 29,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -464,6 +482,7 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "i",
@@ -474,6 +493,7 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 36,
             },
+            context: None,
         },
         Usage {
             name: "iter",
@@ -484,6 +504,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "i",
@@ -494,6 +515,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "Some",
@@ -504,6 +526,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 38,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "i",
@@ -514,6 +539,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "None",
@@ -524,6 +552,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 52,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

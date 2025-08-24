@@ -663,6 +663,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -673,6 +674,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "Number",
@@ -683,6 +685,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 11,
             },
+            context: None,
         },
         Usage {
             name: "Quit",
@@ -693,6 +696,7 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -703,6 +707,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 17,
             },
+            context: None,
         },
         Usage {
             name: "Handler",
@@ -713,6 +718,7 @@ IntermediateRepresentation {
                 end_line: 11,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -723,6 +729,7 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "Self",
@@ -733,6 +740,7 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 33,
             },
+            context: None,
         },
         Usage {
             name: "Handler { name }",
@@ -743,6 +751,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "Handler",
@@ -753,6 +762,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -763,6 +773,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 23,
             },
+            context: None,
         },
         Usage {
             name: "Message",
@@ -773,6 +784,7 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 34,
             },
+            context: None,
         },
         Usage {
             name: "msg",
@@ -783,6 +795,7 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "Message",
@@ -793,6 +806,9 @@ IntermediateRepresentation {
                 end_line: 18,
                 end_column: 20,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Text",
@@ -803,6 +819,9 @@ IntermediateRepresentation {
                 end_line: 18,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "text",
@@ -813,6 +832,7 @@ IntermediateRepresentation {
                 end_line: 18,
                 end_column: 31,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -823,6 +843,7 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -833,6 +854,7 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 45,
             },
+            context: None,
         },
         Usage {
             name: "text",
@@ -843,6 +865,7 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 51,
             },
+            context: None,
         },
         Usage {
             name: "Message",
@@ -853,6 +876,9 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 20,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Number",
@@ -863,6 +889,9 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 28,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "num",
@@ -873,6 +902,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -883,6 +913,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -893,6 +924,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 52,
             },
+            context: None,
         },
         Usage {
             name: "num",
@@ -903,6 +935,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 57,
             },
+            context: None,
         },
         Usage {
             name: "Message",
@@ -913,6 +946,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 20,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Quit",
@@ -923,6 +959,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "println",
@@ -933,6 +972,7 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -943,6 +983,7 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 51,
             },
+            context: None,
         },
         Usage {
             name: "Handler::new",
@@ -953,6 +994,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 51,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Handler",
@@ -963,6 +1007,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "new",
@@ -973,6 +1020,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 31,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "\"Main\".to_string",
@@ -983,6 +1033,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 50,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "to_string",
@@ -993,6 +1046,9 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 48,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "handler.handle",
@@ -1003,6 +1059,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 55,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "handle",
@@ -1013,6 +1072,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "handler",
@@ -1023,6 +1085,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 12,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "Message::Text",
@@ -1033,6 +1098,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 54,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Message",
@@ -1043,6 +1111,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 27,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Text",
@@ -1053,6 +1124,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 33,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "\"Hello\".to_string",
@@ -1063,6 +1137,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 53,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "to_string",
@@ -1073,6 +1150,9 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 51,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "handler.handle",
@@ -1083,6 +1163,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 40,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "handle",
@@ -1093,6 +1176,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "handler",
@@ -1103,6 +1189,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 12,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "Message::Number",
@@ -1113,6 +1202,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 39,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Message",
@@ -1123,6 +1215,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 27,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Number",
@@ -1133,6 +1228,9 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 35,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "handler.handle",
@@ -1143,6 +1241,9 @@ IntermediateRepresentation {
                 end_line: 36,
                 end_column: 34,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "handle",
@@ -1153,6 +1254,9 @@ IntermediateRepresentation {
                 end_line: 36,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "handler",
@@ -1163,6 +1267,9 @@ IntermediateRepresentation {
                 end_line: 36,
                 end_column: 12,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "Message",
@@ -1173,6 +1280,9 @@ IntermediateRepresentation {
                 end_line: 36,
                 end_column: 27,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Quit",
@@ -1183,6 +1293,9 @@ IntermediateRepresentation {
                 end_line: 36,
                 end_column: 33,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

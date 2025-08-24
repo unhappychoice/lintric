@@ -91,6 +91,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 30,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -101,6 +102,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 36,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -111,6 +113,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 44,
             },
+            context: None,
         },
         Usage {
             name: "std",
@@ -121,6 +124,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 49,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "fmt",
@@ -131,6 +137,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 54,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Debug",
@@ -141,6 +150,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 61,
             },
+            context: None,
         },
         Usage {
             name: "x",
@@ -151,6 +161,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 65,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

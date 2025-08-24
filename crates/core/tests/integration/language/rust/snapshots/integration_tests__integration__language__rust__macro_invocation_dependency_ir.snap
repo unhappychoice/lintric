@@ -118,6 +118,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 22,
             },
+            context: None,
         },
         Usage {
             name: "$e",
@@ -128,6 +129,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 8,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -138,6 +140,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "$e",
@@ -148,6 +151,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 26,
             },
+            context: None,
         },
         Usage {
             name: "my_macro",
@@ -158,6 +162,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 13,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -369,33 +369,42 @@ IntermediateRepresentation {
     usage: [
         Usage {
             name: "std",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 1,
                 start_column: 5,
                 end_line: 1,
                 end_column: 8,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "future",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 1,
                 start_column: 10,
                 end_line: 1,
                 end_column: 16,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Future",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 1,
                 start_column: 18,
                 end_line: 1,
                 end_column: 24,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Result",
@@ -406,6 +415,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -416,6 +426,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 39,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -426,6 +437,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 47,
             },
+            context: None,
         },
         Usage {
             name: "Ok",
@@ -436,6 +448,9 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 27,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "\"data\".to_string",
@@ -446,6 +461,9 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 26,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "to_string",
@@ -456,6 +474,9 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 24,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "Result",
@@ -466,6 +487,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 34,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -476,6 +498,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 45,
             },
+            context: None,
         },
         Usage {
             name: "fetch_data",
@@ -486,6 +509,9 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -496,6 +522,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "data",
@@ -506,6 +533,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 35,
             },
+            context: None,
         },
         Usage {
             name: "Ok",
@@ -516,6 +544,9 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 11,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "F",
@@ -526,6 +557,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 48,
             },
+            context: None,
         },
         Usage {
             name: "std::hint::black_box",
@@ -536,6 +568,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "std",
@@ -546,6 +581,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 8,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "hint",
@@ -556,6 +594,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 14,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "black_box",
@@ -566,6 +607,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 25,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "future",
@@ -576,6 +620,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 32,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "process_data",
@@ -586,6 +633,9 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 27,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "spawn_task",
@@ -596,6 +646,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 7,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "fetch_data().await.unwrap",
@@ -606,6 +659,9 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 47,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "unwrap",
@@ -616,6 +672,9 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 45,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "fetch_data",
@@ -626,6 +685,9 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 32,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -636,6 +698,9 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "data",
@@ -646,6 +711,9 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 38,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

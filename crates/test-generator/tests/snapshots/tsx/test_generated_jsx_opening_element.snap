@@ -54,6 +54,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "prop2",
@@ -64,6 +65,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 34,
             },
+            context: None,
         },
         Usage {
             name: "value15",
@@ -74,6 +76,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 43,
             },
+            context: None,
         },
         Usage {
             name: "Component1",
@@ -84,6 +87,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 57,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

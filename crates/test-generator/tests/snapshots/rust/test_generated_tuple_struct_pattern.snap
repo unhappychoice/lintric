@@ -58,6 +58,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "x16",
@@ -68,6 +69,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 17,
             },
+            context: None,
         },
         Usage {
             name: "y5",
@@ -78,6 +80,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "point_val",
@@ -88,6 +91,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 34,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {
