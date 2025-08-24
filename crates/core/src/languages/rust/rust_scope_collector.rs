@@ -32,6 +32,7 @@ impl RustScopeCollector {
 
     fn visit_node(&mut self, node: Node, source_code: &str) -> Result<(), String> {
         let node_type = node.kind();
+        let original_scope = self.current_scope;
 
         self.visit_rust_node(node, source_code, node_type)?;
 
@@ -39,6 +40,14 @@ impl RustScopeCollector {
             if let Some(child) = node.child(i) {
                 self.visit_node(child, source_code)?;
             }
+        }
+
+        // Restore the original scope after visiting this node and its children
+        if matches!(
+            node_type,
+            "function_item" | "impl_item" | "trait_item" | "block" | "mod_item"
+        ) {
+            self.current_scope = original_scope;
         }
 
         Ok(())
@@ -105,7 +114,13 @@ impl RustScopeCollector {
         node: Node,
         _source_code: &str,
     ) -> Result<Position, String> {
-        Ok(Position::from_node(&node))
+        let end_point = node.end_position();
+        Ok(Position {
+            start_line: end_point.row + 1,
+            start_column: end_point.column + 1,
+            end_line: end_point.row + 1,
+            end_column: end_point.column + 1,
+        })
     }
 
     fn collect_definitions_with_scope(
@@ -239,12 +254,31 @@ impl ScopeCollectorTrait for RustScopeCollector {
         source_code: &str,
         root_node: Node,
         _usage_nodes: &[crate::models::Usage],
-        _definitions: &[crate::models::Definition],
+        definitions: &[crate::models::Definition],
     ) -> Result<SymbolTable, String> {
         let mut new_self = RustScopeCollector::new();
         new_self.visit_node(root_node, source_code)?;
         new_self.symbol_table.scopes = new_self.scope_tree.clone();
         new_self.collect_definitions_with_scope(root_node, source_code)?;
+
+        // Add definitions from definition collector (like imports) to symbol table
+        for definition in definitions {
+            // Find the appropriate scope for this definition
+            let scope_id = new_self
+                .symbol_table
+                .scopes
+                .find_scope_at_position(&definition.position)
+                .unwrap_or_default();
+
+            new_self.symbol_table.add_symbol(
+                definition.name.clone(),
+                definition.clone(),
+                scope_id,
+                Accessibility::ScopeLocal,
+                false,
+            );
+        }
+
         Ok(new_self.symbol_table.clone())
     }
 }

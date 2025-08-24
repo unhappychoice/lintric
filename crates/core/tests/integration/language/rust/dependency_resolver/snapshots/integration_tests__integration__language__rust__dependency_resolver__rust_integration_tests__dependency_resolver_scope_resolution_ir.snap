@@ -204,15 +204,6 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency {
-            source_line: 5,
-            target_line: 2,
-            symbol: "outer_var",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:5:24",
-            ),
-        },
-        Dependency {
             source_line: 10,
             target_line: 2,
             symbol: "outer_var",

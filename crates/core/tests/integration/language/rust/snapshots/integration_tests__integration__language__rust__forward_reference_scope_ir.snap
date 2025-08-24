@@ -321,7 +321,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 8,
-            target_line: 3,
+            target_line: 7,
             symbol: "x",
             dependency_type: VariableUse,
             context: Some(

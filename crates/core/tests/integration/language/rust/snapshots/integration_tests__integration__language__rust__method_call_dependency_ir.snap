@@ -160,7 +160,7 @@ IntermediateRepresentation {
             symbol: "value",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:7:9",
             ),
         },
         Dependency {
@@ -170,6 +170,15 @@ IntermediateRepresentation {
             dependency_type: TypeReference,
             context: Some(
                 "TypeIdentifier:12:13",
+            ),
+        },
+        Dependency {
+            source_line: 13,
+            target_line: 6,
+            symbol: "my_method",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:13:5",
             ),
         },
         Dependency {
@@ -194,7 +203,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.value",
+            name: "value",
             kind: FieldExpression,
             position: Position {
                 start_line: 7,
@@ -234,7 +243,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "s.my_method",
+            name: "my_method",
             kind: FieldExpression,
             position: Position {
                 start_line: 13,

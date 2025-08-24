@@ -231,7 +231,7 @@ expression: out
       "target_line": 2,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:16:16"
     },
     {
       "source_line": 16,
@@ -245,7 +245,7 @@ expression: out
       "target_line": 2,
       "symbol": "x",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:16:22"
     },
     {
       "source_line": 16,
@@ -266,7 +266,7 @@ expression: out
       "target_line": 3,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:17:16"
     },
     {
       "source_line": 17,
@@ -280,7 +280,7 @@ expression: out
       "target_line": 3,
       "symbol": "y",
       "dependency_type": "StructFieldAccess",
-      "context": "field_access"
+      "context": "FieldExpression:17:22"
     },
     {
       "source_line": 17,
@@ -448,7 +448,7 @@ expression: out
       }
     },
     {
-      "name": "p1.x",
+      "name": "x",
       "kind": "FieldExpression",
       "position": {
         "start_line": 16,
@@ -468,7 +468,7 @@ expression: out
       }
     },
     {
-      "name": "p2.x",
+      "name": "x",
       "kind": "FieldExpression",
       "position": {
         "start_line": 16,
@@ -498,7 +498,7 @@ expression: out
       }
     },
     {
-      "name": "p1.y",
+      "name": "y",
       "kind": "FieldExpression",
       "position": {
         "start_line": 17,
@@ -518,7 +518,7 @@ expression: out
       }
     },
     {
-      "name": "p2.y",
+      "name": "y",
       "kind": "FieldExpression",
       "position": {
         "start_line": 17,

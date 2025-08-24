@@ -467,39 +467,12 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency {
-            source_line: 2,
-            target_line: 16,
-            symbol: "name",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:8",
-            ),
-        },
-        Dependency {
-            source_line: 3,
-            target_line: 20,
-            symbol: "speak",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:3:8",
-            ),
-        },
-        Dependency {
             source_line: 6,
             target_line: 1,
             symbol: "Animal",
             dependency_type: TypeReference,
             context: Some(
                 "TypeIdentifier:6:15",
-            ),
-        },
-        Dependency {
-            source_line: 7,
-            target_line: 26,
-            symbol: "fur_color",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:7:8",
             ),
         },
         Dependency {
@@ -522,20 +495,20 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 17,
-            target_line: 11,
+            target_line: 16,
             symbol: "name",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:17:10",
             ),
         },
         Dependency {
             source_line: 21,
             target_line: 16,
             symbol: "name",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:21:34",
+                "FieldExpression:21:34",
             ),
         },
         Dependency {
@@ -562,7 +535,7 @@ IntermediateRepresentation {
             symbol: "fur",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:27:10",
             ),
         },
         Dependency {
@@ -578,9 +551,9 @@ IntermediateRepresentation {
             source_line: 33,
             target_line: 16,
             symbol: "name",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:33:16",
+                "FieldExpression:33:16",
             ),
         },
         Dependency {
@@ -596,9 +569,9 @@ IntermediateRepresentation {
             source_line: 34,
             target_line: 26,
             symbol: "fur_color",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:34:16",
+                "FieldExpression:34:16",
             ),
         },
         Dependency {
@@ -614,9 +587,9 @@ IntermediateRepresentation {
             source_line: 35,
             target_line: 20,
             symbol: "speak",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:35:16",
+                "FieldExpression:35:16",
             ),
         },
         Dependency {
@@ -739,7 +712,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.name",
+            name: "name",
             kind: FieldExpression,
             position: Position {
                 start_line: 17,
@@ -770,7 +743,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "name",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 21,
                 start_column: 34,
@@ -799,7 +772,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.fur",
+            name: "fur",
             kind: FieldExpression,
             position: Position {
                 start_line: 27,
@@ -840,7 +813,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "name",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 33,
                 start_column: 16,
@@ -860,7 +833,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "fur_color",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 34,
                 start_column: 16,
@@ -880,7 +853,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "speak",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 35,
                 start_column: 16,
@@ -919,7 +892,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "\"Buddy\".to_string",
+            name: "to_string",
             kind: FieldExpression,
             position: Position {
                 start_line: 41,
@@ -939,7 +912,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "\"brown\".to_string",
+            name: "to_string",
             kind: FieldExpression,
             position: Position {
                 start_line: 42,

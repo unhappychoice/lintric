@@ -332,11 +332,20 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 24,
-            target_line: 29,
+            target_line: 22,
             symbol: "CustomType",
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:24:15",
+            ),
+        },
+        Dependency {
+            source_line: 29,
+            target_line: 22,
+            symbol: "CustomType",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:29:18",
             ),
         },
         Dependency {

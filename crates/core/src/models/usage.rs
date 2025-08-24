@@ -66,4 +66,35 @@ impl Usage {
             position: Position::from_node(node),
         }
     }
+
+    pub fn new_field_expression(node: &Node, source_code: &str) -> Self {
+        // Extract field name from field_expression by getting the field child (usually the last child)
+        // For "obj.field", we want just "field"
+        let field_name = if let Some(field_node) = node.child_by_field_name("field") {
+            field_node
+                .utf8_text(source_code.as_bytes())
+                .unwrap_or("")
+                .trim()
+                .replace("\r\n", "\n")
+        } else if let Some(last_child) = node.child(node.child_count().saturating_sub(1)) {
+            // Fallback: try the last child
+            last_child
+                .utf8_text(source_code.as_bytes())
+                .unwrap_or("")
+                .trim()
+                .replace("\r\n", "\n")
+        } else {
+            // Final fallback to full text
+            node.utf8_text(source_code.as_bytes())
+                .unwrap_or("")
+                .trim()
+                .replace("\r\n", "\n")
+        };
+
+        Usage {
+            name: field_name,
+            kind: UsageKind::FieldExpression,
+            position: Position::from_node(node),
+        }
+    }
 }

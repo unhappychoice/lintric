@@ -396,7 +396,7 @@ IntermediateRepresentation {
             symbol: "value",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:11:9",
             ),
         },
         Dependency {
@@ -414,16 +414,7 @@ IntermediateRepresentation {
             symbol: "value",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
-            ),
-        },
-        Dependency {
-            source_line: 20,
-            target_line: 24,
-            symbol: "display",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:20:8",
+                "FieldExpression:15:9",
             ),
         },
         Dependency {
@@ -448,9 +439,9 @@ IntermediateRepresentation {
             source_line: 25,
             target_line: 2,
             symbol: "value",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:25:40",
+                "FieldExpression:25:40",
             ),
         },
         Dependency {
@@ -469,6 +460,15 @@ IntermediateRepresentation {
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:30:32",
+            ),
+        },
+        Dependency {
+            source_line: 31,
+            target_line: 10,
+            symbol: "add",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:31:5",
             ),
         },
         Dependency {
@@ -493,9 +493,9 @@ IntermediateRepresentation {
             source_line: 32,
             target_line: 14,
             symbol: "get_value",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:32:25",
+                "FieldExpression:32:25",
             ),
         },
         Dependency {
@@ -511,9 +511,9 @@ IntermediateRepresentation {
             source_line: 33,
             target_line: 24,
             symbol: "display",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:33:25",
+                "FieldExpression:33:25",
             ),
         },
     ],
@@ -559,7 +559,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.value",
+            name: "value",
             kind: FieldExpression,
             position: Position {
                 start_line: 11,
@@ -579,7 +579,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.value",
+            name: "value",
             kind: FieldExpression,
             position: Position {
                 start_line: 15,
@@ -650,7 +650,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "value",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 25,
                 start_column: 40,
@@ -699,7 +699,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "calc.add",
+            name: "add",
             kind: FieldExpression,
             position: Position {
                 start_line: 31,
@@ -740,7 +740,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "get_value",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 32,
                 start_column: 25,
@@ -770,7 +770,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "display",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 33,
                 start_column: 25,

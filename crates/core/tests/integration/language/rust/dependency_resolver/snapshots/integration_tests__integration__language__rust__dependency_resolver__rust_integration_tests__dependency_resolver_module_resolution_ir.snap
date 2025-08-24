@@ -387,7 +387,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "map.insert",
+            name: "insert",
             kind: FieldExpression,
             position: Position {
                 start_line: 17,

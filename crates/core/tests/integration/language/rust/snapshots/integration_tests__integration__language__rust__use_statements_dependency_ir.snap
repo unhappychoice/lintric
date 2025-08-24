@@ -246,7 +246,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 7,
-            target_line: 13,
+            target_line: 2,
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
@@ -273,7 +273,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 8,
-            target_line: 15,
+            target_line: 4,
             symbol: "MY_CONST",
             dependency_type: VariableUse,
             context: Some(
@@ -299,12 +299,30 @@ IntermediateRepresentation {
             ),
         },
         Dependency {
+            source_line: 13,
+            target_line: 7,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:13:13",
+            ),
+        },
+        Dependency {
             source_line: 14,
-            target_line: 3,
+            target_line: 8,
             symbol: "my_function",
             dependency_type: FunctionCall,
             context: Some(
                 "CallExpression:14:5",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 8,
+            symbol: "MY_CONST",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:15:13",
             ),
         },
         Dependency {
@@ -318,7 +336,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 16,
-            target_line: 13,
+            target_line: 7,
             symbol: "MyStruct",
             dependency_type: VariableUse,
             context: Some(
@@ -332,6 +350,15 @@ IntermediateRepresentation {
             dependency_type: VariableUse,
             context: Some(
                 "ImportDefinition:7:16",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 1,
+            symbol: "my_module",
+            dependency_type: VariableUse,
+            context: Some(
+                "ImportDefinition:8:5",
             ),
         },
         Dependency {

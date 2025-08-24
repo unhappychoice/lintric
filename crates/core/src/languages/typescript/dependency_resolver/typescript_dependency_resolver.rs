@@ -74,6 +74,36 @@ impl TypeScriptDependencyResolver {
             .select_preferred_definition(usage_node, matching_definitions)
     }
 
+    /// Select the closest type parameter definition for TypeScript type identifiers
+    fn select_closest_type_parameter<'a>(
+        &self,
+        usage_node: &Usage,
+        matching_definitions: &[&'a Definition],
+    ) -> Option<&'a Definition> {
+        // Filter type definitions only
+        let type_defs: Vec<&Definition> = matching_definitions
+            .iter()
+            .filter(|def| {
+                matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::TypeDefinition
+                )
+            })
+            .copied()
+            .collect();
+
+        if type_defs.is_empty() {
+            return None;
+        }
+
+        // Find the closest preceding type parameter definition
+        type_defs
+            .iter()
+            .filter(|def| def.position.start_line <= usage_node.position.start_line)
+            .max_by_key(|def| def.position.start_line)
+            .copied()
+    }
+
     #[allow(dead_code)]
     fn find_closest_accessible_definition_basic<'a>(
         &self,
@@ -168,8 +198,18 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
             .collect();
 
         // Apply TypeScript-specific preference logic
-        let preferred_definition =
-            self.select_preferred_definition_typescript_aware(usage_node, &matching_definitions);
+        let preferred_definition = if usage_node.kind == crate::models::UsageKind::TypeIdentifier {
+            // For type identifiers, prefer the most local type parameter definition
+            self.select_closest_type_parameter(usage_node, &matching_definitions)
+                .or_else(|| {
+                    self.select_preferred_definition_typescript_aware(
+                        usage_node,
+                        &matching_definitions,
+                    )
+                })
+        } else {
+            self.select_preferred_definition_typescript_aware(usage_node, &matching_definitions)
+        };
 
         if let Some(definition) = preferred_definition {
             let source_line = usage_node.position.start_line;

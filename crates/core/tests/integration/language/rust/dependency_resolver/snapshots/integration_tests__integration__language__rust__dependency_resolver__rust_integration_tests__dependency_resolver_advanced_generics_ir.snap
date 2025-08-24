@@ -392,30 +392,30 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency {
-            source_line: 2,
+            source_line: 10,
             target_line: 19,
             symbol: "clone",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:2:8",
-            ),
-        },
-        Dependency {
-            source_line: 6,
-            target_line: 25,
-            symbol: "display",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:6:8",
+                "FieldExpression:10:18",
             ),
         },
         Dependency {
             source_line: 10,
-            target_line: 31,
+            target_line: 9,
             symbol: "item",
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:10:18",
+            ),
+        },
+        Dependency {
+            source_line: 11,
+            target_line: 25,
+            symbol: "display",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:11:5",
             ),
         },
         Dependency {
@@ -460,7 +460,7 @@ IntermediateRepresentation {
             symbol: "value",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:20:23",
             ),
         },
         Dependency {
@@ -485,9 +485,9 @@ IntermediateRepresentation {
             source_line: 26,
             target_line: 15,
             symbol: "value",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:26:34",
+                "FieldExpression:26:34",
             ),
         },
         Dependency {
@@ -599,7 +599,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "item.clone",
+            name: "clone",
             kind: FieldExpression,
             position: Position {
                 start_line: 10,
@@ -629,7 +629,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "cloned.display",
+            name: "display",
             kind: FieldExpression,
             position: Position {
                 start_line: 11,
@@ -699,7 +699,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.value",
+            name: "value",
             kind: FieldExpression,
             position: Position {
                 start_line: 20,
@@ -750,7 +750,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "value",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 26,
                 start_column: 34,
