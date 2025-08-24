@@ -1,4 +1,4 @@
-use crate::dependency_resolver::method_resolver::{
+use crate::languages::rust::dependency_resolver::method_resolver::{
     ImplBlock, ImplBlockId, TraitDef, TraitId, TraitImpl, TraitImplId,
 };
 use crate::models::{Definition, DefinitionType, Position, Type};

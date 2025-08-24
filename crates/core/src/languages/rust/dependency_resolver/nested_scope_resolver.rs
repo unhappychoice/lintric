@@ -484,3 +484,54 @@ mod tests {
                                                                            // Captures should always be a valid vector
     }
 }
+
+// Additional scope utility functions from RustHelpers
+use crate::models::{scope::SymbolTable, Position};
+
+pub struct ScopeUtilities;
+
+impl ScopeUtilities {
+    /// Check if two nodes are in the same function scope
+    pub fn are_in_same_function_scope(
+        symbol_table: &SymbolTable,
+        usage: &Usage,
+        definition: &Definition,
+    ) -> bool {
+        // Find the function scopes for both the usage and definition
+        let usage_function_scope =
+            Self::find_enclosing_function_scope(symbol_table, &usage.position);
+        let definition_function_scope =
+            Self::find_enclosing_function_scope(symbol_table, &definition.position);
+
+        match (usage_function_scope, definition_function_scope) {
+            (Some(usage_scope), Some(def_scope)) => usage_scope == def_scope,
+            (None, None) => true, // Both are at module level
+            _ => false,           // One is in a function, the other isn't
+        }
+    }
+
+    fn find_enclosing_function_scope(
+        symbol_table: &SymbolTable,
+        position: &Position,
+    ) -> Option<ScopeId> {
+        // Find the scope that contains this position
+        if let Some(scope_id) = symbol_table.scopes.find_scope_at_position(position) {
+            let mut current_scope_id = scope_id;
+
+            // Walk up the scope chain to find a function scope
+            while let Some(scope) = symbol_table.scopes.get_scope(current_scope_id) {
+                if matches!(scope.scope_type, ScopeType::Function) {
+                    return Some(current_scope_id);
+                }
+
+                if let Some(parent_id) = scope.parent {
+                    current_scope_id = parent_id;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        None
+    }
+}

@@ -5,6 +5,7 @@ use super::typescript::typescript_usage_node_collector::TypescriptUsageNodeColle
 use crate::definition_collectors::DefinitionCollector;
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::Language;
+use crate::scope_collector::ScopeCollector as ScopeCollectorTrait;
 use crate::usage_collector::UsageCollector;
 
 pub fn get_definition_collector<'a>(
@@ -31,56 +32,27 @@ pub fn get_usage_node_collector(
     }
 }
 
-// Simple fallback resolver for scope_integration compatibility
-struct SimpleFallbackResolver;
-
-impl DependencyResolverTrait for SimpleFallbackResolver {
-    fn resolve_dependencies(
-        &self,
-        _source_code: &str,
-        _root_node: tree_sitter::Node,
-        usage_nodes: &[crate::models::Usage],
-        definitions: &[crate::models::Definition],
-    ) -> Result<Vec<crate::models::Dependency>, String> {
-        let mut dependencies = Vec::new();
-
-        for usage in usage_nodes {
-            // Simple name-based matching for fallback
-            if let Some(def) = definitions.iter().find(|d| d.name == usage.name) {
-                let source_line = usage.position.line_number();
-                let target_line = def.line_number();
-
-                if source_line != target_line {
-                    dependencies.push(crate::models::Dependency {
-                        source_line,
-                        target_line,
-                        symbol: usage.name.clone(),
-                        dependency_type: crate::models::DependencyType::VariableUse,
-                        context: Some(format!(
-                            "fallback:{}:{}",
-                            usage.position.start_line, usage.position.start_column
-                        )),
-                    });
-                }
-            }
-        }
-
-        Ok(dependencies)
-    }
-
-    fn resolve_single_dependency(
-        &self,
-        _source_code: &str,
-        _root_node: tree_sitter::Node,
-        _usage_node: &crate::models::Usage,
-        _definitions: &[crate::models::Definition],
-    ) -> Vec<crate::models::Dependency> {
-        Vec::new()
+pub fn create_scope_collector(language: Language) -> Result<Box<dyn ScopeCollectorTrait>, String> {
+    match language {
+        Language::Rust => Ok(Box::new(
+            super::rust::rust_scope_collector::RustScopeCollector::new(),
+        )),
+        Language::TypeScript | Language::TSX => Ok(Box::new(
+            super::typescript::typescript_scope_collector::TypeScriptScopeCollector::new(),
+        )),
     }
 }
 
 pub fn get_dependency_resolver(
-    _language: Language,
+    language: Language,
+    symbol_table: crate::models::SymbolTable,
 ) -> Result<Box<dyn DependencyResolverTrait>, String> {
-    Ok(Box::new(SimpleFallbackResolver))
+    match language {
+        Language::Rust => Ok(Box::new(
+            super::rust::dependency_resolver::RustDependencyResolver::new(symbol_table),
+        )),
+        Language::TypeScript | Language::TSX => Ok(Box::new(
+            super::typescript::dependency_resolver::TypeScriptDependencyResolver::new(symbol_table),
+        )),
+    }
 }

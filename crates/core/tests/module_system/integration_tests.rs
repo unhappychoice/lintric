@@ -1,4 +1,4 @@
-use lintric_core::dependency_resolver::{ImportResolver, VisibilityChecker};
+use lintric_core::languages::rust::dependency_resolver::{ImportResolver, VisibilityChecker};
 use lintric_core::models::{
     Definition, DefinitionType, ImportInfo, ImportType, ModuleTree, Position, Visibility,
 };

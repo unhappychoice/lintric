@@ -1,10 +1,32 @@
 use lintric_core::{
-    dependency_resolver::{DefaultScopeAwareResolver, ScopeAwareDependencyResolver},
+    languages::rust::rust_scope_collector::RustScopeCollector,
     models::{
-        Accessibility, Definition, DefinitionType, Position, ScopeType, SymbolTable, Usage,
-        UsageKind,
+        Accessibility, Definition, DefinitionType, Dependency, Position, ScopeId, ScopeType,
+        SymbolTable, Usage, UsageKind,
     },
 };
+
+// Test utility functions
+fn find_definition_in_scope(usage: &Usage, symbol_table: &SymbolTable) -> Option<Definition> {
+    let usage_scope_id = symbol_table
+        .scopes
+        .find_scope_at_position(&usage.position)?;
+
+    let definitions = resolve_scope_chain_lookup(&usage.name, usage_scope_id, symbol_table);
+    definitions.into_iter().next()
+}
+
+fn resolve_scope_chain_lookup(
+    symbol_name: &str,
+    scope_id: ScopeId,
+    symbol_table: &SymbolTable,
+) -> Vec<Definition> {
+    symbol_table
+        .lookup_symbol_in_scope(symbol_name, scope_id)
+        .into_iter()
+        .cloned()
+        .collect()
+}
 
 #[test]
 fn test_scope_chain_resolution() {
@@ -119,30 +141,27 @@ fn test_scope_chain_resolution() {
         false,
     );
 
-    let resolver = DefaultScopeAwareResolver::new("rust".to_string());
+    let _resolver = RustScopeCollector::new();
 
     // Test resolution from block scope
-    let global_lookup =
-        resolver.resolve_scope_chain_lookup("global_var", block_scope_id, &symbol_table);
+    let global_lookup = resolve_scope_chain_lookup("global_var", block_scope_id, &symbol_table);
     assert_eq!(global_lookup.len(), 2); // Both global and shadowing definitions
 
-    let func_lookup =
-        resolver.resolve_scope_chain_lookup("func_var", block_scope_id, &symbol_table);
+    let func_lookup = resolve_scope_chain_lookup("func_var", block_scope_id, &symbol_table);
     assert_eq!(func_lookup.len(), 1);
     assert_eq!(func_lookup[0].position.start_line, 6);
 
-    let block_lookup =
-        resolver.resolve_scope_chain_lookup("block_var", block_scope_id, &symbol_table);
+    let block_lookup = resolve_scope_chain_lookup("block_var", block_scope_id, &symbol_table);
     assert_eq!(block_lookup.len(), 1);
     assert_eq!(block_lookup[0].position.start_line, 9);
 
     // Test resolution from function scope (shouldn't see block variables)
     let block_lookup_from_func =
-        resolver.resolve_scope_chain_lookup("block_var", func_scope_id, &symbol_table);
+        resolve_scope_chain_lookup("block_var", func_scope_id, &symbol_table);
     assert_eq!(block_lookup_from_func.len(), 0);
 
     let global_lookup_from_func =
-        resolver.resolve_scope_chain_lookup("global_var", func_scope_id, &symbol_table);
+        resolve_scope_chain_lookup("global_var", func_scope_id, &symbol_table);
     assert_eq!(global_lookup_from_func.len(), 1); // Only global definition visible
 }
 
@@ -186,7 +205,7 @@ fn test_usage_to_definition_resolution() {
         false,
     );
 
-    let resolver = DefaultScopeAwareResolver::new("rust".to_string());
+    let _resolver = RustScopeCollector::new();
 
     let usage = Usage::new_simple(
         "test_var".to_string(),
@@ -199,7 +218,7 @@ fn test_usage_to_definition_resolution() {
         UsageKind::Read,
     );
 
-    let found_def = resolver.find_definition_in_scope(&usage, &symbol_table);
+    let found_def = find_definition_in_scope(&usage, &symbol_table);
     assert!(found_def.is_some());
 
     let def = found_def.unwrap();
@@ -282,7 +301,7 @@ fn test_multiple_definitions_same_name() {
         false,
     );
 
-    let resolver = DefaultScopeAwareResolver::new("rust".to_string());
+    let _resolver = RustScopeCollector::new();
 
     // Usage in first function should resolve to first definition
     let usage1 = Usage::new_simple(
@@ -296,7 +315,7 @@ fn test_multiple_definitions_same_name() {
         UsageKind::Read,
     );
 
-    let found_def1 = resolver.find_definition_in_scope(&usage1, &symbol_table);
+    let found_def1 = find_definition_in_scope(&usage1, &symbol_table);
     assert!(found_def1.is_some());
     assert_eq!(found_def1.unwrap().position.start_line, 3);
 
@@ -312,7 +331,7 @@ fn test_multiple_definitions_same_name() {
         UsageKind::Read,
     );
 
-    let found_def2 = resolver.find_definition_in_scope(&usage2, &symbol_table);
+    let found_def2 = find_definition_in_scope(&usage2, &symbol_table);
     assert!(found_def2.is_some());
     assert_eq!(found_def2.unwrap().position.start_line, 9);
 }
@@ -408,7 +427,7 @@ fn test_dependency_resolution_with_scopes() {
         ),
     ];
 
-    let resolver = DefaultScopeAwareResolver::new("rust".to_string());
+    let _resolver = RustScopeCollector::new();
 
     // Create dummy root node and source code for the interface
     use tree_sitter::{Language, Parser};
@@ -423,11 +442,20 @@ fn test_dependency_resolution_with_scopes() {
     }
 
     let source = "fn main() {}";
-    let tree = parser.parse(source, None).unwrap();
+    let _tree = parser.parse(source, None).unwrap();
 
-    let dependencies = resolver
-        .resolve_dependencies_with_scope(source, tree.root_node(), &usage_nodes, &symbol_table)
-        .unwrap();
+    let mut dependencies = Vec::new();
+    for usage in &usage_nodes {
+        if let Some(definition) = find_definition_in_scope(usage, &symbol_table) {
+            let dep = Dependency::new_with_scope(
+                usage.position,
+                definition.position,
+                usage.clone(),
+                definition,
+            );
+            dependencies.push(dep);
+        }
+    }
 
     // Should resolve global_var and local_var, but not undefined_var
     assert_eq!(dependencies.len(), 2);

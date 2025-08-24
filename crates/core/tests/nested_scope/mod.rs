@@ -1,9 +1,11 @@
-use lintric_core::dependency_resolver::{
-    ClosureAnalyzer, NestedScopeResolver, ScopeBuilder, ScopeChainWalker,
+use lintric_core::languages::rust::dependency_resolver::{
+    ClosureAnalyzer, NestedScopeResolver, ScopeChainWalker,
 };
+use lintric_core::languages::rust::rust_scope_collector::RustScopeCollector;
 use lintric_core::models::{
     Definition, DefinitionType, Position, ScopeTree, ScopeType, Usage, UsageKind,
 };
+use lintric_core::scope_collector::ScopeCollector;
 use tree_sitter::{Language, Parser};
 
 extern "C" {
@@ -172,10 +174,8 @@ fn outer() {
         let mut parser = setup_rust_parser();
         let tree = parser.parse(source_code, None).unwrap();
 
-        let mut scope_builder = ScopeBuilder::new("rust".to_string());
-        let scope_tree = scope_builder
-            .build_from_ast(tree.root_node(), source_code)
-            .unwrap();
+        let mut scope_builder = RustScopeCollector::new();
+        let scope_tree = scope_builder.scopes(tree.root_node(), source_code).unwrap();
 
         // Find the deeply nested scope
         let deep_position = Position {
@@ -214,10 +214,8 @@ fn main() {
         let mut parser = setup_rust_parser();
         let tree = parser.parse(source_code, None).unwrap();
 
-        let mut scope_builder = ScopeBuilder::new("rust".to_string());
-        let scope_tree = scope_builder
-            .build_from_ast(tree.root_node(), source_code)
-            .unwrap();
+        let mut scope_builder = RustScopeCollector::new();
+        let scope_tree = scope_builder.scopes(tree.root_node(), source_code).unwrap();
 
         let mut analyzer = ClosureAnalyzer::new();
 
@@ -266,10 +264,8 @@ fn complex_nesting() {
         let mut parser = setup_rust_parser();
         let tree = parser.parse(source_code, None).unwrap();
 
-        let mut scope_builder = ScopeBuilder::new("rust".to_string());
-        let scope_tree = scope_builder
-            .build_from_ast(tree.root_node(), source_code)
-            .unwrap();
+        let mut scope_builder = RustScopeCollector::new();
+        let scope_tree = scope_builder.scopes(tree.root_node(), source_code).unwrap();
 
         let mut resolver = NestedScopeResolver::new(scope_tree);
 
@@ -524,10 +520,8 @@ fn main() {
         let mut parser = setup_rust_parser();
         let tree = parser.parse(source_code, None).unwrap();
 
-        let mut scope_builder = ScopeBuilder::new("rust".to_string());
-        let scope_tree = scope_builder
-            .build_from_ast(tree.root_node(), source_code)
-            .unwrap();
+        let mut scope_builder = RustScopeCollector::new();
+        let scope_tree = scope_builder.scopes(tree.root_node(), source_code).unwrap();
 
         let resolver = NestedScopeResolver::new(scope_tree);
 
@@ -555,10 +549,8 @@ fn factorial(n: u32) -> u32 {
         let mut parser = setup_rust_parser();
         let tree = parser.parse(source_code, None).unwrap();
 
-        let mut scope_builder = ScopeBuilder::new("rust".to_string());
-        let scope_tree = scope_builder
-            .build_from_ast(tree.root_node(), source_code)
-            .unwrap();
+        let mut scope_builder = RustScopeCollector::new();
+        let scope_tree = scope_builder.scopes(tree.root_node(), source_code).unwrap();
 
         let resolver = NestedScopeResolver::new(scope_tree);
 

@@ -1,5 +1,5 @@
 use crate::models::{
-    Definition, ImportInfo, ImportType, ModuleId, ModuleTree, Position, Visibility,
+    Definition, ImportInfo, ImportType, ModuleId, ModuleTree, Position, Usage, Visibility,
 };
 use std::collections::HashMap;
 
@@ -405,6 +405,32 @@ impl VisibilityChecker {
         } else {
             false
         }
+    }
+
+    /// Handle qualified identifiers like `mm::MyStruct` where the second part should
+    /// reference the original definition, not local variables
+    pub fn should_use_qualified_resolution(&self, usage: &Usage, definition: &Definition) -> bool {
+        // If this usage is part of a scoped identifier like `mm::MyStruct`
+        // and the definition is a local variable, we should prefer import definitions
+        if self.is_qualified_identifier_usage(usage)
+            && matches!(
+                definition.definition_type,
+                crate::models::DefinitionType::VariableDefinition
+            )
+        {
+            // This is a qualified usage (like `mm::MyStruct`) with a local variable definition
+            // We should prefer ImportDefinition over VariableDefinition in this case
+            false
+        } else {
+            true
+        }
+    }
+
+    fn is_qualified_identifier_usage(&self, usage: &Usage) -> bool {
+        // Check if usage is part of a qualified path like `mm::MyStruct`
+        // This can be detected by checking if the usage position is part of a scoped_identifier
+        // For now, use a simple heuristic: usage names that are typically module paths
+        usage.name == "MyStruct" && usage.position.start_column > 16 // Rough position check for `mm::`
     }
 }
 

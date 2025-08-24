@@ -1,4 +1,4 @@
-use crate::models::{Definition, InferenceContext, Type, Usage, UsageKind};
+use crate::models::{Definition, Dependency, InferenceContext, Type, Usage, UsageKind};
 use std::collections::HashMap;
 use tree_sitter::Node;
 
@@ -506,5 +506,60 @@ mod tests {
         let methods = analyzer.find_methods_for_type("MyStruct").unwrap();
         assert_eq!(methods.len(), 1);
         assert_eq!(methods[0].name, "test_method");
+    }
+}
+
+impl MethodResolver {
+    /// Resolve struct field access dependencies for Rust
+    pub fn resolve_struct_field_access(
+        &self,
+        usage_node: &Usage,
+        definitions: &[Definition],
+    ) -> Vec<Dependency> {
+        let mut dependencies = Vec::new();
+
+        // Only handle FieldExpression usage
+        if usage_node.kind != UsageKind::FieldExpression {
+            return dependencies;
+        }
+
+        // For field expressions like "p.x", extract the field name "x"
+        let field_name = if usage_node.name.contains('.') {
+            usage_node
+                .name
+                .split('.')
+                .next_back()
+                .unwrap_or(&usage_node.name)
+                .to_string()
+        } else {
+            usage_node.name.clone()
+        };
+
+        // Find struct field definitions by the extracted field name
+        for definition in definitions {
+            if definition.name == field_name
+                && matches!(
+                    definition.definition_type,
+                    crate::models::DefinitionType::StructFieldDefinition
+                )
+            {
+                let source_line = usage_node.position.start_line;
+                let target_line = definition.position.start_line;
+
+                // Don't create self-referential dependencies
+                if source_line != target_line {
+                    let dependency = Dependency {
+                        source_line,
+                        target_line,
+                        symbol: field_name.clone(),
+                        dependency_type: crate::models::DependencyType::StructFieldAccess,
+                        context: Some("field_access".to_string()),
+                    };
+                    dependencies.push(dependency);
+                }
+            }
+        }
+
+        dependencies
     }
 }
