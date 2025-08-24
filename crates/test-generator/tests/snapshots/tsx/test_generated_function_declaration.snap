@@ -83,6 +83,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 62,
             },
+            context: None,
         },
         Usage {
             name: "local",
@@ -93,6 +94,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 76,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

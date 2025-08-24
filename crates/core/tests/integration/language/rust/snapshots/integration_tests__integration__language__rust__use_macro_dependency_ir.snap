@@ -74,23 +74,29 @@ IntermediateRepresentation {
     usage: [
         Usage {
             name: "my_module",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 2,
                 start_column: 9,
                 end_line: 2,
                 end_column: 18,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "some_macro",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 2,
                 start_column: 20,
                 end_line: 2,
                 end_column: 30,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "some_macro",
@@ -101,6 +107,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 15,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

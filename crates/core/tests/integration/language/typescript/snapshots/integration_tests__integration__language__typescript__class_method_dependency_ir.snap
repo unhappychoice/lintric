@@ -175,6 +175,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "greet",
@@ -185,6 +186,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 10,
             },
+            context: None,
         },
         Usage {
             name: "console.log",
@@ -195,6 +197,9 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 38,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console",
@@ -205,6 +210,9 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 22,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "log",
@@ -215,6 +223,9 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 26,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "value",
@@ -225,6 +236,9 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 37,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "MyClass",
@@ -235,6 +249,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "instance.greet",
@@ -245,6 +260,9 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 17,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "instance",
@@ -255,6 +273,9 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 9,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "greet",
@@ -265,6 +286,9 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 15,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

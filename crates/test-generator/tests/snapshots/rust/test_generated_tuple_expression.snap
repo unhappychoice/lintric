@@ -30,6 +30,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 8,
             },
+            context: None,
         },
         Usage {
             name: "item21",
@@ -40,6 +41,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 16,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -67,6 +67,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "Debug",
@@ -77,6 +78,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 15,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

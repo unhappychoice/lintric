@@ -762,6 +762,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -772,6 +773,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 17,
             },
+            context: None,
         },
         Usage {
             name: "findById",
@@ -782,6 +784,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -792,6 +795,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "Repository",
@@ -802,6 +806,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 43,
             },
+            context: None,
         },
         Usage {
             name: "User",
@@ -812,6 +817,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 48,
             },
+            context: None,
         },
         Usage {
             name: "users",
@@ -822,6 +828,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "User",
@@ -832,6 +839,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "save",
@@ -842,6 +850,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "User",
@@ -852,6 +861,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "this.users.push",
@@ -862,6 +872,9 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 30,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "users",
@@ -872,6 +885,9 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 19,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "push",
@@ -882,6 +898,9 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 24,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "user",
@@ -892,6 +911,9 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 29,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "findById",
@@ -902,6 +924,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "User",
@@ -912,6 +935,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 31,
             },
+            context: None,
         },
         Usage {
             name: "this.users.find",
@@ -922,6 +946,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 49,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "users",
@@ -932,6 +959,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 26,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "find",
@@ -942,6 +972,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 31,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "u",
@@ -952,6 +985,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "u",
@@ -962,6 +998,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 38,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "id",
@@ -972,6 +1011,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 41,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "id",
@@ -982,6 +1024,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 48,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "id",
@@ -992,6 +1037,7 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 7,
             },
+            context: None,
         },
         Usage {
             name: "name",
@@ -1002,6 +1048,7 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -1012,6 +1059,7 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 34,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -1022,6 +1070,7 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 40,
             },
+            context: None,
         },
         Usage {
             name: "items.filter",
@@ -1032,6 +1081,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 47,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "items",
@@ -1042,6 +1094,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 17,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "filter",
@@ -1052,6 +1107,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 24,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "item",
@@ -1062,6 +1120,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 29,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "item",
@@ -1072,6 +1133,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 37,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "UserRepository",
@@ -1082,6 +1146,7 @@ IntermediateRepresentation {
                 end_line: 28,
                 end_column: 36,
             },
+            context: None,
         },
         Usage {
             name: "repo.save",
@@ -1092,6 +1157,9 @@ IntermediateRepresentation {
                 end_line: 29,
                 end_column: 41,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "repo",
@@ -1102,6 +1170,9 @@ IntermediateRepresentation {
                 end_line: 29,
                 end_column: 9,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "save",
@@ -1112,6 +1183,9 @@ IntermediateRepresentation {
                 end_line: 29,
                 end_column: 14,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "id",
@@ -1122,6 +1196,9 @@ IntermediateRepresentation {
                 end_line: 29,
                 end_column: 19,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "name",
@@ -1132,6 +1209,9 @@ IntermediateRepresentation {
                 end_line: 29,
                 end_column: 30,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "repo.findById",
@@ -1142,6 +1222,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 36,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "repo",
@@ -1152,6 +1235,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 22,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "findById",
@@ -1162,6 +1248,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 31,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "user",
@@ -1172,6 +1261,7 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "processItems",
@@ -1182,6 +1272,9 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 41,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "users",
@@ -1192,6 +1285,9 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 40,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

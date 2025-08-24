@@ -99,6 +99,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "F",
@@ -109,6 +110,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 29,
             },
+            context: None,
         },
         Usage {
             name: "Fn",
@@ -119,6 +121,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 41,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

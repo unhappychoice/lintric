@@ -33,6 +33,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 17,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "a1",
@@ -43,6 +46,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 12,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "b1",
@@ -53,6 +59,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

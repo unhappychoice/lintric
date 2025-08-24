@@ -54,6 +54,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "\"test\".to_string",
@@ -64,6 +65,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 51,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "to_string",
@@ -74,6 +78,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 49,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

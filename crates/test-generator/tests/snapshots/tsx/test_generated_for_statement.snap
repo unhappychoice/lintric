@@ -76,6 +76,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "arr1",
@@ -86,6 +87,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "length",
@@ -96,6 +98,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 34,
             },
+            context: None,
         },
         Usage {
             name: "i1",
@@ -106,6 +109,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 38,
             },
+            context: None,
         },
         Usage {
             name: "arr1",
@@ -116,6 +120,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 61,
             },
+            context: None,
         },
         Usage {
             name: "i1",
@@ -126,6 +131,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 64,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

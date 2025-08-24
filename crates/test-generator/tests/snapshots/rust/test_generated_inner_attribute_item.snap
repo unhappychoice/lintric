@@ -52,6 +52,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "dead_code",
@@ -62,6 +63,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 19,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

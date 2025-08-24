@@ -113,6 +113,9 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 26,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -123,6 +126,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "result",
@@ -133,6 +137,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 26,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

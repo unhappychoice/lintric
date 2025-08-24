@@ -134,6 +134,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 10,
             },
+            context: None,
         },
         Usage {
             name: "add_one",
@@ -144,6 +145,9 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 15,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "y",
@@ -154,6 +158,9 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 14,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

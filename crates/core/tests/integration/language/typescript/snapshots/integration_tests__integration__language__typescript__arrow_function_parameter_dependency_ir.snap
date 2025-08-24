@@ -85,6 +85,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 19,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console",
@@ -95,6 +98,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 12,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "log",
@@ -105,6 +111,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "b",
@@ -115,6 +124,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 18,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

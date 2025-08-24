@@ -527,6 +527,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "Self",
@@ -537,6 +538,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "Calculator { value: 0 }",
@@ -547,6 +549,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "Calculator",
@@ -557,6 +560,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 19,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -567,6 +571,9 @@ IntermediateRepresentation {
                 end_line: 11,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "n",
@@ -577,6 +584,7 @@ IntermediateRepresentation {
                 end_line: 11,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -587,6 +595,9 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "display",
@@ -597,6 +608,7 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 15,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -607,6 +619,7 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "Display",
@@ -617,6 +630,7 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "Calculator",
@@ -627,6 +641,7 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "String",
@@ -637,6 +652,7 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "format",
@@ -647,6 +663,7 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 15,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -657,6 +674,7 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 45,
             },
+            context: None,
         },
         Usage {
             name: "Calculator::new",
@@ -667,6 +685,9 @@ IntermediateRepresentation {
                 end_line: 30,
                 end_column: 37,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Calculator",
@@ -677,6 +698,9 @@ IntermediateRepresentation {
                 end_line: 30,
                 end_column: 30,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "new",
@@ -687,6 +711,9 @@ IntermediateRepresentation {
                 end_line: 30,
                 end_column: 35,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "calc.add",
@@ -697,6 +724,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "add",
@@ -707,6 +737,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 13,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "calc",
@@ -717,6 +750,9 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 9,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -727,6 +763,7 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "calc",
@@ -737,6 +774,7 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "get_value",
@@ -747,6 +785,7 @@ IntermediateRepresentation {
                 end_line: 32,
                 end_column: 34,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -757,6 +796,7 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "calc",
@@ -767,6 +807,7 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "display",
@@ -777,6 +818,7 @@ IntermediateRepresentation {
                 end_line: 33,
                 end_column: 32,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

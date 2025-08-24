@@ -355,7 +355,8 @@ expression: out
         "start_column": 18,
         "end_line": 7,
         "end_column": 19
-      }
+      },
+      "context": null
     },
     {
       "name": "b",
@@ -365,7 +366,8 @@ expression: out
         "start_column": 22,
         "end_line": 7,
         "end_column": 23
-      }
+      },
+      "context": null
     },
     {
       "name": "result",
@@ -375,7 +377,8 @@ expression: out
         "start_column": 5,
         "end_line": 8,
         "end_column": 11
-      }
+      },
+      "context": null
     },
     {
       "name": "Point { x: 1, y: 2 }",
@@ -385,7 +388,8 @@ expression: out
         "start_column": 14,
         "end_line": 12,
         "end_column": 34
-      }
+      },
+      "context": null
     },
     {
       "name": "Point",
@@ -395,7 +399,8 @@ expression: out
         "start_column": 14,
         "end_line": 12,
         "end_column": 19
-      }
+      },
+      "context": null
     },
     {
       "name": "Point { x: 3, y: 4 }",
@@ -405,7 +410,8 @@ expression: out
         "start_column": 14,
         "end_line": 13,
         "end_column": 34
-      }
+      },
+      "context": null
     },
     {
       "name": "Point",
@@ -415,7 +421,8 @@ expression: out
         "start_column": 14,
         "end_line": 13,
         "end_column": 19
-      }
+      },
+      "context": null
     },
     {
       "name": "Point {\n        x: add(p1.x, p2.x),\n        y: add(p1.y, p2.y),\n    }",
@@ -425,7 +432,8 @@ expression: out
         "start_column": 14,
         "end_line": 18,
         "end_column": 6
-      }
+      },
+      "context": null
     },
     {
       "name": "Point",
@@ -435,7 +443,8 @@ expression: out
         "start_column": 14,
         "end_line": 15,
         "end_column": 19
-      }
+      },
+      "context": null
     },
     {
       "name": "add",
@@ -445,7 +454,8 @@ expression: out
         "start_column": 12,
         "end_line": 16,
         "end_column": 27
-      }
+      },
+      "context": "call_expression"
     },
     {
       "name": "x",
@@ -455,7 +465,8 @@ expression: out
         "start_column": 16,
         "end_line": 16,
         "end_column": 20
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "p1",
@@ -465,7 +476,8 @@ expression: out
         "start_column": 16,
         "end_line": 16,
         "end_column": 18
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "x",
@@ -475,7 +487,8 @@ expression: out
         "start_column": 22,
         "end_line": 16,
         "end_column": 26
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "p2",
@@ -485,7 +498,8 @@ expression: out
         "start_column": 22,
         "end_line": 16,
         "end_column": 24
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "add",
@@ -495,7 +509,8 @@ expression: out
         "start_column": 12,
         "end_line": 17,
         "end_column": 27
-      }
+      },
+      "context": "call_expression"
     },
     {
       "name": "y",
@@ -505,7 +520,8 @@ expression: out
         "start_column": 16,
         "end_line": 17,
         "end_column": 20
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "p1",
@@ -515,7 +531,8 @@ expression: out
         "start_column": 16,
         "end_line": 17,
         "end_column": 18
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "y",
@@ -525,7 +542,8 @@ expression: out
         "start_column": 22,
         "end_line": 17,
         "end_column": 26
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "p2",
@@ -535,7 +553,8 @@ expression: out
         "start_column": 22,
         "end_line": 17,
         "end_column": 24
-      }
+      },
+      "context": "field_expression"
     },
     {
       "name": "Point { x: 5, y: 6 }",
@@ -545,7 +564,8 @@ expression: out
         "start_column": 18,
         "end_line": 21,
         "end_column": 38
-      }
+      },
+      "context": null
     },
     {
       "name": "Point",
@@ -555,7 +575,8 @@ expression: out
         "start_column": 18,
         "end_line": 21,
         "end_column": 23
-      }
+      },
+      "context": null
     },
     {
       "name": "p5",
@@ -565,7 +586,8 @@ expression: out
         "start_column": 18,
         "end_line": 22,
         "end_column": 20
-      }
+      },
+      "context": null
     },
     {
       "name": "p6",
@@ -575,7 +597,8 @@ expression: out
         "start_column": 9,
         "end_line": 23,
         "end_column": 11
-      }
+      },
+      "context": null
     },
     {
       "name": "x",
@@ -585,7 +608,8 @@ expression: out
         "start_column": 13,
         "end_line": 27,
         "end_column": 14
-      }
+      },
+      "context": null
     },
     {
       "name": "y",
@@ -595,7 +619,8 @@ expression: out
         "start_column": 13,
         "end_line": 28,
         "end_column": 14
-      }
+      },
+      "context": null
     },
     {
       "name": "x",
@@ -605,7 +630,8 @@ expression: out
         "start_column": 17,
         "end_line": 28,
         "end_column": 18
-      }
+      },
+      "context": null
     },
     {
       "name": "println",
@@ -615,7 +641,8 @@ expression: out
         "start_column": 5,
         "end_line": 30,
         "end_column": 12
-      }
+      },
+      "context": null
     },
     {
       "name": "p3",
@@ -625,7 +652,8 @@ expression: out
         "start_column": 22,
         "end_line": 30,
         "end_column": 24
-      }
+      },
+      "context": null
     },
     {
       "name": "println",
@@ -635,7 +663,8 @@ expression: out
         "start_column": 5,
         "end_line": 31,
         "end_column": 12
-      }
+      },
+      "context": null
     },
     {
       "name": "p4",
@@ -645,7 +674,8 @@ expression: out
         "start_column": 22,
         "end_line": 31,
         "end_column": 24
-      }
+      },
+      "context": null
     }
   ],
   "analysis_metadata": {

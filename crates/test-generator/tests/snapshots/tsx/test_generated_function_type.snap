@@ -77,6 +77,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 54,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "x",
@@ -87,6 +90,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 43,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "toString",
@@ -97,6 +103,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 52,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

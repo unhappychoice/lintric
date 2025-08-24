@@ -51,6 +51,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 39,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "std",
@@ -61,6 +64,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "ptr",
@@ -71,6 +77,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 31,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "null",
@@ -81,6 +90,9 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 37,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

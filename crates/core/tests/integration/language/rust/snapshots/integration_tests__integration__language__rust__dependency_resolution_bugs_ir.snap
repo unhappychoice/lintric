@@ -1,0 +1,1210 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: ir_snapshot_content
+---
+Source Code:
+use std::collections::HashMap;
+use std::vec::Vec;
+
+struct TestStruct {
+    field: HashMap<String, i32>,
+}
+
+impl TestStruct {
+    pub fn new(data: HashMap<String, i32>) -> Self {
+        let vec_data = Vec::new();
+        TestStruct {
+            field: data,
+        }
+    }
+    
+    pub fn process(&self, input: String) -> Option<i32> {
+        self.field.get(&input).copied()
+    }
+}
+
+fn main() {
+    let mut map = HashMap::new();
+    map.insert("test".to_string(), 42);
+    let mut vec_data = Vec::new();
+    vec_data.push(1);
+    let test = TestStruct::new(map);
+    let result = test.process("key".to_string());
+}
+
+AST:
+(source_file
+  (use_declaration
+    argument: (scoped_identifier "std::collections::HashMap"
+      path: (scoped_identifier "std::collections"
+        path: (identifier "std")
+        name: (identifier "collections")
+      )
+      name: (identifier "HashMap")
+    )
+  )
+  (use_declaration
+    argument: (scoped_identifier "std::vec::Vec"
+      path: (scoped_identifier "std::vec"
+        path: (identifier "std")
+        name: (identifier "vec")
+      )
+      name: (identifier "Vec")
+    )
+  )
+  (struct_item
+    name: (type_identifier "TestStruct")
+    body: (field_declaration_list
+      (field_declaration
+        name: (field_identifier "field")
+        type: (generic_type
+          type: (type_identifier "HashMap")
+          type_arguments: (type_arguments
+            (type_identifier "String")
+            (primitive_type "i32")
+          )
+        )
+      )
+    )
+  )
+  (impl_item
+    type: (type_identifier "TestStruct")
+    body: (declaration_list
+      (function_item
+        (visibility_modifier)
+        name: (identifier "new")
+        parameters: (parameters
+          (parameter
+            pattern: (identifier "data")
+            type: (generic_type
+              type: (type_identifier "HashMap")
+              type_arguments: (type_arguments
+                (type_identifier "String")
+                (primitive_type "i32")
+              )
+            )
+          )
+        )
+        return_type: (type_identifier "Self")
+        body: (block
+          (let_declaration
+            pattern: (identifier "vec_data")
+            value: (call_expression
+              function: (scoped_identifier "Vec::new"
+                path: (identifier "Vec")
+                name: (identifier "new")
+              )
+              arguments: (arguments)
+            )
+          )
+          (struct_expression
+            name: (type_identifier "TestStruct")
+            body: (field_initializer_list
+              (field_initializer
+                field: (field_identifier "field")
+                value: (identifier "data")
+              )
+            )
+          )
+        )
+      )
+      (function_item
+        (visibility_modifier)
+        name: (identifier "process")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+          (parameter
+            pattern: (identifier "input")
+            type: (type_identifier "String")
+          )
+        )
+        return_type: (generic_type
+          type: (type_identifier "Option")
+          type_arguments: (type_arguments
+            (primitive_type "i32")
+          )
+        )
+        body: (block
+          (call_expression
+            function: (field_expression
+              value: (call_expression
+                function: (field_expression
+                  value: (field_expression
+                    value: (self "self")
+                    field: (field_identifier "field")
+                  )
+                  field: (field_identifier "get")
+                )
+                arguments: (arguments
+                  (reference_expression
+                    value: (identifier "input")
+                  )
+                )
+              )
+              field: (field_identifier "copied")
+            )
+            arguments: (arguments)
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        (mutable_specifier)
+        pattern: (identifier "map")
+        value: (call_expression
+          function: (scoped_identifier "HashMap::new"
+            path: (identifier "HashMap")
+            name: (identifier "new")
+          )
+          arguments: (arguments)
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (field_expression
+            value: (identifier "map")
+            field: (field_identifier "insert")
+          )
+          arguments: (arguments
+            (call_expression
+              function: (field_expression
+                value: (string_literal ""test""
+                  (string_content)
+                )
+                field: (field_identifier "to_string")
+              )
+              arguments: (arguments)
+            )
+            (integer_literal "42")
+          )
+        )
+      )
+      (let_declaration
+        (mutable_specifier)
+        pattern: (identifier "vec_data")
+        value: (call_expression
+          function: (scoped_identifier "Vec::new"
+            path: (identifier "Vec")
+            name: (identifier "new")
+          )
+          arguments: (arguments)
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (field_expression
+            value: (identifier "vec_data")
+            field: (field_identifier "push")
+          )
+          arguments: (arguments
+            (integer_literal "1")
+          )
+        )
+      )
+      (let_declaration
+        pattern: (identifier "test")
+        value: (call_expression
+          function: (scoped_identifier "TestStruct::new"
+            path: (identifier "TestStruct")
+            name: (identifier "new")
+          )
+          arguments: (arguments
+            (identifier "map")
+          )
+        )
+      )
+      (let_declaration
+        pattern: (identifier "result")
+        value: (call_expression
+          function: (field_expression
+            value: (identifier "test")
+            field: (field_identifier "process")
+          )
+          arguments: (arguments
+            (call_expression
+              function: (field_expression
+                value: (string_literal ""key""
+                  (string_content)
+                )
+                field: (field_identifier "to_string")
+              )
+              arguments: (arguments)
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/fixtures/dependency_resolution_bugs.rs",
+    definitions: [
+        Definition {
+            name: "HashMap",
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 30,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "Vec",
+            position: Position {
+                start_line: 2,
+                start_column: 15,
+                end_line: 2,
+                end_column: 18,
+            },
+            definition_type: ImportDefinition,
+        },
+        Definition {
+            name: "TestStruct",
+            position: Position {
+                start_line: 4,
+                start_column: 8,
+                end_line: 4,
+                end_column: 18,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "field",
+            position: Position {
+                start_line: 5,
+                start_column: 5,
+                end_line: 5,
+                end_column: 10,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 9,
+                start_column: 12,
+                end_line: 9,
+                end_column: 15,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "data",
+            position: Position {
+                start_line: 9,
+                start_column: 16,
+                end_line: 9,
+                end_column: 20,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "process",
+            position: Position {
+                start_line: 16,
+                start_column: 12,
+                end_line: 16,
+                end_column: 19,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "input",
+            position: Position {
+                start_line: 16,
+                start_column: 27,
+                end_line: 16,
+                end_column: 32,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 9,
+                start_column: 12,
+                end_line: 9,
+                end_column: 15,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "data",
+            position: Position {
+                start_line: 9,
+                start_column: 16,
+                end_line: 9,
+                end_column: 20,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "vec_data",
+            position: Position {
+                start_line: 10,
+                start_column: 13,
+                end_line: 10,
+                end_column: 21,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "process",
+            position: Position {
+                start_line: 16,
+                start_column: 12,
+                end_line: 16,
+                end_column: 19,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "input",
+            position: Position {
+                start_line: 16,
+                start_column: 27,
+                end_line: 16,
+                end_column: 32,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 21,
+                start_column: 4,
+                end_line: 21,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "map",
+            position: Position {
+                start_line: 22,
+                start_column: 13,
+                end_line: 22,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "vec_data",
+            position: Position {
+                start_line: 24,
+                start_column: 13,
+                end_line: 24,
+                end_column: 21,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "test",
+            position: Position {
+                start_line: 26,
+                start_column: 9,
+                end_line: 26,
+                end_column: 13,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "result",
+            position: Position {
+                start_line: 27,
+                start_column: 9,
+                end_line: 27,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "HashMap",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:5:12",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 4,
+            symbol: "TestStruct",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:8:6",
+            ),
+        },
+        Dependency {
+            source_line: 9,
+            target_line: 1,
+            symbol: "HashMap",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:9:22",
+            ),
+        },
+        Dependency {
+            source_line: 10,
+            target_line: 2,
+            symbol: "Vec",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:10:24",
+            ),
+        },
+        Dependency {
+            source_line: 11,
+            target_line: 4,
+            symbol: "TestStruct",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:11:9",
+            ),
+        },
+        Dependency {
+            source_line: 12,
+            target_line: 9,
+            symbol: "data",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:12:20",
+            ),
+        },
+        Dependency {
+            source_line: 17,
+            target_line: 5,
+            symbol: "field",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:17:9",
+            ),
+        },
+        Dependency {
+            source_line: 17,
+            target_line: 16,
+            symbol: "input",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:17:25",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 1,
+            symbol: "HashMap",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:19",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 22,
+            symbol: "map",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:23:5",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 2,
+            symbol: "Vec",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:24:24",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 24,
+            symbol: "vec_data",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:25:5",
+            ),
+        },
+        Dependency {
+            source_line: 26,
+            target_line: 4,
+            symbol: "TestStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:26:16",
+            ),
+        },
+        Dependency {
+            source_line: 26,
+            target_line: 9,
+            symbol: "new",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:26:28",
+            ),
+        },
+        Dependency {
+            source_line: 26,
+            target_line: 22,
+            symbol: "map",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:26:32",
+            ),
+        },
+        Dependency {
+            source_line: 27,
+            target_line: 16,
+            symbol: "process",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:27:18",
+            ),
+        },
+        Dependency {
+            source_line: 27,
+            target_line: 26,
+            symbol: "test",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:27:18",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "std",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 8,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "collections",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 1,
+                start_column: 10,
+                end_line: 1,
+                end_column: 21,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "HashMap",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 1,
+                start_column: 23,
+                end_line: 1,
+                end_column: 30,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "std",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 8,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "vec",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 2,
+                start_column: 10,
+                end_line: 2,
+                end_column: 13,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "Vec",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 2,
+                start_column: 15,
+                end_line: 2,
+                end_column: 18,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "HashMap",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 5,
+                start_column: 12,
+                end_line: 5,
+                end_column: 19,
+            },
+            context: None,
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 5,
+                start_column: 20,
+                end_line: 5,
+                end_column: 26,
+            },
+            context: None,
+        },
+        Usage {
+            name: "TestStruct",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 8,
+                start_column: 6,
+                end_line: 8,
+                end_column: 16,
+            },
+            context: None,
+        },
+        Usage {
+            name: "HashMap",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 9,
+                start_column: 22,
+                end_line: 9,
+                end_column: 29,
+            },
+            context: None,
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 9,
+                start_column: 30,
+                end_line: 9,
+                end_column: 36,
+            },
+            context: None,
+        },
+        Usage {
+            name: "Self",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 9,
+                start_column: 47,
+                end_line: 9,
+                end_column: 51,
+            },
+            context: None,
+        },
+        Usage {
+            name: "Vec::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 10,
+                start_column: 24,
+                end_line: 10,
+                end_column: 34,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "Vec",
+            kind: Identifier,
+            position: Position {
+                start_line: 10,
+                start_column: 24,
+                end_line: 10,
+                end_column: 27,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 10,
+                start_column: 29,
+                end_line: 10,
+                end_column: 32,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "TestStruct {\n            field: data,\n        }",
+            kind: StructExpression,
+            position: Position {
+                start_line: 11,
+                start_column: 9,
+                end_line: 13,
+                end_column: 10,
+            },
+            context: None,
+        },
+        Usage {
+            name: "TestStruct",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 11,
+                start_column: 9,
+                end_line: 11,
+                end_column: 19,
+            },
+            context: None,
+        },
+        Usage {
+            name: "data",
+            kind: Identifier,
+            position: Position {
+                start_line: 12,
+                start_column: 20,
+                end_line: 12,
+                end_column: 24,
+            },
+            context: None,
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 16,
+                start_column: 34,
+                end_line: 16,
+                end_column: 40,
+            },
+            context: None,
+        },
+        Usage {
+            name: "Option",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 16,
+                start_column: 45,
+                end_line: 16,
+                end_column: 51,
+            },
+            context: None,
+        },
+        Usage {
+            name: "self.field.get(&input).copied",
+            kind: CallExpression,
+            position: Position {
+                start_line: 17,
+                start_column: 9,
+                end_line: 17,
+                end_column: 40,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "copied",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 17,
+                start_column: 9,
+                end_line: 17,
+                end_column: 38,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "self.field.get",
+            kind: CallExpression,
+            position: Position {
+                start_line: 17,
+                start_column: 9,
+                end_line: 17,
+                end_column: 31,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "get",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 17,
+                start_column: 9,
+                end_line: 17,
+                end_column: 23,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "field",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 17,
+                start_column: 9,
+                end_line: 17,
+                end_column: 19,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "input",
+            kind: Identifier,
+            position: Position {
+                start_line: 17,
+                start_column: 25,
+                end_line: 17,
+                end_column: 30,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "HashMap::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 19,
+                end_line: 22,
+                end_column: 33,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "HashMap",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 19,
+                end_line: 22,
+                end_column: 26,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 28,
+                end_line: 22,
+                end_column: 31,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "map.insert",
+            kind: CallExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 5,
+                end_line: 23,
+                end_column: 39,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "insert",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 5,
+                end_line: 23,
+                end_column: 15,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "map",
+            kind: Identifier,
+            position: Position {
+                start_line: 23,
+                start_column: 5,
+                end_line: 23,
+                end_column: 8,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "\"test\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 16,
+                end_line: 23,
+                end_column: 34,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 16,
+                end_line: 23,
+                end_column: 32,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "Vec::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 24,
+                start_column: 24,
+                end_line: 24,
+                end_column: 34,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "Vec",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 24,
+                end_line: 24,
+                end_column: 27,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 29,
+                end_line: 24,
+                end_column: 32,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "vec_data.push",
+            kind: CallExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 5,
+                end_line: 25,
+                end_column: 21,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "push",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 5,
+                end_line: 25,
+                end_column: 18,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "vec_data",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 5,
+                end_line: 25,
+                end_column: 13,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "TestStruct::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 26,
+                start_column: 16,
+                end_line: 26,
+                end_column: 36,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "TestStruct",
+            kind: Identifier,
+            position: Position {
+                start_line: 26,
+                start_column: 16,
+                end_line: 26,
+                end_column: 26,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 26,
+                start_column: 28,
+                end_line: 26,
+                end_column: 31,
+            },
+            context: Some(
+                "scoped_identifier",
+            ),
+        },
+        Usage {
+            name: "map",
+            kind: Identifier,
+            position: Position {
+                start_line: 26,
+                start_column: 32,
+                end_line: 26,
+                end_column: 35,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "test.process",
+            kind: CallExpression,
+            position: Position {
+                start_line: 27,
+                start_column: 18,
+                end_line: 27,
+                end_column: 49,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "process",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 27,
+                start_column: 18,
+                end_line: 27,
+                end_column: 30,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "test",
+            kind: Identifier,
+            position: Position {
+                start_line: 27,
+                start_column: 18,
+                end_line: 27,
+                end_column: 22,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+        Usage {
+            name: "\"key\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 27,
+                start_column: 31,
+                end_line: 27,
+                end_column: 48,
+            },
+            context: Some(
+                "call_expression",
+            ),
+        },
+        Usage {
+            name: "to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 27,
+                start_column: 31,
+                end_line: 27,
+                end_column: 46,
+            },
+            context: Some(
+                "field_expression",
+            ),
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 28,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

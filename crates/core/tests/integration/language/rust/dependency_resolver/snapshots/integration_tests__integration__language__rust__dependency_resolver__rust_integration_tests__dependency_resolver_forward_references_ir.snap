@@ -322,6 +322,9 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 13,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "is_even",
@@ -332,6 +335,9 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -342,6 +348,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "result",
@@ -352,6 +359,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 26,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -362,6 +370,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "n",
@@ -372,6 +381,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "is_odd",
@@ -382,6 +392,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 22,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "n",
@@ -392,6 +405,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 17,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "n",
@@ -402,6 +418,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 9,
             },
+            context: None,
         },
         Usage {
             name: "is_even",
@@ -412,6 +429,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 23,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "n",
@@ -422,6 +442,9 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 18,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

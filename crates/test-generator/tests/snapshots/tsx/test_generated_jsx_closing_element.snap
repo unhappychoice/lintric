@@ -49,6 +49,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "Component",
@@ -59,6 +60,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 46,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

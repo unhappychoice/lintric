@@ -65,6 +65,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "$content",
@@ -75,6 +76,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 41,
             },
+            context: None,
         },
         Usage {
             name: "$content",
@@ -85,6 +87,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 65,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -229,6 +229,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "captured",
@@ -239,6 +240,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "mutable_capture",
@@ -249,6 +251,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -259,6 +262,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "mutable_capture",
@@ -269,6 +273,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 39,
             },
+            context: None,
         },
         Usage {
             name: "closure",
@@ -279,6 +284,9 @@ IntermediateRepresentation {
                 end_line: 11,
                 end_column: 14,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -289,6 +297,7 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "captured",
@@ -299,6 +308,7 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 39,
             },
+            context: None,
         },
         Usage {
             name: "move_closure",
@@ -309,6 +319,9 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 19,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

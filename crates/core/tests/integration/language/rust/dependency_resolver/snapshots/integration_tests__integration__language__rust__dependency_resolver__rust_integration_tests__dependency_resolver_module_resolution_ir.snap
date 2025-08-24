@@ -318,33 +318,42 @@ IntermediateRepresentation {
     usage: [
         Usage {
             name: "std",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 1,
                 start_column: 5,
                 end_line: 1,
                 end_column: 8,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "collections",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 1,
                 start_column: 10,
                 end_line: 1,
                 end_column: 21,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "HashMap",
-            kind: Identifier,
+            kind: TypeIdentifier,
             position: Position {
                 start_line: 1,
                 start_column: 23,
                 end_line: 1,
                 end_column: 30,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "HashMap::new",
@@ -355,6 +364,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "HashMap",
@@ -365,6 +377,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 26,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "new",
@@ -375,6 +390,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 31,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "map.insert",
@@ -385,6 +403,9 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 31,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "insert",
@@ -395,6 +416,9 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 15,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "map",
@@ -405,6 +429,9 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 8,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "utils::helper",
@@ -415,6 +442,9 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 33,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "utils",
@@ -425,6 +455,9 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 23,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "helper",
@@ -435,6 +468,9 @@ IntermediateRepresentation {
                 end_line: 19,
                 end_column: 31,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "utils::inner::deep_function",
@@ -445,6 +481,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 52,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "utils",
@@ -455,6 +494,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 28,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "inner",
@@ -465,6 +507,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 35,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "deep_function",
@@ -475,6 +520,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 50,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "println",
@@ -485,6 +533,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "result",
@@ -495,6 +544,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 29,
             },
+            context: None,
         },
         Usage {
             name: "deep_result",
@@ -505,6 +555,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 42,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

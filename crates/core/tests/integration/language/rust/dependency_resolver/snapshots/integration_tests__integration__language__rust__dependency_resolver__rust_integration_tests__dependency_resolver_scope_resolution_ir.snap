@@ -268,6 +268,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "outer_var",
@@ -278,6 +279,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 33,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -288,6 +290,7 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "outer_var",
@@ -298,6 +301,7 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 36,
             },
+            context: None,
         },
         Usage {
             name: "block_var",
@@ -308,6 +312,7 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 47,
             },
+            context: None,
         },
         Usage {
             name: "inner",
@@ -318,6 +323,9 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 12,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -328,6 +336,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "x",
@@ -338,6 +347,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "y",
@@ -348,6 +358,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 31,
             },
+            context: None,
         },
         Usage {
             name: "println",
@@ -358,6 +369,7 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "x",
@@ -368,6 +380,7 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 21,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

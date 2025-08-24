@@ -50,6 +50,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 11,
             },
+            context: None,
         },
         Usage {
             name: "b4",
@@ -60,6 +61,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 16,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

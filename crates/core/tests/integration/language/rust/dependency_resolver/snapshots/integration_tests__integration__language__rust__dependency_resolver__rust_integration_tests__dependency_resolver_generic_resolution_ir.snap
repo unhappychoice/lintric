@@ -504,6 +504,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "Container",
@@ -514,6 +515,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -524,6 +526,7 @@ IntermediateRepresentation {
                 end_line: 5,
                 end_column: 20,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -534,6 +537,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 19,
             },
+            context: None,
         },
         Usage {
             name: "Self",
@@ -544,6 +548,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "Container { item }",
@@ -554,6 +559,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "Container",
@@ -564,6 +570,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "item",
@@ -574,6 +581,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -584,6 +592,7 @@ IntermediateRepresentation {
                 end_line: 10,
                 end_column: 24,
             },
+            context: None,
         },
         Usage {
             name: "item",
@@ -594,6 +603,9 @@ IntermediateRepresentation {
                 end_line: 11,
                 end_column: 19,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "Container",
@@ -604,6 +616,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 43,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -614,6 +627,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 45,
             },
+            context: None,
         },
         Usage {
             name: "T",
@@ -624,6 +638,7 @@ IntermediateRepresentation {
                 end_line: 15,
                 end_column: 52,
             },
+            context: None,
         },
         Usage {
             name: "container.get().clone",
@@ -634,6 +649,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "clone",
@@ -644,6 +662,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 26,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "container.get",
@@ -654,6 +675,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 20,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "get",
@@ -664,6 +688,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 18,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "container",
@@ -674,6 +701,9 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 14,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "Container::new",
@@ -684,6 +714,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 39,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Container",
@@ -694,6 +727,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 30,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "new",
@@ -704,6 +740,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 35,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "process",
@@ -714,6 +753,9 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 36,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "container",
@@ -724,6 +766,9 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 35,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "println",
@@ -734,6 +779,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "value",
@@ -744,6 +790,7 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 25,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

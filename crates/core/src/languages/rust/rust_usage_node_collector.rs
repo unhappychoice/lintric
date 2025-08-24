@@ -43,16 +43,19 @@ impl UsageCollector for RustUsageNodeCollector {
         let kind = match node.kind() {
             "identifier" => {
                 // Only treat identifier as usage if it's not in a definition context
-                // and not inside a call_expression
+                // and not the function name part of a call_expression (to avoid duplication)
                 if self
                     .definition_checker
                     .is_identifier_in_definition_context(node)
-                    || self.is_identifier_in_call_expression(node)
+                    || self.is_function_name_in_call_expression(node)
                 {
                     None
                 } else if self.is_identifier_part_of_field_access(node, source_code) {
                     // Check if this identifier is part of a field access pattern like "self.field"
                     Some(UsageKind::FieldExpression)
+                } else if self.is_identifier_in_type_context(node) {
+                    // Check if this identifier is in a type context (like use statements)
+                    Some(UsageKind::TypeIdentifier)
                 } else {
                     Some(UsageKind::Identifier)
                 }
@@ -86,16 +89,24 @@ impl UsageCollector for RustUsageNodeCollector {
 }
 
 impl RustUsageNodeCollector {
-    fn is_identifier_in_call_expression(&self, node: Node) -> bool {
+    fn is_function_name_in_call_expression(&self, node: Node) -> bool {
         let mut current = node.parent();
         while let Some(parent) = current {
             match parent.kind() {
                 "call_expression" => {
-                    // Check if this identifier is the function name (first child of call_expression)
+                    // For simple function calls, check if this is directly the function name
                     if let Some(function_node) = parent.child(0) {
-                        return function_node.id() == node.id();
+                        if function_node.id() == node.id() {
+                            return true;
+                        }
                     }
                     return false;
+                }
+                "scoped_identifier" => {
+                    // For qualified calls (e.g., HashMap::new), continue checking if this scoped_identifier
+                    // is the function part of a call_expression, but don't exclude path components
+                    current = parent.parent();
+                    continue;
                 }
                 _ => current = parent.parent(),
             }
@@ -130,6 +141,24 @@ impl RustUsageNodeCollector {
             }
         }
 
+        false
+    }
+
+    fn is_identifier_in_type_context(&self, node: Node) -> bool {
+        let mut current = node.parent();
+        while let Some(parent) = current {
+            match parent.kind() {
+                "use_declaration" | "use_as_clause" | "scoped_use_list" | "use_list" => {
+                    return true;
+                }
+                "scoped_identifier" => {
+                    // Check if this scoped_identifier is in a type context
+                    current = parent.parent();
+                    continue;
+                }
+                _ => current = parent.parent(),
+            }
+        }
         false
     }
 }

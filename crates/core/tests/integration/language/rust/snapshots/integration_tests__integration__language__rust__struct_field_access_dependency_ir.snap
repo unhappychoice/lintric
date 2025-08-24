@@ -159,6 +159,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 33,
             },
+            context: None,
         },
         Usage {
             name: "Point",
@@ -169,6 +170,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 18,
             },
+            context: None,
         },
         Usage {
             name: "x",
@@ -179,6 +181,9 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 18,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
         Usage {
             name: "p",
@@ -189,6 +194,9 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 16,
             },
+            context: Some(
+                "field_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

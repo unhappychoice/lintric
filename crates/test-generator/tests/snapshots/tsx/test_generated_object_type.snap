@@ -66,6 +66,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 23,
             },
+            context: None,
         },
         Usage {
             name: "prop6",
@@ -76,6 +77,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 43,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

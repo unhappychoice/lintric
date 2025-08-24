@@ -83,6 +83,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 17,
             },
+            context: None,
         },
         Usage {
             name: "Test",
@@ -93,6 +94,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 71,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

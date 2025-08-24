@@ -416,6 +416,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "add",
@@ -426,6 +427,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "a",
@@ -436,6 +438,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 21,
             },
+            context: None,
         },
         Usage {
             name: "b",
@@ -446,6 +449,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "Inner",
@@ -456,6 +460,7 @@ IntermediateRepresentation {
                 end_line: 12,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "helper",
@@ -466,6 +471,9 @@ IntermediateRepresentation {
                 end_line: 14,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Utils.helper",
@@ -476,6 +484,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 34,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Utils",
@@ -486,6 +497,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 25,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "helper",
@@ -496,6 +510,9 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 32,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Utils",
@@ -506,6 +523,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "Calculator",
@@ -516,6 +534,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 38,
             },
+            context: None,
         },
         Usage {
             name: "calc.add",
@@ -526,6 +545,9 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 31,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "calc",
@@ -536,6 +558,9 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 21,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "add",
@@ -546,6 +571,9 @@ IntermediateRepresentation {
                 end_line: 22,
                 end_column: 25,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Utils.Inner.deepFunction",
@@ -556,6 +584,9 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 44,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Utils",
@@ -566,6 +597,9 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 23,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "Inner",
@@ -576,6 +610,9 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 29,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "deepFunction",
@@ -586,6 +623,9 @@ IntermediateRepresentation {
                 end_line: 23,
                 end_column: 42,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console.log",
@@ -596,6 +636,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 35,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "console",
@@ -606,6 +649,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 12,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "log",
@@ -616,6 +662,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 16,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "result",
@@ -626,6 +675,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 23,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "sum",
@@ -636,6 +688,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "deep",
@@ -646,6 +701,9 @@ IntermediateRepresentation {
                 end_line: 25,
                 end_column: 34,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
     ],
     analysis_metadata: AnalysisMetadata {

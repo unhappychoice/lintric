@@ -440,6 +440,9 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 28,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "x",
@@ -450,6 +453,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "MyInterface",
@@ -460,6 +464,7 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "field",
@@ -470,6 +475,7 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 37,
             },
+            context: None,
         },
         Usage {
             name: "field",
@@ -480,6 +486,7 @@ IntermediateRepresentation {
                 end_line: 21,
                 end_column: 10,
             },
+            context: None,
         },
         Usage {
             name: "MyClass",
@@ -490,6 +497,7 @@ IntermediateRepresentation {
                 end_line: 26,
                 end_column: 33,
             },
+            context: None,
         },
         Usage {
             name: "constructor",
@@ -500,6 +508,7 @@ IntermediateRepresentation {
                 end_line: 30,
                 end_column: 16,
             },
+            context: None,
         },
         Usage {
             name: "MyType",
@@ -510,6 +519,7 @@ IntermediateRepresentation {
                 end_line: 34,
                 end_column: 27,
             },
+            context: None,
         },
         Usage {
             name: "MyEnum",
@@ -520,6 +530,7 @@ IntermediateRepresentation {
                 end_line: 42,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "Value1",
@@ -530,6 +541,7 @@ IntermediateRepresentation {
                 end_line: 42,
                 end_column: 32,
             },
+            context: None,
         },
         Usage {
             name: "MyEnum",
@@ -540,6 +552,7 @@ IntermediateRepresentation {
                 end_line: 45,
                 end_column: 12,
             },
+            context: None,
         },
         Usage {
             name: "Value1",
@@ -550,6 +563,7 @@ IntermediateRepresentation {
                 end_line: 46,
                 end_column: 11,
             },
+            context: None,
         },
         Usage {
             name: "Value2",
@@ -560,6 +574,7 @@ IntermediateRepresentation {
                 end_line: 47,
                 end_column: 11,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

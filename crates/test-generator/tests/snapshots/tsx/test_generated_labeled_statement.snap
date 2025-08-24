@@ -60,6 +60,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 25,
             },
+            context: None,
         },
         Usage {
             name: "i",
@@ -70,6 +71,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 33,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {

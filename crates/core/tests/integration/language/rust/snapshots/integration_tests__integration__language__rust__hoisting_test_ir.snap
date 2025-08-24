@@ -350,6 +350,9 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 26,
             },
+            context: Some(
+                "call_expression",
+            ),
         },
         Usage {
             name: "x",
@@ -360,6 +363,7 @@ IntermediateRepresentation {
                 end_line: 6,
                 end_column: 14,
             },
+            context: None,
         },
         Usage {
             name: "MyStruct { field: 10 }",
@@ -370,6 +374,7 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 42,
             },
+            context: None,
         },
         Usage {
             name: "MyStruct",
@@ -380,6 +385,7 @@ IntermediateRepresentation {
                 end_line: 17,
                 end_column: 28,
             },
+            context: None,
         },
         Usage {
             name: "MyEnum",
@@ -390,6 +396,9 @@ IntermediateRepresentation {
                 end_line: 26,
                 end_column: 23,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Variant1",
@@ -400,6 +409,9 @@ IntermediateRepresentation {
                 end_line: 26,
                 end_column: 33,
             },
+            context: Some(
+                "scoped_identifier",
+            ),
         },
         Usage {
             name: "Variant1",
@@ -410,6 +422,7 @@ IntermediateRepresentation {
                 end_line: 30,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "Variant2",
@@ -420,6 +433,7 @@ IntermediateRepresentation {
                 end_line: 31,
                 end_column: 13,
             },
+            context: None,
         },
         Usage {
             name: "MyType",
@@ -430,6 +444,7 @@ IntermediateRepresentation {
                 end_line: 35,
                 end_column: 24,
             },
+            context: None,
         },
     ],
     analysis_metadata: AnalysisMetadata {
