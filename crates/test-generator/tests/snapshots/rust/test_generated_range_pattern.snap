@@ -1,15 +1,15 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-match val2 { 0..=10 => {}, _ => {} }
+match val3 { 0..=10 => {}, _ => {} }
 
 AST:
 (source_file
   (expression_statement
     (match_expression
-      value: (identifier "val2")
+      value: (identifier "val3")
       body: (match_block
         (match_arm
           pattern: (match_pattern
@@ -36,7 +36,7 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage {
-            name: "val2",
+            name: "val3",
             kind: Identifier,
             position: Position {
                 start_line: 1,

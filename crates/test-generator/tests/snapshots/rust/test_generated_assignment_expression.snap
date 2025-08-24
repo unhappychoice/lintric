@@ -1,13 +1,18 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-x1 = y
+let mut x1 = 0; x1 = y;
 
 AST:
 (source_file
-  (ERROR
+  (let_declaration
+    (mutable_specifier)
+    pattern: (identifier "x1")
+    value: (integer_literal "0")
+  )
+  (expression_statement
     (assignment_expression
       left: (identifier "x1")
       right: (identifier "y")
@@ -18,7 +23,18 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition {
+            name: "x1",
+            position: Position {
+                start_line: 1,
+                start_column: 9,
+                end_line: 1,
+                end_column: 11,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
     dependencies: [],
     usage: [
         Usage {
@@ -26,9 +42,9 @@ IntermediateRepresentation {
             kind: Identifier,
             position: Position {
                 start_line: 1,
-                start_column: 1,
+                start_column: 17,
                 end_line: 1,
-                end_column: 3,
+                end_column: 19,
             },
         },
         Usage {
@@ -36,9 +52,9 @@ IntermediateRepresentation {
             kind: Identifier,
             position: Position {
                 start_line: 1,
-                start_column: 6,
+                start_column: 22,
                 end_line: 1,
-                end_column: 7,
+                end_column: 23,
             },
         },
     ],

@@ -3,13 +3,13 @@ source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-match val3 { b4 @ _ => {} }
+match val4 { b4 @ _ => {} }
 
 AST:
 (source_file
   (expression_statement
     (match_expression
-      value: (identifier "val3")
+      value: (identifier "val4")
       body: (match_block
         (match_arm
           pattern: (match_pattern
@@ -42,7 +42,7 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage {
-            name: "val3",
+            name: "val4",
             kind: Identifier,
             position: Position {
                 start_line: 1,

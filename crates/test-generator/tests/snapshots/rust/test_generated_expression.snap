@@ -1,13 +1,13 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-var1 + 1
+var1 + 1;
 
 AST:
 (source_file
-  (ERROR
+  (expression_statement
     (binary_expression
       left: (identifier "var1")
       right: (integer_literal "1")

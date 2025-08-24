@@ -257,7 +257,7 @@ fn test_generated_declaration_statement() {
 
 #[test]
 fn test_generated_expression() {
-    let source_code = r#"var1 + 1"#;
+    let source_code = r#"var1 + 1;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -281,7 +281,7 @@ fn test_generated_expression() {
 
 #[test]
 fn test_generated_literal() {
-    let source_code = r#"42"#;
+    let source_code = r#"let literal_val = 42;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -305,7 +305,7 @@ fn test_generated_literal() {
 
 #[test]
 fn test_generated_literal_pattern() {
-    let source_code = r#"42"#;
+    let source_code = r#"match val { 42 => {}, _ => {} }"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -399,7 +399,7 @@ fn test_generated_abstract_type() {
 
 #[test]
 fn test_generated_array_expression() {
-    let source_code = r#"[item1, item2]"#;
+    let source_code = r#"[item1, item2];"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -437,7 +437,7 @@ fn test_generated_array_type() {
 
 #[test]
 fn test_generated_assignment_expression() {
-    let source_code = r#"x1 = y"#;
+    let source_code = r#"let mut x1 = 0; x1 = y;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -497,7 +497,7 @@ fn test_fn1() -> i32 { 42 }"#;
 
 #[test]
 fn test_generated_await_expression() {
-    let source_code = r#"future.await"#;
+    let source_code = r#"future.await;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -516,7 +516,7 @@ fn test_generated_await_expression() {
 
 #[test]
 fn test_generated_binary_expression() {
-    let source_code = r#"a + b"#;
+    let source_code = r#"a + b;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -613,7 +613,7 @@ fn test_generated_break_expression() {
 
 #[test]
 fn test_generated_call_expression() {
-    let source_code = r#"test_fn2(a1, b1)"#;
+    let source_code = r#"test_fn2(a1, b1);"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -784,7 +784,7 @@ fn test_generated_expression_statement() {
 
 #[test]
 fn test_generated_field_expression() {
-    let source_code = r#"obj.field"#;
+    let source_code = r#"obj.field;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1013,7 +1013,7 @@ fn test_generated_impl_item() {
 
 #[test]
 fn test_generated_index_expression() {
-    let source_code = r#"arr1[i]"#;
+    let source_code = r#"arr1[i];"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1128,7 +1128,7 @@ fn test_generated_match_expression() {
 
 #[test]
 fn test_generated_match_pattern() {
-    let source_code = r#"match val { x8 => {} }"#;
+    let source_code = r#"match val1 { x8 => {} }"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1225,7 +1225,7 @@ fn test_generated_never_type() {
 
 #[test]
 fn test_generated_or_pattern() {
-    let source_code = r#"match val1 { 0 | 1 => {} }"#;
+    let source_code = r#"match val2 { 0 | 1 => {} }"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1244,7 +1244,7 @@ fn test_generated_or_pattern() {
 
 #[test]
 fn test_generated_parenthesized_expression() {
-    let source_code = r#"(a3 + b3)"#;
+    let source_code = r#"(a3 + b3);"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1301,7 +1301,7 @@ fn test_generated_qualified_type() {
 
 #[test]
 fn test_generated_range_expression() {
-    let source_code = r#"0..10"#;
+    let source_code = r#"(0..10);"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1320,7 +1320,7 @@ fn test_generated_range_expression() {
 
 #[test]
 fn test_generated_range_pattern() {
-    let source_code = r#"match val2 { 0..=10 => {}, _ => {} }"#;
+    let source_code = r#"match val3 { 0..=10 => {}, _ => {} }"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1339,7 +1339,7 @@ fn test_generated_range_pattern() {
 
 #[test]
 fn test_generated_raw_string_literal() {
-    let source_code = r#"r"test""#;
+    let source_code = r#"let raw_str = r"test";"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1377,7 +1377,7 @@ fn test_generated_ref_pattern() {
 
 #[test]
 fn test_generated_reference_expression() {
-    let source_code = r#"&value4"#;
+    let source_code = r#"&value4;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1587,7 +1587,7 @@ fn test_generated_string_literal() {
 
 #[test]
 fn test_generated_struct_expression() {
-    let source_code = r#"TestStruct { field2: value7 }"#;
+    let source_code = r#"TestStruct { field2: value7 };"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1644,7 +1644,7 @@ fn test_generated_struct_pattern() {
 
 #[test]
 fn test_generated_token_binding_pattern() {
-    let source_code = r#"match val3 { b4 @ _ => {} }"#;
+    let source_code = r#"match val4 { b4 @ _ => {} }"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1722,7 +1722,7 @@ fn test_generated_trait_item() {
 
 #[test]
 fn test_generated_try_expression() {
-    let source_code = r#"result1?"#;
+    let source_code = r#"result1?;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1741,7 +1741,7 @@ fn test_generated_try_expression() {
 
 #[test]
 fn test_generated_tuple_expression() {
-    let source_code = r#"(item11, item21)"#;
+    let source_code = r#"(item11, item21);"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1817,7 +1817,7 @@ fn test_generated_tuple_type() {
 
 #[test]
 fn test_generated_type_cast_expression() {
-    let source_code = r#"value9 as i32"#;
+    let source_code = r#"value9 as i32;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1855,7 +1855,7 @@ fn test_generated_type_item() {
 
 #[test]
 fn test_generated_unary_expression() {
-    let source_code = r#"-value10"#;
+    let source_code = r#"-value10;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1893,7 +1893,7 @@ fn test_generated_union_item() {
 
 #[test]
 fn test_generated_unit_expression() {
-    let source_code = r#"()"#;
+    let source_code = r#"();"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1950,7 +1950,7 @@ fn test_generated_use_declaration() {
 
 #[test]
 fn test_generated_while_expression() {
-    let source_code = r#"while let Some(val4) = opt2 { break; }"#;
+    let source_code = r#"while let Some(val5) = opt2 { break; }"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -1969,7 +1969,7 @@ fn test_generated_while_expression() {
 
 #[test]
 fn test_generated_yield_expression() {
-    let source_code = r#"yield value11"#;
+    let source_code = r#"yield value11;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,
@@ -2026,7 +2026,7 @@ fn test_generated_float_literal() {
 
 #[test]
 fn test_generated_identifier() {
-    let source_code = r#"identifier"#;
+    let source_code = r#"let identifier = 42;"#;
 
     assert_code_analysis_and_snapshot(
         source_code,

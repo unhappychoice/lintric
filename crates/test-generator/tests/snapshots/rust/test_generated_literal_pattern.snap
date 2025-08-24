@@ -1,14 +1,28 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-42
+match val { 42 => {}, _ => {} }
 
 AST:
 (source_file
-  (ERROR
-    (integer_literal "42")
+  (expression_statement
+    (match_expression
+      value: (identifier "val")
+      body: (match_block
+        (match_arm
+          pattern: (match_pattern
+            (integer_literal "42")
+          )
+          value: (block)
+        )
+        (match_arm
+          pattern: (match_pattern)
+          value: (block)
+        )
+      )
+    )
   )
 )
 
@@ -17,7 +31,18 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [],
     dependencies: [],
-    usage: [],
+    usage: [
+        Usage {
+            name: "val",
+            kind: Identifier,
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 10,
+            },
+        },
+    ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

@@ -1,13 +1,13 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-&value4
+&value4;
 
 AST:
 (source_file
-  (ERROR
+  (expression_statement
     (reference_expression
       value: (identifier "value4")
     )

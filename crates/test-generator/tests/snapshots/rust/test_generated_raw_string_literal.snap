@@ -1,14 +1,15 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-r"test"
+let raw_str = r"test";
 
 AST:
 (source_file
-  (ERROR
-    (raw_string_literal "r"test""
+  (let_declaration
+    pattern: (identifier "raw_str")
+    value: (raw_string_literal "r"test""
       (string_content)
     )
   )
@@ -17,7 +18,18 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition {
+            name: "raw_str",
+            position: Position {
+                start_line: 1,
+                start_column: 5,
+                end_line: 1,
+                end_column: 12,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
     dependencies: [],
     usage: [],
     analysis_metadata: AnalysisMetadata {
