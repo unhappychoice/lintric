@@ -1,16 +1,18 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-0..10
+(0..10);
 
 AST:
 (source_file
-  (ERROR
-    (range_expression
-      (integer_literal "0")
-      (integer_literal "10")
+  (expression_statement
+    (parenthesized_expression
+      (range_expression
+        (integer_literal "0")
+        (integer_literal "10")
+      )
     )
   )
 )

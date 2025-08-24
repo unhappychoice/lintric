@@ -3,7 +3,7 @@ source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-test_fn2(a1, b1)
+test_fn2(a1, b1);
 
 AST:
 (source_file

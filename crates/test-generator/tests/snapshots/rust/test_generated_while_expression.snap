@@ -3,7 +3,7 @@ source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-while let Some(val4) = opt2 { break; }
+while let Some(val5) = opt2 { break; }
 
 AST:
 (source_file
@@ -12,7 +12,7 @@ AST:
       condition: (let_condition
         pattern: (tuple_struct_pattern
           type: (identifier "Some")
-          (identifier "val4")
+          (identifier "val5")
         )
         value: (identifier "opt2")
       )
@@ -30,7 +30,7 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition {
-            name: "val4",
+            name: "val5",
             position: Position {
                 start_line: 1,
                 start_column: 16,
@@ -53,7 +53,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "val4",
+            name: "val5",
             kind: Identifier,
             position: Position {
                 start_line: 1,

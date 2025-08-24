@@ -176,42 +176,45 @@ impl RustPlugin {
                 let fn_name = context.get_unique_name("test_fn");
                 let arg1 = context.get_unique_name("a");
                 let arg2 = context.get_unique_name("b");
-                Some(format!("{}({}, {})", fn_name, arg1, arg2))
+                Some(format!("{}({}, {});", fn_name, arg1, arg2))
             }
             "struct_expression" => {
                 let struct_name = context.get_unique_name("TestStruct");
                 let field_name = context.get_unique_name("field");
                 let value_name = context.get_unique_name("value");
                 Some(format!(
-                    "{} {{ {}: {} }}",
+                    "{} {{ {}: {} }};",
                     struct_name, field_name, value_name
                 ))
             }
             "field_expression" => {
                 let obj_name = context.get_unique_name("obj");
                 let field_name = context.get_unique_name("field");
-                Some(format!("{}.{}", obj_name, field_name))
+                Some(format!("{}.{};", obj_name, field_name))
             }
             "index_expression" => {
                 let array_name = context.get_unique_name("arr");
                 let index_name = context.get_unique_name("i");
-                Some(format!("{}[{}]", array_name, index_name))
+                Some(format!("{}[{}];", array_name, index_name))
             }
-            "range_expression" => Some("0..10".to_string()),
+            "range_expression" => Some("(0..10);".to_string()),
             "parenthesized_expression" => {
                 let left = context.get_unique_name("a");
                 let right = context.get_unique_name("b");
-                Some(format!("({} + {})", left, right))
+                Some(format!("({} + {});", left, right))
             }
             "binary_expression" => {
                 let left = context.get_unique_name("a");
                 let right = context.get_unique_name("b");
-                Some(format!("{} + {}", left, right))
+                Some(format!("{} + {};", left, right))
             }
             "assignment_expression" => {
                 let var_name = context.get_unique_name("x");
                 let value_name = context.get_unique_name("y");
-                Some(format!("{} = {}", var_name, value_name))
+                Some(format!(
+                    "let mut {} = 0; {} = {};",
+                    var_name, var_name, value_name
+                ))
             }
             "closure_expression" => {
                 let param = context.get_unique_name("x");
@@ -224,15 +227,15 @@ impl RustPlugin {
             }
             "reference_expression" => {
                 let var_name = context.get_unique_name("value");
-                Some(format!("&{}", var_name))
+                Some(format!("&{};", var_name))
             }
             "try_expression" => {
                 let result_name = context.get_unique_name("result");
-                Some(format!("{}?", result_name))
+                Some(format!("{}?;", result_name))
             }
             "await_expression" => {
                 let future_name = context.get_unique_name("future");
-                Some(format!("{}.await", future_name))
+                Some(format!("{}.await;", future_name))
             }
             "loop_expression" => Some("loop { break; }".to_string()),
             "return_expression" => {
@@ -252,25 +255,25 @@ impl RustPlugin {
             "array_expression" => {
                 let item1 = context.get_unique_name("item1");
                 let item2 = context.get_unique_name("item2");
-                Some(format!("[{}, {}]", item1, item2))
+                Some(format!("[{}, {}];", item1, item2))
             }
             "tuple_expression" => {
                 let item1 = context.get_unique_name("item1");
                 let item2 = context.get_unique_name("item2");
-                Some(format!("({}, {})", item1, item2))
+                Some(format!("({}, {});", item1, item2))
             }
             "type_cast_expression" => {
                 let value = context.get_unique_name("value");
-                Some(format!("{} as i32", value))
+                Some(format!("{} as i32;", value))
             }
             "unary_expression" => {
                 let value = context.get_unique_name("value");
-                Some(format!("-{}", value))
+                Some(format!("-{};", value))
             }
-            "unit_expression" => Some("()".to_string()),
+            "unit_expression" => Some("();".to_string()),
             "yield_expression" => {
                 let value = context.get_unique_name("value");
-                Some(format!("yield {}", value))
+                Some(format!("yield {};", value))
             }
             "empty_statement" => {
                 // Empty statement (no-op)
@@ -316,10 +319,13 @@ impl RustPlugin {
                 let var_name = context.get_unique_name("pi");
                 Some(format!("let {} = 3.14;", var_name))
             }
-            "raw_string_literal" => Some("r\"test\"".to_string()),
+            "raw_string_literal" => {
+                let var_name = context.get_unique_name("raw_str");
+                Some(format!("let {} = r\"test\";", var_name))
+            }
             "identifier" => {
                 let name = context.get_unique_name("identifier");
-                Some(name)
+                Some(format!("let {} = 42;", name))
             }
             "abstract_type" => {
                 let fn_name = context.get_unique_name("test_fn");
@@ -435,7 +441,7 @@ impl RustPlugin {
             // Abstract patterns
             "_expression" => {
                 let var_name = context.get_unique_name("var");
-                Some(format!("{} + 1", var_name))
+                Some(format!("{} + 1;", var_name))
             }
             "captured_pattern" => {
                 let var_name = context.get_unique_name("x");
@@ -619,7 +625,8 @@ impl RustPlugin {
             }
             "_literal_pattern" => {
                 // Literal patterns are used in match expressions
-                Some("42".to_string())
+                let var_name = context.get_unique_name("val");
+                Some(format!("match {} {{ 42 => {{}}, _ => {{}} }}", var_name))
             }
             "_type" => {
                 // Type in variable declaration context
@@ -649,8 +656,9 @@ impl RustPlugin {
                         item_name, var_name, var_name
                     ))
                 } else if node_type.ends_with("_literal") {
-                    // Literals are generally safe standalone
-                    Some("42".to_string())
+                    // Literals need to be in valid statement context
+                    let var_name = context.get_unique_name("literal_val");
+                    Some(format!("let {} = 42;", var_name))
                 } else if node_type.ends_with("_type") {
                     panic!("Cannot generate valid standalone code for type node '{}'. Type nodes need context to be meaningful.", node_type)
                 } else {

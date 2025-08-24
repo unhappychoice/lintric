@@ -1,9 +1,9 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-TestStruct { field2: value7 }
+TestStruct { field2: value7 };
 
 AST:
 (source_file

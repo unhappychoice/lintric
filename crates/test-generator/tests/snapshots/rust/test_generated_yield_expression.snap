@@ -1,13 +1,13 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-yield value11
+yield value11;
 
 AST:
 (source_file
-  (ERROR
+  (expression_statement
     (yield_expression
       (identifier "value11")
     )

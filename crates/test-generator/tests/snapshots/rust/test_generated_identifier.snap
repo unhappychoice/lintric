@@ -1,34 +1,35 @@
 ---
-source: generated-tests/tests/rust.rs
+source: crates/test-generator/tests/rust.rs
 expression: snapshot_content
 ---
 Source Code:
-identifier
+let identifier = 42;
 
 AST:
 (source_file
-  (ERROR
-    (identifier "identifier")
+  (let_declaration
+    pattern: (identifier "identifier")
+    value: (integer_literal "42")
   )
 )
 
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
-    dependencies: [],
-    usage: [
-        Usage {
+    definitions: [
+        Definition {
             name: "identifier",
-            kind: Identifier,
             position: Position {
                 start_line: 1,
-                start_column: 1,
+                start_column: 5,
                 end_line: 1,
-                end_column: 11,
+                end_column: 15,
             },
+            definition_type: VariableDefinition,
         },
     ],
+    dependencies: [],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,
