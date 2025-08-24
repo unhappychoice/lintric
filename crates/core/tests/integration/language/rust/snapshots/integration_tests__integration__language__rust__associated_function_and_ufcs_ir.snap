@@ -1,0 +1,528 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: ir_snapshot_content
+---
+Source Code:
+struct MyStruct;
+
+impl MyStruct {
+    fn new() -> MyStruct {
+        MyStruct
+    }
+}
+
+trait MyTrait {
+    fn my_function();
+}
+
+struct MyType;
+
+impl MyTrait for MyType {
+    fn my_function() {
+        println!("Hello from MyType!");
+    }
+}
+
+fn main() {
+    let _s = MyStruct::new();
+    MyType::my_function();
+    <MyType as MyTrait>::my_function();
+}
+
+
+AST:
+(source_file
+  (struct_item
+    name: (type_identifier "MyStruct")
+  )
+  (impl_item
+    type: (type_identifier "MyStruct")
+    body: (declaration_list
+      (function_item
+        name: (identifier "new")
+        parameters: (parameters)
+        return_type: (type_identifier "MyStruct")
+        body: (block
+          (identifier "MyStruct")
+        )
+      )
+    )
+  )
+  (trait_item
+    name: (type_identifier "MyTrait")
+    body: (declaration_list
+      (function_signature_item
+        name: (identifier "my_function")
+        parameters: (parameters)
+      )
+    )
+  )
+  (struct_item
+    name: (type_identifier "MyType")
+  )
+  (impl_item
+    trait: (type_identifier "MyTrait")
+    type: (type_identifier "MyType")
+    body: (declaration_list
+      (function_item
+        name: (identifier "my_function")
+        parameters: (parameters)
+        body: (block
+          (expression_statement
+            (macro_invocation
+              macro: (identifier "println")
+              (token_tree
+                (string_literal ""Hello from MyType!""
+                  (string_content)
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "_s")
+        value: (call_expression
+          function: (scoped_identifier "MyStruct::new"
+            path: (identifier "MyStruct")
+            name: (identifier "new")
+          )
+          arguments: (arguments)
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier "MyType::my_function"
+            path: (identifier "MyType")
+            name: (identifier "my_function")
+          )
+          arguments: (arguments)
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier "<MyType as MyTrait>::my_function"
+            path: (bracketed_type
+              (qualified_type
+                type: (type_identifier "MyType")
+                alias: (type_identifier "MyTrait")
+              )
+            )
+            name: (identifier "my_function")
+          )
+          arguments: (arguments)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/fixtures/associated_function_and_ufcs.rs",
+    definitions: [
+        Definition {
+            name: "MyStruct",
+            position: Position {
+                start_line: 1,
+                start_column: 8,
+                end_line: 1,
+                end_column: 16,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 4,
+                start_column: 8,
+                end_line: 4,
+                end_column: 11,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 4,
+                start_column: 8,
+                end_line: 4,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "MyTrait",
+            position: Position {
+                start_line: 9,
+                start_column: 7,
+                end_line: 9,
+                end_column: 14,
+            },
+            definition_type: TypeDefinition,
+        },
+        Definition {
+            name: "my_function",
+            position: Position {
+                start_line: 10,
+                start_column: 8,
+                end_line: 10,
+                end_column: 19,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "MyType",
+            position: Position {
+                start_line: 13,
+                start_column: 8,
+                end_line: 13,
+                end_column: 14,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "my_function",
+            position: Position {
+                start_line: 16,
+                start_column: 8,
+                end_line: 16,
+                end_column: 19,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "my_function",
+            position: Position {
+                start_line: 16,
+                start_column: 8,
+                end_line: 16,
+                end_column: 19,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 21,
+                start_column: 4,
+                end_line: 21,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "_s",
+            position: Position {
+                start_line: 22,
+                start_column: 9,
+                end_line: 22,
+                end_column: 11,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 3,
+            target_line: 1,
+            symbol: "MyStruct",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:3:6",
+            ),
+        },
+        Dependency {
+            source_line: 4,
+            target_line: 1,
+            symbol: "MyStruct",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:4:17",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 1,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:5:9",
+            ),
+        },
+        Dependency {
+            source_line: 10,
+            target_line: 16,
+            symbol: "my_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:10:8",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 9,
+            symbol: "MyTrait",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:6",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 13,
+            symbol: "MyType",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:15:18",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 1,
+            symbol: "MyStruct",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:14",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 4,
+            symbol: "new",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:24",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 13,
+            symbol: "MyType",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:23:5",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 16,
+            symbol: "my_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:23:13",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 13,
+            symbol: "MyType",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:24:6",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 9,
+            symbol: "MyTrait",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:24:16",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 16,
+            symbol: "my_function",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:24:26",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "MyStruct",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 3,
+                start_column: 6,
+                end_line: 3,
+                end_column: 14,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 4,
+                start_column: 17,
+                end_line: 4,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: Identifier,
+            position: Position {
+                start_line: 5,
+                start_column: 9,
+                end_line: 5,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "my_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 10,
+                start_column: 8,
+                end_line: 10,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "MyTrait",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 6,
+                end_line: 15,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "MyType",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 15,
+                start_column: 18,
+                end_line: 15,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 17,
+                start_column: 9,
+                end_line: 17,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "MyStruct::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 22,
+                start_column: 14,
+                end_line: 22,
+                end_column: 29,
+            },
+        },
+        Usage {
+            name: "MyStruct",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 14,
+                end_line: 22,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 24,
+                end_line: 22,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "MyType::my_function",
+            kind: CallExpression,
+            position: Position {
+                start_line: 23,
+                start_column: 5,
+                end_line: 23,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "MyType",
+            kind: Identifier,
+            position: Position {
+                start_line: 23,
+                start_column: 5,
+                end_line: 23,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "my_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 23,
+                start_column: 13,
+                end_line: 23,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "<MyType as MyTrait>::my_function",
+            kind: CallExpression,
+            position: Position {
+                start_line: 24,
+                start_column: 5,
+                end_line: 24,
+                end_column: 39,
+            },
+        },
+        Usage {
+            name: "MyType",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 24,
+                start_column: 6,
+                end_line: 24,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "MyTrait",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 24,
+                start_column: 16,
+                end_line: 24,
+                end_column: 23,
+            },
+        },
+        Usage {
+            name: "my_function",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 26,
+                end_line: 24,
+                end_column: 37,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 25,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

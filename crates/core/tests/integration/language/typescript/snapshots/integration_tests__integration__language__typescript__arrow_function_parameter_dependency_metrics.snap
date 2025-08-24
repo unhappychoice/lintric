@@ -1,0 +1,20 @@
+---
+source: crates/core/tests/integration/language/typescript/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
+---
+{
+  "file_path": "tests/integration/language/typescript/fixtures/arrow_function_parameter_dependency.ts",
+  "line_metrics": [
+    {
+      "line_number": 2,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.3333333333333333,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        1
+      ]
+    }
+  ],
+  "overall_complexity_score": 2.2333333333333334
+}

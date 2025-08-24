@@ -1,0 +1,535 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: ir_snapshot_content
+---
+Source Code:
+fn main() {
+    let option_value = Some(10);
+    if let Some(value) = option_value {
+        println!("Value: {}", value);
+    }
+
+    let numbers = vec![1, 2, 3];
+    for num in numbers {
+        println!("Number: {}", num);
+    }
+
+    let mut iter = Some(5);
+    while let Some(i) = iter {
+        println!("Iteration: {}", i);
+        iter = if i > 0 { Some(i - 1) } else { None };
+    }
+}
+
+
+AST:
+(source_file
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "option_value")
+        value: (call_expression
+          function: (identifier "Some")
+          arguments: (arguments
+            (integer_literal "10")
+          )
+        )
+      )
+      (expression_statement
+        (if_expression
+          condition: (let_condition
+            pattern: (tuple_struct_pattern
+              type: (identifier "Some")
+              (identifier "value")
+            )
+            value: (identifier "option_value")
+          )
+          consequence: (block
+            (expression_statement
+              (macro_invocation
+                macro: (identifier "println")
+                (token_tree
+                  (string_literal ""Value: {}""
+                    (string_content)
+                  )
+                  (identifier "value")
+                )
+              )
+            )
+          )
+        )
+      )
+      (let_declaration
+        pattern: (identifier "numbers")
+        value: (macro_invocation
+          macro: (identifier "vec")
+          (token_tree
+            (integer_literal "1")
+            (integer_literal "2")
+            (integer_literal "3")
+          )
+        )
+      )
+      (expression_statement
+        (for_expression
+          pattern: (identifier "num")
+          value: (identifier "numbers")
+          body: (block
+            (expression_statement
+              (macro_invocation
+                macro: (identifier "println")
+                (token_tree
+                  (string_literal ""Number: {}""
+                    (string_content)
+                  )
+                  (identifier "num")
+                )
+              )
+            )
+          )
+        )
+      )
+      (let_declaration
+        (mutable_specifier)
+        pattern: (identifier "iter")
+        value: (call_expression
+          function: (identifier "Some")
+          arguments: (arguments
+            (integer_literal "5")
+          )
+        )
+      )
+      (expression_statement
+        (while_expression
+          condition: (let_condition
+            pattern: (tuple_struct_pattern
+              type: (identifier "Some")
+              (identifier "i")
+            )
+            value: (identifier "iter")
+          )
+          body: (block
+            (expression_statement
+              (macro_invocation
+                macro: (identifier "println")
+                (token_tree
+                  (string_literal ""Iteration: {}""
+                    (string_content)
+                  )
+                  (identifier "i")
+                )
+              )
+            )
+            (expression_statement
+              (assignment_expression
+                left: (identifier "iter")
+                right: (if_expression
+                  condition: (binary_expression
+                    left: (identifier "i")
+                    right: (integer_literal "0")
+                  )
+                  consequence: (block
+                    (call_expression
+                      function: (identifier "Some")
+                      arguments: (arguments
+                        (binary_expression
+                          left: (identifier "i")
+                          right: (integer_literal "1")
+                        )
+                      )
+                    )
+                  )
+                  alternative: (else_clause
+                    (block
+                      (identifier "None")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/fixtures/pattern_match_bindings.rs",
+    definitions: [
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 1,
+                start_column: 4,
+                end_line: 1,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "option_value",
+            position: Position {
+                start_line: 2,
+                start_column: 9,
+                end_line: 2,
+                end_column: 21,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "value",
+            position: Position {
+                start_line: 3,
+                start_column: 17,
+                end_line: 3,
+                end_column: 22,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "numbers",
+            position: Position {
+                start_line: 7,
+                start_column: 9,
+                end_line: 7,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "num",
+            position: Position {
+                start_line: 8,
+                start_column: 9,
+                end_line: 8,
+                end_column: 12,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "iter",
+            position: Position {
+                start_line: 12,
+                start_column: 13,
+                end_line: 12,
+                end_column: 17,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "i",
+            position: Position {
+                start_line: 13,
+                start_column: 20,
+                end_line: 13,
+                end_column: 21,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 3,
+            target_line: 2,
+            symbol: "option_value",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:3:26",
+            ),
+        },
+        Dependency {
+            source_line: 4,
+            target_line: 3,
+            symbol: "value",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:4:31",
+            ),
+        },
+        Dependency {
+            source_line: 8,
+            target_line: 7,
+            symbol: "numbers",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:8:16",
+            ),
+        },
+        Dependency {
+            source_line: 9,
+            target_line: 8,
+            symbol: "num",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:9:32",
+            ),
+        },
+        Dependency {
+            source_line: 13,
+            target_line: 12,
+            symbol: "iter",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:13:25",
+            ),
+        },
+        Dependency {
+            source_line: 14,
+            target_line: 13,
+            symbol: "i",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:14:35",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 12,
+            symbol: "iter",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:15:9",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 13,
+            symbol: "i",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:15:19",
+            ),
+        },
+        Dependency {
+            source_line: 15,
+            target_line: 13,
+            symbol: "i",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:15:32",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "Some",
+            kind: CallExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 24,
+                end_line: 2,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "Some",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 12,
+                end_line: 3,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "value",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 17,
+                end_line: 3,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "option_value",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 26,
+                end_line: 3,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 4,
+                start_column: 9,
+                end_line: 4,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "value",
+            kind: Identifier,
+            position: Position {
+                start_line: 4,
+                start_column: 31,
+                end_line: 4,
+                end_column: 36,
+            },
+        },
+        Usage {
+            name: "vec",
+            kind: Identifier,
+            position: Position {
+                start_line: 7,
+                start_column: 19,
+                end_line: 7,
+                end_column: 22,
+            },
+        },
+        Usage {
+            name: "numbers",
+            kind: Identifier,
+            position: Position {
+                start_line: 8,
+                start_column: 16,
+                end_line: 8,
+                end_column: 23,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 9,
+                end_line: 9,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "num",
+            kind: Identifier,
+            position: Position {
+                start_line: 9,
+                start_column: 32,
+                end_line: 9,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "Some",
+            kind: CallExpression,
+            position: Position {
+                start_line: 12,
+                start_column: 20,
+                end_line: 12,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "Some",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 15,
+                end_line: 13,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "i",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 20,
+                end_line: 13,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "iter",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 25,
+                end_line: 13,
+                end_column: 29,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 14,
+                start_column: 9,
+                end_line: 14,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "i",
+            kind: Identifier,
+            position: Position {
+                start_line: 14,
+                start_column: 35,
+                end_line: 14,
+                end_column: 36,
+            },
+        },
+        Usage {
+            name: "iter",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 9,
+                end_line: 15,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "i",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 19,
+                end_line: 15,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "Some",
+            kind: CallExpression,
+            position: Position {
+                start_line: 15,
+                start_column: 27,
+                end_line: 15,
+                end_column: 38,
+            },
+        },
+        Usage {
+            name: "i",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 32,
+                end_line: 15,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "None",
+            kind: Identifier,
+            position: Position {
+                start_line: 15,
+                start_column: 48,
+                end_line: 15,
+                end_column: 52,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 17,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

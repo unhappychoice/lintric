@@ -1,0 +1,851 @@
+---
+source: crates/core/tests/integration/language/typescript/dependency_resolver/typescript_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+class Calculator {
+    private value: number = 0;
+    
+    add(n: number): void {
+        this.value += n;
+    }
+    
+    getValue(): number {
+        return this.value;
+    }
+}
+
+interface Drawable {
+    draw(): void;
+}
+
+class Circle implements Drawable {
+    radius: number;
+    
+    constructor(radius: number) {
+        this.radius = radius;
+    }
+    
+    draw(): void {
+        console.log(`Drawing circle with radius ${this.radius}`);
+    }
+}
+
+function main() {
+    const calc = new Calculator();
+    calc.add(5);
+    console.log(calc.getValue());
+    
+    const circle = new Circle(10);
+    circle.draw();
+}
+
+AST:
+(program
+  (class_declaration
+    name: (type_identifier "Calculator")
+    body: (class_body
+      (public_field_definition
+        (accessibility_modifier "private")
+        name: (property_identifier "value")
+        type: (type_annotation
+          (predefined_type "number")
+        )
+        value: (number "0")
+      )
+      (method_definition
+        name: (property_identifier "add")
+        parameters: (formal_parameters
+          (required_parameter
+            pattern: (identifier "n")
+            type: (type_annotation
+              (predefined_type "number")
+            )
+          )
+        )
+        return_type: (type_annotation
+          (predefined_type "void")
+        )
+        body: (statement_block
+          (expression_statement
+            (augmented_assignment_expression
+              left: (member_expression
+                object: (this "this")
+                property: (property_identifier "value")
+              )
+              right: (identifier "n")
+            )
+          )
+        )
+      )
+      (method_definition
+        name: (property_identifier "getValue")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
+          (predefined_type "number")
+        )
+        body: (statement_block
+          (return_statement
+            (member_expression
+              object: (this "this")
+              property: (property_identifier "value")
+            )
+          )
+        )
+      )
+    )
+  )
+  (interface_declaration
+    name: (type_identifier "Drawable")
+    body: (interface_body
+      (method_signature
+        name: (property_identifier "draw")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
+          (predefined_type "void")
+        )
+      )
+    )
+  )
+  (class_declaration
+    name: (type_identifier "Circle")
+    (class_heritage
+      (implements_clause
+        (type_identifier "Drawable")
+      )
+    )
+    body: (class_body
+      (public_field_definition
+        name: (property_identifier "radius")
+        type: (type_annotation
+          (predefined_type "number")
+        )
+      )
+      (method_definition
+        name: (property_identifier "constructor")
+        parameters: (formal_parameters
+          (required_parameter
+            pattern: (identifier "radius")
+            type: (type_annotation
+              (predefined_type "number")
+            )
+          )
+        )
+        body: (statement_block
+          (expression_statement
+            (assignment_expression
+              left: (member_expression
+                object: (this "this")
+                property: (property_identifier "radius")
+              )
+              right: (identifier "radius")
+            )
+          )
+        )
+      )
+      (method_definition
+        name: (property_identifier "draw")
+        parameters: (formal_parameters)
+        return_type: (type_annotation
+          (predefined_type "void")
+        )
+        body: (statement_block
+          (expression_statement
+            (call_expression
+              function: (member_expression
+                object: (identifier "console")
+                property: (property_identifier "log")
+              )
+              arguments: (arguments
+                (template_string
+                  (string_fragment)
+                  (template_substitution
+                    (member_expression
+                      object: (this "this")
+                      property: (property_identifier "radius")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_declaration
+    name: (identifier "main")
+    parameters: (formal_parameters)
+    body: (statement_block
+      (lexical_declaration
+        (variable_declarator
+          name: (identifier "calc")
+          value: (new_expression
+            constructor: (identifier "Calculator")
+            arguments: (arguments)
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (member_expression
+            object: (identifier "calc")
+            property: (property_identifier "add")
+          )
+          arguments: (arguments
+            (number "5")
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (member_expression
+            object: (identifier "console")
+            property: (property_identifier "log")
+          )
+          arguments: (arguments
+            (call_expression
+              function: (member_expression
+                object: (identifier "calc")
+                property: (property_identifier "getValue")
+              )
+              arguments: (arguments)
+            )
+          )
+        )
+      )
+      (lexical_declaration
+        (variable_declarator
+          name: (identifier "circle")
+          value: (new_expression
+            constructor: (identifier "Circle")
+            arguments: (arguments
+              (number "10")
+            )
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (member_expression
+            object: (identifier "circle")
+            property: (property_identifier "draw")
+          )
+          arguments: (arguments)
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_class_method.ts",
+    definitions: [
+        Definition {
+            name: "Calculator",
+            position: Position {
+                start_line: 1,
+                start_column: 7,
+                end_line: 1,
+                end_column: 17,
+            },
+            definition_type: ClassDefinition,
+        },
+        Definition {
+            name: "value",
+            position: Position {
+                start_line: 2,
+                start_column: 13,
+                end_line: 2,
+                end_column: 18,
+            },
+            definition_type: PropertyDefinition,
+        },
+        Definition {
+            name: "add",
+            position: Position {
+                start_line: 4,
+                start_column: 5,
+                end_line: 4,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "n",
+            position: Position {
+                start_line: 4,
+                start_column: 9,
+                end_line: 4,
+                end_column: 10,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "getValue",
+            position: Position {
+                start_line: 8,
+                start_column: 5,
+                end_line: 8,
+                end_column: 13,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "Drawable",
+            position: Position {
+                start_line: 13,
+                start_column: 11,
+                end_line: 13,
+                end_column: 19,
+            },
+            definition_type: InterfaceDefinition,
+        },
+        Definition {
+            name: "draw",
+            position: Position {
+                start_line: 14,
+                start_column: 5,
+                end_line: 14,
+                end_column: 9,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "Circle",
+            position: Position {
+                start_line: 17,
+                start_column: 7,
+                end_line: 17,
+                end_column: 13,
+            },
+            definition_type: ClassDefinition,
+        },
+        Definition {
+            name: "radius",
+            position: Position {
+                start_line: 18,
+                start_column: 5,
+                end_line: 18,
+                end_column: 11,
+            },
+            definition_type: PropertyDefinition,
+        },
+        Definition {
+            name: "constructor",
+            position: Position {
+                start_line: 20,
+                start_column: 5,
+                end_line: 20,
+                end_column: 16,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "radius",
+            position: Position {
+                start_line: 20,
+                start_column: 17,
+                end_line: 20,
+                end_column: 23,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "draw",
+            position: Position {
+                start_line: 24,
+                start_column: 5,
+                end_line: 24,
+                end_column: 9,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 29,
+                start_column: 10,
+                end_line: 29,
+                end_column: 14,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "calc",
+            position: Position {
+                start_line: 30,
+                start_column: 11,
+                end_line: 30,
+                end_column: 15,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "circle",
+            position: Position {
+                start_line: 34,
+                start_column: 11,
+                end_line: 34,
+                end_column: 17,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 5,
+            target_line: 2,
+            symbol: "value",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 5,
+            target_line: 4,
+            symbol: "n",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:5:23",
+            ),
+        },
+        Dependency {
+            source_line: 9,
+            target_line: 2,
+            symbol: "value",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 17,
+            target_line: 13,
+            symbol: "Drawable",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:17:25",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 18,
+            symbol: "radius",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 20,
+            symbol: "radius",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:21:23",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 18,
+            symbol: "radius",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "field_access",
+            ),
+        },
+        Dependency {
+            source_line: 30,
+            target_line: 1,
+            symbol: "Calculator",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:30:22",
+            ),
+        },
+        Dependency {
+            source_line: 31,
+            target_line: 30,
+            symbol: "calc",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:31:5",
+            ),
+        },
+        Dependency {
+            source_line: 31,
+            target_line: 4,
+            symbol: "add",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:31:10",
+            ),
+        },
+        Dependency {
+            source_line: 32,
+            target_line: 30,
+            symbol: "calc",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:32:17",
+            ),
+        },
+        Dependency {
+            source_line: 32,
+            target_line: 8,
+            symbol: "getValue",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:32:22",
+            ),
+        },
+        Dependency {
+            source_line: 34,
+            target_line: 17,
+            symbol: "Circle",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:34:24",
+            ),
+        },
+        Dependency {
+            source_line: 35,
+            target_line: 34,
+            symbol: "circle",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:35:5",
+            ),
+        },
+        Dependency {
+            source_line: 35,
+            target_line: 24,
+            symbol: "draw",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:35:12",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "value",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 2,
+                start_column: 13,
+                end_line: 2,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "add",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 4,
+                start_column: 5,
+                end_line: 4,
+                end_column: 8,
+            },
+        },
+        Usage {
+            name: "value",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 5,
+                start_column: 14,
+                end_line: 5,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "n",
+            kind: Identifier,
+            position: Position {
+                start_line: 5,
+                start_column: 23,
+                end_line: 5,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "getValue",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 8,
+                start_column: 5,
+                end_line: 8,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "value",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 9,
+                start_column: 21,
+                end_line: 9,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "draw",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 14,
+                start_column: 5,
+                end_line: 14,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "Drawable",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 17,
+                start_column: 25,
+                end_line: 17,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "radius",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 18,
+                start_column: 5,
+                end_line: 18,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "constructor",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 20,
+                start_column: 5,
+                end_line: 20,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "radius",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 21,
+                start_column: 14,
+                end_line: 21,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "radius",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 23,
+                end_line: 21,
+                end_column: 29,
+            },
+        },
+        Usage {
+            name: "draw",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 24,
+                start_column: 5,
+                end_line: 24,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "console.log",
+            kind: CallExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 9,
+                end_line: 25,
+                end_column: 65,
+            },
+        },
+        Usage {
+            name: "console",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 9,
+                end_line: 25,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "log",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 17,
+                end_line: 25,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "radius",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 25,
+                start_column: 56,
+                end_line: 25,
+                end_column: 62,
+            },
+        },
+        Usage {
+            name: "Calculator",
+            kind: Identifier,
+            position: Position {
+                start_line: 30,
+                start_column: 22,
+                end_line: 30,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "calc.add",
+            kind: CallExpression,
+            position: Position {
+                start_line: 31,
+                start_column: 5,
+                end_line: 31,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "calc",
+            kind: Identifier,
+            position: Position {
+                start_line: 31,
+                start_column: 5,
+                end_line: 31,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "add",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 31,
+                start_column: 10,
+                end_line: 31,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "console.log",
+            kind: CallExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 5,
+                end_line: 32,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "console",
+            kind: Identifier,
+            position: Position {
+                start_line: 32,
+                start_column: 5,
+                end_line: 32,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "log",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 13,
+                end_line: 32,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "calc.getValue",
+            kind: CallExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 17,
+                end_line: 32,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "calc",
+            kind: Identifier,
+            position: Position {
+                start_line: 32,
+                start_column: 17,
+                end_line: 32,
+                end_column: 21,
+            },
+        },
+        Usage {
+            name: "getValue",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 22,
+                end_line: 32,
+                end_column: 30,
+            },
+        },
+        Usage {
+            name: "Circle",
+            kind: Identifier,
+            position: Position {
+                start_line: 34,
+                start_column: 24,
+                end_line: 34,
+                end_column: 30,
+            },
+        },
+        Usage {
+            name: "circle.draw",
+            kind: CallExpression,
+            position: Position {
+                start_line: 35,
+                start_column: 5,
+                end_line: 35,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "circle",
+            kind: Identifier,
+            position: Position {
+                start_line: 35,
+                start_column: 5,
+                end_line: 35,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "draw",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 35,
+                start_column: 12,
+                end_line: 35,
+                end_column: 16,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "TypeScript",
+        total_lines: 36,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}

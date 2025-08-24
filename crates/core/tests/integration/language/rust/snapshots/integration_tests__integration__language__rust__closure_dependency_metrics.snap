@@ -1,0 +1,31 @@
+---
+source: crates/core/tests/integration/language/rust/mod.rs
+expression: "serde_json :: to_string_pretty(& result).unwrap()"
+---
+{
+  "file_path": "tests/integration/language/rust/fixtures/closure_dependency.rs",
+  "line_metrics": [
+    {
+      "line_number": 3,
+      "total_dependencies": 1,
+      "dependency_distance_cost": 0.14285714285714285,
+      "depth": 1,
+      "transitive_dependencies": 1,
+      "dependent_lines": [
+        2
+      ]
+    },
+    {
+      "line_number": 6,
+      "total_dependencies": 2,
+      "dependency_distance_cost": 0.7142857142857142,
+      "depth": 1,
+      "transitive_dependencies": 2,
+      "dependent_lines": [
+        5,
+        2
+      ]
+    }
+  ],
+  "overall_complexity_score": 5.685714285714286
+}

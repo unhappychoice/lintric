@@ -1,0 +1,1167 @@
+---
+source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+expression: ir_snapshot_content
+---
+Source Code:
+enum Message {
+    Text(String),
+    Number(i32),
+    Quit,
+}
+
+struct Handler {
+    name: String,
+}
+
+impl Handler {
+    fn new(name: String) -> Self {
+        Handler { name }
+    }
+    
+    fn handle(&self, msg: Message) {
+        match msg {
+            Message::Text(text) => {
+                println!("{}: {}", self.name, text);
+            }
+            Message::Number(num) => {
+                println!("{}: Number {}", self.name, num);
+            }
+            Message::Quit => {
+                println!("{}: Quitting", self.name);
+            }
+        }
+    }
+}
+
+fn main() {
+    let handler = Handler::new("Main".to_string());
+    
+    handler.handle(Message::Text("Hello".to_string()));
+    handler.handle(Message::Number(42));
+    handler.handle(Message::Quit);
+}
+
+AST:
+(source_file
+  (enum_item
+    name: (type_identifier "Message")
+    body: (enum_variant_list
+      (enum_variant
+        name: (identifier "Text")
+        body: (ordered_field_declaration_list
+          type: (type_identifier "String")
+        )
+      )
+      (enum_variant
+        name: (identifier "Number")
+        body: (ordered_field_declaration_list
+          type: (primitive_type "i32")
+        )
+      )
+      (enum_variant
+        name: (identifier "Quit")
+      )
+    )
+  )
+  (struct_item
+    name: (type_identifier "Handler")
+    body: (field_declaration_list
+      (field_declaration
+        name: (field_identifier "name")
+        type: (type_identifier "String")
+      )
+    )
+  )
+  (impl_item
+    type: (type_identifier "Handler")
+    body: (declaration_list
+      (function_item
+        name: (identifier "new")
+        parameters: (parameters
+          (parameter
+            pattern: (identifier "name")
+            type: (type_identifier "String")
+          )
+        )
+        return_type: (type_identifier "Self")
+        body: (block
+          (struct_expression
+            name: (type_identifier "Handler")
+            body: (field_initializer_list
+              (shorthand_field_initializer
+                (identifier "name")
+              )
+            )
+          )
+        )
+      )
+      (function_item
+        name: (identifier "handle")
+        parameters: (parameters
+          (self_parameter
+            (self "self")
+          )
+          (parameter
+            pattern: (identifier "msg")
+            type: (type_identifier "Message")
+          )
+        )
+        body: (block
+          (expression_statement
+            (match_expression
+              value: (identifier "msg")
+              body: (match_block
+                (match_arm
+                  pattern: (match_pattern
+                    (tuple_struct_pattern
+                      type: (scoped_identifier "Message::Text"
+                        path: (identifier "Message")
+                        name: (identifier "Text")
+                      )
+                      (identifier "text")
+                    )
+                  )
+                  value: (block
+                    (expression_statement
+                      (macro_invocation
+                        macro: (identifier "println")
+                        (token_tree
+                          (string_literal ""{}: {}""
+                            (string_content)
+                          )
+                          (self "self")
+                          (identifier "name")
+                          (identifier "text")
+                        )
+                      )
+                    )
+                  )
+                )
+                (match_arm
+                  pattern: (match_pattern
+                    (tuple_struct_pattern
+                      type: (scoped_identifier "Message::Number"
+                        path: (identifier "Message")
+                        name: (identifier "Number")
+                      )
+                      (identifier "num")
+                    )
+                  )
+                  value: (block
+                    (expression_statement
+                      (macro_invocation
+                        macro: (identifier "println")
+                        (token_tree
+                          (string_literal ""{}: Number {}""
+                            (string_content)
+                          )
+                          (self "self")
+                          (identifier "name")
+                          (identifier "num")
+                        )
+                      )
+                    )
+                  )
+                )
+                (match_arm
+                  pattern: (match_pattern
+                    (scoped_identifier "Message::Quit"
+                      path: (identifier "Message")
+                      name: (identifier "Quit")
+                    )
+                  )
+                  value: (block
+                    (expression_statement
+                      (macro_invocation
+                        macro: (identifier "println")
+                        (token_tree
+                          (string_literal ""{}: Quitting""
+                            (string_content)
+                          )
+                          (self "self")
+                          (identifier "name")
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+  (function_item
+    name: (identifier "main")
+    parameters: (parameters)
+    body: (block
+      (let_declaration
+        pattern: (identifier "handler")
+        value: (call_expression
+          function: (scoped_identifier "Handler::new"
+            path: (identifier "Handler")
+            name: (identifier "new")
+          )
+          arguments: (arguments
+            (call_expression
+              function: (field_expression
+                value: (string_literal ""Main""
+                  (string_content)
+                )
+                field: (field_identifier "to_string")
+              )
+              arguments: (arguments)
+            )
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (field_expression
+            value: (identifier "handler")
+            field: (field_identifier "handle")
+          )
+          arguments: (arguments
+            (call_expression
+              function: (scoped_identifier "Message::Text"
+                path: (identifier "Message")
+                name: (identifier "Text")
+              )
+              arguments: (arguments
+                (call_expression
+                  function: (field_expression
+                    value: (string_literal ""Hello""
+                      (string_content)
+                    )
+                    field: (field_identifier "to_string")
+                  )
+                  arguments: (arguments)
+                )
+              )
+            )
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (field_expression
+            value: (identifier "handler")
+            field: (field_identifier "handle")
+          )
+          arguments: (arguments
+            (call_expression
+              function: (scoped_identifier "Message::Number"
+                path: (identifier "Message")
+                name: (identifier "Number")
+              )
+              arguments: (arguments
+                (integer_literal "42")
+              )
+            )
+          )
+        )
+      )
+      (expression_statement
+        (call_expression
+          function: (field_expression
+            value: (identifier "handler")
+            field: (field_identifier "handle")
+          )
+          arguments: (arguments
+            (scoped_identifier "Message::Quit"
+              path: (identifier "Message")
+              name: (identifier "Quit")
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+IR:
+IntermediateRepresentation {
+    file_path: "tests/integration/language/rust/dependency_resolver/fixtures/pattern_matching.rs",
+    definitions: [
+        Definition {
+            name: "Message",
+            position: Position {
+                start_line: 1,
+                start_column: 6,
+                end_line: 1,
+                end_column: 13,
+            },
+            definition_type: EnumDefinition,
+        },
+        Definition {
+            name: "Handler",
+            position: Position {
+                start_line: 7,
+                start_column: 8,
+                end_line: 7,
+                end_column: 15,
+            },
+            definition_type: StructDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 8,
+                start_column: 5,
+                end_line: 8,
+                end_column: 9,
+            },
+            definition_type: StructFieldDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 12,
+                start_column: 8,
+                end_line: 12,
+                end_column: 11,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 12,
+                start_column: 12,
+                end_line: 12,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "handle",
+            position: Position {
+                start_line: 16,
+                start_column: 8,
+                end_line: 16,
+                end_column: 14,
+            },
+            definition_type: MethodDefinition,
+        },
+        Definition {
+            name: "msg",
+            position: Position {
+                start_line: 16,
+                start_column: 22,
+                end_line: 16,
+                end_column: 25,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "new",
+            position: Position {
+                start_line: 12,
+                start_column: 8,
+                end_line: 12,
+                end_column: 11,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "name",
+            position: Position {
+                start_line: 12,
+                start_column: 12,
+                end_line: 12,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "handle",
+            position: Position {
+                start_line: 16,
+                start_column: 8,
+                end_line: 16,
+                end_column: 14,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "msg",
+            position: Position {
+                start_line: 16,
+                start_column: 22,
+                end_line: 16,
+                end_column: 25,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "text",
+            position: Position {
+                start_line: 18,
+                start_column: 27,
+                end_line: 18,
+                end_column: 31,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "num",
+            position: Position {
+                start_line: 21,
+                start_column: 29,
+                end_line: 21,
+                end_column: 32,
+            },
+            definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "main",
+            position: Position {
+                start_line: 31,
+                start_column: 4,
+                end_line: 31,
+                end_column: 8,
+            },
+            definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "handler",
+            position: Position {
+                start_line: 32,
+                start_column: 9,
+                end_line: 32,
+                end_column: 16,
+            },
+            definition_type: VariableDefinition,
+        },
+    ],
+    dependencies: [
+        Dependency {
+            source_line: 11,
+            target_line: 7,
+            symbol: "Handler",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:11:6",
+            ),
+        },
+        Dependency {
+            source_line: 13,
+            target_line: 7,
+            symbol: "Handler",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:13:9",
+            ),
+        },
+        Dependency {
+            source_line: 13,
+            target_line: 8,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:13:19",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: TypeReference,
+            context: Some(
+                "TypeIdentifier:16:27",
+            ),
+        },
+        Dependency {
+            source_line: 17,
+            target_line: 16,
+            symbol: "msg",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:17:15",
+            ),
+        },
+        Dependency {
+            source_line: 18,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:18:13",
+            ),
+        },
+        Dependency {
+            source_line: 19,
+            target_line: 8,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:19:41",
+            ),
+        },
+        Dependency {
+            source_line: 19,
+            target_line: 18,
+            symbol: "text",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:19:47",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:21:13",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 8,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:48",
+            ),
+        },
+        Dependency {
+            source_line: 22,
+            target_line: 21,
+            symbol: "num",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:22:54",
+            ),
+        },
+        Dependency {
+            source_line: 24,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:24:13",
+            ),
+        },
+        Dependency {
+            source_line: 25,
+            target_line: 8,
+            symbol: "name",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:25:47",
+            ),
+        },
+        Dependency {
+            source_line: 32,
+            target_line: 7,
+            symbol: "Handler",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:32:19",
+            ),
+        },
+        Dependency {
+            source_line: 32,
+            target_line: 12,
+            symbol: "new",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:32:28",
+            ),
+        },
+        Dependency {
+            source_line: 34,
+            target_line: 32,
+            symbol: "handler",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:34:5",
+            ),
+        },
+        Dependency {
+            source_line: 34,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:34:20",
+            ),
+        },
+        Dependency {
+            source_line: 35,
+            target_line: 32,
+            symbol: "handler",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:35:5",
+            ),
+        },
+        Dependency {
+            source_line: 35,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:35:20",
+            ),
+        },
+        Dependency {
+            source_line: 36,
+            target_line: 32,
+            symbol: "handler",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:36:5",
+            ),
+        },
+        Dependency {
+            source_line: 36,
+            target_line: 1,
+            symbol: "Message",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:36:20",
+            ),
+        },
+    ],
+    usage: [
+        Usage {
+            name: "Text",
+            kind: Identifier,
+            position: Position {
+                start_line: 2,
+                start_column: 5,
+                end_line: 2,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 2,
+                start_column: 10,
+                end_line: 2,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "Number",
+            kind: Identifier,
+            position: Position {
+                start_line: 3,
+                start_column: 5,
+                end_line: 3,
+                end_column: 11,
+            },
+        },
+        Usage {
+            name: "Quit",
+            kind: Identifier,
+            position: Position {
+                start_line: 4,
+                start_column: 5,
+                end_line: 4,
+                end_column: 9,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 8,
+                start_column: 11,
+                end_line: 8,
+                end_column: 17,
+            },
+        },
+        Usage {
+            name: "Handler",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 11,
+                start_column: 6,
+                end_line: 11,
+                end_column: 13,
+            },
+        },
+        Usage {
+            name: "String",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 12,
+                start_column: 18,
+                end_line: 12,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "Self",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 12,
+                start_column: 29,
+                end_line: 12,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "Handler { name }",
+            kind: StructExpression,
+            position: Position {
+                start_line: 13,
+                start_column: 9,
+                end_line: 13,
+                end_column: 25,
+            },
+        },
+        Usage {
+            name: "Handler",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 13,
+                start_column: 9,
+                end_line: 13,
+                end_column: 16,
+            },
+        },
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 13,
+                start_column: 19,
+                end_line: 13,
+                end_column: 23,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: TypeIdentifier,
+            position: Position {
+                start_line: 16,
+                start_column: 27,
+                end_line: 16,
+                end_column: 34,
+            },
+        },
+        Usage {
+            name: "msg",
+            kind: Identifier,
+            position: Position {
+                start_line: 17,
+                start_column: 15,
+                end_line: 17,
+                end_column: 18,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: Identifier,
+            position: Position {
+                start_line: 18,
+                start_column: 13,
+                end_line: 18,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "Text",
+            kind: Identifier,
+            position: Position {
+                start_line: 18,
+                start_column: 22,
+                end_line: 18,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "text",
+            kind: Identifier,
+            position: Position {
+                start_line: 18,
+                start_column: 27,
+                end_line: 18,
+                end_column: 31,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 19,
+                start_column: 17,
+                end_line: 19,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 19,
+                start_column: 41,
+                end_line: 19,
+                end_column: 45,
+            },
+        },
+        Usage {
+            name: "text",
+            kind: Identifier,
+            position: Position {
+                start_line: 19,
+                start_column: 47,
+                end_line: 19,
+                end_column: 51,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 13,
+                end_line: 21,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "Number",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 22,
+                end_line: 21,
+                end_column: 28,
+            },
+        },
+        Usage {
+            name: "num",
+            kind: Identifier,
+            position: Position {
+                start_line: 21,
+                start_column: 29,
+                end_line: 21,
+                end_column: 32,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 17,
+                end_line: 22,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 48,
+                end_line: 22,
+                end_column: 52,
+            },
+        },
+        Usage {
+            name: "num",
+            kind: Identifier,
+            position: Position {
+                start_line: 22,
+                start_column: 54,
+                end_line: 22,
+                end_column: 57,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 13,
+                end_line: 24,
+                end_column: 20,
+            },
+        },
+        Usage {
+            name: "Quit",
+            kind: Identifier,
+            position: Position {
+                start_line: 24,
+                start_column: 22,
+                end_line: 24,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "println",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 17,
+                end_line: 25,
+                end_column: 24,
+            },
+        },
+        Usage {
+            name: "name",
+            kind: Identifier,
+            position: Position {
+                start_line: 25,
+                start_column: 47,
+                end_line: 25,
+                end_column: 51,
+            },
+        },
+        Usage {
+            name: "Handler::new",
+            kind: CallExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 19,
+                end_line: 32,
+                end_column: 51,
+            },
+        },
+        Usage {
+            name: "Handler",
+            kind: Identifier,
+            position: Position {
+                start_line: 32,
+                start_column: 19,
+                end_line: 32,
+                end_column: 26,
+            },
+        },
+        Usage {
+            name: "new",
+            kind: Identifier,
+            position: Position {
+                start_line: 32,
+                start_column: 28,
+                end_line: 32,
+                end_column: 31,
+            },
+        },
+        Usage {
+            name: "\"Main\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 32,
+                end_line: 32,
+                end_column: 50,
+            },
+        },
+        Usage {
+            name: "\"Main\".to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 32,
+                start_column: 32,
+                end_line: 32,
+                end_column: 48,
+            },
+        },
+        Usage {
+            name: "handler.handle",
+            kind: CallExpression,
+            position: Position {
+                start_line: 34,
+                start_column: 5,
+                end_line: 34,
+                end_column: 55,
+            },
+        },
+        Usage {
+            name: "handler.handle",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 34,
+                start_column: 5,
+                end_line: 34,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "handler",
+            kind: Identifier,
+            position: Position {
+                start_line: 34,
+                start_column: 5,
+                end_line: 34,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "Message::Text",
+            kind: CallExpression,
+            position: Position {
+                start_line: 34,
+                start_column: 20,
+                end_line: 34,
+                end_column: 54,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: Identifier,
+            position: Position {
+                start_line: 34,
+                start_column: 20,
+                end_line: 34,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "Text",
+            kind: Identifier,
+            position: Position {
+                start_line: 34,
+                start_column: 29,
+                end_line: 34,
+                end_column: 33,
+            },
+        },
+        Usage {
+            name: "\"Hello\".to_string",
+            kind: CallExpression,
+            position: Position {
+                start_line: 34,
+                start_column: 34,
+                end_line: 34,
+                end_column: 53,
+            },
+        },
+        Usage {
+            name: "\"Hello\".to_string",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 34,
+                start_column: 34,
+                end_line: 34,
+                end_column: 51,
+            },
+        },
+        Usage {
+            name: "handler.handle",
+            kind: CallExpression,
+            position: Position {
+                start_line: 35,
+                start_column: 5,
+                end_line: 35,
+                end_column: 40,
+            },
+        },
+        Usage {
+            name: "handler.handle",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 35,
+                start_column: 5,
+                end_line: 35,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "handler",
+            kind: Identifier,
+            position: Position {
+                start_line: 35,
+                start_column: 5,
+                end_line: 35,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "Message::Number",
+            kind: CallExpression,
+            position: Position {
+                start_line: 35,
+                start_column: 20,
+                end_line: 35,
+                end_column: 39,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: Identifier,
+            position: Position {
+                start_line: 35,
+                start_column: 20,
+                end_line: 35,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "Number",
+            kind: Identifier,
+            position: Position {
+                start_line: 35,
+                start_column: 29,
+                end_line: 35,
+                end_column: 35,
+            },
+        },
+        Usage {
+            name: "handler.handle",
+            kind: CallExpression,
+            position: Position {
+                start_line: 36,
+                start_column: 5,
+                end_line: 36,
+                end_column: 34,
+            },
+        },
+        Usage {
+            name: "handler.handle",
+            kind: FieldExpression,
+            position: Position {
+                start_line: 36,
+                start_column: 5,
+                end_line: 36,
+                end_column: 19,
+            },
+        },
+        Usage {
+            name: "handler",
+            kind: Identifier,
+            position: Position {
+                start_line: 36,
+                start_column: 5,
+                end_line: 36,
+                end_column: 12,
+            },
+        },
+        Usage {
+            name: "Message",
+            kind: Identifier,
+            position: Position {
+                start_line: 36,
+                start_column: 20,
+                end_line: 36,
+                end_column: 27,
+            },
+        },
+        Usage {
+            name: "Quit",
+            kind: Identifier,
+            position: Position {
+                start_line: 36,
+                start_column: 29,
+                end_line: 36,
+                end_column: 33,
+            },
+        },
+    ],
+    analysis_metadata: AnalysisMetadata {
+        language: "Rust",
+        total_lines: 37,
+        analysis_timestamp: "now",
+        lintric_version: "0.1.0",
+    },
+}
