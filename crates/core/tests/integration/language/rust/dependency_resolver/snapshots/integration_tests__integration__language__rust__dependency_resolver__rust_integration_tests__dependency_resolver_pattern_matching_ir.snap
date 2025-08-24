@@ -456,7 +456,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 13,
-            target_line: 8,
+            target_line: 12,
             symbol: "name",
             dependency_type: VariableUse,
             context: Some(
@@ -494,9 +494,9 @@ IntermediateRepresentation {
             source_line: 19,
             target_line: 8,
             symbol: "name",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:19:41",
+                "FieldExpression:19:41",
             ),
         },
         Dependency {
@@ -521,9 +521,9 @@ IntermediateRepresentation {
             source_line: 22,
             target_line: 8,
             symbol: "name",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:22:48",
+                "FieldExpression:22:48",
             ),
         },
         Dependency {
@@ -548,9 +548,9 @@ IntermediateRepresentation {
             source_line: 25,
             target_line: 8,
             symbol: "name",
-            dependency_type: VariableUse,
+            dependency_type: StructFieldAccess,
             context: Some(
-                "Identifier:25:47",
+                "FieldExpression:25:47",
             ),
         },
         Dependency {
@@ -573,6 +573,15 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 34,
+            target_line: 16,
+            symbol: "handle",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:34:5",
+            ),
+        },
+        Dependency {
+            source_line: 34,
             target_line: 32,
             symbol: "handler",
             dependency_type: VariableUse,
@@ -591,6 +600,15 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 35,
+            target_line: 16,
+            symbol: "handle",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:35:5",
+            ),
+        },
+        Dependency {
+            source_line: 35,
             target_line: 32,
             symbol: "handler",
             dependency_type: VariableUse,
@@ -605,6 +623,15 @@ IntermediateRepresentation {
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:35:20",
+            ),
+        },
+        Dependency {
+            source_line: 36,
+            target_line: 16,
+            symbol: "handle",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:36:5",
             ),
         },
         Dependency {
@@ -799,7 +826,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "name",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 19,
                 start_column: 41,
@@ -859,7 +886,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "name",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 22,
                 start_column: 48,
@@ -909,7 +936,7 @@ IntermediateRepresentation {
         },
         Usage {
             name: "name",
-            kind: Identifier,
+            kind: FieldExpression,
             position: Position {
                 start_line: 25,
                 start_column: 47,
@@ -958,7 +985,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "\"Main\".to_string",
+            name: "to_string",
             kind: FieldExpression,
             position: Position {
                 start_line: 32,
@@ -978,7 +1005,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "handler.handle",
+            name: "handle",
             kind: FieldExpression,
             position: Position {
                 start_line: 34,
@@ -1038,7 +1065,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "\"Hello\".to_string",
+            name: "to_string",
             kind: FieldExpression,
             position: Position {
                 start_line: 34,
@@ -1058,7 +1085,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "handler.handle",
+            name: "handle",
             kind: FieldExpression,
             position: Position {
                 start_line: 35,
@@ -1118,7 +1145,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "handler.handle",
+            name: "handle",
             kind: FieldExpression,
             position: Position {
                 start_line: 36,

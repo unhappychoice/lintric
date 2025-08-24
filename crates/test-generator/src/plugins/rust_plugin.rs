@@ -612,7 +612,10 @@ impl RustPlugin {
             }
             "_pattern" => {
                 let binding = context.get_unique_name("x");
-                Some(format!("Some({})", binding))
+                Some(format!(
+                    "match option {{\n    Some({}) => x,\n    None => 0,\n}}",
+                    binding
+                ))
             }
             "_literal_pattern" => {
                 // Literal patterns are used in match expressions

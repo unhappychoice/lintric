@@ -303,15 +303,6 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency {
-            source_line: 1,
-            target_line: 13,
-            symbol: "future",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:1:10",
-            ),
-        },
-        Dependency {
             source_line: 8,
             target_line: 3,
             symbol: "fetch_data",
@@ -367,7 +358,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 23,
-            target_line: 8,
+            target_line: 22,
             symbol: "data",
             dependency_type: VariableUse,
             context: Some(
@@ -457,7 +448,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "\"data\".to_string",
+            name: "to_string",
             kind: FieldExpression,
             position: Position {
                 start_line: 4,
@@ -617,7 +608,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "fetch_data().await.unwrap",
+            name: "unwrap",
             kind: FieldExpression,
             position: Position {
                 start_line: 22,

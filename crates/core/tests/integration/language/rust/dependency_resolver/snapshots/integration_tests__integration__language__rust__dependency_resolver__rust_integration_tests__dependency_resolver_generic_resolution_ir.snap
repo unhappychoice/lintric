@@ -378,7 +378,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 7,
-            target_line: 2,
+            target_line: 6,
             symbol: "item",
             dependency_type: VariableUse,
             context: Some(
@@ -400,7 +400,7 @@ IntermediateRepresentation {
             symbol: "item",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:11:10",
             ),
         },
         Dependency {
@@ -432,7 +432,16 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 16,
-            target_line: 20,
+            target_line: 10,
+            symbol: "get",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:16:5",
+            ),
+        },
+        Dependency {
+            source_line: 16,
+            target_line: 15,
             symbol: "container",
             dependency_type: VariableUse,
             context: Some(
@@ -577,7 +586,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "self.item",
+            name: "item",
             kind: FieldExpression,
             position: Position {
                 start_line: 11,
@@ -627,7 +636,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "container.get().clone",
+            name: "clone",
             kind: FieldExpression,
             position: Position {
                 start_line: 16,
@@ -647,7 +656,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "container.get",
+            name: "get",
             kind: FieldExpression,
             position: Position {
                 start_line: 16,

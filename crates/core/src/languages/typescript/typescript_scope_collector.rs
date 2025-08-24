@@ -1,6 +1,6 @@
 use tree_sitter::Node;
 
-use crate::models::{Position, ScopeId, ScopeTree, ScopeType, SymbolTable};
+use crate::models::{Accessibility, Position, ScopeId, ScopeTree, ScopeType, SymbolTable};
 use crate::scope_collector::ScopeCollector as ScopeCollectorTrait;
 
 pub struct TypeScriptScopeCollector {
@@ -125,12 +125,30 @@ impl ScopeCollectorTrait for TypeScriptScopeCollector {
         source_code: &str,
         root_node: Node,
         _usage_nodes: &[crate::models::Usage],
-        _definitions: &[crate::models::Definition],
+        definitions: &[crate::models::Definition],
     ) -> Result<SymbolTable, String> {
         let mut new_self = TypeScriptScopeCollector::new();
         let mut symbol_table = SymbolTable::new();
         new_self.visit_node(root_node, source_code)?;
         symbol_table.scopes = new_self.scope_tree.clone();
+
+        // Add definitions from definition collector (like imports) to symbol table
+        for definition in definitions {
+            // Find the appropriate scope for this definition
+            let scope_id = symbol_table
+                .scopes
+                .find_scope_at_position(&definition.position)
+                .unwrap_or_default();
+
+            symbol_table.add_symbol(
+                definition.name.clone(),
+                definition.clone(),
+                scope_id,
+                Accessibility::ScopeLocal,
+                false,
+            );
+        }
+
         Ok(symbol_table)
     }
 }

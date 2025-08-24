@@ -18,11 +18,11 @@ expression: "serde_json :: to_string_pretty(& result).unwrap()"
     {
       "line_number": 8,
       "total_dependencies": 1,
-      "dependency_distance_cost": 0.14705882352941177,
+      "dependency_distance_cost": 0.029411764705882353,
       "depth": 1,
       "transitive_dependencies": 1,
       "dependent_lines": [
-        3
+        7
       ]
     },
     {
@@ -46,5 +46,5 @@ expression: "serde_json :: to_string_pretty(& result).unwrap()"
       ]
     }
   ],
-  "overall_complexity_score": 8.838235294117649
+  "overall_complexity_score": 8.826470588235296
 }

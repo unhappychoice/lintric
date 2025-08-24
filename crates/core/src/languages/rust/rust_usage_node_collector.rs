@@ -50,6 +50,9 @@ impl UsageCollector for RustUsageNodeCollector {
                     || self.is_identifier_in_call_expression(node)
                 {
                     None
+                } else if self.is_identifier_part_of_field_access(node, source_code) {
+                    // Check if this identifier is part of a field access pattern like "self.field"
+                    Some(UsageKind::FieldExpression)
                 } else {
                     Some(UsageKind::Identifier)
                 }
@@ -69,7 +72,10 @@ impl UsageCollector for RustUsageNodeCollector {
                 // Use special handling for call expressions to extract function name
                 return Some(Usage::new_call_expression(&node, source_code));
             }
-            "field_expression" => Some(UsageKind::FieldExpression),
+            "field_expression" => {
+                // Use special handling for field expressions to extract field name
+                return Some(Usage::new_field_expression(&node, source_code));
+            }
             "struct_expression" => Some(UsageKind::StructExpression),
             "metavariable" => Some(UsageKind::Metavariable),
             _ => None,
@@ -94,6 +100,36 @@ impl RustUsageNodeCollector {
                 _ => current = parent.parent(),
             }
         }
+        false
+    }
+
+    fn is_identifier_part_of_field_access(&self, node: Node, source_code: &str) -> bool {
+        // Get the line containing this identifier
+        let start_pos = node.start_position();
+        let lines: Vec<&str> = source_code.lines().collect();
+        if start_pos.row < lines.len() {
+            let line = lines[start_pos.row];
+            let col = start_pos.column;
+
+            // Check if there's "self." before this identifier on the same line
+            if col >= 5 && line.len() > col {
+                let start_offset = col.saturating_sub(5);
+                if let Some(preceding) = line.get(start_offset..col) {
+                    if preceding == "self." {
+                        return true;
+                    }
+                }
+            }
+
+            // Check if there's any identifier followed by dot before this identifier
+            if col >= 2 && line.len() > col {
+                let preceding_char = line.chars().nth(col - 1);
+                if preceding_char == Some('.') {
+                    return true;
+                }
+            }
+        }
+
         false
     }
 }

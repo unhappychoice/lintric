@@ -201,21 +201,81 @@ impl RustDependencyResolver {
 
         // Use the module_resolver for qualified resolution
 
-        // For qualified identifiers like `mm::MyStruct`, prefer ImportDefinition over local variables
-        if usage.name == "MyStruct" && usage.position.start_column > 16 {
-            let import_candidates: Vec<&ResolutionCandidate> = candidates
-                .iter()
-                .filter(|c| {
-                    matches!(
-                        c.definition.definition_type,
-                        crate::models::DefinitionType::ImportDefinition
-                    )
-                })
-                .collect();
+        // Always prefer original definitions over ImportDefinitions for better dependency tracking
 
-            if !import_candidates.is_empty() {
-                return Some(import_candidates[0]);
-            }
+        // For module references, always prefer ModuleDefinition
+        let module_candidates: Vec<&ResolutionCandidate> = candidates
+            .iter()
+            .filter(|c| {
+                matches!(
+                    c.definition.definition_type,
+                    crate::models::DefinitionType::ModuleDefinition
+                )
+            })
+            .collect();
+
+        if !module_candidates.is_empty() {
+            return Some(module_candidates[0]);
+        }
+
+        // For function references, prefer FunctionDefinition over ImportDefinition
+        let function_candidates: Vec<&ResolutionCandidate> = candidates
+            .iter()
+            .filter(|c| {
+                matches!(
+                    c.definition.definition_type,
+                    crate::models::DefinitionType::FunctionDefinition
+                )
+            })
+            .collect();
+
+        if !function_candidates.is_empty() {
+            return Some(function_candidates[0]);
+        }
+
+        // For constants, prefer ConstDefinition over ImportDefinition
+        let const_candidates: Vec<&ResolutionCandidate> = candidates
+            .iter()
+            .filter(|c| {
+                matches!(
+                    c.definition.definition_type,
+                    crate::models::DefinitionType::ConstDefinition
+                )
+            })
+            .collect();
+
+        if !const_candidates.is_empty() {
+            return Some(const_candidates[0]);
+        }
+
+        // For structs, prefer StructDefinition over ImportDefinition
+        let struct_candidates: Vec<&ResolutionCandidate> = candidates
+            .iter()
+            .filter(|c| {
+                matches!(
+                    c.definition.definition_type,
+                    crate::models::DefinitionType::StructDefinition
+                )
+            })
+            .collect();
+
+        if !struct_candidates.is_empty() {
+            return Some(struct_candidates[0]);
+        }
+
+        // Only fall back to ImportDefinition if no original definition is found
+        let import_candidates: Vec<&ResolutionCandidate> = candidates
+            .iter()
+            .filter(|c| {
+                matches!(
+                    c.definition.definition_type,
+                    crate::models::DefinitionType::ImportDefinition
+                )
+            })
+            .collect();
+
+        if !import_candidates.is_empty() {
+            return Some(import_candidates[0]);
         }
 
         // For variable definitions, prioritize same function scope
@@ -346,30 +406,40 @@ impl RustDependencyResolver {
         usage.kind == UsageKind::CallExpression && usage.name.contains('.')
     }
 
-    /// Filter dependencies by module visibility rules
-    fn filter_by_module_visibility(
-        &self,
-        _source_code: &str,
-        _root_node: Node,
-        dependencies: Vec<Dependency>,
-        _definitions: &[Definition],
-    ) -> Result<Vec<Dependency>, String> {
-        // For now, return all dependencies without filtering
-        // TODO: Implement actual module visibility checking
-        Ok(dependencies)
-    }
-
     // Helper methods for Rust-specific dependency resolution
     fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
+        // ImportDefinitions and ModuleDefinitions are always accessible from any scope
+        if matches!(
+            definition.definition_type,
+            crate::models::DefinitionType::ImportDefinition
+                | crate::models::DefinitionType::ModuleDefinition
+        ) {
+            return true;
+        }
+
+        // ConstDefinitions are also accessible from any scope (like module-level constants)
+        if matches!(
+            definition.definition_type,
+            crate::models::DefinitionType::ConstDefinition
+        ) {
+            return true;
+        }
+
+        // StructFieldDefinitions are accessible from any scope within the same module
+        if matches!(
+            definition.definition_type,
+            crate::models::DefinitionType::StructFieldDefinition
+        ) {
+            return true;
+        }
+
         // Check for hoisting rules first
         if self.is_hoisted_basic(definition) {
             return true;
         }
 
         // For non-hoisted definitions, check Rust-specific scope rules
-        if !self.is_hoisted_basic(definition)
-            && !ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, definition)
-        {
+        if !ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, definition) {
             return false;
         }
 
@@ -381,6 +451,7 @@ impl RustDependencyResolver {
         matches!(
             definition.definition_type,
             DefinitionType::FunctionDefinition
+                | DefinitionType::MethodDefinition
                 | DefinitionType::StructDefinition
                 | DefinitionType::EnumDefinition
                 | DefinitionType::TypeDefinition
@@ -408,6 +479,105 @@ impl RustDependencyResolver {
         matching_definitions.first().copied()
     }
 
+    /// Select the closest type parameter definition for type identifiers
+    fn select_closest_type_parameter<'a>(
+        &self,
+        usage_node: &Usage,
+        matching_definitions: &[&'a Definition],
+    ) -> Option<&'a Definition> {
+        // Filter type definitions only
+        let type_defs: Vec<&Definition> = matching_definitions
+            .iter()
+            .filter(|def| {
+                matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::TypeDefinition
+                )
+            })
+            .copied()
+            .collect();
+
+        if type_defs.is_empty() {
+            return None;
+        }
+
+        // Find the closest preceding type parameter definition in the same scope chain
+        let usage_scope = self
+            .symbol_table
+            .scopes
+            .find_scope_at_position(&usage_node.position);
+
+        if let Some(usage_scope_id) = usage_scope {
+            // Look for type parameters in the current and parent scopes
+            let mut best_def: Option<&Definition> = None;
+            let mut best_distance = usize::MAX;
+
+            for &def in &type_defs {
+                // Allow same line definitions (e.g., T in `fn process<T>(...) -> T`)
+                if def.position.start_line <= usage_node.position.start_line {
+                    let distance = if def.position.start_line == usage_node.position.start_line {
+                        // Same line: prefer definitions that come before the usage column-wise
+                        if def.position.start_column < usage_node.position.start_column {
+                            0 // Highest priority for same-line preceding definitions
+                        } else {
+                            usize::MAX // Definitions after usage on same line are invalid
+                        }
+                    } else if def.position.start_line < usage_node.position.start_line {
+                        usage_node.position.start_line - def.position.start_line
+                    } else {
+                        usize::MAX // Future definitions are invalid
+                    };
+
+                    // Check if this definition is in an accessible scope
+                    if let Some(def_scope) = self
+                        .symbol_table
+                        .scopes
+                        .find_scope_at_position(&def.position)
+                    {
+                        if (ScopeUtilities::is_scope_accessible(
+                            &self.symbol_table,
+                            usage_scope_id,
+                            def_scope,
+                        ) || usage_scope_id == def_scope)
+                            && distance < best_distance
+                        {
+                            best_def = Some(def);
+                            best_distance = distance;
+                        }
+                    }
+                }
+            }
+
+            best_def
+        } else {
+            // Fallback to closest definition
+            type_defs
+                .iter()
+                .filter(|def| {
+                    def.position.start_line < usage_node.position.start_line
+                        || (def.position.start_line == usage_node.position.start_line
+                            && def.position.start_column < usage_node.position.start_column)
+                })
+                .max_by_key(|def| (def.position.start_line, def.position.start_column))
+                .copied()
+        }
+    }
+
+    /// Check if a definition is actually a usage (e.g., variable use in a let statement)
+    fn is_usage_not_definition(&self, definition: &Definition) -> bool {
+        // Check if this "definition" is actually a usage by looking at context
+        // Variable definitions in let statements should be on the left side
+        // Usage in expressions should not be considered as valid target definitions
+        matches!(
+            definition.definition_type,
+            crate::models::DefinitionType::VariableDefinition
+        ) && {
+            // Additional heuristic: if this is in a let statement or assignment context,
+            // but positioned on the right side (value), it's likely a usage, not definition
+            false // For now, allow all variable definitions
+        }
+    }
+
     /// Determine if a dependency is valid according to Rust semantics
     fn is_valid_dependency(&self, usage: &Usage, definition: &Definition) -> bool {
         // Basic validation - ensure names match
@@ -422,6 +592,7 @@ impl RustDependencyResolver {
                 ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, definition)
             }
             crate::models::DefinitionType::FunctionDefinition
+            | crate::models::DefinitionType::MethodDefinition
             | crate::models::DefinitionType::StructDefinition
             | crate::models::DefinitionType::EnumDefinition
             | crate::models::DefinitionType::TypeDefinition => {
@@ -480,60 +651,13 @@ impl DependencyResolverTrait for RustDependencyResolver {
         usage_nodes: &[Usage],
         definitions: &[Definition],
     ) -> Result<Vec<Dependency>, String> {
-        // Try advanced resolution first
-        let mut dependencies = match self.resolve_advanced_dependencies(
-            source_code,
-            root_node,
-            usage_nodes,
-            definitions,
-        ) {
-            Ok(deps) => deps,
-            Err(_) => {
-                // Fallback to basic resolution
-                self.resolve_basic_dependencies(source_code, root_node, usage_nodes, definitions)?
-            }
-        };
+        // Use basic resolution with fixed priorities
+        let mut dependencies =
+            self.resolve_basic_dependencies(source_code, root_node, usage_nodes, definitions)?;
 
-        // Add import definition dependencies
+        // Add import definition dependencies (ImportDefinition -> original definition)
         let import_deps = self.resolve_import_dependencies(definitions);
-        for import_dep in import_deps {
-            // Skip duplicates for module references
-            let target_definition = definitions.iter().find(|def| {
-                def.position.start_line == import_dep.target_line && def.name == import_dep.symbol
-            });
-
-            let should_skip = if let Some(target_def) = target_definition {
-                matches!(
-                    target_def.definition_type,
-                    crate::models::DefinitionType::ModuleDefinition
-                ) && dependencies.iter().any(|dep| {
-                    dep.source_line == import_dep.source_line
-                        && dep.target_line == import_dep.target_line
-                        && dep.symbol == import_dep.symbol
-                        && if let (Some(usage_ctx), Some(import_ctx)) =
-                            (&dep.context, &import_dep.context)
-                        {
-                            if usage_ctx.starts_with("Identifier:")
-                                && import_ctx.starts_with("ImportDefinition:")
-                            {
-                                let usage_pos = usage_ctx.replace("Identifier:", "");
-                                let import_pos = import_ctx.replace("ImportDefinition:", "");
-                                usage_pos == import_pos
-                            } else {
-                                false
-                            }
-                        } else {
-                            false
-                        }
-                })
-            } else {
-                false
-            };
-
-            if !should_skip {
-                dependencies.push(import_dep);
-            }
-        }
+        dependencies.extend(import_deps);
 
         Ok(dependencies)
     }
@@ -665,6 +789,10 @@ impl DependencyResolverTrait for RustDependencyResolver {
             .into_iter()
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.is_valid_dependency(usage_node, def))
+            .filter(|def| {
+                // Exclude usage nodes (non-definition) from being target of dependencies
+                !self.is_usage_not_definition(def)
+            })
             .collect();
 
         // Apply Rust-specific preference logic
@@ -679,15 +807,62 @@ impl DependencyResolverTrait for RustDependencyResolver {
             } else {
                 self.select_preferred_definition_rust_aware(usage_node, &matching_definitions)
             }
+        } else if usage_node.kind == crate::models::UsageKind::TypeIdentifier {
+            // For type identifiers, prefer the most local type parameter definition
+            self.select_closest_type_parameter(usage_node, &matching_definitions)
+                .or_else(|| {
+                    // Fallback to other type definitions
+                    if let Some(import_def) = matching_definitions.iter().find(|def| {
+                        matches!(
+                            def.definition_type,
+                            crate::models::DefinitionType::ImportDefinition
+                        )
+                    }) {
+                        Some(*import_def)
+                    } else {
+                        self.select_preferred_definition_rust_aware(
+                            usage_node,
+                            &matching_definitions,
+                        )
+                    }
+                })
         } else {
-            // For other symbols, prefer ImportDefinition when available
-            if let Some(import_def) = matching_definitions.iter().find(|def| {
+            // Use basic selection for all other cases - prefer original definitions
+            if let Some(module_def) = matching_definitions.iter().find(|def| {
                 matches!(
                     def.definition_type,
-                    crate::models::DefinitionType::ImportDefinition
+                    crate::models::DefinitionType::ModuleDefinition
                 )
             }) {
-                Some(*import_def)
+                Some(*module_def)
+            } else if let Some(function_def) = matching_definitions.iter().find(|def| {
+                matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::FunctionDefinition
+                )
+            }) {
+                Some(*function_def)
+            } else if let Some(const_def) = matching_definitions.iter().find(|def| {
+                matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::ConstDefinition
+                )
+            }) {
+                Some(*const_def)
+            } else if let Some(method_def) = matching_definitions.iter().find(|def| {
+                matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::MethodDefinition
+                )
+            }) {
+                Some(*method_def)
+            } else if let Some(struct_def) = matching_definitions.iter().find(|def| {
+                matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::StructDefinition
+                )
+            }) {
+                Some(*struct_def)
             } else {
                 self.select_preferred_definition_rust_aware(usage_node, &matching_definitions)
             }
@@ -714,29 +889,6 @@ impl DependencyResolverTrait for RustDependencyResolver {
 }
 
 impl RustDependencyResolver {
-    /// Advanced resolution using all comprehensive features
-    fn resolve_advanced_dependencies(
-        &self,
-        source_code: &str,
-        root_node: Node,
-        usage_nodes: &[Usage],
-        definitions: &[Definition],
-    ) -> Result<Vec<Dependency>, String> {
-        let mut all_dependencies = Vec::new();
-
-        for usage_node in usage_nodes {
-            let mut deps =
-                self.resolve_single_dependency(source_code, root_node, usage_node, definitions);
-
-            // Filter by module visibility
-            deps = self.filter_by_module_visibility(source_code, root_node, deps, definitions)?;
-
-            all_dependencies.append(&mut deps);
-        }
-
-        Ok(all_dependencies)
-    }
-
     /// Basic fallback resolution for cases where advanced resolution fails
     fn resolve_basic_dependencies(
         &self,
@@ -795,31 +947,173 @@ impl RustDependencyResolver {
             return None;
         }
 
-        let usage_line = usage.position.start_line;
+        // Apply context-aware priority logic based on usage type
 
-        let mut best_def: &Definition = matching_definitions[0];
-        let mut best_distance = if best_def.position.start_line <= usage_line {
-            usage_line - best_def.position.start_line
-        } else {
-            usize::MAX
-        };
-
-        for &def in &matching_definitions[1..] {
-            let distance = if def.position.start_line <= usage_line {
-                usage_line - def.position.start_line
-            } else {
-                usize::MAX
-            };
-
-            if distance < best_distance
-                || (distance == best_distance
-                    && def.position.start_line > best_def.position.start_line)
-            {
-                best_def = def;
-                best_distance = distance;
+        // For main function usages, prefer ImportDefinition (imported symbols) FIRST
+        // Check if this usage is within main function and there's an import available
+        if self.is_usage_in_main_function(usage) {
+            for &def in &matching_definitions {
+                if matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::ImportDefinition
+                ) {
+                    return Some(def);
+                }
             }
         }
 
-        Some(best_def)
+        // For method calls (CallExpression), prioritize methods over fields
+        if matches!(usage.kind, crate::models::UsageKind::CallExpression) {
+            // Prefer MethodDefinition and FunctionDefinition for method calls
+            for &def in &matching_definitions {
+                if matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::MethodDefinition
+                        | crate::models::DefinitionType::FunctionDefinition
+                ) {
+                    return Some(def);
+                }
+            }
+        }
+
+        // For field expressions, first check if these are actually method calls
+        // In case of StructFieldAccess dependency_type, prefer methods over fields (due to potential misclassification)
+        if matches!(usage.kind, crate::models::UsageKind::FieldExpression) {
+            // First try to find MethodDefinition in impl blocks (more specific)
+            for &def in &matching_definitions {
+                if matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::MethodDefinition
+                ) {
+                    return Some(def);
+                }
+            }
+            // Then try StructFieldDefinition for actual field access
+            for &def in &matching_definitions {
+                if matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::StructFieldDefinition
+                ) {
+                    return Some(def);
+                }
+            }
+        }
+
+        // General priority for other cases (import statements themselves)
+        // For module references, prefer ModuleDefinition
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::ModuleDefinition
+            ) {
+                return Some(def);
+            }
+        }
+
+        // For function references, prefer FunctionDefinition
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::FunctionDefinition
+            ) {
+                return Some(def);
+            }
+        }
+
+        // For methods, prefer MethodDefinition
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::MethodDefinition
+            ) {
+                return Some(def);
+            }
+        }
+
+        // For constants, prefer ConstDefinition
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::ConstDefinition
+            ) {
+                return Some(def);
+            }
+        }
+
+        // For structs, prefer StructDefinition
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::StructDefinition
+            ) {
+                return Some(def);
+            }
+        }
+
+        // First, try to find variable definitions in the same function scope
+        let mut same_scope_defs = Vec::new();
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::VariableDefinition
+            ) && ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, def)
+            {
+                // Among same-scope definitions, only consider those defined before the usage
+                if def.position.start_line < usage.position.start_line
+                    || (def.position.start_line == usage.position.start_line
+                        && def.position.start_column < usage.position.start_column)
+                {
+                    same_scope_defs.push(def);
+                }
+            }
+        }
+
+        if !same_scope_defs.is_empty() {
+            // Return the closest preceding definition in the same scope
+            same_scope_defs.sort_by_key(|def| {
+                (
+                    std::cmp::Reverse(def.position.start_line),
+                    std::cmp::Reverse(def.position.start_column),
+                )
+            });
+            return same_scope_defs.first().copied();
+        }
+
+        // Only fall back to ImportDefinition if no original definition is found
+        for &def in &matching_definitions {
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::ImportDefinition
+            ) {
+                return Some(def);
+            }
+        }
+
+        // As absolute fallback, return any remaining definition
+        matching_definitions.first().copied()
+    }
+
+    fn is_usage_in_main_function(&self, usage: &Usage) -> bool {
+        // Check if usage is within main function scope
+        // Look for main function definition and check if usage is within its range
+        for scope in self.symbol_table.scopes.scopes.values() {
+            // Check if this scope contains main function
+            if let Some(main_defs) = scope.symbols.get("main") {
+                if main_defs.iter().any(|def| {
+                    matches!(
+                        def.definition_type,
+                        crate::models::DefinitionType::FunctionDefinition
+                    )
+                }) {
+                    // Check if usage is within this scope's range
+                    if usage.position.start_line >= scope.start_position.start_line
+                        && usage.position.start_line <= scope.end_position.start_line
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        false
     }
 }

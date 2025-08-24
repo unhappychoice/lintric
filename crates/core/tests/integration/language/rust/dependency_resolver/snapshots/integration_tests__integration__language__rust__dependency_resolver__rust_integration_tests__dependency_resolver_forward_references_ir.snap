@@ -286,7 +286,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 21,
-            target_line: 12,
+            target_line: 20,
             symbol: "n",
             dependency_type: VariableUse,
             context: Some(
@@ -304,7 +304,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 24,
-            target_line: 12,
+            target_line: 20,
             symbol: "n",
             dependency_type: VariableUse,
             context: Some(

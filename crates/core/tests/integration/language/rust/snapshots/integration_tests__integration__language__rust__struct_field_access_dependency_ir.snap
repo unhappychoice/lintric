@@ -136,7 +136,7 @@ IntermediateRepresentation {
             symbol: "x",
             dependency_type: StructFieldAccess,
             context: Some(
-                "field_access",
+                "FieldExpression:4:15",
             ),
         },
         Dependency {
@@ -171,7 +171,7 @@ IntermediateRepresentation {
             },
         },
         Usage {
-            name: "p.x",
+            name: "x",
             kind: FieldExpression,
             position: Position {
                 start_line: 4,

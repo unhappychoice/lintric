@@ -333,7 +333,7 @@ impl ScopeUtilities {
         usage: &Usage,
         definition: &Definition,
     ) -> bool {
-        // Find the function scopes for both the usage and definition
+        // Find the enclosing function scope for both usage and definition
         let usage_function_scope =
             Self::find_enclosing_function_scope(symbol_table, &usage.position);
         let definition_function_scope =
@@ -344,6 +344,33 @@ impl ScopeUtilities {
             (None, None) => true, // Both are at module level
             _ => false,           // One is in a function, the other isn't
         }
+    }
+
+    /// Check if usage_scope can access definition_scope
+    pub fn is_scope_accessible(
+        symbol_table: &SymbolTable,
+        usage_scope: ScopeId,
+        def_scope: ScopeId,
+    ) -> bool {
+        // Same scope is always accessible
+        if usage_scope == def_scope {
+            return true;
+        }
+
+        // Check if def_scope is an ancestor of usage_scope
+        let mut current_scope = usage_scope;
+        while let Some(scope) = symbol_table.scopes.get_scope(current_scope) {
+            if let Some(parent_id) = scope.parent {
+                if parent_id == def_scope {
+                    return true;
+                }
+                current_scope = parent_id;
+            } else {
+                break;
+            }
+        }
+
+        false
     }
 
     fn find_enclosing_function_scope(

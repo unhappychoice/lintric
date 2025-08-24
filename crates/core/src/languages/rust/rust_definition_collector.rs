@@ -433,7 +433,7 @@ impl<'a> RustDefinitionCollector<'a> {
                 let mut inner_cursor = child.walk();
                 for declaration in child.children(&mut inner_cursor) {
                     if declaration.kind() == "function_item" {
-                        // Collect as method definition instead of function definition
+                        // Collect as method definition only, not function definition
                         definitions.extend(Definition::from_naming_node(
                             &declaration,
                             self.source_code,

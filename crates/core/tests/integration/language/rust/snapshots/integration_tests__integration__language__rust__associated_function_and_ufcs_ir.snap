@@ -257,15 +257,6 @@ IntermediateRepresentation {
             ),
         },
         Dependency {
-            source_line: 10,
-            target_line: 16,
-            symbol: "my_function",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:10:8",
-            ),
-        },
-        Dependency {
             source_line: 15,
             target_line: 9,
             symbol: "MyTrait",
@@ -312,7 +303,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 23,
-            target_line: 16,
+            target_line: 10,
             symbol: "my_function",
             dependency_type: VariableUse,
             context: Some(
@@ -339,7 +330,7 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 24,
-            target_line: 16,
+            target_line: 10,
             symbol: "my_function",
             dependency_type: VariableUse,
             context: Some(
