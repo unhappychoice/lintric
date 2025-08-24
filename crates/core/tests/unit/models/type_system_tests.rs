@@ -1,5 +1,4 @@
 use lintric_core::models::{Type, InferenceContext};
-use std::collections::HashMap;
 
 #[test]
 fn test_type_creation() {

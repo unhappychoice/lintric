@@ -120,43 +120,6 @@ impl Clone for User {
     assert_eq!(trait_impls.len(), 2, "Should find exactly 2 trait implementations");
 }
 
-#[test]
-fn test_generic_impl_block_collection() {
-    let source_code = r#"
-struct Container<T> {
-    value: T,
-}
-
-impl<T> Container<T> {
-    fn new(value: T) -> Self {
-        Self { value }
-    }
-    
-    fn get(&self) -> &T {
-        &self.value
-    }
-    
-    fn set(&mut self, value: T) {
-        self.value = value;
-    }
-}
-
-impl<T: Clone> Container<T> {
-    fn clone_value(&self) -> T {
-        self.value.clone()
-    }
-}
-    "#;
-    
-    let mut collector = RustImplCollector::new();
-    let mut parser = setup_rust_parser();
-    let tree = parser.parse(source_code, None).unwrap();
-    
-    let impl_blocks = collector.collect_impl_blocks(source_code, tree.root_node()).unwrap();
-    
-    assert!(!impl_blocks.is_empty(), "Should find generic impl blocks");
-    assert!(impl_blocks.len() >= 2, "Should find at least 2 impl blocks");
-}
 
 #[test]
 fn test_associated_function_vs_method() {

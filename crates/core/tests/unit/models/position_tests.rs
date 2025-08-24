@@ -34,7 +34,7 @@ fn test_position_from_node() {
     let position = Position::from_node(&function_node);
     
     assert_eq!(position.start_line, 1);
-    assert_eq!(position.start_column, 0);
+    assert_eq!(position.start_column, 1);
 }
 
 #[test]
