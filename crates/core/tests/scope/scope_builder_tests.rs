@@ -1,8 +1,10 @@
 use tree_sitter::{Language, Parser};
 
 use lintric_core::{
-    dependency_resolver::ScopeBuilder,
+    languages::rust::rust_scope_collector::RustScopeCollector,
+    languages::typescript::typescript_scope_collector::TypeScriptScopeCollector,
     models::{Position, ScopeType},
+    scope_collector::ScopeCollector,
 };
 
 use super::fixtures;
@@ -20,10 +22,10 @@ fn test_rust_nested_scope_building() {
     }
 
     let tree = parser.parse(fixtures::BASIC_SCOPE_TEST_RUST, None).unwrap();
-    let mut builder = ScopeBuilder::new("rust".to_string());
+    let mut builder = RustScopeCollector::new();
 
     let scope_tree = builder
-        .build_from_ast(tree.root_node(), fixtures::BASIC_SCOPE_TEST_RUST)
+        .scopes(tree.root_node(), fixtures::BASIC_SCOPE_TEST_RUST)
         .unwrap();
 
     // Should have global scope
@@ -64,10 +66,10 @@ fn test_typescript_class_interface_scope_building() {
     let tree = parser
         .parse(fixtures::COMPLEX_TYPESCRIPT_SCOPE, None)
         .unwrap();
-    let mut builder = ScopeBuilder::new("typescript".to_string());
+    let mut builder = TypeScriptScopeCollector::new();
 
     let scope_tree = builder
-        .build_from_ast(tree.root_node(), fixtures::COMPLEX_TYPESCRIPT_SCOPE)
+        .scopes(tree.root_node(), fixtures::COMPLEX_TYPESCRIPT_SCOPE)
         .unwrap();
 
     // Should have class scopes
@@ -103,10 +105,10 @@ fn test_rust_impl_trait_scope_building() {
     }
 
     let tree = parser.parse(fixtures::RUST_IMPL_TRAIT_SCOPE, None).unwrap();
-    let mut builder = ScopeBuilder::new("rust".to_string());
+    let mut builder = RustScopeCollector::new();
 
     let scope_tree = builder
-        .build_from_ast(tree.root_node(), fixtures::RUST_IMPL_TRAIT_SCOPE)
+        .scopes(tree.root_node(), fixtures::RUST_IMPL_TRAIT_SCOPE)
         .unwrap();
 
     // Should have impl scopes
@@ -136,7 +138,7 @@ fn test_rust_impl_trait_scope_building() {
 
 #[test]
 fn test_scope_position_detection_detailed() {
-    let mut builder = ScopeBuilder::new("rust".to_string());
+    let mut builder = RustScopeCollector::new();
     let scope_tree = &mut builder.scope_tree;
 
     let func_scope_id = scope_tree.create_scope(
