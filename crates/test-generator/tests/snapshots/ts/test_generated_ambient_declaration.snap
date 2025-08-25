@@ -23,16 +23,7 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "value3",
-            position: Position {
-                start_line: 1,
-                start_column: 15,
-                end_line: 1,
-                end_column: 21,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:15 to 1:21 }, name: "value3", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

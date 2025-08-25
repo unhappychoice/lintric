@@ -54,122 +54,21 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/function_call_dependency.rs",
     definitions: [
-        Definition {
-            name: "add",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 7,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "a",
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "b",
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 4,
-                start_column: 4,
-                end_line: 4,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 5,
-                start_column: 9,
-                end_line: 5,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:7 }, name: "add", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:8 to 1:9 }, name: "a", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:16 to 1:17 }, name: "b", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 4:4 to 4:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:9 to 5:10 }, name: "x", definition_type: VariableDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 2,
-            target_line: 1,
-            symbol: "a",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:5",
-            ),
-        },
-        Dependency {
-            source_line: 2,
-            target_line: 1,
-            symbol: "b",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:9",
-            ),
-        },
-        Dependency {
-            source_line: 5,
-            target_line: 1,
-            symbol: "add",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:5:13",
-            ),
-        },
+        Dependency { source_line: 2, target_line: 1, symbol: "a", dependency_type: VariableUse, context: Some("Identifier:2:5") },
+        Dependency { source_line: 2, target_line: 1, symbol: "b", dependency_type: VariableUse, context: Some("Identifier:2:9") },
+        Dependency { source_line: 5, target_line: 1, symbol: "add", dependency_type: FunctionCall, context: Some("CallExpression:5:13") },
     ],
     usage: [
-        Usage {
-            name: "a",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 5,
-                end_line: 2,
-                end_column: 6,
-            },
-            context: None,
-        },
-        Usage {
-            name: "b",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 9,
-                end_line: 2,
-                end_column: 10,
-            },
-            context: None,
-        },
-        Usage {
-            name: "add",
-            kind: CallExpression,
-            position: Position {
-                start_line: 5,
-                start_column: 13,
-                end_line: 5,
-                end_column: 22,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 2:5 to 2:6 }, name: "a", kind: Identifier, context: None },
+        Usage { position: { 2:9 to 2:10 }, name: "b", kind: Identifier, context: None },
+        Usage { position: { 5:13 to 5:22 }, name: "add", kind: CallExpression, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

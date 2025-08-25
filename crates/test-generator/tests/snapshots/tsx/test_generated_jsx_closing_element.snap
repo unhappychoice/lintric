@@ -27,41 +27,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "element",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:14 }, name: "element", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Component",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 18,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Component",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 37,
-                end_line: 1,
-                end_column: 46,
-            },
-            context: None,
-        },
+        Usage { position: { 1:18 to 1:27 }, name: "Component", kind: Identifier, context: None },
+        Usage { position: { 1:37 to 1:46 }, name: "Component", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

@@ -33,62 +33,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_macro1",
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 25,
-            },
-            definition_type: MacroDefinition,
-        },
-        Definition {
-            name: "$content",
-            position: Position {
-                start_line: 1,
-                start_column: 33,
-                end_line: 1,
-                end_column: 41,
-            },
-            definition_type: MacroVariableDefinition,
-        },
+        Definition { position: { 1:14 to 1:25 }, name: "test_macro1", definition_type: MacroDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:33 to 1:41 }, name: "$content", definition_type: MacroVariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "test_macro1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 25,
-            },
-            context: None,
-        },
-        Usage {
-            name: "$content",
-            kind: Metavariable,
-            position: Position {
-                start_line: 1,
-                start_column: 33,
-                end_line: 1,
-                end_column: 41,
-            },
-            context: None,
-        },
-        Usage {
-            name: "$content",
-            kind: Metavariable,
-            position: Position {
-                start_line: 1,
-                start_column: 57,
-                end_line: 1,
-                end_column: 65,
-            },
-            context: None,
-        },
+        Usage { position: { 1:14 to 1:25 }, name: "test_macro1", kind: Identifier, context: None },
+        Usage { position: { 1:33 to 1:41 }, name: "$content", kind: Metavariable, context: None },
+        Usage { position: { 1:57 to 1:65 }, name: "$content", kind: Metavariable, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

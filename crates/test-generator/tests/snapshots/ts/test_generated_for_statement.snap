@@ -44,95 +44,17 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "i1",
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "item",
-            position: Position {
-                start_line: 1,
-                start_column: 50,
-                end_line: 1,
-                end_column: 54,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:10 to 1:12 }, name: "i1", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:50 to 1:54 }, name: "item", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "i1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 18,
-                end_line: 1,
-                end_column: 20,
-            },
-            context: None,
-        },
-        Usage {
-            name: "arr1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: None,
-        },
-        Usage {
-            name: "length",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 28,
-                end_line: 1,
-                end_column: 34,
-            },
-            context: None,
-        },
-        Usage {
-            name: "i1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 36,
-                end_line: 1,
-                end_column: 38,
-            },
-            context: None,
-        },
-        Usage {
-            name: "arr1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 57,
-                end_line: 1,
-                end_column: 61,
-            },
-            context: None,
-        },
-        Usage {
-            name: "i1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 62,
-                end_line: 1,
-                end_column: 64,
-            },
-            context: None,
-        },
+        Usage { position: { 1:18 to 1:20 }, name: "i1", kind: Identifier, context: None },
+        Usage { position: { 1:23 to 1:27 }, name: "arr1", kind: Identifier, context: None },
+        Usage { position: { 1:28 to 1:34 }, name: "length", kind: FieldExpression, context: None },
+        Usage { position: { 1:36 to 1:38 }, name: "i1", kind: Identifier, context: None },
+        Usage { position: { 1:57 to 1:61 }, name: "arr1", kind: Identifier, context: None },
+        Usage { position: { 1:62 to 1:64 }, name: "i1", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

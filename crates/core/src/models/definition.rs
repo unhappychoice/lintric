@@ -174,20 +174,7 @@ impl Ord for Definition {
 
 impl fmt::Debug for Definition {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Definition")
-            .field("name", &self.name)
-            .field("position", &self.position)
-            .field("definition_type", &self.definition_type)
-            .finish()
-    }
-}
-
-impl fmt::Display for Definition {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "Definition {{ name: {:?}, position: {:?}, definition_type: {:?} }}",
-            self.name, self.position, self.definition_type
-        )
+        write!(f, "Definition {{ position: {:?}, name: {:?}, definition_type: {:?}, scope_id: {:?}, accessibility: {:?}, is_hoisted: {:?} }}", 
+            self.position, self.name, self.definition_type, self.scope_id, self.accessibility, self.is_hoisted)
     }
 }

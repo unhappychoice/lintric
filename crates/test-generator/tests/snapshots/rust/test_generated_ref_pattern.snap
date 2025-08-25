@@ -19,30 +19,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "x11",
-            position: Position {
-                start_line: 1,
-                start_column: 9,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:9 to 1:12 }, name: "x11", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "value3",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 15,
-                end_line: 1,
-                end_column: 21,
-            },
-            context: None,
-        },
+        Usage { position: { 1:15 to 1:21 }, name: "value3", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

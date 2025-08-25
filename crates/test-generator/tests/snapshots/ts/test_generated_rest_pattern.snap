@@ -24,40 +24,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "first",
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 13,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "rest",
-            position: Position {
-                start_line: 1,
-                start_column: 18,
-                end_line: 1,
-                end_column: 22,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:8 to 1:13 }, name: "first", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:18 to 1:22 }, name: "rest", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "arr2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 26,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: None,
-        },
+        Usage { position: { 1:26 to 1:30 }, name: "arr2", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

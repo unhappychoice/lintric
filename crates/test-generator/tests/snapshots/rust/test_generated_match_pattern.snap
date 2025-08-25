@@ -26,41 +26,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "x8",
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 16,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:14 to 1:16 }, name: "x8", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "val1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 11,
-            },
-            context: None,
-        },
-        Usage {
-            name: "x8",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
+        Usage { position: { 1:7 to 1:11 }, name: "val1", kind: Identifier, context: None },
+        Usage { position: { 1:14 to 1:16 }, name: "x8", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

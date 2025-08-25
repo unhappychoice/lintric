@@ -152,300 +152,38 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/hoisting_test.rs",
     definitions: [
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "result",
-            position: Position {
-                start_line: 3,
-                start_column: 9,
-                end_line: 3,
-                end_column: 15,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "y",
-            position: Position {
-                start_line: 6,
-                start_column: 9,
-                end_line: 6,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 7,
-                start_column: 9,
-                end_line: 7,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "helper",
-            position: Position {
-                start_line: 11,
-                start_column: 4,
-                end_line: 11,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "use_struct",
-            position: Position {
-                start_line: 16,
-                start_column: 4,
-                end_line: 16,
-                end_column: 14,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "instance",
-            position: Position {
-                start_line: 17,
-                start_column: 9,
-                end_line: 17,
-                end_column: 17,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "MyStruct",
-            position: Position {
-                start_line: 20,
-                start_column: 8,
-                end_line: 20,
-                end_column: 16,
-            },
-            definition_type: StructDefinition,
-        },
-        Definition {
-            name: "field",
-            position: Position {
-                start_line: 21,
-                start_column: 5,
-                end_line: 21,
-                end_column: 10,
-            },
-            definition_type: StructFieldDefinition,
-        },
-        Definition {
-            name: "use_enum",
-            position: Position {
-                start_line: 25,
-                start_column: 4,
-                end_line: 25,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "value",
-            position: Position {
-                start_line: 26,
-                start_column: 9,
-                end_line: 26,
-                end_column: 14,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "MyEnum",
-            position: Position {
-                start_line: 29,
-                start_column: 6,
-                end_line: 29,
-                end_column: 12,
-            },
-            definition_type: EnumDefinition,
-        },
-        Definition {
-            name: "use_type",
-            position: Position {
-                start_line: 35,
-                start_column: 4,
-                end_line: 35,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "MyType",
-            position: Position {
-                start_line: 39,
-                start_column: 6,
-                end_line: 39,
-                end_column: 12,
-            },
-            definition_type: TypeDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:9 to 3:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:9 to 6:10 }, name: "y", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 7:9 to 7:10 }, name: "x", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 11:4 to 11:10 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 16:4 to 16:14 }, name: "use_struct", definition_type: FunctionDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 17:9 to 17:17 }, name: "instance", definition_type: VariableDefinition, scope_id: Some(6), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 20:8 to 20:16 }, name: "MyStruct", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 21:5 to 21:10 }, name: "field", definition_type: StructFieldDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 25:4 to 25:12 }, name: "use_enum", definition_type: FunctionDefinition, scope_id: Some(7), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 26:9 to 26:14 }, name: "value", definition_type: VariableDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 29:6 to 29:12 }, name: "MyEnum", definition_type: EnumDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 35:4 to 35:12 }, name: "use_type", definition_type: FunctionDefinition, scope_id: Some(9), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 39:6 to 39:12 }, name: "MyType", definition_type: TypeDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 3,
-            target_line: 11,
-            symbol: "helper",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:3:18",
-            ),
-        },
-        Dependency {
-            source_line: 6,
-            target_line: 7,
-            symbol: "x",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:6:13",
-            ),
-        },
-        Dependency {
-            source_line: 17,
-            target_line: 20,
-            symbol: "MyStruct",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:17:20",
-            ),
-        },
-        Dependency {
-            source_line: 26,
-            target_line: 29,
-            symbol: "MyEnum",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:26:17",
-            ),
-        },
-        Dependency {
-            source_line: 35,
-            target_line: 39,
-            symbol: "MyType",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:35:18",
-            ),
-        },
+        Dependency { source_line: 3, target_line: 11, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:3:18") },
+        Dependency { source_line: 6, target_line: 7, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:6:13") },
+        Dependency { source_line: 17, target_line: 20, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:17:20") },
+        Dependency { source_line: 26, target_line: 29, symbol: "MyEnum", dependency_type: VariableUse, context: Some("Identifier:26:17") },
+        Dependency { source_line: 35, target_line: 39, symbol: "MyType", dependency_type: TypeReference, context: Some("TypeIdentifier:35:18") },
     ],
     usage: [
-        Usage {
-            name: "helper",
-            kind: CallExpression,
-            position: Position {
-                start_line: 3,
-                start_column: 18,
-                end_line: 3,
-                end_column: 26,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 6,
-                start_column: 13,
-                end_line: 6,
-                end_column: 14,
-            },
-            context: None,
-        },
-        Usage {
-            name: "MyStruct { field: 10 }",
-            kind: StructExpression,
-            position: Position {
-                start_line: 17,
-                start_column: 20,
-                end_line: 17,
-                end_column: 42,
-            },
-            context: None,
-        },
-        Usage {
-            name: "MyStruct",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 17,
-                start_column: 20,
-                end_line: 17,
-                end_column: 28,
-            },
-            context: None,
-        },
-        Usage {
-            name: "MyEnum",
-            kind: Identifier,
-            position: Position {
-                start_line: 26,
-                start_column: 17,
-                end_line: 26,
-                end_column: 23,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Variant1",
-            kind: Identifier,
-            position: Position {
-                start_line: 26,
-                start_column: 25,
-                end_line: 26,
-                end_column: 33,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Variant1",
-            kind: Identifier,
-            position: Position {
-                start_line: 30,
-                start_column: 5,
-                end_line: 30,
-                end_column: 13,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Variant2",
-            kind: Identifier,
-            position: Position {
-                start_line: 31,
-                start_column: 5,
-                end_line: 31,
-                end_column: 13,
-            },
-            context: None,
-        },
-        Usage {
-            name: "MyType",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 35,
-                start_column: 18,
-                end_line: 35,
-                end_column: 24,
-            },
-            context: None,
-        },
+        Usage { position: { 3:18 to 3:26 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 6:13 to 6:14 }, name: "x", kind: Identifier, context: None },
+        Usage { position: { 17:20 to 17:42 }, name: "MyStruct { field: 10 }", kind: StructExpression, context: None },
+        Usage { position: { 17:20 to 17:28 }, name: "MyStruct", kind: TypeIdentifier, context: None },
+        Usage { position: { 26:17 to 26:23 }, name: "MyEnum", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 26:25 to 26:33 }, name: "Variant1", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 30:5 to 30:13 }, name: "Variant1", kind: Identifier, context: None },
+        Usage { position: { 31:5 to 31:13 }, name: "Variant2", kind: Identifier, context: None },
+        Usage { position: { 35:18 to 35:24 }, name: "MyType", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

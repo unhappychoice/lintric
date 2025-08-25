@@ -83,190 +83,27 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/method_call_dependency.rs",
     definitions: [
-        Definition {
-            name: "MyStruct",
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 16,
-            },
-            definition_type: StructDefinition,
-        },
-        Definition {
-            name: "value",
-            position: Position {
-                start_line: 2,
-                start_column: 5,
-                end_line: 2,
-                end_column: 10,
-            },
-            definition_type: StructFieldDefinition,
-        },
-        Definition {
-            name: "my_method",
-            position: Position {
-                start_line: 6,
-                start_column: 8,
-                end_line: 6,
-                end_column: 17,
-            },
-            definition_type: MethodDefinition,
-        },
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 11,
-                start_column: 4,
-                end_line: 11,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "s",
-            position: Position {
-                start_line: 12,
-                start_column: 9,
-                end_line: 12,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:8 to 1:16 }, name: "MyStruct", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:5 to 2:10 }, name: "value", definition_type: StructFieldDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:8 to 6:17 }, name: "my_method", definition_type: MethodDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 11:4 to 11:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 12:9 to 12:10 }, name: "s", definition_type: VariableDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 5,
-            target_line: 1,
-            symbol: "MyStruct",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:5:6",
-            ),
-        },
-        Dependency {
-            source_line: 7,
-            target_line: 2,
-            symbol: "value",
-            dependency_type: StructFieldAccess,
-            context: Some(
-                "FieldExpression:7:9",
-            ),
-        },
-        Dependency {
-            source_line: 12,
-            target_line: 1,
-            symbol: "MyStruct",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:12:13",
-            ),
-        },
-        Dependency {
-            source_line: 13,
-            target_line: 6,
-            symbol: "my_method",
-            dependency_type: StructFieldAccess,
-            context: Some(
-                "FieldExpression:13:5",
-            ),
-        },
-        Dependency {
-            source_line: 13,
-            target_line: 12,
-            symbol: "s",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:13:5",
-            ),
-        },
+        Dependency { source_line: 5, target_line: 1, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:5:6") },
+        Dependency { source_line: 7, target_line: 2, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldExpression:7:9") },
+        Dependency { source_line: 12, target_line: 1, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:12:13") },
+        Dependency { source_line: 13, target_line: 6, symbol: "my_method", dependency_type: StructFieldAccess, context: Some("FieldExpression:13:5") },
+        Dependency { source_line: 13, target_line: 12, symbol: "s", dependency_type: VariableUse, context: Some("Identifier:13:5") },
     ],
     usage: [
-        Usage {
-            name: "MyStruct",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 5,
-                start_column: 6,
-                end_line: 5,
-                end_column: 14,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 7,
-                start_column: 9,
-                end_line: 7,
-                end_column: 19,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
-        Usage {
-            name: "MyStruct { value: 10 }",
-            kind: StructExpression,
-            position: Position {
-                start_line: 12,
-                start_column: 13,
-                end_line: 12,
-                end_column: 35,
-            },
-            context: None,
-        },
-        Usage {
-            name: "MyStruct",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 12,
-                start_column: 13,
-                end_line: 12,
-                end_column: 21,
-            },
-            context: None,
-        },
-        Usage {
-            name: "s.my_method",
-            kind: CallExpression,
-            position: Position {
-                start_line: 13,
-                start_column: 5,
-                end_line: 13,
-                end_column: 18,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "my_method",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 13,
-                start_column: 5,
-                end_line: 13,
-                end_column: 16,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
-        Usage {
-            name: "s",
-            kind: Identifier,
-            position: Position {
-                start_line: 13,
-                start_column: 5,
-                end_line: 13,
-                end_column: 6,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
+        Usage { position: { 5:6 to 5:14 }, name: "MyStruct", kind: TypeIdentifier, context: None },
+        Usage { position: { 7:9 to 7:19 }, name: "value", kind: FieldExpression, context: Some("field_expression") },
+        Usage { position: { 12:13 to 12:35 }, name: "MyStruct { value: 10 }", kind: StructExpression, context: None },
+        Usage { position: { 12:13 to 12:21 }, name: "MyStruct", kind: TypeIdentifier, context: None },
+        Usage { position: { 13:5 to 13:18 }, name: "s.my_method", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 13:5 to 13:16 }, name: "my_method", kind: FieldExpression, context: Some("field_expression") },
+        Usage { position: { 13:5 to 13:6 }, name: "s", kind: Identifier, context: Some("field_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

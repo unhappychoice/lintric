@@ -21,28 +21,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "item11",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 2,
-                end_line: 1,
-                end_column: 8,
-            },
-            context: None,
-        },
-        Usage {
-            name: "item21",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
+        Usage { position: { 1:2 to 1:8 }, name: "item11", kind: Identifier, context: None },
+        Usage { position: { 1:10 to 1:16 }, name: "item21", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

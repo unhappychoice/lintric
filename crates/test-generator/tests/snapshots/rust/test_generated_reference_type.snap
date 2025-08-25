@@ -26,40 +26,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "source2",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "var7",
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 27,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:12 }, name: "source2", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:23 to 1:27 }, name: "var7", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "source2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 37,
-                end_line: 1,
-                end_column: 44,
-            },
-            context: None,
-        },
+        Usage { position: { 1:37 to 1:44 }, name: "source2", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

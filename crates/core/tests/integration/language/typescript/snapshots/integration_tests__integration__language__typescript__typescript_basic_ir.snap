@@ -41,80 +41,17 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/fixtures/basic_typescript_code.ts",
     definitions: [
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "y",
-            position: Position {
-                start_line: 2,
-                start_column: 5,
-                end_line: 2,
-                end_column: 6,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "foo",
-            position: Position {
-                start_line: 3,
-                start_column: 10,
-                end_line: 3,
-                end_column: 13,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:7 to 1:8 }, name: "x", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:5 to 2:6 }, name: "y", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:10 to 3:13 }, name: "foo", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 2,
-            target_line: 1,
-            symbol: "x",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:9",
-            ),
-        },
-        Dependency {
-            source_line: 4,
-            target_line: 2,
-            symbol: "y",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:4:12",
-            ),
-        },
+        Dependency { source_line: 2, target_line: 1, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:2:9") },
+        Dependency { source_line: 4, target_line: 2, symbol: "y", dependency_type: VariableUse, context: Some("Identifier:4:12") },
     ],
     usage: [
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 9,
-                end_line: 2,
-                end_column: 10,
-            },
-            context: None,
-        },
-        Usage {
-            name: "y",
-            kind: Identifier,
-            position: Position {
-                start_line: 4,
-                start_column: 12,
-                end_line: 4,
-                end_column: 13,
-            },
-            context: None,
-        },
+        Usage { position: { 2:9 to 2:10 }, name: "x", kind: Identifier, context: None },
+        Usage { position: { 4:12 to 4:13 }, name: "y", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

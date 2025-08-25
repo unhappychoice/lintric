@@ -42,61 +42,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "Obj",
-            position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "key",
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: PropertyDefinition,
-        },
-        Definition {
-            name: "value18",
-            position: Position {
-                start_line: 1,
-                start_column: 35,
-                end_line: 1,
-                end_column: 42,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:6 to 1:9 }, name: "Obj", definition_type: TypeDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:14 to 1:17 }, name: "key", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:35 to 1:42 }, name: "value18", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "key",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 17,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Obj",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 44,
-                end_line: 1,
-                end_column: 47,
-            },
-            context: None,
-        },
+        Usage { position: { 1:14 to 1:17 }, name: "key", kind: FieldExpression, context: None },
+        Usage { position: { 1:44 to 1:47 }, name: "Obj", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

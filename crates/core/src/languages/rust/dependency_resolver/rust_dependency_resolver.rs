@@ -4,7 +4,9 @@ use super::{
     NestedScopeResolver, ResolutionCandidate, ShadowingWarning, TraitBound,
 };
 use crate::dependency_resolver::DependencyResolverTrait;
-use crate::models::{scope::SymbolTable, Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind};
+use crate::models::{
+    scope::SymbolTable, Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind,
+};
 use tree_sitter::Node;
 
 /// Rust-specific dependency resolver that implements comprehensive dependency resolution
@@ -839,10 +841,11 @@ impl RustDependencyResolver {
             return dependencies;
         }
 
-        // Skip creating dependencies for TypeIdentifiers that are part of qualified paths 
+        // Skip creating dependencies for TypeIdentifiers that are part of qualified paths
         // (like "future" in "std::future::Future")
-        if matches!(usage_node.kind, UsageKind::TypeIdentifier) 
-            && self.is_part_of_qualified_path(usage_node, all_usage_nodes) {
+        if matches!(usage_node.kind, UsageKind::TypeIdentifier)
+            && self.is_part_of_qualified_path(usage_node, all_usage_nodes)
+        {
             return dependencies;
         }
 
@@ -865,7 +868,6 @@ impl RustDependencyResolver {
                     &self.symbol_table,
                     &def.position,
                 );
-
 
                 if let (Some(usage_func), Some(def_func)) = (usage_func_scope, def_func_scope) {
                     // If they are in different function scopes, block the dependency
@@ -1192,7 +1194,7 @@ impl RustDependencyResolver {
             .symbol_table
             .scopes
             .find_scope_at_position(&_usage_node.position);
-        
+
         if let Some(scope_id) = usage_scope_id {
             // Walk up the scope chain to find if we're inside a closure
             let mut current_scope_id = scope_id;
@@ -1201,7 +1203,7 @@ impl RustDependencyResolver {
                     // We're inside a closure, so cross-function capture is allowed
                     return true;
                 }
-                
+
                 if let Some(parent_id) = scope.parent {
                     current_scope_id = parent_id;
                 } else {
@@ -1209,7 +1211,7 @@ impl RustDependencyResolver {
                 }
             }
         }
-        
+
         // Not inside a closure, so cross-function capture is not allowed
         false
     }
@@ -1218,31 +1220,34 @@ impl RustDependencyResolver {
     fn is_part_of_qualified_path(&self, usage_node: &Usage, all_usage_nodes: &[Usage]) -> bool {
         let usage_line = usage_node.position.start_line;
         let usage_column = usage_node.position.start_column;
-        
+
         // Look for other usage nodes on the same line that suggest this is part of a qualified path
         // Only consider it as part of qualified path if there are both preceding AND following identifiers
         let mut has_preceding = false;
         let mut has_following = false;
-        
+
         for other_usage in all_usage_nodes {
             if other_usage.position.start_line == usage_line {
                 // Check for preceding identifier (like "std" before "future")
                 if other_usage.position.end_column < usage_column {
                     let distance = usage_column - other_usage.position.end_column;
-                    if distance <= 3 { // accounting for ::
+                    if distance <= 3 {
+                        // accounting for ::
                         has_preceding = true;
                     }
                 }
                 // Check for following identifier (like "Future" after "future")
                 if other_usage.position.start_column > usage_node.position.end_column {
-                    let distance = other_usage.position.start_column - usage_node.position.end_column;
-                    if distance <= 3 { // accounting for ::
+                    let distance =
+                        other_usage.position.start_column - usage_node.position.end_column;
+                    if distance <= 3 {
+                        // accounting for ::
                         has_following = true;
                     }
                 }
             }
         }
-        
+
         // Only consider it part of qualified path if it's in the middle (has both preceding and following)
         has_preceding && has_following
     }

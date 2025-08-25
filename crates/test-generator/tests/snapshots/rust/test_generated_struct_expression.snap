@@ -26,39 +26,9 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "TestStruct { field2: value7 }",
-            kind: StructExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: None,
-        },
-        Usage {
-            name: "TestStruct",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 11,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value7",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 22,
-                end_line: 1,
-                end_column: 28,
-            },
-            context: None,
-        },
+        Usage { position: { 1:1 to 1:30 }, name: "TestStruct { field2: value7 }", kind: StructExpression, context: None },
+        Usage { position: { 1:1 to 1:11 }, name: "TestStruct", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:22 to 1:28 }, name: "value7", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

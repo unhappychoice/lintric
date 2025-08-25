@@ -24,41 +24,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "value18",
-            position: Position {
-                start_line: 1,
-                start_column: 15,
-                end_line: 1,
-                end_column: 22,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:15 to 1:22 }, name: "value18", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "key1",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 9,
-                end_line: 1,
-                end_column: 13,
-            },
-            context: None,
-        },
-        Usage {
-            name: "obj3",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 27,
-                end_line: 1,
-                end_column: 31,
-            },
-            context: None,
-        },
+        Usage { position: { 1:9 to 1:13 }, name: "key1", kind: FieldExpression, context: None },
+        Usage { position: { 1:27 to 1:31 }, name: "obj3", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

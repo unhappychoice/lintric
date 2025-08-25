@@ -27,50 +27,10 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "prop13",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 3,
-                end_line: 1,
-                end_column: 9,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value111",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 19,
-            },
-            context: None,
-        },
-        Usage {
-            name: "prop23",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 21,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value210",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 29,
-                end_line: 1,
-                end_column: 37,
-            },
-            context: None,
-        },
+        Usage { position: { 1:3 to 1:9 }, name: "prop13", kind: FieldExpression, context: None },
+        Usage { position: { 1:11 to 1:19 }, name: "value111", kind: Identifier, context: None },
+        Usage { position: { 1:21 to 1:27 }, name: "prop23", kind: FieldExpression, context: None },
+        Usage { position: { 1:29 to 1:37 }, name: "value210", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

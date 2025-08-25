@@ -18,16 +18,7 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "CONST",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: ConstDefinition,
-        },
+        Definition { position: { 1:7 to 1:12 }, name: "CONST", definition_type: ConstDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

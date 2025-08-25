@@ -141,422 +141,47 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/dependency_resolver/fixtures/module_resolution.rs",
     definitions: [
-        Definition {
-            name: "HashMap",
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 30,
-            },
-            definition_type: ImportDefinition,
-        },
-        Definition {
-            name: "utils",
-            position: Position {
-                start_line: 3,
-                start_column: 5,
-                end_line: 3,
-                end_column: 10,
-            },
-            definition_type: ModuleDefinition,
-        },
-        Definition {
-            name: "helper",
-            position: Position {
-                start_line: 4,
-                start_column: 12,
-                end_line: 4,
-                end_column: 18,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "inner",
-            position: Position {
-                start_line: 8,
-                start_column: 13,
-                end_line: 8,
-                end_column: 18,
-            },
-            definition_type: ModuleDefinition,
-        },
-        Definition {
-            name: "deep_function",
-            position: Position {
-                start_line: 9,
-                start_column: 16,
-                end_line: 9,
-                end_column: 29,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 15,
-                start_column: 4,
-                end_line: 15,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "map",
-            position: Position {
-                start_line: 16,
-                start_column: 13,
-                end_line: 16,
-                end_column: 16,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "result",
-            position: Position {
-                start_line: 19,
-                start_column: 9,
-                end_line: 19,
-                end_column: 15,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "deep_result",
-            position: Position {
-                start_line: 20,
-                start_column: 9,
-                end_line: 20,
-                end_column: 20,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:23 to 1:30 }, name: "HashMap", definition_type: ImportDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:5 to 3:10 }, name: "utils", definition_type: ModuleDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 4:12 to 4:18 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 8:13 to 8:18 }, name: "inner", definition_type: ModuleDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 9:16 to 9:29 }, name: "deep_function", definition_type: FunctionDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 15:4 to 15:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(7), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 16:13 to 16:16 }, name: "map", definition_type: VariableDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 19:9 to 19:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 20:9 to 20:20 }, name: "deep_result", definition_type: VariableDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 16,
-            target_line: 1,
-            symbol: "HashMap",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:16:19",
-            ),
-        },
-        Dependency {
-            source_line: 17,
-            target_line: 16,
-            symbol: "map",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:17:5",
-            ),
-        },
-        Dependency {
-            source_line: 19,
-            target_line: 3,
-            symbol: "utils",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:19:18",
-            ),
-        },
-        Dependency {
-            source_line: 19,
-            target_line: 4,
-            symbol: "helper",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:19:25",
-            ),
-        },
-        Dependency {
-            source_line: 20,
-            target_line: 3,
-            symbol: "utils",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:20:23",
-            ),
-        },
-        Dependency {
-            source_line: 20,
-            target_line: 8,
-            symbol: "inner",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:20:30",
-            ),
-        },
-        Dependency {
-            source_line: 20,
-            target_line: 9,
-            symbol: "deep_function",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:20:37",
-            ),
-        },
-        Dependency {
-            source_line: 22,
-            target_line: 19,
-            symbol: "result",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:22:23",
-            ),
-        },
-        Dependency {
-            source_line: 22,
-            target_line: 20,
-            symbol: "deep_result",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:22:31",
-            ),
-        },
+        Dependency { source_line: 16, target_line: 1, symbol: "HashMap", dependency_type: VariableUse, context: Some("Identifier:16:19") },
+        Dependency { source_line: 17, target_line: 16, symbol: "map", dependency_type: VariableUse, context: Some("Identifier:17:5") },
+        Dependency { source_line: 19, target_line: 3, symbol: "utils", dependency_type: VariableUse, context: Some("Identifier:19:18") },
+        Dependency { source_line: 19, target_line: 4, symbol: "helper", dependency_type: VariableUse, context: Some("Identifier:19:25") },
+        Dependency { source_line: 20, target_line: 3, symbol: "utils", dependency_type: VariableUse, context: Some("Identifier:20:23") },
+        Dependency { source_line: 20, target_line: 8, symbol: "inner", dependency_type: VariableUse, context: Some("Identifier:20:30") },
+        Dependency { source_line: 20, target_line: 9, symbol: "deep_function", dependency_type: VariableUse, context: Some("Identifier:20:37") },
+        Dependency { source_line: 22, target_line: 19, symbol: "result", dependency_type: VariableUse, context: Some("Identifier:22:23") },
+        Dependency { source_line: 22, target_line: 20, symbol: "deep_result", dependency_type: VariableUse, context: Some("Identifier:22:31") },
     ],
     usage: [
-        Usage {
-            name: "std",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 8,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "collections",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 21,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "HashMap",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "HashMap::new",
-            kind: CallExpression,
-            position: Position {
-                start_line: 16,
-                start_column: 19,
-                end_line: 16,
-                end_column: 33,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "HashMap",
-            kind: Identifier,
-            position: Position {
-                start_line: 16,
-                start_column: 19,
-                end_line: 16,
-                end_column: 26,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "new",
-            kind: Identifier,
-            position: Position {
-                start_line: 16,
-                start_column: 28,
-                end_line: 16,
-                end_column: 31,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "map.insert",
-            kind: CallExpression,
-            position: Position {
-                start_line: 17,
-                start_column: 5,
-                end_line: 17,
-                end_column: 31,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "insert",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 17,
-                start_column: 5,
-                end_line: 17,
-                end_column: 15,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
-        Usage {
-            name: "map",
-            kind: Identifier,
-            position: Position {
-                start_line: 17,
-                start_column: 5,
-                end_line: 17,
-                end_column: 8,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
-        Usage {
-            name: "utils::helper",
-            kind: CallExpression,
-            position: Position {
-                start_line: 19,
-                start_column: 18,
-                end_line: 19,
-                end_column: 33,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "utils",
-            kind: Identifier,
-            position: Position {
-                start_line: 19,
-                start_column: 18,
-                end_line: 19,
-                end_column: 23,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "helper",
-            kind: Identifier,
-            position: Position {
-                start_line: 19,
-                start_column: 25,
-                end_line: 19,
-                end_column: 31,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "utils::inner::deep_function",
-            kind: CallExpression,
-            position: Position {
-                start_line: 20,
-                start_column: 23,
-                end_line: 20,
-                end_column: 52,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "utils",
-            kind: Identifier,
-            position: Position {
-                start_line: 20,
-                start_column: 23,
-                end_line: 20,
-                end_column: 28,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "inner",
-            kind: Identifier,
-            position: Position {
-                start_line: 20,
-                start_column: 30,
-                end_line: 20,
-                end_column: 35,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "deep_function",
-            kind: Identifier,
-            position: Position {
-                start_line: 20,
-                start_column: 37,
-                end_line: 20,
-                end_column: 50,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 22,
-                start_column: 5,
-                end_line: 22,
-                end_column: 12,
-            },
-            context: None,
-        },
-        Usage {
-            name: "result",
-            kind: Identifier,
-            position: Position {
-                start_line: 22,
-                start_column: 23,
-                end_line: 22,
-                end_column: 29,
-            },
-            context: None,
-        },
-        Usage {
-            name: "deep_result",
-            kind: Identifier,
-            position: Position {
-                start_line: 22,
-                start_column: 31,
-                end_line: 22,
-                end_column: 42,
-            },
-            context: None,
-        },
+        Usage { position: { 1:5 to 1:8 }, name: "std", kind: TypeIdentifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:10 to 1:21 }, name: "collections", kind: TypeIdentifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:23 to 1:30 }, name: "HashMap", kind: TypeIdentifier, context: Some("scoped_identifier") },
+        Usage { position: { 16:19 to 16:33 }, name: "HashMap::new", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 16:19 to 16:26 }, name: "HashMap", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 16:28 to 16:31 }, name: "new", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 17:5 to 17:31 }, name: "map.insert", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 17:5 to 17:15 }, name: "insert", kind: FieldExpression, context: Some("field_expression") },
+        Usage { position: { 17:5 to 17:8 }, name: "map", kind: Identifier, context: Some("field_expression") },
+        Usage { position: { 19:18 to 19:33 }, name: "utils::helper", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 19:18 to 19:23 }, name: "utils", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 19:25 to 19:31 }, name: "helper", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 20:23 to 20:52 }, name: "utils::inner::deep_function", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 20:23 to 20:28 }, name: "utils", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 20:30 to 20:35 }, name: "inner", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 20:37 to 20:50 }, name: "deep_function", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 22:5 to 22:12 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 22:23 to 22:29 }, name: "result", kind: Identifier, context: None },
+        Usage { position: { 22:31 to 22:42 }, name: "deep_result", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

@@ -23,28 +23,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "TestClass2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 15,
-            },
-            context: None,
-        },
-        Usage {
-            name: "arg",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 19,
-            },
-            context: None,
-        },
+        Usage { position: { 1:5 to 1:15 }, name: "TestClass2", kind: Identifier, context: None },
+        Usage { position: { 1:16 to 1:19 }, name: "arg", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

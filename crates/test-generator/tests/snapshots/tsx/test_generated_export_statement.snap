@@ -21,30 +21,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "exported",
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 22,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:14 to 1:22 }, name: "exported", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "value7",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 25,
-                end_line: 1,
-                end_column: 31,
-            },
-            context: None,
-        },
+        Usage { position: { 1:25 to 1:31 }, name: "value7", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

@@ -31,61 +31,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "TestInterface",
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 24,
-            },
-            definition_type: InterfaceDefinition,
-        },
-        Definition {
-            name: "prop",
-            position: Position {
-                start_line: 1,
-                start_column: 27,
-                end_line: 1,
-                end_column: 31,
-            },
-            definition_type: PropertyDefinition,
-        },
-        Definition {
-            name: "method2",
-            position: Position {
-                start_line: 1,
-                start_column: 41,
-                end_line: 1,
-                end_column: 48,
-            },
-            definition_type: MethodDefinition,
-        },
+        Definition { position: { 1:11 to 1:24 }, name: "TestInterface", definition_type: InterfaceDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:27 to 1:31 }, name: "prop", definition_type: PropertyDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:41 to 1:48 }, name: "method2", definition_type: MethodDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "prop",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 27,
-                end_line: 1,
-                end_column: 31,
-            },
-            context: None,
-        },
-        Usage {
-            name: "method2",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 41,
-                end_line: 1,
-                end_column: 48,
-            },
-            context: None,
-        },
+        Usage { position: { 1:27 to 1:31 }, name: "prop", kind: FieldExpression, context: None },
+        Usage { position: { 1:41 to 1:48 }, name: "method2", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

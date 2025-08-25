@@ -39,91 +39,17 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/fixtures/function_parameter_dependency.ts",
     definitions: [
-        Definition {
-            name: "a",
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "b",
-            position: Position {
-                start_line: 1,
-                start_column: 12,
-                end_line: 1,
-                end_column: 13,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:10 to 1:11 }, name: "a", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:12 to 1:13 }, name: "b", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 2,
-            target_line: 1,
-            symbol: "b",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:15",
-            ),
-        },
+        Dependency { source_line: 2, target_line: 1, symbol: "b", dependency_type: VariableUse, context: Some("Identifier:2:15") },
     ],
     usage: [
-        Usage {
-            name: "console.log",
-            kind: CallExpression,
-            position: Position {
-                start_line: 2,
-                start_column: 3,
-                end_line: 2,
-                end_column: 17,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "console",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 3,
-                end_line: 2,
-                end_column: 10,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "log",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 2,
-                start_column: 11,
-                end_line: 2,
-                end_column: 14,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "b",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 15,
-                end_line: 2,
-                end_column: 16,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 2:3 to 2:17 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 2:3 to 2:10 }, name: "console", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 2:11 to 2:14 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 2:15 to 2:16 }, name: "b", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

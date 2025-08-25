@@ -18,16 +18,7 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "STATIC",
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: ConstDefinition,
-        },
+        Definition { position: { 1:8 to 1:14 }, name: "STATIC", definition_type: ConstDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

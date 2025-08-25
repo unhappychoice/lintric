@@ -41,61 +41,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "testFn1",
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "param",
-            position: Position {
-                start_line: 1,
-                start_column: 18,
-                end_line: 1,
-                end_column: 23,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "local",
-            position: Position {
-                start_line: 1,
-                start_column: 49,
-                end_line: 1,
-                end_column: 54,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:10 to 1:17 }, name: "testFn1", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:18 to 1:23 }, name: "param", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:49 to 1:54 }, name: "local", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "param",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 57,
-                end_line: 1,
-                end_column: 62,
-            },
-            context: None,
-        },
-        Usage {
-            name: "local",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 71,
-                end_line: 1,
-                end_column: 76,
-            },
-            context: None,
-        },
+        Usage { position: { 1:57 to 1:62 }, name: "param", kind: Identifier, context: None },
+        Usage { position: { 1:71 to 1:76 }, name: "local", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

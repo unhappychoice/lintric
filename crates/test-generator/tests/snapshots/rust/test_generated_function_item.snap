@@ -28,40 +28,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_fn3",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "x5",
-            position: Position {
-                start_line: 1,
-                start_column: 28,
-                end_line: 1,
-                end_column: 30,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:12 }, name: "test_fn3", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:28 to 1:30 }, name: "x5", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "x5",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 37,
-                end_line: 1,
-                end_column: 39,
-            },
-            context: None,
-        },
+        Usage { position: { 1:37 to 1:39 }, name: "x5", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

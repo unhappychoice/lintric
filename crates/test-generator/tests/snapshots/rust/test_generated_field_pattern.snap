@@ -30,39 +30,9 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Type",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 12,
-            },
-            context: None,
-        },
-        Usage {
-            name: "x4",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 25,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 30,
-                end_line: 1,
-                end_column: 35,
-            },
-            context: None,
-        },
+        Usage { position: { 1:8 to 1:12 }, name: "Type", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:23 to 1:25 }, name: "x4", kind: Identifier, context: None },
+        Usage { position: { 1:30 to 1:35 }, name: "value", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

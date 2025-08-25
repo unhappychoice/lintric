@@ -31,28 +31,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "label1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 2,
-                end_line: 1,
-                end_column: 8,
-            },
-            context: None,
-        },
-        Usage {
-            name: "label1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 27,
-                end_line: 1,
-                end_column: 33,
-            },
-            context: None,
-        },
+        Usage { position: { 1:2 to 1:8 }, name: "label1", kind: Identifier, context: None },
+        Usage { position: { 1:27 to 1:33 }, name: "label1", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

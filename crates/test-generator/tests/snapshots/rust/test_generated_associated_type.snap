@@ -21,26 +21,8 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "TestTrait",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 16,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "Item",
-            position: Position {
-                start_line: 1,
-                start_column: 24,
-                end_line: 1,
-                end_column: 28,
-            },
-            definition_type: TypeDefinition,
-        },
+        Definition { position: { 1:7 to 1:16 }, name: "TestTrait", definition_type: TypeDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:24 to 1:28 }, name: "Item", definition_type: TypeDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

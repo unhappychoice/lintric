@@ -22,30 +22,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "value2",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 13,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:13 }, name: "value2", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Type",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 15,
-                end_line: 1,
-                end_column: 19,
-            },
-            context: None,
-        },
+        Usage { position: { 1:15 to 1:19 }, name: "Type", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

@@ -32,67 +32,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "var8",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:9 }, name: "var8", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "std",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 14,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "vec",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 19,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Vec",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 21,
-                end_line: 1,
-                end_column: 24,
-            },
-            context: None,
-        },
-        Usage {
-            name: "vec",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 32,
-                end_line: 1,
-                end_column: 35,
-            },
-            context: None,
-        },
+        Usage { position: { 1:11 to 1:14 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:16 to 1:19 }, name: "vec", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:21 to 1:24 }, name: "Vec", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:32 to 1:35 }, name: "vec", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

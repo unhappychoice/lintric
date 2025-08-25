@@ -22,39 +22,9 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "condition1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 11,
-            },
-            context: None,
-        },
-        Usage {
-            name: "trueVal",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 21,
-            },
-            context: None,
-        },
-        Usage {
-            name: "falseVal",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 24,
-                end_line: 1,
-                end_column: 32,
-            },
-            context: None,
-        },
+        Usage { position: { 1:1 to 1:11 }, name: "condition1", kind: Identifier, context: None },
+        Usage { position: { 1:14 to 1:21 }, name: "trueVal", kind: Identifier, context: None },
+        Usage { position: { 1:24 to 1:32 }, name: "falseVal", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

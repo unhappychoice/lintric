@@ -23,28 +23,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "a3",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 2,
-                end_line: 1,
-                end_column: 4,
-            },
-            context: None,
-        },
-        Usage {
-            name: "b3",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 9,
-            },
-            context: None,
-        },
+        Usage { position: { 1:2 to 1:4 }, name: "a3", kind: Identifier, context: None },
+        Usage { position: { 1:7 to 1:9 }, name: "b3", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

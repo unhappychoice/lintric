@@ -24,45 +24,9 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "test_fn2",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 17,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "a1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 12,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "b1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 1:1 to 1:17 }, name: "test_fn2", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:10 to 1:12 }, name: "a1", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 1:14 to 1:16 }, name: "b1", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

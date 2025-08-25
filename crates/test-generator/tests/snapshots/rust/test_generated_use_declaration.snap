@@ -19,45 +19,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "Item1",
-            position: Position {
-                start_line: 1,
-                start_column: 13,
-                end_line: 1,
-                end_column: 18,
-            },
-            definition_type: ImportDefinition,
-        },
+        Definition { position: { 1:13 to 1:18 }, name: "Item1", definition_type: ImportDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "module",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 11,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Item1",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 13,
-                end_line: 1,
-                end_column: 18,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
+        Usage { position: { 1:5 to 1:11 }, name: "module", kind: TypeIdentifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:13 to 1:18 }, name: "Item1", kind: TypeIdentifier, context: Some("scoped_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

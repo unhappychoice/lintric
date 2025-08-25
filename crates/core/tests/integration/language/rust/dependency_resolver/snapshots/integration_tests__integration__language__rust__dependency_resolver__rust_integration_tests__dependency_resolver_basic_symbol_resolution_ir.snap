@@ -52,93 +52,18 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/dependency_resolver/fixtures/basic_symbol_resolution.rs",
     definitions: [
-        Definition {
-            name: "helper",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 5,
-                start_column: 4,
-                end_line: 5,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "result",
-            position: Position {
-                start_line: 6,
-                start_column: 9,
-                end_line: 6,
-                end_column: 15,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:10 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:4 to 5:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:9 to 6:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 6,
-            target_line: 1,
-            symbol: "helper",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:6:18",
-            ),
-        },
-        Dependency {
-            source_line: 7,
-            target_line: 6,
-            symbol: "result",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:7:20",
-            ),
-        },
+        Dependency { source_line: 6, target_line: 1, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:6:18") },
+        Dependency { source_line: 7, target_line: 6, symbol: "result", dependency_type: VariableUse, context: Some("Identifier:7:20") },
     ],
     usage: [
-        Usage {
-            name: "helper",
-            kind: CallExpression,
-            position: Position {
-                start_line: 6,
-                start_column: 18,
-                end_line: 6,
-                end_column: 26,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 7,
-                start_column: 5,
-                end_line: 7,
-                end_column: 12,
-            },
-            context: None,
-        },
-        Usage {
-            name: "result",
-            kind: Identifier,
-            position: Position {
-                start_line: 7,
-                start_column: 20,
-                end_line: 7,
-                end_column: 26,
-            },
-            context: None,
-        },
+        Usage { position: { 6:18 to 6:26 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 7:5 to 7:12 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 7:20 to 7:26 }, name: "result", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

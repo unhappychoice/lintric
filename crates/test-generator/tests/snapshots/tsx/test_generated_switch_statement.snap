@@ -29,17 +29,7 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "value29",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 9,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
+        Usage { position: { 1:9 to 1:16 }, name: "value29", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

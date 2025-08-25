@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
+use std::fmt;
 use tree_sitter::Node;
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Position {
     pub start_line: usize,
     pub start_column: usize,
@@ -29,6 +30,16 @@ impl Position {
     /// Find the AST node at this position from the root node
     pub fn find_node_at_position<'a>(&self, root: Node<'a>) -> Option<Node<'a>> {
         find_node_at_position_recursive(root, self.start_line - 1, self.start_column - 1)
+    }
+}
+
+impl fmt::Debug for Position {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{{ {}:{} to {}:{} }}",
+            self.start_line, self.start_column, self.end_line, self.end_column
+        )
     }
 }
 

@@ -30,71 +30,11 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "std::collections::HashMap::new",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 33,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "std",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 4,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "collections",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 17,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "HashMap",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 19,
-                end_line: 1,
-                end_column: 26,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "new",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 28,
-                end_line: 1,
-                end_column: 31,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
+        Usage { position: { 1:1 to 1:33 }, name: "std::collections::HashMap::new", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:1 to 1:4 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:6 to 1:17 }, name: "collections", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:19 to 1:26 }, name: "HashMap", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:28 to 1:31 }, name: "new", kind: Identifier, context: Some("scoped_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

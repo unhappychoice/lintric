@@ -27,40 +27,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "TestTrait1",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "method1",
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 30,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:7 to 1:17 }, name: "TestTrait1", definition_type: TypeDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:23 to 1:30 }, name: "method1", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "method1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: None,
-        },
+        Usage { position: { 1:23 to 1:30 }, name: "method1", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

@@ -24,45 +24,9 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "testFn",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 15,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "a2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 10,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "b2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 12,
-                end_line: 1,
-                end_column: 14,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 1:1 to 1:15 }, name: "testFn", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:8 to 1:10 }, name: "a2", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 1:12 to 1:14 }, name: "b2", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
