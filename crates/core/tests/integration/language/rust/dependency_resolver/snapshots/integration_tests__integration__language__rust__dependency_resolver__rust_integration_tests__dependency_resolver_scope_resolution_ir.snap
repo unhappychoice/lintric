@@ -1,5 +1,6 @@
 ---
 source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+assertion_line: 59
 expression: ir_snapshot_content
 ---
 Source Code:

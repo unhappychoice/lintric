@@ -309,46 +309,6 @@ IntermediateRepresentation {
             definition_type: VariableDefinition,
         },
         Definition {
-            name: "process",
-            position: Position {
-                start_line: 16,
-                start_column: 12,
-                end_line: 16,
-                end_column: 19,
-            },
-            definition_type: MethodDefinition,
-        },
-        Definition {
-            name: "input",
-            position: Position {
-                start_line: 16,
-                start_column: 27,
-                end_line: 16,
-                end_column: 32,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "new",
-            position: Position {
-                start_line: 9,
-                start_column: 12,
-                end_line: 9,
-                end_column: 15,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "data",
-            position: Position {
-                start_line: 9,
-                start_column: 16,
-                end_line: 9,
-                end_column: 20,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
             name: "vec_data",
             position: Position {
                 start_line: 10,
@@ -366,7 +326,7 @@ IntermediateRepresentation {
                 end_line: 16,
                 end_column: 19,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "input",

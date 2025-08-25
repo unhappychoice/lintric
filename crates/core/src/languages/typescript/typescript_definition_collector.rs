@@ -1,45 +1,302 @@
 use crate::definition_collectors::{find_identifier_nodes_in_node, DefinitionCollector};
-use crate::models::{Definition, DefinitionType};
+use crate::models::{
+    Accessibility, Definition, DefinitionType, Position, ScopeId, ScopeType, SymbolTable,
+};
 use tree_sitter::Node;
 
 pub struct TypescriptDefinitionCollector<'a> {
     source_code: &'a str,
 }
 
-impl<'a> TypescriptDefinitionCollector<'a> {
-    pub fn new(source_code: &'a str) -> Self {
-        Self { source_code }
-    }
+struct TypeScriptCollector<'a> {
+    source_code: &'a str,
+    symbol_table: SymbolTable,
+    current_scope: ScopeId,
 }
 
-impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
-    fn process_node(&self, node: Node<'a>) -> Vec<Definition> {
-        let mut definitions = Vec::new();
+impl<'a> TypeScriptCollector<'a> {
+    fn new(source_code: &'a str) -> Self {
+        let symbol_table = SymbolTable::new();
+        let current_scope = symbol_table.scopes.root;
 
-        match node.kind() {
-            "function_declaration" | "method_definition" | "arrow_function" => {
-                definitions.extend(self.collect_function_definitions(node));
-            }
-            "variable_declarator" => {
-                definitions.extend(self.collect_variable_definitions(node));
-            }
-            "class_declaration" | "interface_declaration" | "type_alias_declaration" => {
-                definitions.extend(self.collect_type_definitions(node));
-            }
-            "import_statement" | "export_statement" => {
-                definitions.extend(self.collect_import_definitions(node));
-            }
-            "public_field_definition" | "private_field_definition" | "field_definition" => {
-                definitions.extend(self.collect_class_field_definitions(node));
-            }
-            "property_signature" | "method_signature" => {
-                definitions.extend(self.collect_interface_member_definitions(node));
-            }
-            _ => {}
+        Self {
+            source_code,
+            symbol_table,
+            current_scope,
         }
-        definitions
     }
 
+    fn collect_from_node(&mut self, root: Node<'a>) -> Result<(), String> {
+        self.visit_node(root)?;
+        Ok(())
+    }
+
+    fn visit_node(&mut self, node: Node<'a>) -> Result<(), String> {
+        let node_type = node.kind();
+        let original_scope = self.current_scope;
+
+        self.visit_ts_node(node, node_type)?;
+
+        // Visit children
+        for i in 0..node.child_count() {
+            if let Some(child) = node.child(i) {
+                self.visit_node(child)?;
+            }
+        }
+
+        // Restore original scope
+        if matches!(
+            node_type,
+            "function_declaration"
+                | "arrow_function"
+                | "method_definition"
+                | "class_declaration"
+                | "interface_declaration"
+                | "namespace_declaration"
+                | "module_declaration"
+                | "internal_module"
+                | "block"
+                | "for_statement"
+                | "while_statement"
+                | "if_statement"
+        ) {
+            self.current_scope = original_scope;
+        }
+
+        Ok(())
+    }
+
+    fn visit_ts_node(&mut self, node: Node<'a>, node_type: &str) -> Result<(), String> {
+        match node_type {
+            "function_declaration" | "arrow_function" => {
+                self.handle_function_scope(node)?;
+            }
+            "method_definition" => {
+                self.handle_method_scope(node)?;
+            }
+            "class_declaration" => {
+                self.handle_class_scope(node)?;
+            }
+            "interface_declaration" => {
+                self.handle_interface_scope(node)?;
+            }
+            "namespace_declaration" | "module_declaration" | "internal_module" => {
+                self.handle_namespace_scope(node)?;
+            }
+            "block" | "for_statement" | "while_statement" | "if_statement" => {
+                self.handle_block_scope(node)?;
+            }
+            _ => {
+                // Collect definitions without creating scope
+                self.collect_definitions_for_node(node);
+            }
+        }
+
+        Ok(())
+    }
+
+    fn handle_function_scope(&mut self, node: Node<'a>) -> Result<(), String> {
+        let position = Position::from_node(&node);
+        let scope_id = self.symbol_table.scopes.create_scope(
+            Some(self.current_scope),
+            ScopeType::Function,
+            position,
+        );
+        self.current_scope = scope_id;
+
+        self.collect_function_definitions(node, scope_id);
+        Ok(())
+    }
+
+    fn handle_method_scope(&mut self, node: Node<'a>) -> Result<(), String> {
+        let position = Position::from_node(&node);
+        let scope_id = self.symbol_table.scopes.create_scope(
+            Some(self.current_scope),
+            ScopeType::Function,
+            position,
+        );
+        self.current_scope = scope_id;
+
+        self.collect_method_definitions(node, scope_id);
+        Ok(())
+    }
+
+    fn handle_class_scope(&mut self, node: Node<'a>) -> Result<(), String> {
+        let position = Position::from_node(&node);
+        let scope_id = self.symbol_table.scopes.create_scope(
+            Some(self.current_scope),
+            ScopeType::Class,
+            position,
+        );
+        self.current_scope = scope_id;
+
+        self.collect_class_definitions(node, scope_id);
+        Ok(())
+    }
+
+    fn handle_interface_scope(&mut self, node: Node<'a>) -> Result<(), String> {
+        let position = Position::from_node(&node);
+        let scope_id = self.symbol_table.scopes.create_scope(
+            Some(self.current_scope),
+            ScopeType::Interface,
+            position,
+        );
+        self.current_scope = scope_id;
+
+        self.collect_interface_definitions(node, scope_id);
+        Ok(())
+    }
+
+    fn handle_namespace_scope(&mut self, node: Node<'a>) -> Result<(), String> {
+        let position = Position::from_node(&node);
+        let scope_id = self.symbol_table.scopes.create_scope(
+            Some(self.current_scope),
+            ScopeType::Module,
+            position,
+        );
+        self.current_scope = scope_id;
+
+        self.collect_namespace_definitions(node, scope_id);
+        Ok(())
+    }
+
+    fn handle_block_scope(&mut self, node: Node<'a>) -> Result<(), String> {
+        let position = Position::from_node(&node);
+        let scope_id = self.symbol_table.scopes.create_scope(
+            Some(self.current_scope),
+            ScopeType::Block,
+            position,
+        );
+        self.current_scope = scope_id;
+        Ok(())
+    }
+
+    fn collect_definitions_for_node(&mut self, node: Node<'a>) {
+        let definitions = match node.kind() {
+            "variable_declarator" => self.collect_variable_definitions(node),
+            "type_alias_declaration" => self.collect_type_alias_definitions(node),
+            "import_statement" | "export_statement" => self.collect_import_definitions(node),
+            "public_field_definition" | "private_field_definition" | "field_definition" => {
+                self.collect_class_field_definitions(node)
+            }
+            "property_signature" | "method_signature" => {
+                self.collect_interface_member_definitions(node)
+            }
+            _ => vec![],
+        };
+
+        for mut definition in definitions {
+            definition.set_context(self.current_scope, &Accessibility::ScopeLocal, false);
+            self.symbol_table
+                .add_enhanced_symbol(definition.name.clone(), definition);
+        }
+    }
+
+    fn collect_function_definitions(&mut self, node: Node<'a>, scope_id: ScopeId) {
+        let mut definitions = vec![];
+
+        // Function name
+        if let Some(def) = Definition::from_naming_node(
+            &node,
+            self.source_code,
+            DefinitionType::FunctionDefinition,
+        ) {
+            definitions.push(def);
+        }
+
+        // Parameters
+        if let Some(params_node) = node.child_by_field_name("parameters") {
+            definitions.extend(self.collect_function_parameters(params_node));
+        }
+
+        // Type parameters
+        if let Some(type_params) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params));
+        }
+
+        for mut def in definitions {
+            def.set_context(scope_id, &Accessibility::ScopeLocal, false);
+            self.symbol_table.add_enhanced_symbol(def.name.clone(), def);
+        }
+    }
+
+    fn collect_method_definitions(&mut self, node: Node<'a>, scope_id: ScopeId) {
+        let mut definitions = vec![];
+
+        if let Some(def) =
+            Definition::from_naming_node(&node, self.source_code, DefinitionType::MethodDefinition)
+        {
+            definitions.push(def);
+        }
+
+        if let Some(params_node) = node.child_by_field_name("parameters") {
+            definitions.extend(self.collect_function_parameters(params_node));
+        }
+
+        for mut def in definitions {
+            def.set_context(scope_id, &Accessibility::ScopeLocal, false);
+            self.symbol_table.add_enhanced_symbol(def.name.clone(), def);
+        }
+    }
+
+    fn collect_class_definitions(&mut self, node: Node<'a>, scope_id: ScopeId) {
+        let mut definitions = vec![];
+
+        if let Some(def) =
+            Definition::from_naming_node(&node, self.source_code, DefinitionType::ClassDefinition)
+        {
+            definitions.push(def);
+        }
+
+        if let Some(type_params) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params));
+        }
+
+        for mut def in definitions {
+            def.set_context(scope_id, &Accessibility::ScopeLocal, false);
+            self.symbol_table.add_enhanced_symbol(def.name.clone(), def);
+        }
+    }
+
+    fn collect_interface_definitions(&mut self, node: Node<'a>, scope_id: ScopeId) {
+        let mut definitions = vec![];
+
+        if let Some(def) = Definition::from_naming_node(
+            &node,
+            self.source_code,
+            DefinitionType::InterfaceDefinition,
+        ) {
+            definitions.push(def);
+        }
+
+        if let Some(type_params) = node.child_by_field_name("type_parameters") {
+            definitions.extend(self.collect_type_parameters(type_params));
+        }
+
+        for mut def in definitions {
+            def.set_context(scope_id, &Accessibility::ScopeLocal, false);
+            self.symbol_table.add_enhanced_symbol(def.name.clone(), def);
+        }
+    }
+
+    fn collect_namespace_definitions(&mut self, node: Node<'a>, scope_id: ScopeId) {
+        if let Some(mut def) =
+            Definition::from_naming_node(&node, self.source_code, DefinitionType::ModuleDefinition)
+        {
+            // Namespace definition should be added to parent scope, not the created namespace scope
+            let parent_scope = self
+                .symbol_table
+                .scopes
+                .get_scope(scope_id)
+                .unwrap()
+                .parent
+                .unwrap_or(self.symbol_table.scopes.root);
+            def.set_context(parent_scope, &Accessibility::ScopeLocal, false);
+            self.symbol_table.add_enhanced_symbol(def.name.clone(), def);
+        }
+    }
+
+    // Helper methods from original TypescriptDefinitionCollector
     fn collect_variable_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         if let Some(name_node) = node.child_by_field_name("name") {
             find_identifier_nodes_in_node(name_node)
@@ -53,42 +310,15 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
         }
     }
 
-    fn collect_function_definitions(&self, node: Node<'a>) -> Vec<Definition> {
+    fn collect_type_alias_definitions(&self, node: Node<'a>) -> Vec<Definition> {
         let mut definitions = vec![];
 
-        // Function name
-        definitions.extend(Definition::from_naming_node(
-            &node,
-            self.source_code,
-            DefinitionType::FunctionDefinition,
-        ));
-
-        // Function parameters
-        if let Some(params_node) = node.child_by_field_name("parameters") {
-            definitions.extend(self.collect_function_parameters(params_node));
+        if let Some(def) =
+            Definition::from_naming_node(&node, self.source_code, DefinitionType::TypeDefinition)
+        {
+            definitions.push(def);
         }
 
-        definitions
-    }
-
-    fn collect_type_definitions(&self, node: Node<'a>) -> Vec<Definition> {
-        let mut definitions = vec![];
-
-        let definition_type = match node.kind() {
-            "class_declaration" => DefinitionType::ClassDefinition,
-            "interface_declaration" => DefinitionType::InterfaceDefinition,
-            "type_alias_declaration" => DefinitionType::TypeDefinition,
-            _ => DefinitionType::Other("unknown".to_string()),
-        };
-
-        // Collect the main type definition
-        definitions.extend(Definition::from_naming_node(
-            &node,
-            self.source_code,
-            definition_type,
-        ));
-
-        // Collect type parameters
         if let Some(type_params) = node.child_by_field_name("type_parameters") {
             definitions.extend(self.collect_type_parameters(type_params));
         }
@@ -100,7 +330,6 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
         let mut definitions = vec![];
         let mut cursor = node.walk();
 
-        // Traverse the import statement to find import specifiers
         for child in node.children(&mut cursor) {
             definitions.extend(self.collect_import_identifiers(child));
         }
@@ -108,23 +337,7 @@ impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
         definitions
     }
 
-    fn collect_closure_definitions(&self, node: Node<'a>) -> Vec<Definition> {
-        let mut definitions = vec![];
-        if let Some(params_node) = node.child_by_field_name("parameters") {
-            definitions.extend(self.collect_function_parameters(params_node));
-        }
-        definitions
-    }
-
-    fn collect_macro_definitions(&self, _node: Node<'a>) -> Vec<Definition> {
-        // TypeScript doesn't have macros like Rust
-        vec![]
-    }
-}
-
-impl<'a> TypescriptDefinitionCollector<'a> {
     fn collect_class_field_definitions(&self, node: Node<'a>) -> Vec<Definition> {
-        // Look for property_identifier node in class field definitions
         let mut cursor = node.walk();
         for child in node.children(&mut cursor) {
             if child.kind() == "property_identifier" {
@@ -189,7 +402,6 @@ impl<'a> TypescriptDefinitionCollector<'a> {
 
         match node.kind() {
             "import_specifier" => {
-                // Look for the identifier in import specifier
                 for child in node.children(&mut cursor) {
                     if child.kind() == "identifier" {
                         definitions.push(Definition::new(
@@ -201,17 +413,33 @@ impl<'a> TypescriptDefinitionCollector<'a> {
                 }
             }
             "namespace_import" => {
-                // Handle import * as name
-                if let Some(name_node) = node.child_by_field_name("name") {
-                    definitions.push(Definition::new(
-                        &name_node,
-                        self.source_code,
-                        DefinitionType::ImportDefinition,
-                    ));
+                // Find the identifier after "as"
+                for child in node.children(&mut cursor) {
+                    if child.kind() == "identifier" {
+                        definitions.push(Definition::new(
+                            &child,
+                            self.source_code,
+                            DefinitionType::ImportDefinition,
+                        ));
+                    }
+                }
+            }
+            "import_clause" => {
+                // Handle default imports - direct identifier in import_clause
+                for child in node.children(&mut cursor) {
+                    if child.kind() == "identifier" {
+                        definitions.push(Definition::new(
+                            &child,
+                            self.source_code,
+                            DefinitionType::ImportDefinition,
+                        ));
+                    } else {
+                        // Recursively process other children (named_imports, namespace_import)
+                        definitions.extend(self.collect_import_identifiers(child));
+                    }
                 }
             }
             _ => {
-                // Recursively search in children
                 for child in node.children(&mut cursor) {
                     definitions.extend(self.collect_import_identifiers(child));
                 }
@@ -227,7 +455,6 @@ impl<'a> TypescriptDefinitionCollector<'a> {
 
         for child in node.children(&mut cursor) {
             if child.kind() == "type_parameter" {
-                // Look for type_identifier in type_parameter
                 let mut param_cursor = child.walk();
                 for param_child in child.children(&mut param_cursor) {
                     if param_child.kind() == "type_identifier" {
@@ -242,5 +469,19 @@ impl<'a> TypescriptDefinitionCollector<'a> {
         }
 
         definitions
+    }
+}
+
+impl<'a> TypescriptDefinitionCollector<'a> {
+    pub fn new(source_code: &'a str) -> Self {
+        Self { source_code }
+    }
+}
+
+impl<'a> DefinitionCollector<'a> for TypescriptDefinitionCollector<'a> {
+    fn collect(&self, source_code: &str, root: Node<'a>) -> Result<SymbolTable, String> {
+        let mut collector = TypeScriptCollector::new(source_code);
+        collector.collect_from_node(root)?;
+        Ok(collector.symbol_table)
     }
 }

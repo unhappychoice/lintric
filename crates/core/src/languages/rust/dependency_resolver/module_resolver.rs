@@ -213,6 +213,9 @@ impl ImportResolver {
                         end_column: 1,
                     },
                     definition_type: crate::models::DefinitionType::Module,
+                    scope_id: None,
+                    accessibility: None,
+                    is_hoisted: None,
                 });
             }
         }

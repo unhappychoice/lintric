@@ -94,7 +94,7 @@ IntermediateRepresentation {
                 end_line: 2,
                 end_column: 16,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "value",
@@ -114,7 +114,7 @@ IntermediateRepresentation {
                 end_line: 3,
                 end_column: 10,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "instance",

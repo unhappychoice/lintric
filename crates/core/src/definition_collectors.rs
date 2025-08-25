@@ -1,41 +1,8 @@
-use crate::models::Definition;
+use crate::models::SymbolTable;
 use tree_sitter::Node;
 
 pub trait DefinitionCollector<'a>: Send + Sync {
-    fn collect_definitions_from_root(&self, root: Node<'a>) -> Result<Vec<Definition>, String> {
-        let mut definitions = vec![];
-        let mut stack: Vec<Node<'a>> = Vec::new();
-        stack.push(root);
-
-        while let Some(node) = stack.pop() {
-            definitions.extend(self.process_node(node));
-
-            let mut cursor = node.walk();
-            let mut children: Vec<Node<'a>> = Vec::new();
-            for child in node.children(&mut cursor) {
-                children.push(child);
-            }
-            for child in children.into_iter().rev() {
-                stack.push(child);
-            }
-        }
-
-        Ok(definitions)
-    }
-
-    fn process_node(&self, node: Node<'a>) -> Vec<Definition>;
-
-    fn collect_variable_definitions(&self, node: Node<'a>) -> Vec<Definition>;
-
-    fn collect_function_definitions(&self, node: Node<'a>) -> Vec<Definition>;
-
-    fn collect_type_definitions(&self, node: Node<'a>) -> Vec<Definition>;
-
-    fn collect_import_definitions(&self, node: Node<'a>) -> Vec<Definition>;
-
-    fn collect_closure_definitions(&self, node: Node<'a>) -> Vec<Definition>;
-
-    fn collect_macro_definitions(&self, node: Node<'a>) -> Vec<Definition>;
+    fn collect(&self, source_code: &str, root: Node<'a>) -> Result<SymbolTable, String>;
 }
 
 pub fn find_identifier_nodes_in_node<'a>(node: Node<'a>) -> Vec<Node<'a>> {

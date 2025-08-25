@@ -1,4 +1,4 @@
-use crate::models::{scope::ScopeId, Definition};
+use crate::models::{Definition, ScopeId};
 
 #[derive(Debug, Clone)]
 pub struct ShadowingWarning {

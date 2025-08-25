@@ -271,46 +271,6 @@ IntermediateRepresentation {
             definition_type: MethodDefinition,
         },
         Definition {
-            name: "new",
-            position: Position {
-                start_line: 6,
-                start_column: 8,
-                end_line: 6,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "add",
-            position: Position {
-                start_line: 10,
-                start_column: 8,
-                end_line: 10,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "n",
-            position: Position {
-                start_line: 10,
-                start_column: 23,
-                end_line: 10,
-                end_column: 24,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "get_value",
-            position: Position {
-                start_line: 14,
-                start_column: 8,
-                end_line: 14,
-                end_column: 17,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
             name: "Display",
             position: Position {
                 start_line: 19,
@@ -339,16 +299,6 @@ IntermediateRepresentation {
                 end_column: 15,
             },
             definition_type: MethodDefinition,
-        },
-        Definition {
-            name: "display",
-            position: Position {
-                start_line: 24,
-                start_column: 8,
-                end_line: 24,
-                end_column: 15,
-            },
-            definition_type: FunctionDefinition,
         },
         Definition {
             name: "main",

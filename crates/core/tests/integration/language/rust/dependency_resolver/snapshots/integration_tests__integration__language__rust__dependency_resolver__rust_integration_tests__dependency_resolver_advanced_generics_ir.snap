@@ -1,5 +1,6 @@
 ---
 source: crates/core/tests/integration/language/rust/dependency_resolver/rust_integration_tests.rs
+assertion_line: 83
 expression: ir_snapshot_content
 ---
 Source Code:
@@ -330,16 +331,6 @@ IntermediateRepresentation {
             definition_type: MethodDefinition,
         },
         Definition {
-            name: "clone",
-            position: Position {
-                start_line: 19,
-                start_column: 8,
-                end_line: 19,
-                end_column: 13,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
             name: "display",
             position: Position {
                 start_line: 25,
@@ -348,16 +339,6 @@ IntermediateRepresentation {
                 end_column: 15,
             },
             definition_type: MethodDefinition,
-        },
-        Definition {
-            name: "display",
-            position: Position {
-                start_line: 25,
-                start_column: 8,
-                end_line: 25,
-                end_column: 15,
-            },
-            definition_type: FunctionDefinition,
         },
         Definition {
             name: "main",

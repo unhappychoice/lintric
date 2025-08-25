@@ -148,16 +148,6 @@ IntermediateRepresentation {
             definition_type: MethodDefinition,
         },
         Definition {
-            name: "new",
-            position: Position {
-                start_line: 4,
-                start_column: 8,
-                end_line: 4,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
             name: "MyTrait",
             position: Position {
                 start_line: 9,
@@ -196,16 +186,6 @@ IntermediateRepresentation {
                 end_column: 19,
             },
             definition_type: MethodDefinition,
-        },
-        Definition {
-            name: "my_function",
-            position: Position {
-                start_line: 16,
-                start_column: 8,
-                end_line: 16,
-                end_column: 19,
-            },
-            definition_type: FunctionDefinition,
         },
         Definition {
             name: "main",

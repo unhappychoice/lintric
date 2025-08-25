@@ -1,27 +1,20 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+use super::definition::{Accessibility, ScopeId};
 use super::{Definition, DefinitionType, Position};
-
-pub type ScopeId = usize;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ScopeType {
     Global,
     Function,
+    Closure,
     Block,
     Module,
     Impl,
     Trait,
     Class,
     Interface,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Accessibility {
-    Public,
-    Private,
-    ScopeLocal,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -31,8 +24,7 @@ pub struct Scope {
     pub children: Vec<ScopeId>,
     pub scope_type: ScopeType,
     pub symbols: HashMap<String, Vec<Definition>>,
-    pub start_position: Position,
-    pub end_position: Position,
+    pub position: Position,
 }
 
 impl Scope {
@@ -40,8 +32,7 @@ impl Scope {
         id: ScopeId,
         parent: Option<ScopeId>,
         scope_type: ScopeType,
-        start_position: Position,
-        end_position: Position,
+        position: Position,
     ) -> Self {
         Self {
             id,
@@ -49,8 +40,7 @@ impl Scope {
             children: Vec::new(),
             scope_type,
             symbols: HashMap::new(),
-            start_position,
-            end_position,
+            position,
         }
     }
 
@@ -67,15 +57,15 @@ impl Scope {
     }
 
     pub fn contains_position(&self, position: &Position) -> bool {
-        position.start_line >= self.start_position.start_line
-            && position.start_line <= self.end_position.start_line
-            && if position.start_line == self.start_position.start_line {
-                position.start_column >= self.start_position.start_column
+        position.start_line >= self.position.start_line
+            && position.start_line <= self.position.end_line
+            && if position.start_line == self.position.start_line {
+                position.start_column >= self.position.start_column
             } else {
                 true
             }
-            && if position.start_line == self.end_position.start_line {
-                position.start_column <= self.end_position.start_column
+            && if position.start_line == self.position.end_line {
+                position.start_column <= self.position.end_column
             } else {
                 true
             }
@@ -104,12 +94,6 @@ impl ScopeTree {
             Position {
                 start_line: 1,
                 start_column: 1,
-                end_line: 1,
-                end_column: 1,
-            },
-            Position {
-                start_line: usize::MAX,
-                start_column: usize::MAX,
                 end_line: usize::MAX,
                 end_column: usize::MAX,
             },
@@ -124,19 +108,12 @@ impl ScopeTree {
         &mut self,
         parent_id: Option<ScopeId>,
         scope_type: ScopeType,
-        start_position: Position,
-        end_position: Position,
+        position: Position,
     ) -> ScopeId {
         let scope_id = self.scope_counter;
         self.scope_counter += 1;
 
-        let scope = Scope::new(
-            scope_id,
-            parent_id,
-            scope_type,
-            start_position,
-            end_position,
-        );
+        let scope = Scope::new(scope_id, parent_id, scope_type, position);
 
         if let Some(parent_id) = parent_id {
             if let Some(parent_scope) = self.scopes.get_mut(&parent_id) {
@@ -286,11 +263,41 @@ impl SymbolTable {
         accessibility: Accessibility,
         is_hoisted: bool,
     ) {
-        let entry = SymbolEntry::new(definition.clone(), scope_id, accessibility, is_hoisted);
+        let mut enhanced_definition = definition.clone();
+        enhanced_definition.set_context(scope_id, &accessibility, is_hoisted);
+
+        let entry = SymbolEntry::new(
+            enhanced_definition.clone(),
+            scope_id,
+            accessibility,
+            is_hoisted,
+        );
         self.symbols.entry(name.clone()).or_default().push(entry);
 
         if let Some(scope) = self.scopes.get_scope_mut(scope_id) {
-            scope.add_symbol(name, definition);
+            scope.add_symbol(name, enhanced_definition);
+        }
+    }
+
+    pub fn add_enhanced_symbol(&mut self, name: String, definition: Definition) {
+        if let (Some(scope_id), Some(accessibility), Some(is_hoisted)) = (
+            definition.get_scope_id(),
+            definition.get_accessibility(),
+            definition.is_hoisted(),
+        ) {
+            let entry = SymbolEntry::new(
+                definition.clone(),
+                scope_id,
+                accessibility.clone(),
+                is_hoisted,
+            );
+            self.symbols.entry(name.clone()).or_default().push(entry);
+
+            if let Some(scope) = self.scopes.get_scope_mut(scope_id) {
+                scope.add_symbol(name, definition);
+            }
+        } else {
+            panic!("Definition must have context information set");
         }
     }
 
@@ -354,6 +361,9 @@ impl Definition {
             name,
             definition_type,
             position,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         }
     }
 }

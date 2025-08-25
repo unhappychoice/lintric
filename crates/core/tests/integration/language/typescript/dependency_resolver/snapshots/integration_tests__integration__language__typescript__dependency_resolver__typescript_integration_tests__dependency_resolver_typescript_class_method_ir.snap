@@ -270,7 +270,7 @@ IntermediateRepresentation {
                 end_line: 4,
                 end_column: 8,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "n",
@@ -290,7 +290,7 @@ IntermediateRepresentation {
                 end_line: 8,
                 end_column: 13,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "Drawable",
@@ -340,7 +340,7 @@ IntermediateRepresentation {
                 end_line: 20,
                 end_column: 16,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "radius",
@@ -360,7 +360,7 @@ IntermediateRepresentation {
                 end_line: 24,
                 end_column: 9,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "main",

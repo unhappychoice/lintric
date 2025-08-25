@@ -1,5 +1,6 @@
 ---
 source: crates/core/tests/integration/language/rust/mod.rs
+assertion_line: 60
 expression: ir_snapshot_content
 ---
 Source Code:
@@ -260,15 +261,6 @@ IntermediateRepresentation {
             dependency_type: TypeReference,
             context: Some(
                 "TypeIdentifier:8:5",
-            ),
-        },
-        Dependency {
-            source_line: 8,
-            target_line: 3,
-            symbol: "my_function",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:8:17",
             ),
         },
         Dependency {

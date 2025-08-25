@@ -119,6 +119,9 @@ fn test_visibility_checker_public_access() {
             end_column: 10,
         },
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     assert!(visibility_checker.is_accessible(&definition, 0, 0));
@@ -140,6 +143,9 @@ fn test_visibility_checker_private_access() {
             end_column: 10,
         },
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     // Private items should not be accessible from different module
@@ -184,6 +190,9 @@ fn test_module_exports() {
             end_column: 4,
         },
         definition_type: DefinitionType::StructDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     module_tree.add_export(auth_module, "User".to_string(), definition.clone());
@@ -251,6 +260,9 @@ mod integration_tests {
                 end_column: 14,
             },
             definition_type: DefinitionType::FunctionDefinition,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         };
 
         // pub(super) item should be accessible to parent module
@@ -276,6 +288,9 @@ mod integration_tests {
                 end_column: 1,
             },
             definition_type: DefinitionType::StructDefinition,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         };
 
         module_tree.add_export(structs_module, "PublicStruct".to_string(), struct_def);
@@ -321,6 +336,9 @@ mod integration_tests {
                 end_column: 1,
             },
             definition_type: DefinitionType::FunctionDefinition,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         };
 
         module_tree.add_export(
@@ -373,6 +391,9 @@ mod integration_tests {
                 end_column: 1,
             },
             definition_type: DefinitionType::FunctionDefinition,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         };
 
         let formatter_def = Definition {
@@ -384,6 +405,9 @@ mod integration_tests {
                 end_column: 1,
             },
             definition_type: DefinitionType::FunctionDefinition,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         };
 
         module_tree.add_export(utils_module, "helper".to_string(), helper_def);
@@ -434,6 +458,9 @@ mod integration_tests {
                 end_column: 1,
             },
             definition_type: DefinitionType::StructDefinition,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         };
 
         module_tree.add_export(models_module, "User".to_string(), user_model);

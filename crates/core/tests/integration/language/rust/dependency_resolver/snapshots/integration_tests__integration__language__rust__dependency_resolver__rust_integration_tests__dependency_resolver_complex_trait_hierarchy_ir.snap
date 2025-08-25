@@ -375,26 +375,6 @@ IntermediateRepresentation {
             definition_type: MethodDefinition,
         },
         Definition {
-            name: "name",
-            position: Position {
-                start_line: 16,
-                start_column: 8,
-                end_line: 16,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "speak",
-            position: Position {
-                start_line: 20,
-                start_column: 8,
-                end_line: 20,
-                end_column: 13,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
             name: "fur_color",
             position: Position {
                 start_line: 26,
@@ -403,16 +383,6 @@ IntermediateRepresentation {
                 end_column: 17,
             },
             definition_type: MethodDefinition,
-        },
-        Definition {
-            name: "fur_color",
-            position: Position {
-                start_line: 26,
-                start_column: 8,
-                end_line: 26,
-                end_column: 17,
-            },
-            definition_type: FunctionDefinition,
         },
         Definition {
             name: "print_mammal_info",

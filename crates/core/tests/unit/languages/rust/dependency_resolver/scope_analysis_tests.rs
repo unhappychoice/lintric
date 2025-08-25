@@ -13,12 +13,6 @@ fn create_complex_scope_tree() -> ScopeTree {
         Position {
             start_line: 1,
             start_column: 1,
-            end_line: 1,
-            end_column: 1,
-        },
-        Position {
-            start_line: 20,
-            start_column: 1,
             end_line: 20,
             end_column: 1,
         },
@@ -31,12 +25,6 @@ fn create_complex_scope_tree() -> ScopeTree {
         Position {
             start_line: 5,
             start_column: 5,
-            end_line: 5,
-            end_column: 5,
-        },
-        Position {
-            start_line: 10,
-            start_column: 5,
             end_line: 10,
             end_column: 5,
         },
@@ -48,12 +36,6 @@ fn create_complex_scope_tree() -> ScopeTree {
         ScopeType::Function,
         Position {
             start_line: 12,
-            start_column: 8,
-            end_line: 12,
-            end_column: 8,
-        },
-        Position {
-            start_line: 16,
             start_column: 8,
             end_line: 16,
             end_column: 8,

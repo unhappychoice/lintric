@@ -1,4 +1,4 @@
-use crate::models::{scope::ScopeId, Type};
+use crate::models::{ScopeId, Type};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq)]

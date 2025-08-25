@@ -373,7 +373,7 @@ impl ScopeUtilities {
         false
     }
 
-    fn find_enclosing_function_scope(
+    pub fn find_enclosing_function_scope(
         symbol_table: &SymbolTable,
         position: &Position,
     ) -> Option<ScopeId> {
@@ -383,7 +383,7 @@ impl ScopeUtilities {
 
             // Walk up the scope chain to find a function scope
             while let Some(scope) = symbol_table.scopes.get_scope(current_scope_id) {
-                if matches!(scope.scope_type, ScopeType::Function) {
+                if matches!(scope.scope_type, ScopeType::Function | ScopeType::Closure) {
                     return Some(current_scope_id);
                 }
 

@@ -40,16 +40,6 @@ IntermediateRepresentation {
             },
             definition_type: MethodDefinition,
         },
-        Definition {
-            name: "method",
-            position: Position {
-                start_line: 1,
-                start_column: 20,
-                end_line: 1,
-                end_column: 26,
-            },
-            definition_type: FunctionDefinition,
-        },
     ],
     dependencies: [],
     usage: [

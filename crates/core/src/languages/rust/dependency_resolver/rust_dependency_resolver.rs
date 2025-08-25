@@ -4,10 +4,7 @@ use super::{
     NestedScopeResolver, ResolutionCandidate, ShadowingWarning, TraitBound,
 };
 use crate::dependency_resolver::DependencyResolverTrait;
-use crate::models::{
-    scope::{ScopeId, SymbolTable},
-    Definition, Dependency, Type, Usage, UsageKind,
-};
+use crate::models::{scope::SymbolTable, Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind};
 use tree_sitter::Node;
 
 /// Rust-specific dependency resolver that implements comprehensive dependency resolution
@@ -353,7 +350,7 @@ impl RustDependencyResolver {
     }
 
     // Helper methods for Rust-specific dependency resolution
-    fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
+    fn is_accessible_basic(&self, _usage: &Usage, definition: &Definition) -> bool {
         // ImportDefinitions and ModuleDefinitions are always accessible from any scope
         if matches!(
             definition.definition_type,
@@ -382,11 +379,6 @@ impl RustDependencyResolver {
         // Check for hoisting rules first
         if self.is_hoisted_basic(definition) {
             return true;
-        }
-
-        // For non-hoisted definitions, check Rust-specific scope rules
-        if !ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, definition) {
-            return false;
         }
 
         true
@@ -847,10 +839,42 @@ impl RustDependencyResolver {
             return dependencies;
         }
 
+        // Skip creating dependencies for TypeIdentifiers that are part of qualified paths 
+        // (like "future" in "std::future::Future")
+        if matches!(usage_node.kind, UsageKind::TypeIdentifier) 
+            && self.is_part_of_qualified_path(usage_node, all_usage_nodes) {
+            return dependencies;
+        }
+
         // Proceed with normal resolution
         if let Some(def) = self.find_closest_accessible_definition_basic(usage_node, definitions) {
             let source_line = usage_node.position.line_number();
             let target_line = def.line_number();
+
+            // In Rust, nested functions cannot access variables from outer function scopes
+            if matches!(
+                def.definition_type,
+                crate::models::DefinitionType::VariableDefinition
+            ) {
+                // Check if usage and definition are in different function scopes
+                let usage_func_scope = ScopeUtilities::find_enclosing_function_scope(
+                    &self.symbol_table,
+                    &usage_node.position,
+                );
+                let def_func_scope = ScopeUtilities::find_enclosing_function_scope(
+                    &self.symbol_table,
+                    &def.position,
+                );
+
+
+                if let (Some(usage_func), Some(def_func)) = (usage_func_scope, def_func_scope) {
+                    // If they are in different function scopes, block the dependency
+                    // Exception: Allow closures to capture variables from outer scopes
+                    if usage_func != def_func && !self.is_closure_capture(usage_node, def) {
+                        return dependencies;
+                    }
+                }
+            }
 
             if source_line != target_line {
                 dependencies.push(Dependency {
@@ -1027,22 +1051,30 @@ impl RustDependencyResolver {
     }
 
     fn is_usage_in_main_function(&self, usage: &Usage) -> bool {
-        // Check if usage is within main function scope
-        // Look for main function definition and check if usage is within its range
+        // Find the main function definition
         for scope in self.symbol_table.scopes.scopes.values() {
-            // Check if this scope contains main function
             if let Some(main_defs) = scope.symbols.get("main") {
-                if main_defs.iter().any(|def| {
-                    matches!(
+                for def in main_defs {
+                    if matches!(
                         def.definition_type,
                         crate::models::DefinitionType::FunctionDefinition
-                    )
-                }) {
-                    // Check if usage is within this scope's range
-                    if usage.position.start_line >= scope.start_position.start_line
-                        && usage.position.start_line <= scope.end_position.start_line
-                    {
-                        return true;
+                    ) {
+                        // Find function body scope that contains this main function
+                        let main_line = def.position.start_line;
+                        for body_scope in self.symbol_table.scopes.scopes.values() {
+                            // Look for a scope that starts right after the main function definition
+                            if body_scope.position.start_line == main_line + 1
+                                || (body_scope.position.start_line <= main_line + 1
+                                    && body_scope.position.end_line > main_line)
+                            {
+                                // Check if usage is within this function body scope
+                                if usage.position.start_line > main_line
+                                    && usage.position.start_line <= body_scope.position.end_line
+                                {
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1151,5 +1183,67 @@ impl RustDependencyResolver {
     fn is_type_reference_in_scoped_identifier(&self, usage_node: &Usage) -> bool {
         // If it's a TypeIdentifier, it's definitely a type reference
         matches!(usage_node.kind, crate::models::UsageKind::TypeIdentifier)
+    }
+
+    /// Check if the usage represents a closure capturing a variable from an outer scope
+    fn is_closure_capture(&self, _usage_node: &Usage, _def: &Definition) -> bool {
+        // Find the closest enclosing function-like scope for the usage
+        let usage_scope_id = self
+            .symbol_table
+            .scopes
+            .find_scope_at_position(&_usage_node.position);
+        
+        if let Some(scope_id) = usage_scope_id {
+            // Walk up the scope chain to find if we're inside a closure
+            let mut current_scope_id = scope_id;
+            while let Some(scope) = self.symbol_table.scopes.get_scope(current_scope_id) {
+                if matches!(scope.scope_type, ScopeType::Closure) {
+                    // We're inside a closure, so cross-function capture is allowed
+                    return true;
+                }
+                
+                if let Some(parent_id) = scope.parent {
+                    current_scope_id = parent_id;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        // Not inside a closure, so cross-function capture is not allowed
+        false
+    }
+
+    /// Check if a TypeIdentifier is part of a qualified path (like "future" in "std::future::Future")
+    fn is_part_of_qualified_path(&self, usage_node: &Usage, all_usage_nodes: &[Usage]) -> bool {
+        let usage_line = usage_node.position.start_line;
+        let usage_column = usage_node.position.start_column;
+        
+        // Look for other usage nodes on the same line that suggest this is part of a qualified path
+        // Only consider it as part of qualified path if there are both preceding AND following identifiers
+        let mut has_preceding = false;
+        let mut has_following = false;
+        
+        for other_usage in all_usage_nodes {
+            if other_usage.position.start_line == usage_line {
+                // Check for preceding identifier (like "std" before "future")
+                if other_usage.position.end_column < usage_column {
+                    let distance = usage_column - other_usage.position.end_column;
+                    if distance <= 3 { // accounting for ::
+                        has_preceding = true;
+                    }
+                }
+                // Check for following identifier (like "Future" after "future")
+                if other_usage.position.start_column > usage_node.position.end_column {
+                    let distance = other_usage.position.start_column - usage_node.position.end_column;
+                    if distance <= 3 { // accounting for ::
+                        has_following = true;
+                    }
+                }
+            }
+        }
+        
+        // Only consider it part of qualified path if it's in the middle (has both preceding and following)
+        has_preceding && has_following
     }
 }

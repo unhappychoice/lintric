@@ -114,16 +114,6 @@ IntermediateRepresentation {
             definition_type: MethodDefinition,
         },
         Definition {
-            name: "my_method",
-            position: Position {
-                start_line: 6,
-                start_column: 8,
-                end_line: 6,
-                end_column: 17,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
             name: "main",
             position: Position {
                 start_line: 11,

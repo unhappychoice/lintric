@@ -1,4 +1,3 @@
 pub mod dependency_resolver;
 pub mod typescript_definition_collector_tests;
-pub mod typescript_scope_collector_tests;
 pub mod typescript_usage_node_collector_tests;

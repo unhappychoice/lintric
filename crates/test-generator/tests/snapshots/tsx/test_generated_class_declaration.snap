@@ -70,7 +70,7 @@ IntermediateRepresentation {
                 end_line: 1,
                 end_column: 62,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
     ],
     dependencies: [],

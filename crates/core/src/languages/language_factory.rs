@@ -4,9 +4,9 @@ use super::typescript::typescript_definition_collector::TypescriptDefinitionColl
 use super::typescript::typescript_usage_node_collector::TypescriptUsageNodeCollector;
 use crate::definition_collectors::DefinitionCollector;
 use crate::dependency_resolver::DependencyResolverTrait;
-use crate::models::Language;
-use crate::scope_collector::ScopeCollector as ScopeCollectorTrait;
+use crate::models::{Language, SymbolTable};
 use crate::usage_collector::UsageCollector;
+use tree_sitter::Node;
 
 pub fn get_definition_collector<'a>(
     language: Language,
@@ -32,20 +32,18 @@ pub fn get_usage_node_collector(
     }
 }
 
-pub fn create_scope_collector(language: Language) -> Result<Box<dyn ScopeCollectorTrait>, String> {
-    match language {
-        Language::Rust => Ok(Box::new(
-            super::rust::rust_scope_collector::RustScopeCollector::new(),
-        )),
-        Language::TypeScript | Language::TSX => Ok(Box::new(
-            super::typescript::typescript_scope_collector::TypeScriptScopeCollector::new(),
-        )),
-    }
+pub fn collect_definitions_with_scopes<'a>(
+    language: Language,
+    source_code: &'a str,
+    root_node: Node<'a>,
+) -> Result<SymbolTable, String> {
+    let collector = get_definition_collector(language, source_code)?;
+    collector.collect(source_code, root_node)
 }
 
 pub fn get_dependency_resolver(
     language: Language,
-    symbol_table: crate::models::SymbolTable,
+    symbol_table: SymbolTable,
 ) -> Result<Box<dyn DependencyResolverTrait>, String> {
     match language {
         Language::Rust => Ok(Box::new(

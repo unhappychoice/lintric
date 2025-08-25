@@ -240,36 +240,6 @@ IntermediateRepresentation {
             definition_type: MethodDefinition,
         },
         Definition {
-            name: "new",
-            position: Position {
-                start_line: 6,
-                start_column: 8,
-                end_line: 6,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "item",
-            position: Position {
-                start_line: 6,
-                start_column: 12,
-                end_line: 6,
-                end_column: 16,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "get",
-            position: Position {
-                start_line: 10,
-                start_column: 8,
-                end_line: 10,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
             name: "process",
             position: Position {
                 start_line: 15,

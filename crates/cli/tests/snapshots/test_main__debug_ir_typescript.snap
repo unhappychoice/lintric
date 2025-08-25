@@ -13,7 +13,36 @@ expression: out
         "end_line": 1,
         "end_column": 19
       },
-      "definition_type": "ImportDefinition"
+      "definition_type": "ImportDefinition",
+      "scope_id": 0,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
+    },
+    {
+      "name": "Utils",
+      "position": {
+        "start_line": 2,
+        "start_column": 13,
+        "end_line": 2,
+        "end_column": 18
+      },
+      "definition_type": "ImportDefinition",
+      "scope_id": 0,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
+    },
+    {
+      "name": "DefaultExport",
+      "position": {
+        "start_line": 3,
+        "start_column": 8,
+        "end_line": 3,
+        "end_column": 21
+      },
+      "definition_type": "ImportDefinition",
+      "scope_id": 0,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "Point",
@@ -23,7 +52,10 @@ expression: out
         "end_line": 5,
         "end_column": 16
       },
-      "definition_type": "InterfaceDefinition"
+      "definition_type": "InterfaceDefinition",
+      "scope_id": 1,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "x",
@@ -33,7 +65,10 @@ expression: out
         "end_line": 6,
         "end_column": 6
       },
-      "definition_type": "PropertyDefinition"
+      "definition_type": "PropertyDefinition",
+      "scope_id": 1,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "y",
@@ -43,7 +78,10 @@ expression: out
         "end_line": 7,
         "end_column": 6
       },
-      "definition_type": "PropertyDefinition"
+      "definition_type": "PropertyDefinition",
+      "scope_id": 1,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "add",
@@ -53,7 +91,10 @@ expression: out
         "end_line": 10,
         "end_column": 13
       },
-      "definition_type": "FunctionDefinition"
+      "definition_type": "FunctionDefinition",
+      "scope_id": 2,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "a",
@@ -63,7 +104,10 @@ expression: out
         "end_line": 10,
         "end_column": 15
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 2,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "b",
@@ -73,7 +117,10 @@ expression: out
         "end_line": 10,
         "end_column": 26
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 2,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "result",
@@ -83,7 +130,10 @@ expression: out
         "end_line": 11,
         "end_column": 17
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 2,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "main",
@@ -93,7 +143,10 @@ expression: out
         "end_line": 15,
         "end_column": 14
       },
-      "definition_type": "FunctionDefinition"
+      "definition_type": "FunctionDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "p1",
@@ -103,7 +156,10 @@ expression: out
         "end_line": 16,
         "end_column": 13
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "p2",
@@ -113,7 +169,10 @@ expression: out
         "end_line": 17,
         "end_column": 13
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "p3",
@@ -123,7 +182,10 @@ expression: out
         "end_line": 19,
         "end_column": 13
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "p4",
@@ -133,7 +195,10 @@ expression: out
         "end_line": 24,
         "end_column": 13
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "p5",
@@ -143,7 +208,10 @@ expression: out
         "end_line": 25,
         "end_column": 17
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 4,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "p6",
@@ -153,7 +221,10 @@ expression: out
         "end_line": 26,
         "end_column": 17
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 4,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "x",
@@ -163,7 +234,10 @@ expression: out
         "end_line": 30,
         "end_column": 10
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "y",
@@ -173,7 +247,10 @@ expression: out
         "end_line": 31,
         "end_column": 10
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "z",
@@ -183,7 +260,10 @@ expression: out
         "end_line": 32,
         "end_column": 10
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 3,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "instance",
@@ -193,7 +273,10 @@ expression: out
         "end_line": 38,
         "end_column": 15
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 0,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "result",
@@ -203,7 +286,10 @@ expression: out
         "end_line": 39,
         "end_column": 13
       },
-      "definition_type": "VariableDefinition"
+      "definition_type": "VariableDefinition",
+      "scope_id": 0,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     },
     {
       "name": "anotherFunction",
@@ -213,7 +299,10 @@ expression: out
         "end_line": 42,
         "end_column": 25
       },
-      "definition_type": "FunctionDefinition"
+      "definition_type": "FunctionDefinition",
+      "scope_id": 5,
+      "accessibility": "ScopeLocal",
+      "is_hoisted": false
     }
   ],
   "dependencies": [
@@ -447,6 +536,20 @@ expression: out
       "symbol": "SomeClass",
       "dependency_type": "VariableUse",
       "context": "Identifier:38:22"
+    },
+    {
+      "source_line": 39,
+      "target_line": 2,
+      "symbol": "Utils",
+      "dependency_type": "VariableUse",
+      "context": "Identifier:39:16"
+    },
+    {
+      "source_line": 40,
+      "target_line": 3,
+      "symbol": "DefaultExport",
+      "dependency_type": "VariableUse",
+      "context": "Identifier:40:1"
     },
     {
       "source_line": 43,

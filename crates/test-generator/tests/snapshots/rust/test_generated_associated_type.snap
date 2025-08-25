@@ -31,6 +31,16 @@ IntermediateRepresentation {
             },
             definition_type: TypeDefinition,
         },
+        Definition {
+            name: "Item",
+            position: Position {
+                start_line: 1,
+                start_column: 24,
+                end_line: 1,
+                end_column: 28,
+            },
+            definition_type: TypeDefinition,
+        },
     ],
     dependencies: [],
     usage: [],

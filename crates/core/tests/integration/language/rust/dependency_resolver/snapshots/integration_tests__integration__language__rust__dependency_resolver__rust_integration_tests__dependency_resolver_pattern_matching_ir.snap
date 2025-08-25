@@ -355,46 +355,6 @@ IntermediateRepresentation {
             definition_type: VariableDefinition,
         },
         Definition {
-            name: "new",
-            position: Position {
-                start_line: 12,
-                start_column: 8,
-                end_line: 12,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "name",
-            position: Position {
-                start_line: 12,
-                start_column: 12,
-                end_line: 12,
-                end_column: 16,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "handle",
-            position: Position {
-                start_line: 16,
-                start_column: 8,
-                end_line: 16,
-                end_column: 14,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "msg",
-            position: Position {
-                start_line: 16,
-                start_column: 22,
-                end_line: 16,
-                end_column: 25,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
             name: "text",
             position: Position {
                 start_line: 18,

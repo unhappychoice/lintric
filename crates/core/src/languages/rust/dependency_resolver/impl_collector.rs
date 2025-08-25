@@ -267,6 +267,9 @@ impl RustImplCollector {
             name,
             definition_type,
             position: Position::from_node(&function_node),
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         })
     }
 

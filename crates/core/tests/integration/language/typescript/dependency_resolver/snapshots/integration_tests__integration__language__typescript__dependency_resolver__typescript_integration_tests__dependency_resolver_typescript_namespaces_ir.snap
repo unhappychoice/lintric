@@ -195,6 +195,16 @@ IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_namespaces.ts",
     definitions: [
         Definition {
+            name: "Utils",
+            position: Position {
+                start_line: 1,
+                start_column: 11,
+                end_line: 1,
+                end_column: 16,
+            },
+            definition_type: ModuleDefinition,
+        },
+        Definition {
             name: "helper",
             position: Position {
                 start_line: 2,
@@ -222,7 +232,7 @@ IntermediateRepresentation {
                 end_line: 7,
                 end_column: 12,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "a",
@@ -243,6 +253,16 @@ IntermediateRepresentation {
                 end_column: 25,
             },
             definition_type: VariableDefinition,
+        },
+        Definition {
+            name: "Inner",
+            position: Position {
+                start_line: 12,
+                start_column: 22,
+                end_line: 12,
+                end_column: 27,
+            },
+            definition_type: ModuleDefinition,
         },
         Definition {
             name: "deepFunction",
@@ -335,11 +355,29 @@ IntermediateRepresentation {
         },
         Dependency {
             source_line: 20,
+            target_line: 1,
+            symbol: "Utils",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:20:20",
+            ),
+        },
+        Dependency {
+            source_line: 20,
             target_line: 2,
             symbol: "helper",
             dependency_type: StructFieldAccess,
             context: Some(
                 "FieldExpression:20:26",
+            ),
+        },
+        Dependency {
+            source_line: 21,
+            target_line: 1,
+            symbol: "Utils",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:21:22",
             ),
         },
         Dependency {
@@ -367,6 +405,24 @@ IntermediateRepresentation {
             dependency_type: StructFieldAccess,
             context: Some(
                 "FieldExpression:22:22",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 1,
+            symbol: "Utils",
+            dependency_type: VariableUse,
+            context: Some(
+                "Identifier:23:18",
+            ),
+        },
+        Dependency {
+            source_line: 23,
+            target_line: 12,
+            symbol: "Inner",
+            dependency_type: StructFieldAccess,
+            context: Some(
+                "FieldExpression:23:24",
             ),
         },
         Dependency {

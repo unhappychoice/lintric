@@ -392,7 +392,7 @@ IntermediateRepresentation {
                 end_line: 9,
                 end_column: 9,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "user",
@@ -412,7 +412,7 @@ IntermediateRepresentation {
                 end_line: 13,
                 end_column: 13,
             },
-            definition_type: FunctionDefinition,
+            definition_type: MethodDefinition,
         },
         Definition {
             name: "id",
@@ -463,6 +463,16 @@ IntermediateRepresentation {
                 end_column: 22,
             },
             definition_type: FunctionDefinition,
+        },
+        Definition {
+            name: "T",
+            position: Position {
+                start_line: 23,
+                start_column: 23,
+                end_line: 23,
+                end_column: 24,
+            },
+            definition_type: TypeDefinition,
         },
         Definition {
             name: "items",
@@ -632,24 +642,6 @@ IntermediateRepresentation {
             dependency_type: VariableUse,
             context: Some(
                 "Identifier:14:46",
-            ),
-        },
-        Dependency {
-            source_line: 23,
-            target_line: 1,
-            symbol: "T",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:23:33",
-            ),
-        },
-        Dependency {
-            source_line: 23,
-            target_line: 1,
-            symbol: "T",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:23:39",
             ),
         },
         Dependency {
