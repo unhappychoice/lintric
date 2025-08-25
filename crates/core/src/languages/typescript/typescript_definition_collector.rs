@@ -5,7 +5,7 @@ use crate::models::{
 use tree_sitter::Node;
 
 pub struct TypescriptDefinitionCollector<'a> {
-    source_code: &'a str,
+    _source_code: &'a str,
 }
 
 struct TypeScriptCollector<'a> {
@@ -474,7 +474,9 @@ impl<'a> TypeScriptCollector<'a> {
 
 impl<'a> TypescriptDefinitionCollector<'a> {
     pub fn new(source_code: &'a str) -> Self {
-        Self { source_code }
+        Self {
+            _source_code: source_code,
+        }
     }
 }
 

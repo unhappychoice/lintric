@@ -5,7 +5,7 @@ use crate::models::{
 use tree_sitter::{Node, Query, QueryCursor};
 
 pub struct RustDefinitionCollector<'a> {
-    source_code: &'a str,
+    _source_code: &'a str,
 }
 
 struct RustCollector<'a> {
@@ -237,16 +237,12 @@ impl<'a> RustCollector<'a> {
     fn is_in_impl_scope(&self) -> bool {
         // Check if current scope or any parent scope is an Impl scope
         let mut scope_id = self.current_scope;
-        loop {
-            if let Some(scope) = self.symbol_table.scopes.get_scope(scope_id) {
-                if scope.scope_type == crate::models::ScopeType::Impl {
-                    return true;
-                }
-                if let Some(parent_id) = scope.parent {
-                    scope_id = parent_id;
-                } else {
-                    break;
-                }
+        while let Some(scope) = self.symbol_table.scopes.get_scope(scope_id) {
+            if scope.scope_type == crate::models::ScopeType::Impl {
+                return true;
+            }
+            if let Some(parent_id) = scope.parent {
+                scope_id = parent_id;
             } else {
                 break;
             }
@@ -826,7 +822,9 @@ impl<'a> RustCollector<'a> {
 
 impl<'a> RustDefinitionCollector<'a> {
     pub fn new(source_code: &'a str) -> Self {
-        Self { source_code }
+        Self {
+            _source_code: source_code,
+        }
     }
 }
 
