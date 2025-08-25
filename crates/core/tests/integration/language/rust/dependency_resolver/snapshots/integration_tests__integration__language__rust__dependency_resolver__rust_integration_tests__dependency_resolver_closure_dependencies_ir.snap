@@ -112,217 +112,30 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/dependency_resolver/fixtures/closure_dependencies.rs",
     definitions: [
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "captured",
-            position: Position {
-                start_line: 2,
-                start_column: 9,
-                end_line: 2,
-                end_column: 17,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "mutable_capture",
-            position: Position {
-                start_line: 3,
-                start_column: 13,
-                end_line: 3,
-                end_column: 28,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "closure",
-            position: Position {
-                start_line: 5,
-                start_column: 9,
-                end_line: 5,
-                end_column: 16,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "move_closure",
-            position: Position {
-                start_line: 13,
-                start_column: 9,
-                end_line: 13,
-                end_column: 21,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:9 to 2:17 }, name: "captured", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:13 to 3:28 }, name: "mutable_capture", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:9 to 5:16 }, name: "closure", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 13:9 to 13:21 }, name: "move_closure", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 6,
-            target_line: 2,
-            symbol: "captured",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:6:24",
-            ),
-        },
-        Dependency {
-            source_line: 7,
-            target_line: 3,
-            symbol: "mutable_capture",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:7:9",
-            ),
-        },
-        Dependency {
-            source_line: 8,
-            target_line: 3,
-            symbol: "mutable_capture",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:8:24",
-            ),
-        },
-        Dependency {
-            source_line: 11,
-            target_line: 5,
-            symbol: "closure",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:11:5",
-            ),
-        },
-        Dependency {
-            source_line: 14,
-            target_line: 2,
-            symbol: "captured",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:14:31",
-            ),
-        },
-        Dependency {
-            source_line: 17,
-            target_line: 13,
-            symbol: "move_closure",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:17:5",
-            ),
-        },
+        Dependency { source_line: 6, target_line: 2, symbol: "captured", dependency_type: VariableUse, context: Some("Identifier:6:24") },
+        Dependency { source_line: 7, target_line: 3, symbol: "mutable_capture", dependency_type: VariableUse, context: Some("Identifier:7:9") },
+        Dependency { source_line: 8, target_line: 3, symbol: "mutable_capture", dependency_type: VariableUse, context: Some("Identifier:8:24") },
+        Dependency { source_line: 11, target_line: 5, symbol: "closure", dependency_type: FunctionCall, context: Some("CallExpression:11:5") },
+        Dependency { source_line: 14, target_line: 2, symbol: "captured", dependency_type: VariableUse, context: Some("Identifier:14:31") },
+        Dependency { source_line: 17, target_line: 13, symbol: "move_closure", dependency_type: FunctionCall, context: Some("CallExpression:17:5") },
     ],
     usage: [
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 6,
-                start_column: 9,
-                end_line: 6,
-                end_column: 16,
-            },
-            context: None,
-        },
-        Usage {
-            name: "captured",
-            kind: Identifier,
-            position: Position {
-                start_line: 6,
-                start_column: 24,
-                end_line: 6,
-                end_column: 32,
-            },
-            context: None,
-        },
-        Usage {
-            name: "mutable_capture",
-            kind: Identifier,
-            position: Position {
-                start_line: 7,
-                start_column: 9,
-                end_line: 7,
-                end_column: 24,
-            },
-            context: None,
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 8,
-                start_column: 9,
-                end_line: 8,
-                end_column: 16,
-            },
-            context: None,
-        },
-        Usage {
-            name: "mutable_capture",
-            kind: Identifier,
-            position: Position {
-                start_line: 8,
-                start_column: 24,
-                end_line: 8,
-                end_column: 39,
-            },
-            context: None,
-        },
-        Usage {
-            name: "closure",
-            kind: CallExpression,
-            position: Position {
-                start_line: 11,
-                start_column: 5,
-                end_line: 11,
-                end_column: 14,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 14,
-                start_column: 9,
-                end_line: 14,
-                end_column: 16,
-            },
-            context: None,
-        },
-        Usage {
-            name: "captured",
-            kind: Identifier,
-            position: Position {
-                start_line: 14,
-                start_column: 31,
-                end_line: 14,
-                end_column: 39,
-            },
-            context: None,
-        },
-        Usage {
-            name: "move_closure",
-            kind: CallExpression,
-            position: Position {
-                start_line: 17,
-                start_column: 5,
-                end_line: 17,
-                end_column: 19,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 6:9 to 6:16 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 6:24 to 6:32 }, name: "captured", kind: Identifier, context: None },
+        Usage { position: { 7:9 to 7:24 }, name: "mutable_capture", kind: Identifier, context: None },
+        Usage { position: { 8:9 to 8:16 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 8:24 to 8:39 }, name: "mutable_capture", kind: Identifier, context: None },
+        Usage { position: { 11:5 to 11:14 }, name: "closure", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 14:9 to 14:16 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 14:31 to 14:39 }, name: "captured", kind: Identifier, context: None },
+        Usage { position: { 17:5 to 17:19 }, name: "move_closure", kind: CallExpression, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

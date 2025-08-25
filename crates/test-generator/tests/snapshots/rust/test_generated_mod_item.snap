@@ -27,26 +27,8 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_mod",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 13,
-            },
-            definition_type: ModuleDefinition,
-        },
-        Definition {
-            name: "test_fn7",
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 31,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:5 to 1:13 }, name: "test_mod", definition_type: ModuleDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:23 to 1:31 }, name: "test_fn7", definition_type: FunctionDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

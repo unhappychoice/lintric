@@ -26,30 +26,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "extern_fn",
-            position: Position {
-                start_line: 1,
-                start_column: 17,
-                end_line: 1,
-                end_column: 26,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:17 to 1:26 }, name: "extern_fn", definition_type: FunctionDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "extern_fn",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 17,
-                end_line: 1,
-                end_column: 26,
-            },
-            context: None,
-        },
+        Usage { position: { 1:17 to 1:26 }, name: "extern_fn", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

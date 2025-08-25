@@ -36,61 +36,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "Test",
-            position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 10,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "T1",
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 13,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "value6",
-            position: Position {
-                start_line: 1,
-                start_column: 36,
-                end_line: 1,
-                end_column: 42,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:6 to 1:10 }, name: "Test", definition_type: TypeDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:11 to 1:13 }, name: "T1", definition_type: TypeDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:36 to 1:42 }, name: "value6", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "T1",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 26,
-                end_line: 1,
-                end_column: 28,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Test",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 44,
-                end_line: 1,
-                end_column: 48,
-            },
-            context: None,
-        },
+        Usage { position: { 1:26 to 1:28 }, name: "T1", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:44 to 1:48 }, name: "Test", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

@@ -1,315 +1,323 @@
-use lintric_core::definition_collectors::DefinitionCollector;
-use lintric_core::languages::typescript::typescript_definition_collector::TypescriptDefinitionCollector;
-use lintric_core::models::DefinitionType;
-use tree_sitter::Parser;
+#[cfg(test)]
+mod tests {
+    use lintric_core::definition_collectors::DefinitionCollector;
+    use lintric_core::languages::typescript::typescript_definition_collector::TypescriptDefinitionCollector;
+    use lintric_core::models::{DefinitionType, ScopeType};
+    use tree_sitter::Parser;
 
-extern "C" {
-    fn tree_sitter_typescript() -> tree_sitter::Language;
-}
-
-fn setup_typescript_parser() -> Parser {
-    let mut parser = Parser::new();
-    parser
-        .set_language(unsafe { &tree_sitter_typescript() })
-        .expect("Error loading TypeScript grammar");
-    parser
-}
-
-#[test]
-fn test_typescript_definition_collector_creation() {
-    let source_code = "function test() {}";
-    let _collector = TypescriptDefinitionCollector::new(source_code);
-    // Test that collector can be created with source code
-}
-
-#[test]
-fn test_function_definition_collection() {
-    let source_code = r#"
-function testFunction() {
-    console.log("Hello, world!");
-}
-
-function anotherFunction(param: number): number {
-    return param + 1;
-}
-
-const arrowFunction = (x: number) => x * 2;
-    "#;
-
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
-
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
-
-    // Should find function definitions
-    assert!(!definitions.is_empty(), "Should find function definitions");
-
-    let function_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::FunctionDefinition))
-        .collect();
-
-    assert!(
-        !function_defs.is_empty(),
-        "Should find function definitions"
-    );
-}
-
-#[test]
-fn test_variable_definition_collection() {
-    let source_code = r#"
-const x = 5;
-let y: number = 10;
-var z = "hello";
-
-const { a, b } = { a: 1, b: 2 };
-const [first, second] = [1, 2];
-    "#;
-
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
-
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
-
-    // Should find variable definitions
-    assert!(!definitions.is_empty(), "Should find variable definitions");
-
-    let var_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::VariableDefinition))
-        .collect();
-
-    assert!(!var_defs.is_empty(), "Should find variable definitions");
-
-    // Check for specific variable names
-    let def_names: Vec<_> = definitions.iter().map(|d| &d.name).collect();
-    assert!(
-        def_names.contains(&&"x".to_string()),
-        "Should find variable x definition"
-    );
-    assert!(
-        def_names.contains(&&"y".to_string()),
-        "Should find variable y definition"
-    );
-}
-
-#[test]
-fn test_class_definition_collection() {
-    let source_code = r#"
-class TestClass {
-    private field: number;
-    public name: string;
-    
-    constructor(name: string) {
-        this.name = name;
-        this.field = 0;
+    fn get_typescript_parser() -> Parser {
+        let mut parser = Parser::new();
+        parser
+            .set_language(&tree_sitter_typescript::language_typescript())
+            .expect("Error loading TypeScript grammar");
+        parser
     }
-    
-    public getValue(): number {
-        return this.field;
+
+    #[test]
+    fn test_variable_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            const x = 5;
+            let y: string = "hello";
+            var z;
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert_eq!(symbols.len(), 3);
+        assert!(symbols.contains_key("x"));
+        assert!(symbols.contains_key("y"));
+        assert!(symbols.contains_key("z"));
+
+        let x_entries = symbols.get("x").unwrap();
+        assert_eq!(
+            x_entries[0].definition.definition_type,
+            DefinitionType::VariableDefinition
+        );
     }
-    
-    private setValue(value: number): void {
-        this.field = value;
+
+    #[test]
+    fn test_function_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            function add(a: number, b: number): number {
+                return a + b;
+            }
+            const multiply = (x: number, y: number) => x * y;
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("add"));
+        assert!(symbols.contains_key("multiply"));
+        assert!(symbols.contains_key("a"));
+        assert!(symbols.contains_key("b"));
+        assert!(symbols.contains_key("x"));
+        assert!(symbols.contains_key("y"));
+
+        let add_entries = symbols.get("add").unwrap();
+        assert_eq!(
+            add_entries[0].definition.definition_type,
+            DefinitionType::FunctionDefinition
+        );
     }
-}
 
-abstract class AbstractBase {
-    abstract doSomething(): void;
-}
-    "#;
+    #[test]
+    fn test_class_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            class Person {
+                private name: string;
+                public age: number;
+                
+                constructor(name: string, age: number) {
+                    this.name = name;
+                    this.age = age;
+                }
+                
+                getName(): string {
+                    return this.name;
+                }
+            }
+        "#;
 
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
 
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("Person"));
+        assert!(symbols.contains_key("name"));
+        assert!(symbols.contains_key("age"));
+        assert!(symbols.contains_key("getName"));
 
-    // Should find class definitions
-    let class_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::ClassDefinition))
-        .collect();
+        let person_entries = symbols.get("Person").unwrap();
+        assert_eq!(
+            person_entries[0].definition.definition_type,
+            DefinitionType::ClassDefinition
+        );
 
-    assert!(!class_defs.is_empty(), "Should find class definitions");
-
-    // Should find property definitions
-    let prop_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::PropertyDefinition))
-        .collect();
-
-    assert!(!prop_defs.is_empty(), "Should find property definitions");
-
-    // Should at least find some class-related definitions
-    assert!(!definitions.is_empty(), "Should find some definitions");
-}
-
-#[test]
-fn test_interface_definition_collection() {
-    let source_code = r#"
-interface User {
-    id: number;
-    name: string;
-    email?: string;
-    
-    getName(): string;
-    setEmail(email: string): void;
-}
-
-interface Admin extends User {
-    role: string;
-    permissions: string[];
-}
-    "#;
-
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
-
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
-
-    // Should find interface definitions
-    let interface_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::InterfaceDefinition))
-        .collect();
-
-    assert!(
-        !interface_defs.is_empty(),
-        "Should find interface definitions"
-    );
-
-    let def_names: Vec<_> = definitions.iter().map(|d| &d.name).collect();
-    assert!(
-        def_names.contains(&&"User".to_string()),
-        "Should find User interface definition"
-    );
-    assert!(
-        def_names.contains(&&"Admin".to_string()),
-        "Should find Admin interface definition"
-    );
-}
-
-#[test]
-fn test_type_definition_collection() {
-    let source_code = r#"
-type StringOrNumber = string | number;
-type UserID = number;
-type EventHandler<T> = (event: T) => void;
-
-type ComplexType = {
-    id: number;
-    data: string[];
-    callback: () => void;
-};
-    "#;
-
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
-
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
-
-    // Should find type definitions
-    let type_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::TypeDefinition))
-        .collect();
-
-    assert!(!type_defs.is_empty(), "Should find type definitions");
-
-    let def_names: Vec<_> = definitions.iter().map(|d| &d.name).collect();
-    assert!(
-        def_names.contains(&&"StringOrNumber".to_string()),
-        "Should find StringOrNumber type definition"
-    );
-    assert!(
-        def_names.contains(&&"UserID".to_string()),
-        "Should find UserID type definition"
-    );
-}
-
-#[test]
-fn test_import_definition_collection() {
-    let source_code = r#"
-import { Component, useState } from 'react';
-import * as fs from 'fs';
-import path from 'path';
-import { default as express, Router } from 'express';
-    "#;
-
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
-
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
-
-    // Should at least find some import definitions
-    assert!(
-        !definitions.is_empty(),
-        "Should find some import definitions"
-    );
-}
-
-#[test]
-fn test_generic_type_parameters() {
-    let source_code = r#"
-function identity<T>(arg: T): T {
-    return arg;
-}
-
-class Container<T, K extends string> {
-    private value: T;
-    private key: K;
-    
-    constructor(value: T, key: K) {
-        this.value = value;
-        this.key = key;
+        let name_entries = symbols.get("name").unwrap();
+        assert_eq!(
+            name_entries[0].definition.definition_type,
+            DefinitionType::PropertyDefinition
+        );
     }
-}
 
-interface Repository<T> {
-    find(id: string): T | null;
-    save(entity: T): void;
-}
-    "#;
+    #[test]
+    fn test_interface_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            interface User {
+                id: number;
+                name: string;
+                getProfile(): Profile;
+            }
+        "#;
 
-    let collector = TypescriptDefinitionCollector::new(source_code);
-    let mut parser = setup_typescript_parser();
-    let tree = parser.parse(source_code, None).unwrap();
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
 
-    let definitions = collector
-        .collect_definitions_from_root(tree.root_node())
-        .unwrap();
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("User"));
+        assert!(symbols.contains_key("id"));
+        assert!(symbols.contains_key("name"));
+        assert!(symbols.contains_key("getProfile"));
 
-    // Should find generic type parameter definitions
-    assert!(
-        !definitions.is_empty(),
-        "Should find type parameter definitions"
-    );
+        let user_entries = symbols.get("User").unwrap();
+        assert_eq!(
+            user_entries[0].definition.definition_type,
+            DefinitionType::InterfaceDefinition
+        );
 
-    let type_defs: Vec<_> = definitions
-        .iter()
-        .filter(|def| matches!(def.definition_type, DefinitionType::TypeDefinition))
-        .collect();
+        let id_entries = symbols.get("id").unwrap();
+        assert_eq!(
+            id_entries[0].definition.definition_type,
+            DefinitionType::PropertyDefinition
+        );
 
-    assert!(
-        !type_defs.is_empty(),
-        "Should find type definitions including type parameters"
-    );
+        let get_profile_entries = symbols.get("getProfile").unwrap();
+        assert_eq!(
+            get_profile_entries[0].definition.definition_type,
+            DefinitionType::MethodDefinition
+        );
+    }
+
+    #[test]
+    fn test_type_alias_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            type Status = "pending" | "completed" | "failed";
+            type User<T> = {
+                id: number;
+                data: T;
+            };
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("Status"));
+        assert!(symbols.contains_key("User"));
+        assert!(symbols.contains_key("T"));
+
+        let status_entries = symbols.get("Status").unwrap();
+        assert_eq!(
+            status_entries[0].definition.definition_type,
+            DefinitionType::TypeDefinition
+        );
+    }
+
+    #[test]
+    fn test_namespace_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            namespace Utils {
+                export function helper() {
+                    return "helper";
+                }
+            }
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("Utils"));
+        assert!(symbols.contains_key("helper"));
+
+        let utils_entries = symbols.get("Utils").unwrap();
+        assert_eq!(
+            utils_entries[0].definition.definition_type,
+            DefinitionType::ModuleDefinition
+        );
+    }
+
+    #[test]
+    fn test_import_definitions() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            import { readFile, writeFile } from 'fs';
+            import * as path from 'path';
+            import express from 'express';
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("readFile"));
+        assert!(symbols.contains_key("writeFile"));
+        assert!(symbols.contains_key("path"));
+        assert!(symbols.contains_key("express"));
+
+        let read_file_entries = symbols.get("readFile").unwrap();
+        assert_eq!(
+            read_file_entries[0].definition.definition_type,
+            DefinitionType::ImportDefinition
+        );
+    }
+
+    #[test]
+    fn test_scope_hierarchy() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            class MyClass {
+                method() {
+                    if (true) {
+                        let x = 1;
+                    }
+                }
+            }
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let scopes = &symbol_table.scopes;
+        assert!(scopes.scopes.len() > 1);
+
+        let class_scopes: Vec<_> = scopes
+            .scopes
+            .values()
+            .filter(|s| s.scope_type == ScopeType::Class)
+            .collect();
+        assert_eq!(class_scopes.len(), 1);
+
+        let function_scopes: Vec<_> = scopes
+            .scopes
+            .values()
+            .filter(|s| s.scope_type == ScopeType::Function)
+            .collect();
+        assert_eq!(function_scopes.len(), 1);
+
+        let block_scopes: Vec<_> = scopes
+            .scopes
+            .values()
+            .filter(|s| s.scope_type == ScopeType::Block)
+            .collect();
+        assert_eq!(block_scopes.len(), 1);
+    }
+
+    #[test]
+    fn test_destructuring_patterns() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            const { name, age } = user;
+            const [first, second] = array;
+            const { prop: aliasName } = obj;
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("name"));
+        assert!(symbols.contains_key("age"));
+        assert!(symbols.contains_key("first"));
+        assert!(symbols.contains_key("second"));
+        assert!(symbols.contains_key("aliasName"));
+    }
+
+    #[test]
+    fn test_generic_type_parameters() {
+        let collector = TypescriptDefinitionCollector::new("");
+        let mut parser = get_typescript_parser();
+        let code = r#"
+            function identity<T>(arg: T): T {
+                return arg;
+            }
+            
+            class Container<T, U> {
+                value: T;
+                helper: U;
+            }
+        "#;
+
+        let tree = parser.parse(code, None).unwrap();
+        let symbol_table = collector.collect(code, tree.root_node()).unwrap();
+
+        let symbols = symbol_table.get_all_symbols();
+        assert!(symbols.contains_key("T"));
+        assert!(symbols.contains_key("U"));
+
+        let t_entries = symbols.get("T").unwrap();
+        assert_eq!(
+            t_entries[0].definition.definition_type,
+            DefinitionType::TypeDefinition
+        );
+    }
 }

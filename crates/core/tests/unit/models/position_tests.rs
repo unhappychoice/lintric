@@ -92,8 +92,5 @@ fn test_position_debug() {
     };
 
     let debug_string = format!("{:?}", position);
-    assert!(debug_string.contains("start_line"));
-    assert!(debug_string.contains("start_column"));
-    assert!(debug_string.contains("end_line"));
-    assert!(debug_string.contains("end_column"));
+    assert!(debug_string.contains("1:1 to 1:10"));
 }

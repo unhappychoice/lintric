@@ -158,294 +158,37 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/dependency_resolver/fixtures/forward_references.rs",
     definitions: [
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "result",
-            position: Position {
-                start_line: 4,
-                start_column: 9,
-                end_line: 4,
-                end_column: 15,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "helper",
-            position: Position {
-                start_line: 8,
-                start_column: 4,
-                end_line: 8,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "is_even",
-            position: Position {
-                start_line: 12,
-                start_column: 4,
-                end_line: 12,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "n",
-            position: Position {
-                start_line: 12,
-                start_column: 12,
-                end_line: 12,
-                end_column: 13,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "is_odd",
-            position: Position {
-                start_line: 20,
-                start_column: 4,
-                end_line: 20,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "n",
-            position: Position {
-                start_line: 20,
-                start_column: 11,
-                end_line: 20,
-                end_column: 12,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 4:9 to 4:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 8:4 to 8:10 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 12:4 to 12:11 }, name: "is_even", definition_type: FunctionDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 12:12 to 12:13 }, name: "n", definition_type: VariableDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 20:4 to 20:10 }, name: "is_odd", definition_type: FunctionDefinition, scope_id: Some(10), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 20:11 to 20:12 }, name: "n", definition_type: VariableDefinition, scope_id: Some(10), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 2,
-            target_line: 8,
-            symbol: "helper",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:2:5",
-            ),
-        },
-        Dependency {
-            source_line: 4,
-            target_line: 12,
-            symbol: "is_even",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:4:18",
-            ),
-        },
-        Dependency {
-            source_line: 5,
-            target_line: 4,
-            symbol: "result",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:5:20",
-            ),
-        },
-        Dependency {
-            source_line: 13,
-            target_line: 12,
-            symbol: "n",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:13:8",
-            ),
-        },
-        Dependency {
-            source_line: 16,
-            target_line: 20,
-            symbol: "is_odd",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:16:9",
-            ),
-        },
-        Dependency {
-            source_line: 16,
-            target_line: 12,
-            symbol: "n",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:16:16",
-            ),
-        },
-        Dependency {
-            source_line: 21,
-            target_line: 20,
-            symbol: "n",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:21:8",
-            ),
-        },
-        Dependency {
-            source_line: 24,
-            target_line: 12,
-            symbol: "is_even",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:24:9",
-            ),
-        },
-        Dependency {
-            source_line: 24,
-            target_line: 20,
-            symbol: "n",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:24:17",
-            ),
-        },
+        Dependency { source_line: 2, target_line: 8, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:2:5") },
+        Dependency { source_line: 4, target_line: 12, symbol: "is_even", dependency_type: FunctionCall, context: Some("CallExpression:4:18") },
+        Dependency { source_line: 5, target_line: 4, symbol: "result", dependency_type: VariableUse, context: Some("Identifier:5:20") },
+        Dependency { source_line: 13, target_line: 12, symbol: "n", dependency_type: VariableUse, context: Some("Identifier:13:8") },
+        Dependency { source_line: 16, target_line: 20, symbol: "is_odd", dependency_type: FunctionCall, context: Some("CallExpression:16:9") },
+        Dependency { source_line: 16, target_line: 12, symbol: "n", dependency_type: VariableUse, context: Some("Identifier:16:16") },
+        Dependency { source_line: 21, target_line: 20, symbol: "n", dependency_type: VariableUse, context: Some("Identifier:21:8") },
+        Dependency { source_line: 24, target_line: 12, symbol: "is_even", dependency_type: FunctionCall, context: Some("CallExpression:24:9") },
+        Dependency { source_line: 24, target_line: 20, symbol: "n", dependency_type: VariableUse, context: Some("Identifier:24:17") },
     ],
     usage: [
-        Usage {
-            name: "helper",
-            kind: CallExpression,
-            position: Position {
-                start_line: 2,
-                start_column: 5,
-                end_line: 2,
-                end_column: 13,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "is_even",
-            kind: CallExpression,
-            position: Position {
-                start_line: 4,
-                start_column: 18,
-                end_line: 4,
-                end_column: 28,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 5,
-                start_column: 5,
-                end_line: 5,
-                end_column: 12,
-            },
-            context: None,
-        },
-        Usage {
-            name: "result",
-            kind: Identifier,
-            position: Position {
-                start_line: 5,
-                start_column: 20,
-                end_line: 5,
-                end_column: 26,
-            },
-            context: None,
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 9,
-                start_column: 5,
-                end_line: 9,
-                end_column: 12,
-            },
-            context: None,
-        },
-        Usage {
-            name: "n",
-            kind: Identifier,
-            position: Position {
-                start_line: 13,
-                start_column: 8,
-                end_line: 13,
-                end_column: 9,
-            },
-            context: None,
-        },
-        Usage {
-            name: "is_odd",
-            kind: CallExpression,
-            position: Position {
-                start_line: 16,
-                start_column: 9,
-                end_line: 16,
-                end_column: 22,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "n",
-            kind: Identifier,
-            position: Position {
-                start_line: 16,
-                start_column: 16,
-                end_line: 16,
-                end_column: 17,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "n",
-            kind: Identifier,
-            position: Position {
-                start_line: 21,
-                start_column: 8,
-                end_line: 21,
-                end_column: 9,
-            },
-            context: None,
-        },
-        Usage {
-            name: "is_even",
-            kind: CallExpression,
-            position: Position {
-                start_line: 24,
-                start_column: 9,
-                end_line: 24,
-                end_column: 23,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "n",
-            kind: Identifier,
-            position: Position {
-                start_line: 24,
-                start_column: 17,
-                end_line: 24,
-                end_column: 18,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 2:5 to 2:13 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 4:18 to 4:28 }, name: "is_even", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 5:5 to 5:12 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 5:20 to 5:26 }, name: "result", kind: Identifier, context: None },
+        Usage { position: { 9:5 to 9:12 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 13:8 to 13:9 }, name: "n", kind: Identifier, context: None },
+        Usage { position: { 16:9 to 16:22 }, name: "is_odd", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 16:16 to 16:17 }, name: "n", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 21:8 to 21:9 }, name: "n", kind: Identifier, context: None },
+        Usage { position: { 24:9 to 24:23 }, name: "is_even", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 24:17 to 24:18 }, name: "n", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

@@ -21,16 +21,18 @@ expression: out
 │ 34   ┆ 1          ┆ 0.3409090909090909   ┆ 2     ┆ 2               │
 │ 35   ┆ 1          ┆ 0.25                 ┆ 1     ┆ 1               │
 │ 38   ┆ 1          ┆ 0.8409090909090909   ┆ 1     ┆ 1               │
-│ 43   ┆ 2          ┆ 0.20454545454545453  ┆ 2     ┆ 3               │
+│ 39   ┆ 1          ┆ 0.8409090909090909   ┆ 1     ┆ 1               │
+│ 40   ┆ 1          ┆ 0.8409090909090909   ┆ 1     ┆ 1               │
+│ 43   ┆ 2          ┆ 0.20454545454545453  ┆ 2     ┆ 4               │
 └──────┴────────────┴──────────────────────┴───────┴─────────────────┘
-Overall Complexity Score: 69.56
+Overall Complexity Score: 74.33
 ┌────────────────────────────┬──────────────────────────┐
 │ File                       ┆ Overall Complexity Score │
 ╞════════════════════════════╪══════════════════════════╡
-│ complex_typescript_code.ts ┆ 69.56                    │
+│ complex_typescript_code.ts ┆ 74.33                    │
 └────────────────────────────┴──────────────────────────┘
 
 --- Overall Report ---
 Total Files Analyzed: 1
-Total Overall Complexity Score: 69.56
-Average Complexity Score: 69.56
+Total Overall Complexity Score: 74.33
+Average Complexity Score: 74.33

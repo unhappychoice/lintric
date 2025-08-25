@@ -22,12 +22,6 @@ fn test_scope_tree_create_child_scope() {
         Position {
             start_line: 2,
             start_column: 1,
-            end_line: 2,
-            end_column: 1,
-        },
-        Position {
-            start_line: 5,
-            start_column: 1,
             end_line: 5,
             end_column: 1,
         },

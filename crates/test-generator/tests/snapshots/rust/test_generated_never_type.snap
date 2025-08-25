@@ -28,30 +28,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_fn8",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:4 to 1:12 }, name: "test_fn8", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "panic",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 22,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: None,
-        },
+        Usage { position: { 1:22 to 1:27 }, name: "panic", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

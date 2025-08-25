@@ -50,6 +50,9 @@ fn test_impl_block_analyzer() {
         name: "test_method".to_string(),
         definition_type: DefinitionType::MethodDefinition,
         position: create_test_position(5),
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     let impl_block = ImplBlock {
@@ -79,6 +82,9 @@ fn test_trait_resolver() {
             name: "display".to_string(),
             definition_type: DefinitionType::MethodDefinition,
             position: create_test_position(2),
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         }],
         associated_types: Vec::new(),
         super_traits: Vec::new(),
@@ -107,6 +113,9 @@ fn test_method_resolution_result() {
             name: "test".to_string(),
             definition_type: DefinitionType::MethodDefinition,
             position: create_test_position(1),
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         },
         receiver_type: Type::Concrete("TestStruct".to_string()),
         resolution_path: ResolutionPath::InherentMethod { impl_block_id: 1 },
@@ -160,6 +169,9 @@ fn main() {
         name: "distance".to_string(),
         definition_type: DefinitionType::MethodDefinition,
         position: create_test_position(12),
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     }];
 
     // This test verifies the method resolution infrastructure
@@ -185,6 +197,9 @@ fn test_associated_function_call_parsing() {
         name: "new".to_string(),
         definition_type: DefinitionType::FunctionDefinition,
         position: create_test_position(1),
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     }];
 
     let mut parser = setup_rust_parser();
@@ -238,6 +253,9 @@ fn main() {
         name: "get".to_string(),
         definition_type: DefinitionType::MethodDefinition,
         position: create_test_position(11),
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     }];
 
     // Test generic method resolution infrastructure
@@ -282,6 +300,9 @@ fn main() {
         name: "display".to_string(),
         definition_type: DefinitionType::MethodDefinition,
         position: create_test_position(11),
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     }];
 
     // Test trait method resolution infrastructure
@@ -335,6 +356,9 @@ fn main() {
             name: method_name.to_string(),
             definition_type: DefinitionType::MethodDefinition,
             position: create_test_position(7),
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
         }];
 
         let _result =

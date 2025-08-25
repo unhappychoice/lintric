@@ -39,106 +39,17 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "var3",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:9 }, name: "var3", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Box",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 14,
-            },
-            context: None,
-        },
-        Usage {
-            name: "std",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 19,
-                end_line: 1,
-                end_column: 22,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "fmt",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 24,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Display",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 29,
-                end_line: 1,
-                end_column: 36,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Box::new",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 40,
-                end_line: 1,
-                end_column: 52,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "Box",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 40,
-                end_line: 1,
-                end_column: 43,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "new",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 45,
-                end_line: 1,
-                end_column: 48,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
+        Usage { position: { 1:11 to 1:14 }, name: "Box", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:19 to 1:22 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:24 to 1:27 }, name: "fmt", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:29 to 1:36 }, name: "Display", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:40 to 1:52 }, name: "Box::new", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:40 to 1:43 }, name: "Box", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:45 to 1:48 }, name: "new", kind: Identifier, context: Some("scoped_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

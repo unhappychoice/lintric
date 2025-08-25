@@ -148,252 +148,34 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/forward_reference_scope.rs",
     definitions: [
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "y",
-            position: Position {
-                start_line: 2,
-                start_column: 9,
-                end_line: 2,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 3,
-                start_column: 9,
-                end_line: 3,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "proper_order",
-            position: Position {
-                start_line: 6,
-                start_column: 4,
-                end_line: 6,
-                end_column: 16,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 7,
-                start_column: 9,
-                end_line: 7,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "y",
-            position: Position {
-                start_line: 8,
-                start_column: 9,
-                end_line: 8,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "block_scoping",
-            position: Position {
-                start_line: 11,
-                start_column: 4,
-                end_line: 11,
-                end_column: 17,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "outer",
-            position: Position {
-                start_line: 12,
-                start_column: 9,
-                end_line: 12,
-                end_column: 14,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "inner",
-            position: Position {
-                start_line: 14,
-                start_column: 13,
-                end_line: 14,
-                end_column: 18,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "helper",
-            position: Position {
-                start_line: 19,
-                start_column: 4,
-                end_line: 19,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "function_scoping",
-            position: Position {
-                start_line: 23,
-                start_column: 4,
-                end_line: 23,
-                end_column: 20,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "result",
-            position: Position {
-                start_line: 24,
-                start_column: 9,
-                end_line: 24,
-                end_column: 15,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "func_a",
-            position: Position {
-                start_line: 27,
-                start_column: 4,
-                end_line: 27,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "local_var",
-            position: Position {
-                start_line: 28,
-                start_column: 9,
-                end_line: 28,
-                end_column: 18,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "func_b",
-            position: Position {
-                start_line: 31,
-                start_column: 4,
-                end_line: 31,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 33,
-                start_column: 9,
-                end_line: 33,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:9 to 2:10 }, name: "y", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:9 to 3:10 }, name: "x", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:4 to 6:16 }, name: "proper_order", definition_type: FunctionDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 7:9 to 7:10 }, name: "x", definition_type: VariableDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 8:9 to 8:10 }, name: "y", definition_type: VariableDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 11:4 to 11:17 }, name: "block_scoping", definition_type: FunctionDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 12:9 to 12:14 }, name: "outer", definition_type: VariableDefinition, scope_id: Some(6), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 14:13 to 14:18 }, name: "inner", definition_type: VariableDefinition, scope_id: Some(7), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 19:4 to 19:10 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 23:4 to 23:20 }, name: "function_scoping", definition_type: FunctionDefinition, scope_id: Some(10), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 24:9 to 24:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(11), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 27:4 to 27:10 }, name: "func_a", definition_type: FunctionDefinition, scope_id: Some(12), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 28:9 to 28:18 }, name: "local_var", definition_type: VariableDefinition, scope_id: Some(13), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 31:4 to 31:10 }, name: "func_b", definition_type: FunctionDefinition, scope_id: Some(14), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 33:9 to 33:10 }, name: "x", definition_type: VariableDefinition, scope_id: Some(15), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 2,
-            target_line: 3,
-            symbol: "x",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:13",
-            ),
-        },
-        Dependency {
-            source_line: 8,
-            target_line: 7,
-            symbol: "x",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:8:13",
-            ),
-        },
-        Dependency {
-            source_line: 14,
-            target_line: 12,
-            symbol: "outer",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:14:21",
-            ),
-        },
-        Dependency {
-            source_line: 24,
-            target_line: 19,
-            symbol: "helper",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:24:18",
-            ),
-        },
+        Dependency { source_line: 2, target_line: 3, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:2:13") },
+        Dependency { source_line: 8, target_line: 7, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:8:13") },
+        Dependency { source_line: 14, target_line: 12, symbol: "outer", dependency_type: VariableUse, context: Some("Identifier:14:21") },
+        Dependency { source_line: 24, target_line: 19, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:24:18") },
     ],
     usage: [
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 13,
-                end_line: 2,
-                end_column: 14,
-            },
-            context: None,
-        },
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 8,
-                start_column: 13,
-                end_line: 8,
-                end_column: 14,
-            },
-            context: None,
-        },
-        Usage {
-            name: "outer",
-            kind: Identifier,
-            position: Position {
-                start_line: 14,
-                start_column: 21,
-                end_line: 14,
-                end_column: 26,
-            },
-            context: None,
-        },
-        Usage {
-            name: "helper",
-            kind: CallExpression,
-            position: Position {
-                start_line: 24,
-                start_column: 18,
-                end_line: 24,
-                end_column: 26,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 2:13 to 2:14 }, name: "x", kind: Identifier, context: None },
+        Usage { position: { 8:13 to 8:14 }, name: "x", kind: Identifier, context: None },
+        Usage { position: { 14:21 to 14:26 }, name: "outer", kind: Identifier, context: None },
+        Usage { position: { 24:18 to 24:26 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

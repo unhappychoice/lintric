@@ -59,145 +59,23 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/struct_field_access_dependency.rs",
     definitions: [
-        Definition {
-            name: "Point",
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 13,
-            },
-            definition_type: StructDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: StructFieldDefinition,
-        },
-        Definition {
-            name: "y",
-            position: Position {
-                start_line: 1,
-                start_column: 24,
-                end_line: 1,
-                end_column: 25,
-            },
-            definition_type: StructFieldDefinition,
-        },
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 2,
-                start_column: 4,
-                end_line: 2,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "p",
-            position: Position {
-                start_line: 3,
-                start_column: 9,
-                end_line: 3,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "val",
-            position: Position {
-                start_line: 4,
-                start_column: 9,
-                end_line: 4,
-                end_column: 12,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:8 to 1:13 }, name: "Point", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:16 to 1:17 }, name: "x", definition_type: StructFieldDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:24 to 1:25 }, name: "y", definition_type: StructFieldDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:4 to 2:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:9 to 3:10 }, name: "p", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 4:9 to 4:12 }, name: "val", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 3,
-            target_line: 1,
-            symbol: "Point",
-            dependency_type: TypeReference,
-            context: Some(
-                "TypeIdentifier:3:13",
-            ),
-        },
-        Dependency {
-            source_line: 4,
-            target_line: 1,
-            symbol: "x",
-            dependency_type: StructFieldAccess,
-            context: Some(
-                "FieldExpression:4:15",
-            ),
-        },
-        Dependency {
-            source_line: 4,
-            target_line: 3,
-            symbol: "p",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:4:15",
-            ),
-        },
+        Dependency { source_line: 3, target_line: 1, symbol: "Point", dependency_type: TypeReference, context: Some("TypeIdentifier:3:13") },
+        Dependency { source_line: 4, target_line: 1, symbol: "x", dependency_type: StructFieldAccess, context: Some("FieldExpression:4:15") },
+        Dependency { source_line: 4, target_line: 3, symbol: "p", dependency_type: VariableUse, context: Some("Identifier:4:15") },
     ],
     usage: [
-        Usage {
-            name: "Point { x: 1, y: 2 }",
-            kind: StructExpression,
-            position: Position {
-                start_line: 3,
-                start_column: 13,
-                end_line: 3,
-                end_column: 33,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Point",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 3,
-                start_column: 13,
-                end_line: 3,
-                end_column: 18,
-            },
-            context: None,
-        },
-        Usage {
-            name: "x",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 4,
-                start_column: 15,
-                end_line: 4,
-                end_column: 18,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
-        Usage {
-            name: "p",
-            kind: Identifier,
-            position: Position {
-                start_line: 4,
-                start_column: 15,
-                end_line: 4,
-                end_column: 16,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
+        Usage { position: { 3:13 to 3:33 }, name: "Point { x: 1, y: 2 }", kind: StructExpression, context: None },
+        Usage { position: { 3:13 to 3:18 }, name: "Point", kind: TypeIdentifier, context: None },
+        Usage { position: { 4:15 to 4:18 }, name: "x", kind: FieldExpression, context: Some("field_expression") },
+        Usage { position: { 4:15 to 4:16 }, name: "p", kind: Identifier, context: Some("field_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

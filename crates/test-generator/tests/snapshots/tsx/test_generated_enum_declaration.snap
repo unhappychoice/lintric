@@ -22,39 +22,9 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "TestEnum",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 14,
-            },
-            context: None,
-        },
-        Usage {
-            name: "A",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 17,
-                end_line: 1,
-                end_column: 18,
-            },
-            context: None,
-        },
-        Usage {
-            name: "B",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 20,
-                end_line: 1,
-                end_column: 21,
-            },
-            context: None,
-        },
+        Usage { position: { 1:6 to 1:14 }, name: "TestEnum", kind: Identifier, context: None },
+        Usage { position: { 1:17 to 1:18 }, name: "A", kind: FieldExpression, context: None },
+        Usage { position: { 1:20 to 1:21 }, name: "B", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

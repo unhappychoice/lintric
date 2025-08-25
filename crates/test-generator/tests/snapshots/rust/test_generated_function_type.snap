@@ -31,40 +31,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "func",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 1,
-                start_column: 29,
-                end_line: 1,
-                end_column: 30,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:9 }, name: "func", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:29 to 1:30 }, name: "x", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 32,
-                end_line: 1,
-                end_column: 33,
-            },
-            context: None,
-        },
+        Usage { position: { 1:32 to 1:33 }, name: "x", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

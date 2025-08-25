@@ -21,30 +21,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "x12",
-            position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:6 to 1:9 }, name: "x12", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "value5",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 13,
-                end_line: 1,
-                end_column: 19,
-            },
-            context: None,
-        },
+        Usage { position: { 1:13 to 1:19 }, name: "value5", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

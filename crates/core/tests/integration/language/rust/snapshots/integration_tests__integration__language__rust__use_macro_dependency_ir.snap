@@ -39,76 +39,16 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/use_macro_dependency.rs",
     definitions: [
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "some_macro",
-            position: Position {
-                start_line: 2,
-                start_column: 20,
-                end_line: 2,
-                end_column: 30,
-            },
-            definition_type: ImportDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:20 to 2:30 }, name: "some_macro", definition_type: ImportDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 3,
-            target_line: 2,
-            symbol: "some_macro",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:3:5",
-            ),
-        },
+        Dependency { source_line: 3, target_line: 2, symbol: "some_macro", dependency_type: VariableUse, context: Some("Identifier:3:5") },
     ],
     usage: [
-        Usage {
-            name: "my_module",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 2,
-                start_column: 9,
-                end_line: 2,
-                end_column: 18,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "some_macro",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 2,
-                start_column: 20,
-                end_line: 2,
-                end_column: 30,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "some_macro",
-            kind: Identifier,
-            position: Position {
-                start_line: 3,
-                start_column: 5,
-                end_line: 3,
-                end_column: 15,
-            },
-            context: None,
-        },
+        Usage { position: { 2:9 to 2:18 }, name: "my_module", kind: TypeIdentifier, context: Some("scoped_identifier") },
+        Usage { position: { 2:20 to 2:30 }, name: "some_macro", kind: TypeIdentifier, context: Some("scoped_identifier") },
+        Usage { position: { 3:5 to 3:15 }, name: "some_macro", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

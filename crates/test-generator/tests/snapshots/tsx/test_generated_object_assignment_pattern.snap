@@ -24,41 +24,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "prop5",
-            position: Position {
-                start_line: 1,
-                start_column: 9,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:9 to 1:14 }, name: "prop5", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "defaultVal",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 17,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: None,
-        },
-        Usage {
-            name: "obj2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 32,
-                end_line: 1,
-                end_column: 36,
-            },
-            context: None,
-        },
+        Usage { position: { 1:17 to 1:27 }, name: "defaultVal", kind: Identifier, context: None },
+        Usage { position: { 1:32 to 1:36 }, name: "obj2", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

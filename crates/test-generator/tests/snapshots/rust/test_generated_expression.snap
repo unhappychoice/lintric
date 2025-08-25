@@ -21,17 +21,7 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "var1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 5,
-            },
-            context: None,
-        },
+        Usage { position: { 1:1 to 1:5 }, name: "var1", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

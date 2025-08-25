@@ -24,17 +24,7 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "TestUnion",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
+        Usage { position: { 1:7 to 1:16 }, name: "TestUnion", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

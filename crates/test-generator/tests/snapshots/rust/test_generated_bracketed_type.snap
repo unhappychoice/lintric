@@ -34,52 +34,13 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "test", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Vec",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 15,
-                end_line: 1,
-                end_column: 18,
-            },
-            context: None,
-        },
-        Usage {
-            name: "IntoIterator",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 27,
-                end_line: 1,
-                end_column: 39,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Item",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 42,
-                end_line: 1,
-                end_column: 46,
-            },
-            context: None,
-        },
+        Usage { position: { 1:15 to 1:18 }, name: "Vec", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:27 to 1:39 }, name: "IntoIterator", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:42 to 1:46 }, name: "Item", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

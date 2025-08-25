@@ -25,51 +25,13 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "closure",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "x3",
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 18,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:12 }, name: "closure", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:16 to 1:18 }, name: "x3", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "x3",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 20,
-                end_line: 1,
-                end_column: 22,
-            },
-            context: None,
-        },
-        Usage {
-            name: "y2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 25,
-                end_line: 1,
-                end_column: 27,
-            },
-            context: None,
-        },
+        Usage { position: { 1:20 to 1:22 }, name: "x3", kind: Identifier, context: None },
+        Usage { position: { 1:25 to 1:27 }, name: "y2", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

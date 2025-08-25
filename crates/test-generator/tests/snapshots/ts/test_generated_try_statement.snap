@@ -42,95 +42,16 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "result1",
-            position: Position {
-                start_line: 1,
-                start_column: 13,
-                end_line: 1,
-                end_column: 20,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:13 to 1:20 }, name: "result1", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "riskyOperation",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 39,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "error1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 50,
-                end_line: 1,
-                end_column: 56,
-            },
-            context: None,
-        },
-        Usage {
-            name: "console.log",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 60,
-                end_line: 1,
-                end_column: 79,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "console",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 60,
-                end_line: 1,
-                end_column: 67,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "log",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 68,
-                end_line: 1,
-                end_column: 71,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "error1",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 72,
-                end_line: 1,
-                end_column: 78,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 1:23 to 1:39 }, name: "riskyOperation", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:50 to 1:56 }, name: "error1", kind: Identifier, context: None },
+        Usage { position: { 1:60 to 1:79 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:60 to 1:67 }, name: "console", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 1:68 to 1:71 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 1:72 to 1:78 }, name: "error1", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

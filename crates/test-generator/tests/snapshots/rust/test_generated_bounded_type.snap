@@ -49,120 +49,19 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "T",
-            position: Position {
-                start_line: 1,
-                start_column: 9,
-                end_line: 1,
-                end_column: 10,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 1,
-                start_column: 26,
-                end_line: 1,
-                end_column: 27,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "test", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:9 to 1:10 }, name: "T", definition_type: TypeDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:26 to 1:27 }, name: "x", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "T",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 29,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: None,
-        },
-        Usage {
-            name: "T",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 35,
-                end_line: 1,
-                end_column: 36,
-            },
-            context: None,
-        },
-        Usage {
-            name: "T",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 43,
-                end_line: 1,
-                end_column: 44,
-            },
-            context: None,
-        },
-        Usage {
-            name: "std",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 46,
-                end_line: 1,
-                end_column: 49,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "fmt",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 51,
-                end_line: 1,
-                end_column: 54,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Debug",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 56,
-                end_line: 1,
-                end_column: 61,
-            },
-            context: None,
-        },
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 64,
-                end_line: 1,
-                end_column: 65,
-            },
-            context: None,
-        },
+        Usage { position: { 1:29 to 1:30 }, name: "T", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:35 to 1:36 }, name: "T", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:43 to 1:44 }, name: "T", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:46 to 1:49 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:51 to 1:54 }, name: "fmt", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:56 to 1:61 }, name: "Debug", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:64 to 1:65 }, name: "x", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

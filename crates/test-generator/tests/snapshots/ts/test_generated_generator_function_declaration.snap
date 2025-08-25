@@ -26,28 +26,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "testFn2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 18,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value9",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 29,
-                end_line: 1,
-                end_column: 35,
-            },
-            context: None,
-        },
+        Usage { position: { 1:11 to 1:18 }, name: "testFn2", kind: Identifier, context: None },
+        Usage { position: { 1:29 to 1:35 }, name: "value9", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

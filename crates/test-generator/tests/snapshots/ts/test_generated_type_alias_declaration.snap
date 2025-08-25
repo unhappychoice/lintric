@@ -17,16 +17,7 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "TestType",
-            position: Position {
-                start_line: 1,
-                start_column: 6,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: TypeDefinition,
-        },
+        Definition { position: { 1:6 to 1:14 }, name: "TestType", definition_type: TypeDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

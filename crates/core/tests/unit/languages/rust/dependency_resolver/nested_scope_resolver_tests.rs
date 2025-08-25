@@ -13,12 +13,6 @@ fn create_test_scope_tree() -> ScopeTree {
         Position {
             start_line: 1,
             start_column: 1,
-            end_line: 1,
-            end_column: 1,
-        },
-        Position {
-            start_line: 10,
-            start_column: 1,
             end_line: 10,
             end_column: 1,
         },
@@ -29,12 +23,6 @@ fn create_test_scope_tree() -> ScopeTree {
         ScopeType::Function,
         Position {
             start_line: 3,
-            start_column: 5,
-            end_line: 3,
-            end_column: 5,
-        },
-        Position {
-            start_line: 7,
             start_column: 5,
             end_line: 7,
             end_column: 5,

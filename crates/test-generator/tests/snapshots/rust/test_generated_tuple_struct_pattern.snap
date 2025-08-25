@@ -26,73 +26,15 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "x16",
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "y5",
-            position: Position {
-                start_line: 1,
-                start_column: 19,
-                end_line: 1,
-                end_column: 21,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:14 to 1:17 }, name: "x16", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:19 to 1:21 }, name: "y5", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Point",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 8,
-                end_line: 1,
-                end_column: 13,
-            },
-            context: None,
-        },
-        Usage {
-            name: "x16",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 17,
-            },
-            context: None,
-        },
-        Usage {
-            name: "y5",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 19,
-                end_line: 1,
-                end_column: 21,
-            },
-            context: None,
-        },
-        Usage {
-            name: "point_val",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 25,
-                end_line: 1,
-                end_column: 34,
-            },
-            context: None,
-        },
+        Usage { position: { 1:8 to 1:13 }, name: "Point", kind: Identifier, context: None },
+        Usage { position: { 1:14 to 1:17 }, name: "x16", kind: Identifier, context: None },
+        Usage { position: { 1:19 to 1:21 }, name: "y5", kind: Identifier, context: None },
+        Usage { position: { 1:25 to 1:34 }, name: "point_val", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

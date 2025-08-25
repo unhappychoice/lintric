@@ -21,28 +21,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "value4",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 7,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Type1",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
+        Usage { position: { 1:1 to 1:7 }, name: "value4", kind: Identifier, context: None },
+        Usage { position: { 1:11 to 1:16 }, name: "Type1", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

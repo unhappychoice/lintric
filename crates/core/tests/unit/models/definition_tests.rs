@@ -13,6 +13,9 @@ fn test_definition_creation() {
         name: "test_function".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     assert_eq!(definition.name, "test_function");
@@ -36,18 +39,27 @@ fn test_definition_types() {
         name: "func".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     let variable_def = Definition {
         name: "var".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::VariableDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     let struct_def = Definition {
         name: "Struct".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::StructDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     assert!(matches!(
@@ -100,18 +112,27 @@ fn test_definition_equality() {
         name: "test".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     let def2 = Definition {
         name: "test".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     let def3 = Definition {
         name: "different".to_string(),
         position: position.clone(),
         definition_type: DefinitionType::FunctionDefinition,
+        scope_id: None,
+        accessibility: None,
+        is_hoisted: None,
     };
 
     assert_eq!(def1, def2);

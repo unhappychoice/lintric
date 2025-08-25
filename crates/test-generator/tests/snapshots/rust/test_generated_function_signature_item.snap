@@ -18,30 +18,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_fn4",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:4 to 1:12 }, name: "test_fn4", definition_type: FunctionDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "test_fn4",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 12,
-            },
-            context: None,
-        },
+        Usage { position: { 1:4 to 1:12 }, name: "test_fn4", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

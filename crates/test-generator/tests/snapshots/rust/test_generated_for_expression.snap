@@ -32,52 +32,13 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "item",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:9 }, name: "item", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "vec",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 13,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
-        Usage {
-            name: "println",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 19,
-                end_line: 1,
-                end_column: 26,
-            },
-            context: None,
-        },
-        Usage {
-            name: "item",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 34,
-                end_line: 1,
-                end_column: 38,
-            },
-            context: None,
-        },
+        Usage { position: { 1:13 to 1:16 }, name: "vec", kind: Identifier, context: None },
+        Usage { position: { 1:19 to 1:26 }, name: "println", kind: Identifier, context: None },
+        Usage { position: { 1:34 to 1:38 }, name: "item", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

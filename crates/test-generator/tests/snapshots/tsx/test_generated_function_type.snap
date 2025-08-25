@@ -45,68 +45,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "fn",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 9,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 1,
-                start_column: 36,
-                end_line: 1,
-                end_column: 37,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:9 }, name: "fn", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:36 to 1:37 }, name: "x", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "x.toString",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 42,
-                end_line: 1,
-                end_column: 54,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 42,
-                end_line: 1,
-                end_column: 43,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "toString",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 44,
-                end_line: 1,
-                end_column: 52,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 1:42 to 1:54 }, name: "x.toString", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:42 to 1:43 }, name: "x", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 1:44 to 1:52 }, name: "toString", kind: FieldExpression, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

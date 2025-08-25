@@ -29,52 +29,13 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "element",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:14 }, name: "element", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "div",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 18,
-                end_line: 1,
-                end_column: 21,
-            },
-            context: None,
-        },
-        Usage {
-            name: "value14",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: None,
-        },
-        Usage {
-            name: "div",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 33,
-                end_line: 1,
-                end_column: 36,
-            },
-            context: None,
-        },
+        Usage { position: { 1:18 to 1:21 }, name: "div", kind: Identifier, context: None },
+        Usage { position: { 1:23 to 1:30 }, name: "value14", kind: Identifier, context: None },
+        Usage { position: { 1:33 to 1:36 }, name: "div", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

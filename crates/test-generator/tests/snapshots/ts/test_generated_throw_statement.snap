@@ -23,28 +23,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Error",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 16,
-            },
-            context: None,
-        },
-        Usage {
-            name: "error",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 17,
-                end_line: 1,
-                end_column: 22,
-            },
-            context: None,
-        },
+        Usage { position: { 1:11 to 1:16 }, name: "Error", kind: Identifier, context: None },
+        Usage { position: { 1:17 to 1:22 }, name: "error", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

@@ -29,71 +29,14 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "ptr",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:5 to 1:8 }, name: "ptr", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "std::ptr::null",
-            kind: CallExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 39,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "std",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 23,
-                end_line: 1,
-                end_column: 26,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "ptr",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 28,
-                end_line: 1,
-                end_column: 31,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "null",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 33,
-                end_line: 1,
-                end_column: 37,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
+        Usage { position: { 1:23 to 1:39 }, name: "std::ptr::null", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 1:23 to 1:26 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:28 to 1:31 }, name: "ptr", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:33 to 1:37 }, name: "null", kind: Identifier, context: Some("scoped_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

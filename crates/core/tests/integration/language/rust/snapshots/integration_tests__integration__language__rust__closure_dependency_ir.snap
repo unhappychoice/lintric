@@ -54,114 +54,20 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/closure_dependency.rs",
     definitions: [
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 8,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "add_one",
-            position: Position {
-                start_line: 2,
-                start_column: 9,
-                end_line: 2,
-                end_column: 16,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "x",
-            position: Position {
-                start_line: 2,
-                start_column: 20,
-                end_line: 2,
-                end_column: 21,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "y",
-            position: Position {
-                start_line: 5,
-                start_column: 9,
-                end_line: 5,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:9 to 2:16 }, name: "add_one", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:20 to 2:21 }, name: "x", definition_type: VariableDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:9 to 5:10 }, name: "y", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 3,
-            target_line: 2,
-            symbol: "x",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:3:9",
-            ),
-        },
-        Dependency {
-            source_line: 6,
-            target_line: 2,
-            symbol: "add_one",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:6:5",
-            ),
-        },
-        Dependency {
-            source_line: 6,
-            target_line: 5,
-            symbol: "y",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:6:13",
-            ),
-        },
+        Dependency { source_line: 3, target_line: 2, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:3:9") },
+        Dependency { source_line: 6, target_line: 2, symbol: "add_one", dependency_type: FunctionCall, context: Some("CallExpression:6:5") },
+        Dependency { source_line: 6, target_line: 5, symbol: "y", dependency_type: VariableUse, context: Some("Identifier:6:13") },
     ],
     usage: [
-        Usage {
-            name: "x",
-            kind: Identifier,
-            position: Position {
-                start_line: 3,
-                start_column: 9,
-                end_line: 3,
-                end_column: 10,
-            },
-            context: None,
-        },
-        Usage {
-            name: "add_one",
-            kind: CallExpression,
-            position: Position {
-                start_line: 6,
-                start_column: 5,
-                end_line: 6,
-                end_column: 15,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "y",
-            kind: Identifier,
-            position: Position {
-                start_line: 6,
-                start_column: 13,
-                end_line: 6,
-                end_column: 14,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 3:9 to 3:10 }, name: "x", kind: Identifier, context: None },
+        Usage { position: { 6:5 to 6:15 }, name: "add_one", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 6:13 to 6:14 }, name: "y", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

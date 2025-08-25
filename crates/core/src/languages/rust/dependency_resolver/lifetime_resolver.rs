@@ -1,5 +1,5 @@
 use super::type_system::LifetimeScope;
-use crate::models::scope::ScopeId;
+use crate::models::ScopeId;
 use std::collections::HashMap;
 
 /// Lifetime Resolver for handling lifetime parameters

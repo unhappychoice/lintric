@@ -29,56 +29,13 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_fn",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 11,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:4 to 1:11 }, name: "test_fn", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "std",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 22,
-                end_line: 1,
-                end_column: 25,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "fmt",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 27,
-                end_line: 1,
-                end_column: 30,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "Debug",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 32,
-                end_line: 1,
-                end_column: 37,
-            },
-            context: None,
-        },
+        Usage { position: { 1:22 to 1:25 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:27 to 1:30 }, name: "fmt", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 1:32 to 1:37 }, name: "Debug", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

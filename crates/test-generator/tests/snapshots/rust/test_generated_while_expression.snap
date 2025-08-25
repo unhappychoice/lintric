@@ -29,52 +29,13 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "val5",
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 20,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:16 to 1:20 }, name: "val5", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "Some",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 11,
-                end_line: 1,
-                end_column: 15,
-            },
-            context: None,
-        },
-        Usage {
-            name: "val5",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 20,
-            },
-            context: None,
-        },
-        Usage {
-            name: "opt2",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 24,
-                end_line: 1,
-                end_column: 28,
-            },
-            context: None,
-        },
+        Usage { position: { 1:11 to 1:15 }, name: "Some", kind: Identifier, context: None },
+        Usage { position: { 1:16 to 1:20 }, name: "val5", kind: Identifier, context: None },
+        Usage { position: { 1:24 to 1:28 }, name: "opt2", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

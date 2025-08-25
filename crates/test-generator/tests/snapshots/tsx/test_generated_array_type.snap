@@ -28,16 +28,7 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "arr",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 10,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:10 }, name: "arr", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

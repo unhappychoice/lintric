@@ -6,7 +6,6 @@ pub mod file_parser;
 pub mod languages;
 pub mod metric_calculator;
 pub mod models;
-pub mod scope_collector;
 pub mod usage_collector;
 
 use serde::Serialize;
@@ -92,26 +91,30 @@ fn _get_intermediate_representation(
     language: Language,
     tree: tree_sitter::Tree,
 ) -> Result<IntermediateRepresentation, String> {
-    let definitions = language_factory::get_definition_collector(language.clone(), file_content)?
-        .collect_definitions_from_root(tree.root_node())
-        .map_err(|e| format!("Failed to collect definitions: {e}"))?;
+    let symbol_table = language_factory::collect_definitions_with_scopes(
+        language.clone(),
+        file_content,
+        tree.root_node(),
+    )?;
 
     let usages = language_factory::get_usage_node_collector(language.clone(), file_content)
         .map_err(|e| format!("Failed to get usage node collector: {e}"))?
         .collect_usage_nodes(tree.root_node(), file_content)
         .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
 
-    let symbol_table = language_factory::create_scope_collector(language.clone())?.collect(
-        file_content,
-        tree.root_node(),
-        &usages,
-        &definitions,
-    )?;
+    let mut definitions: Vec<_> = symbol_table
+        .get_all_symbols()
+        .values()
+        .flatten()
+        .map(|entry| entry.definition.clone())
+        .collect();
 
-    let dependencies =
-        language_factory::get_dependency_resolver(language.clone(), symbol_table.clone())?
-            .resolve_dependencies(file_content, tree.root_node(), &usages, &definitions)
-            .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
+    // Sort definitions by position for consistent output
+    definitions.sort();
+
+    let dependencies = language_factory::get_dependency_resolver(language.clone(), symbol_table)?
+        .resolve_dependencies(file_content, tree.root_node(), &usages, &definitions)
+        .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
     Ok(IntermediateRepresentation::new(
         file_path,

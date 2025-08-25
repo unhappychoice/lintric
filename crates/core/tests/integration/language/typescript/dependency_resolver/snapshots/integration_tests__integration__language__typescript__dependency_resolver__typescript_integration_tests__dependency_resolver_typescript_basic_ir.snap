@@ -58,123 +58,20 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_basic.ts",
     definitions: [
-        Definition {
-            name: "helper",
-            position: Position {
-                start_line: 1,
-                start_column: 10,
-                end_line: 1,
-                end_column: 16,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "main",
-            position: Position {
-                start_line: 5,
-                start_column: 10,
-                end_line: 5,
-                end_column: 14,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "result",
-            position: Position {
-                start_line: 6,
-                start_column: 11,
-                end_line: 6,
-                end_column: 17,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:10 to 1:16 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:10 to 5:14 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:11 to 6:17 }, name: "result", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 6,
-            target_line: 1,
-            symbol: "helper",
-            dependency_type: FunctionCall,
-            context: Some(
-                "CallExpression:6:20",
-            ),
-        },
-        Dependency {
-            source_line: 7,
-            target_line: 6,
-            symbol: "result",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:7:17",
-            ),
-        },
+        Dependency { source_line: 6, target_line: 1, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:6:20") },
+        Dependency { source_line: 7, target_line: 6, symbol: "result", dependency_type: VariableUse, context: Some("Identifier:7:17") },
     ],
     usage: [
-        Usage {
-            name: "helper",
-            kind: CallExpression,
-            position: Position {
-                start_line: 6,
-                start_column: 20,
-                end_line: 6,
-                end_column: 28,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "console.log",
-            kind: CallExpression,
-            position: Position {
-                start_line: 7,
-                start_column: 5,
-                end_line: 7,
-                end_column: 24,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "console",
-            kind: Identifier,
-            position: Position {
-                start_line: 7,
-                start_column: 5,
-                end_line: 7,
-                end_column: 12,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "log",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 7,
-                start_column: 13,
-                end_line: 7,
-                end_column: 16,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "result",
-            kind: Identifier,
-            position: Position {
-                start_line: 7,
-                start_column: 17,
-                end_line: 7,
-                end_column: 23,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 6:20 to 6:28 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 7:5 to 7:24 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 7:5 to 7:12 }, name: "console", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 7:13 to 7:16 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 7:17 to 7:23 }, name: "result", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

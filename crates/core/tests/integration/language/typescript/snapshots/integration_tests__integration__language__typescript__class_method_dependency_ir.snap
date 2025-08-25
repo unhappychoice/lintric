@@ -76,220 +76,29 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/fixtures/class_method_dependency.ts",
     definitions: [
-        Definition {
-            name: "MyClass",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: ClassDefinition,
-        },
-        Definition {
-            name: "constructor",
-            position: Position {
-                start_line: 2,
-                start_column: 5,
-                end_line: 2,
-                end_column: 16,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "value",
-            position: Position {
-                start_line: 2,
-                start_column: 24,
-                end_line: 2,
-                end_column: 29,
-            },
-            definition_type: VariableDefinition,
-        },
-        Definition {
-            name: "greet",
-            position: Position {
-                start_line: 3,
-                start_column: 5,
-                end_line: 3,
-                end_column: 10,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "instance",
-            position: Position {
-                start_line: 5,
-                start_column: 5,
-                end_line: 5,
-                end_column: 13,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:14 }, name: "MyClass", definition_type: ClassDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:5 to 2:16 }, name: "constructor", definition_type: MethodDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:24 to 2:29 }, name: "value", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:5 to 3:10 }, name: "greet", definition_type: MethodDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:5 to 5:13 }, name: "instance", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 3,
-            target_line: 2,
-            symbol: "value",
-            dependency_type: StructFieldAccess,
-            context: Some(
-                "FieldExpression:3:32",
-            ),
-        },
-        Dependency {
-            source_line: 5,
-            target_line: 1,
-            symbol: "MyClass",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:5:20",
-            ),
-        },
-        Dependency {
-            source_line: 6,
-            target_line: 5,
-            symbol: "instance",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:6:1",
-            ),
-        },
-        Dependency {
-            source_line: 6,
-            target_line: 3,
-            symbol: "greet",
-            dependency_type: StructFieldAccess,
-            context: Some(
-                "FieldExpression:6:10",
-            ),
-        },
+        Dependency { source_line: 3, target_line: 2, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldExpression:3:32") },
+        Dependency { source_line: 5, target_line: 1, symbol: "MyClass", dependency_type: VariableUse, context: Some("Identifier:5:20") },
+        Dependency { source_line: 6, target_line: 5, symbol: "instance", dependency_type: VariableUse, context: Some("Identifier:6:1") },
+        Dependency { source_line: 6, target_line: 3, symbol: "greet", dependency_type: StructFieldAccess, context: Some("FieldExpression:6:10") },
     ],
     usage: [
-        Usage {
-            name: "constructor",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 2,
-                start_column: 5,
-                end_line: 2,
-                end_column: 16,
-            },
-            context: None,
-        },
-        Usage {
-            name: "greet",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 3,
-                start_column: 5,
-                end_line: 3,
-                end_column: 10,
-            },
-            context: None,
-        },
-        Usage {
-            name: "console.log",
-            kind: CallExpression,
-            position: Position {
-                start_line: 3,
-                start_column: 15,
-                end_line: 3,
-                end_column: 38,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "console",
-            kind: Identifier,
-            position: Position {
-                start_line: 3,
-                start_column: 15,
-                end_line: 3,
-                end_column: 22,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "log",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 3,
-                start_column: 23,
-                end_line: 3,
-                end_column: 26,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "value",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 3,
-                start_column: 32,
-                end_line: 3,
-                end_column: 37,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "MyClass",
-            kind: Identifier,
-            position: Position {
-                start_line: 5,
-                start_column: 20,
-                end_line: 5,
-                end_column: 27,
-            },
-            context: None,
-        },
-        Usage {
-            name: "instance.greet",
-            kind: CallExpression,
-            position: Position {
-                start_line: 6,
-                start_column: 1,
-                end_line: 6,
-                end_column: 17,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "instance",
-            kind: Identifier,
-            position: Position {
-                start_line: 6,
-                start_column: 1,
-                end_line: 6,
-                end_column: 9,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "greet",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 6,
-                start_column: 10,
-                end_line: 6,
-                end_column: 15,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
+        Usage { position: { 2:5 to 2:16 }, name: "constructor", kind: FieldExpression, context: None },
+        Usage { position: { 3:5 to 3:10 }, name: "greet", kind: FieldExpression, context: None },
+        Usage { position: { 3:15 to 3:38 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 3:15 to 3:22 }, name: "console", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 3:23 to 3:26 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 3:32 to 3:37 }, name: "value", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 5:20 to 5:27 }, name: "MyClass", kind: Identifier, context: None },
+        Usage { position: { 6:1 to 6:17 }, name: "instance.greet", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 6:1 to 6:9 }, name: "instance", kind: Identifier, context: Some("call_expression") },
+        Usage { position: { 6:10 to 6:15 }, name: "greet", kind: FieldExpression, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

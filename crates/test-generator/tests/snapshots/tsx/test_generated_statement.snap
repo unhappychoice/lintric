@@ -19,30 +19,11 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "var1",
-            position: Position {
-                start_line: 1,
-                start_column: 7,
-                end_line: 1,
-                end_column: 11,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:7 to 1:11 }, name: "var1", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "source",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 14,
-                end_line: 1,
-                end_column: 20,
-            },
-            context: None,
-        },
+        Usage { position: { 1:14 to 1:20 }, name: "source", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",

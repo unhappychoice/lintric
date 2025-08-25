@@ -57,72 +57,15 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition {
-            name: "test_fn5",
-            position: Position {
-                start_line: 1,
-                start_column: 4,
-                end_line: 1,
-                end_column: 12,
-            },
-            definition_type: FunctionDefinition,
-        },
-        Definition {
-            name: "F",
-            position: Position {
-                start_line: 1,
-                start_column: 13,
-                end_line: 1,
-                end_column: 14,
-            },
-            definition_type: TypeDefinition,
-        },
-        Definition {
-            name: "f",
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: VariableDefinition,
-        },
+        Definition { position: { 1:4 to 1:12 }, name: "test_fn5", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:13 to 1:14 }, name: "F", definition_type: TypeDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:16 to 1:17 }, name: "f", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
-        Usage {
-            name: "F",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 19,
-                end_line: 1,
-                end_column: 20,
-            },
-            context: None,
-        },
-        Usage {
-            name: "F",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 28,
-                end_line: 1,
-                end_column: 29,
-            },
-            context: None,
-        },
-        Usage {
-            name: "Fn",
-            kind: TypeIdentifier,
-            position: Position {
-                start_line: 1,
-                start_column: 39,
-                end_line: 1,
-                end_column: 41,
-            },
-            context: None,
-        },
+        Usage { position: { 1:19 to 1:20 }, name: "F", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:28 to 1:29 }, name: "F", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:39 to 1:41 }, name: "Fn", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

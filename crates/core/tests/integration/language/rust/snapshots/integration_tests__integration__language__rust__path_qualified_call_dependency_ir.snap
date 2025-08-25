@@ -35,87 +35,17 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/path_qualified_call_dependency.rs",
     definitions: [
-        Definition {
-            name: "m",
-            position: Position {
-                start_line: 1,
-                start_column: 5,
-                end_line: 1,
-                end_column: 6,
-            },
-            definition_type: ModuleDefinition,
-        },
-        Definition {
-            name: "f",
-            position: Position {
-                start_line: 1,
-                start_column: 16,
-                end_line: 1,
-                end_column: 17,
-            },
-            definition_type: FunctionDefinition,
-        },
+        Definition { position: { 1:5 to 1:6 }, name: "m", definition_type: ModuleDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:16 to 1:17 }, name: "f", definition_type: FunctionDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency {
-            source_line: 2,
-            target_line: 1,
-            symbol: "m",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:1",
-            ),
-        },
-        Dependency {
-            source_line: 2,
-            target_line: 1,
-            symbol: "f",
-            dependency_type: VariableUse,
-            context: Some(
-                "Identifier:2:4",
-            ),
-        },
+        Dependency { source_line: 2, target_line: 1, symbol: "m", dependency_type: VariableUse, context: Some("Identifier:2:1") },
+        Dependency { source_line: 2, target_line: 1, symbol: "f", dependency_type: VariableUse, context: Some("Identifier:2:4") },
     ],
     usage: [
-        Usage {
-            name: "m::f",
-            kind: CallExpression,
-            position: Position {
-                start_line: 2,
-                start_column: 1,
-                end_line: 2,
-                end_column: 7,
-            },
-            context: Some(
-                "call_expression",
-            ),
-        },
-        Usage {
-            name: "m",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 1,
-                end_line: 2,
-                end_column: 2,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
-        Usage {
-            name: "f",
-            kind: Identifier,
-            position: Position {
-                start_line: 2,
-                start_column: 4,
-                end_line: 2,
-                end_column: 5,
-            },
-            context: Some(
-                "scoped_identifier",
-            ),
-        },
+        Usage { position: { 2:1 to 2:7 }, name: "m::f", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 2:1 to 2:2 }, name: "m", kind: Identifier, context: Some("scoped_identifier") },
+        Usage { position: { 2:4 to 2:5 }, name: "f", kind: Identifier, context: Some("scoped_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

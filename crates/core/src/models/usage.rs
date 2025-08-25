@@ -1,5 +1,6 @@
 use super::position::Position;
 use serde::{Deserialize, Serialize};
+use std::fmt;
 use tree_sitter::Node;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -13,7 +14,7 @@ pub enum UsageKind {
     Read, // Added for testing
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Usage {
     pub name: String,
     pub kind: UsageKind,
@@ -117,5 +118,15 @@ impl Usage {
             position: Position::from_node(node),
             context: Some("field_expression".to_string()),
         }
+    }
+}
+
+impl fmt::Debug for Usage {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "Usage {{ position: {:?}, name: {:?}, kind: {:?}, context: {:?} }}",
+            self.position, self.name, self.kind, self.context
+        )
     }
 }

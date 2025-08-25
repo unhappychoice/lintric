@@ -21,32 +21,8 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage {
-            name: "field",
-            kind: FieldExpression,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 10,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
-        Usage {
-            name: "obj",
-            kind: Identifier,
-            position: Position {
-                start_line: 1,
-                start_column: 1,
-                end_line: 1,
-                end_column: 4,
-            },
-            context: Some(
-                "field_expression",
-            ),
-        },
+        Usage { position: { 1:1 to 1:10 }, name: "field", kind: FieldExpression, context: Some("field_expression") },
+        Usage { position: { 1:1 to 1:4 }, name: "obj", kind: Identifier, context: Some("field_expression") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
