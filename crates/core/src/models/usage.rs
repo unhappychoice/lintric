@@ -139,6 +139,11 @@ impl Usage {
     pub fn set_scope_id(&mut self, scope_id: Option<ScopeId>) {
         self.scope_id = scope_id;
     }
+
+    /// Normalize line endings from Windows (\r\n) and Mac (\r) to Unix (\n)
+    pub fn normalize_line_endings(text: &str) -> String {
+        text.replace("\r\n", "\n").replace('\r', "\n")
+    }
 }
 
 impl fmt::Debug for Usage {

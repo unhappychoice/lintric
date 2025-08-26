@@ -109,7 +109,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::FunctionDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -128,7 +128,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::MethodDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -151,7 +151,7 @@ impl TypeScriptDefinitionExtractor {
                 let name_text = parameter_field.utf8_text(source.as_bytes()).ok();
                 if let Some(name) = name_text {
                     definitions.push(Definition {
-                        name: name.to_string(),
+                        name: Usage::normalize_line_endings(name),
                         definition_type: DefinitionType::VariableDefinition,
                         position: Position::from_node(&parameter_field),
                         scope_id: Some(scope),
@@ -175,7 +175,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::ClassDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -194,7 +194,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::InterfaceDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -213,7 +213,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::TypeDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -232,7 +232,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::EnumDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -251,7 +251,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::ModuleDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -289,7 +289,7 @@ impl TypeScriptDefinitionExtractor {
             .filter_map(|identifier_node| {
                 let name_text = identifier_node.utf8_text(source.as_bytes()).ok()?;
                 Some(Definition {
-                    name: name_text.to_string(),
+                    name: Usage::normalize_line_endings(name_text),
                     definition_type: DefinitionType::VariableDefinition,
                     position: Position::from_node(&identifier_node),
                     scope_id: Some(scope),
@@ -370,7 +370,7 @@ impl TypeScriptDefinitionExtractor {
         };
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::VariableDefinition, // Parameters are variables
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -389,7 +389,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::PropertyDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -408,7 +408,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::MethodDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -427,7 +427,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::ImportDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -466,7 +466,7 @@ impl TypeScriptDefinitionExtractor {
             if name_node.kind() == "identifier" {
                 let name_text = name_node.utf8_text(source.as_bytes()).ok()?;
                 return Some(Definition {
-                    name: name_text.to_string(),
+                    name: Usage::normalize_line_endings(name_text),
                     definition_type: DefinitionType::ImportDefinition,
                     position: Position::from_node(&name_node),
                     scope_id: Some(scope),
@@ -490,7 +490,7 @@ impl TypeScriptDefinitionExtractor {
             if child.kind() == "identifier" {
                 let name_text = child.utf8_text(source.as_bytes()).ok()?;
                 return Some(Definition {
-                    name: name_text.to_string(),
+                    name: Usage::normalize_line_endings(name_text),
                     definition_type: DefinitionType::ImportDefinition,
                     position: Position::from_node(&child),
                     scope_id: Some(scope),
@@ -512,7 +512,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::TypeDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -529,7 +529,7 @@ impl TypeScriptDefinitionExtractor {
             if child.kind() == "property_identifier" {
                 if let Ok(name_text) = child.utf8_text(source.as_bytes()) {
                     definitions.push(Definition {
-                        name: name_text.to_string(),
+                        name: Usage::normalize_line_endings(name_text),
                         definition_type: DefinitionType::PropertyDefinition,
                         position: Position::from_node(&child),
                         scope_id: Some(scope),
@@ -553,7 +553,7 @@ impl TypeScriptDefinitionExtractor {
         let name_text = name.utf8_text(source.as_bytes()).ok()?;
 
         Some(Definition {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             definition_type: DefinitionType::PropertyDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
@@ -718,7 +718,7 @@ impl TypeScriptUsageExtractor {
         let context = self.find_call_expression_context(node);
 
         Some(Usage {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             kind: UsageKind::Identifier,
             position: Position::from_node(&node),
             context,
@@ -768,7 +768,7 @@ impl TypeScriptUsageExtractor {
         let name_text = property_node.utf8_text(source.as_bytes()).ok()?;
 
         Some(Usage {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             kind: UsageKind::FieldExpression,
             position: Position::from_node(&property_node),
             context: Some("member_expression".to_string()),
@@ -782,7 +782,7 @@ impl TypeScriptUsageExtractor {
         let name_text = constructor_node.utf8_text(source.as_bytes()).ok()?;
 
         Some(Usage {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             kind: UsageKind::CallExpression,
             position: Position::from_node(&constructor_node),
             context: None, // Match old implementation
@@ -794,7 +794,7 @@ impl TypeScriptUsageExtractor {
         let name_text = node.utf8_text(source.as_bytes()).ok()?;
 
         Some(Usage {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             kind: UsageKind::TypeIdentifier,
             position: Position::from_node(&node),
             context: None, // Match old implementation
@@ -839,7 +839,7 @@ impl TypeScriptUsageExtractor {
         let name_text = node.utf8_text(source.as_bytes()).ok()?;
 
         Some(Usage {
-            name: name_text.to_string(),
+            name: Usage::normalize_line_endings(name_text),
             kind: UsageKind::FieldExpression,
             position: Position::from_node(&node),
             context: None, // Match old implementation

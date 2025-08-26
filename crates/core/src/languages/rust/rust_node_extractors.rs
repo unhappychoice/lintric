@@ -801,7 +801,7 @@ impl NodeUsageExtractor for RustUsageExtractor {
         kind.and_then(|k| {
             let name_text = node.utf8_text(source.as_bytes()).ok()?;
             Some(Usage {
-                name: name_text.to_string(),
+                name: Usage::normalize_line_endings(name_text),
                 kind: k,
                 position: Position::from_node(&node),
                 context: self.get_node_context(&node),
