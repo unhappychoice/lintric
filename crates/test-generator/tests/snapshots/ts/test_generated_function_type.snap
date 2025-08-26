@@ -46,13 +46,14 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition { position: { 1:7 to 1:9 }, name: "fn", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:12 to 1:13 }, name: "x", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
         Definition { position: { 1:36 to 1:37 }, name: "x", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
         Usage { position: { 1:42 to 1:54 }, name: "x.toString", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:42 to 1:43 }, name: "x", kind: Identifier, context: Some("call_expression") },
-        Usage { position: { 1:44 to 1:52 }, name: "toString", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 1:44 to 1:52 }, name: "toString", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

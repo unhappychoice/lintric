@@ -48,8 +48,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:28 to 1:33 }, name: "field", kind: FieldExpression, context: None },
-        Usage { position: { 1:55 to 1:62 }, name: "method1", kind: FieldExpression, context: None },
         Usage { position: { 1:87 to 1:92 }, name: "field", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

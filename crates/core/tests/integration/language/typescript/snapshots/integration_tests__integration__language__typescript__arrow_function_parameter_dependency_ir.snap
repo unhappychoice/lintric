@@ -52,7 +52,7 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 2:5 to 2:19 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 2:5 to 2:12 }, name: "console", kind: Identifier, context: Some("call_expression") },
-        Usage { position: { 2:13 to 2:16 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 2:13 to 2:16 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 2:17 to 2:18 }, name: "b", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {

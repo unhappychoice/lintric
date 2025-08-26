@@ -22,8 +22,8 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition { position: { 1:8 to 1:19 }, name: "TestStruct1", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 1:22 to 1:28 }, name: "field3", definition_type: StructFieldDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:8 to 1:19 }, name: "TestStruct1", definition_type: StructDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:22 to 1:28 }, name: "field3", definition_type: StructFieldDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [],

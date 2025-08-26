@@ -24,7 +24,7 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition { position: { 1:6 to 1:14 }, name: "TestEnum", definition_type: EnumDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:6 to 1:14 }, name: "TestEnum", definition_type: EnumDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [

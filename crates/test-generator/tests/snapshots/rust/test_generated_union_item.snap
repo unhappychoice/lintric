@@ -21,11 +21,12 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
-    dependencies: [],
-    usage: [
-        Usage { position: { 1:7 to 1:16 }, name: "TestUnion", kind: TypeIdentifier, context: None },
+    definitions: [
+        Definition { position: { 1:7 to 1:16 }, name: "TestUnion", definition_type: StructDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:19 to 1:25 }, name: "field5", definition_type: StructFieldDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
+    dependencies: [],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

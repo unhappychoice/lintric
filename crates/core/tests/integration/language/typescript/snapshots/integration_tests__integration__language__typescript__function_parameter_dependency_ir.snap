@@ -48,7 +48,7 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 2:3 to 2:17 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 2:3 to 2:10 }, name: "console", kind: Identifier, context: Some("call_expression") },
-        Usage { position: { 2:11 to 2:14 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 2:11 to 2:14 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 2:15 to 2:16 }, name: "b", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {

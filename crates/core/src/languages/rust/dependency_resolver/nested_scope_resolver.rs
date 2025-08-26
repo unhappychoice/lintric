@@ -74,7 +74,7 @@ impl ClosureAnalyzer {
                             _scope_tree,
                         ) {
                             captures.push(CaptureInfo {
-                                captured_symbol: symbol_name.clone(),
+                                captured_symbol: symbol_name.to_string(),
                                 capture_type: self.infer_capture_type(definition),
                                 source_scope: parent_id,
                                 target_scope: _closure_scope,

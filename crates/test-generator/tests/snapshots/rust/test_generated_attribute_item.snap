@@ -35,8 +35,8 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition { position: { 2:8 to 2:18 }, name: "TestStruct", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 4:4 to 4:12 }, name: "test_fn1", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:8 to 2:18 }, name: "TestStruct", definition_type: StructDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 4:4 to 4:12 }, name: "test_fn1", definition_type: FunctionDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [

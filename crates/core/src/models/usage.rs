@@ -1,3 +1,4 @@
+use super::definition::ScopeId;
 use super::position::Position;
 use serde::{Deserialize, Serialize};
 use std::fmt;
@@ -12,6 +13,10 @@ pub enum UsageKind {
     StructExpression,
     Metavariable,
     Read, // Added for testing
+    // New unified traversal kinds
+    Reference,
+    Call,
+    FieldAccess,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -20,6 +25,8 @@ pub struct Usage {
     pub kind: UsageKind,
     pub position: Position,
     pub context: Option<String>,
+    #[serde(skip_serializing)]
+    pub scope_id: Option<ScopeId>,
 }
 
 impl Usage {
@@ -38,6 +45,7 @@ impl Usage {
             kind,
             position: Position::from_node(node),
             context,
+            scope_id: None,
         }
     }
 
@@ -61,6 +69,7 @@ impl Usage {
             kind,
             position,
             context: None,
+            scope_id: None,
         }
     }
 
@@ -85,6 +94,7 @@ impl Usage {
             kind: UsageKind::CallExpression,
             position: Position::from_node(node),
             context: Some("call_expression".to_string()),
+            scope_id: None,
         }
     }
 
@@ -117,7 +127,17 @@ impl Usage {
             kind: UsageKind::FieldExpression,
             position: Position::from_node(node),
             context: Some("field_expression".to_string()),
+            scope_id: None,
         }
+    }
+
+    // Scope-related methods for new unified traversal
+    pub fn get_scope_id(&self) -> Option<ScopeId> {
+        self.scope_id
+    }
+
+    pub fn set_scope_id(&mut self, scope_id: Option<ScopeId>) {
+        self.scope_id = scope_id;
     }
 }
 

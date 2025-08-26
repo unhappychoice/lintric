@@ -27,6 +27,10 @@ pub trait DependencyResolver: Send + Sync {
             UsageKind::StructExpression => DependencyType::TypeReference,
             UsageKind::Metavariable => DependencyType::MacroVariable,
             UsageKind::Read => DependencyType::VariableUse,
+            // Keep these for backward compatibility, but they should not be used in new code
+            UsageKind::Reference => DependencyType::VariableUse,
+            UsageKind::Call => DependencyType::FunctionCall,
+            UsageKind::FieldAccess => DependencyType::StructFieldAccess,
         }
     }
 

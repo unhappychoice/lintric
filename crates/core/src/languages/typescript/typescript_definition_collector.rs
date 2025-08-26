@@ -301,8 +301,12 @@ impl<'a> TypeScriptCollector<'a> {
         if let Some(name_node) = node.child_by_field_name("name") {
             find_identifier_nodes_in_node(name_node)
                 .iter()
-                .map(|node| {
-                    Definition::new(node, self.source_code, DefinitionType::VariableDefinition)
+                .map(|identifier_node| {
+                    Definition::new(
+                        identifier_node,
+                        self.source_code,
+                        DefinitionType::VariableDefinition,
+                    )
                 })
                 .collect()
         } else {

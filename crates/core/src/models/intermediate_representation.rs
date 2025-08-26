@@ -9,6 +9,17 @@ pub struct AnalysisMetadata {
     pub lintric_version: String,
 }
 
+impl Default for AnalysisMetadata {
+    fn default() -> Self {
+        Self {
+            language: "unknown".to_string(),
+            total_lines: 0,
+            analysis_timestamp: "now".to_string(),
+            lintric_version: env!("CARGO_PKG_VERSION").to_string(),
+        }
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct IntermediateRepresentation {
     pub file_path: String,

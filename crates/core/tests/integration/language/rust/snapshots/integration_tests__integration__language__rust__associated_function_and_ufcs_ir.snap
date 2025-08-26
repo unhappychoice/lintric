@@ -127,14 +127,14 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/associated_function_and_ufcs.rs",
     definitions: [
-        Definition { position: { 1:8 to 1:16 }, name: "MyStruct", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 4:8 to 4:11 }, name: "new", definition_type: MethodDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 9:7 to 9:14 }, name: "MyTrait", definition_type: TypeDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 10:8 to 10:19 }, name: "my_function", definition_type: FunctionDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 13:8 to 13:14 }, name: "MyType", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 16:8 to 16:19 }, name: "my_function", definition_type: MethodDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 21:4 to 21:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 22:9 to 22:11 }, name: "_s", definition_type: VariableDefinition, scope_id: Some(9), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:8 to 1:16 }, name: "MyStruct", definition_type: StructDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 4:8 to 4:11 }, name: "new", definition_type: MethodDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 9:7 to 9:14 }, name: "MyTrait", definition_type: TypeDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 10:8 to 10:19 }, name: "my_function", definition_type: FunctionDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 13:8 to 13:14 }, name: "MyType", definition_type: StructDefinition, scope_id: Some(6), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 16:8 to 16:19 }, name: "my_function", definition_type: MethodDefinition, scope_id: Some(8), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 21:4 to 21:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(10), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 22:9 to 22:11 }, name: "_s", definition_type: VariableDefinition, scope_id: Some(11), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
         Dependency { source_line: 3, target_line: 1, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:3:6") },

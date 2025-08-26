@@ -23,6 +23,7 @@ fn test_usage_creation() {
         kind: UsageKind::Identifier,
         position: position.clone(),
         context: None,
+        scope_id: None,
     };
 
     assert_eq!(usage.name, "variable_name");
@@ -44,6 +45,7 @@ fn test_usage_kinds() {
         kind: UsageKind::Identifier,
         position: position.clone(),
         context: None,
+        scope_id: None,
     };
 
     let call_usage = Usage {
@@ -51,6 +53,7 @@ fn test_usage_kinds() {
         kind: UsageKind::CallExpression,
         position: position.clone(),
         context: None,
+        scope_id: None,
     };
 
     let field_usage = Usage {
@@ -58,6 +61,7 @@ fn test_usage_kinds() {
         kind: UsageKind::FieldExpression,
         position: position.clone(),
         context: None,
+        scope_id: None,
     };
 
     assert!(matches!(identifier_usage.kind, UsageKind::Identifier));
@@ -140,6 +144,7 @@ fn test_usage_fields_access() {
         kind: UsageKind::Identifier,
         position: position.clone(),
         context: None,
+        scope_id: None,
     };
 
     assert_eq!(usage.name, "test");

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use super::definition::{Accessibility, ScopeId};
-use super::{Definition, DefinitionType, Position};
+use super::{Definition, DefinitionType, Position, Usage};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ScopeType {
@@ -23,8 +23,10 @@ pub struct Scope {
     pub parent: Option<ScopeId>,
     pub children: Vec<ScopeId>,
     pub scope_type: ScopeType,
-    pub symbols: HashMap<String, Vec<Definition>>,
     pub position: Position,
+    // Temporary: keep for compatibility with old dependency resolver
+    #[serde(default)]
+    pub symbols: HashMap<String, Vec<Definition>>,
 }
 
 impl Scope {
@@ -39,8 +41,8 @@ impl Scope {
             parent,
             children: Vec::new(),
             scope_type,
-            symbols: HashMap::new(),
             position,
+            symbols: HashMap::new(),
         }
     }
 
@@ -48,6 +50,7 @@ impl Scope {
         self.children.push(child_id);
     }
 
+    // Temporary: restore for compatibility
     pub fn add_symbol(&mut self, name: String, definition: Definition) {
         self.symbols.entry(name).or_default().push(definition);
     }
@@ -173,6 +176,7 @@ impl ScopeTree {
         parent_scopes
     }
 
+    // Temporary: restore for compatibility
     pub fn lookup_symbol_in_scope_chain(
         &self,
         scope_id: ScopeId,
@@ -309,6 +313,23 @@ impl SymbolTable {
         self.scopes.lookup_symbol_in_scope_chain(scope_id, name)
     }
 
+    #[allow(dead_code)]
+    fn is_scope_accessible(&self, from_scope: ScopeId, to_scope: ScopeId) -> bool {
+        // Simple implementation: check if to_scope is a parent of from_scope
+        let mut current = from_scope;
+        while let Some(scope) = self.scopes.get_scope(current) {
+            if current == to_scope {
+                return true;
+            }
+            if let Some(parent) = scope.parent {
+                current = parent;
+            } else {
+                break;
+            }
+        }
+        false
+    }
+
     pub fn get_symbols_in_scope(
         &self,
         scope_id: ScopeId,
@@ -349,6 +370,163 @@ impl SymbolTable {
 }
 
 impl Default for SymbolTable {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+// New separated structures for unified AST traversal
+
+/// Registry for managing definitions with single responsibility
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DefinitionRegistry {
+    definitions: HashMap<String, Vec<Definition>>,
+    type_parameters: HashMap<String, Vec<TypeParameter>>,
+}
+
+impl DefinitionRegistry {
+    pub fn new() -> Self {
+        Self {
+            definitions: HashMap::new(),
+            type_parameters: HashMap::new(),
+        }
+    }
+
+    pub fn add_definition(&mut self, name: String, definition: Definition) {
+        self.definitions.entry(name).or_default().push(definition);
+    }
+
+    pub fn lookup_definition(&self, name: &str) -> Option<&Vec<Definition>> {
+        self.definitions.get(name)
+    }
+
+    pub fn get_all_definitions(&self) -> &HashMap<String, Vec<Definition>> {
+        &self.definitions
+    }
+
+    pub fn add_type_parameter(
+        &mut self,
+        name: String,
+        constraint_type: Option<String>,
+        default_type: Option<String>,
+        scope_id: ScopeId,
+    ) {
+        let type_param = TypeParameter {
+            name: name.clone(),
+            constraint_type,
+            default_type,
+            scope_id,
+        };
+        self.type_parameters
+            .entry(name)
+            .or_default()
+            .push(type_param);
+    }
+
+    pub fn lookup_type_parameter(&self, name: &str) -> Option<&Vec<TypeParameter>> {
+        self.type_parameters.get(name)
+    }
+
+    pub fn get_all_type_parameters(&self) -> &HashMap<String, Vec<TypeParameter>> {
+        &self.type_parameters
+    }
+}
+
+impl Default for DefinitionRegistry {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+/// Registry for managing usages with single responsibility
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UsageRegistry {
+    usages: Vec<Usage>,
+    scope_indexed_usages: HashMap<ScopeId, Vec<usize>>, // Optional: for efficient lookup
+}
+
+impl UsageRegistry {
+    pub fn new() -> Self {
+        Self {
+            usages: Vec::new(),
+            scope_indexed_usages: HashMap::new(),
+        }
+    }
+
+    pub fn add_usage(&mut self, usage: Usage) {
+        let usage_index = self.usages.len();
+        if let Some(scope_id) = usage.get_scope_id() {
+            self.scope_indexed_usages
+                .entry(scope_id)
+                .or_default()
+                .push(usage_index);
+        }
+        self.usages.push(usage);
+    }
+
+    pub fn get_all_usages(&self) -> &Vec<Usage> {
+        &self.usages
+    }
+
+    pub fn get_usages_in_scope(&self, scope_id: ScopeId) -> Vec<&Usage> {
+        self.scope_indexed_usages
+            .get(&scope_id)
+            .map(|indices| indices.iter().map(|&i| &self.usages[i]).collect())
+            .unwrap_or_default()
+    }
+}
+
+impl Default for UsageRegistry {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+/// Coordinated context for all code analysis data
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CodeAnalysisContext {
+    pub definitions: DefinitionRegistry,
+    pub usages: UsageRegistry,
+    pub scopes: ScopeTree,
+}
+
+impl CodeAnalysisContext {
+    pub fn new() -> Self {
+        Self {
+            definitions: DefinitionRegistry::new(),
+            usages: UsageRegistry::new(),
+            scopes: ScopeTree::new(),
+        }
+    }
+
+    /// Lookup symbols using both definitions and scope chain
+    pub fn lookup_symbol_in_scope(&self, scope_id: ScopeId, symbol_name: &str) -> Vec<&Definition> {
+        let mut definitions = Vec::new();
+        let mut current_scope_id = scope_id;
+
+        // Walk up the scope chain
+        while let Some(scope) = self.scopes.get_scope(current_scope_id) {
+            // Look up in definitions registry for symbols defined in this scope
+            if let Some(scope_definitions) = self.definitions.lookup_definition(symbol_name) {
+                for def in scope_definitions {
+                    if def.get_scope_id() == Some(current_scope_id) {
+                        definitions.push(def);
+                    }
+                }
+            }
+
+            if let Some(parent_id) = scope.parent {
+                current_scope_id = parent_id;
+            } else {
+                break;
+            }
+        }
+
+        definitions
+    }
+}
+
+impl Default for CodeAnalysisContext {
     fn default() -> Self {
         Self::new()
     }

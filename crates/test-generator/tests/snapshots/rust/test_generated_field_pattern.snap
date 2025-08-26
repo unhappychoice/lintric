@@ -27,7 +27,9 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition { position: { 1:23 to 1:25 }, name: "x4", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+    ],
     dependencies: [],
     usage: [
         Usage { position: { 1:8 to 1:12 }, name: "Type", kind: TypeIdentifier, context: None },
