@@ -25,6 +25,7 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition { position: { 1:9 to 1:14 }, name: "prop3", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:17 to 1:27 }, name: "defaultVal", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [

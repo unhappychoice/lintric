@@ -266,8 +266,6 @@ impl TypeScriptDefinitionExtractor {
         scope: ScopeId,
         source: &str,
     ) -> Vec<Definition> {
-        use crate::definition_collectors::find_identifier_nodes_in_node;
-
         let name_node = match self.find_child_by_field_name(node, "name") {
             Some(n) => n,
             None => return vec![],
@@ -286,7 +284,7 @@ impl TypeScriptDefinitionExtractor {
         };
 
         // Use find_identifier_nodes_in_node to handle destructuring patterns
-        find_identifier_nodes_in_node(name_node)
+        self.find_identifier_nodes_in_node(name_node)
             .into_iter()
             .filter_map(|identifier_node| {
                 let name_text = identifier_node.utf8_text(source.as_bytes()).ok()?;
@@ -341,6 +339,9 @@ impl TypeScriptDefinitionExtractor {
     fn find_identifier_nodes_in_node<'a>(&self, node: Node<'a>) -> Vec<Node<'a>> {
         let mut identifiers = vec![];
         if node.kind() == "identifier" {
+            identifiers.push(node);
+        } else if node.kind() == "shorthand_property_identifier_pattern" {
+            // shorthand_property_identifier_pattern is itself an identifier in destructuring
             identifiers.push(node);
         } else {
             let mut cursor = node.walk();

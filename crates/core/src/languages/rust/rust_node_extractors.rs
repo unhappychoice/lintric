@@ -202,15 +202,13 @@ impl RustDefinitionExtractor {
     }
 
     fn extract_let_definition(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
-        use crate::definition_collectors::find_identifier_nodes_in_node;
-
         let pattern = match self.find_child_by_field_name(node, "pattern") {
             Some(p) => p,
             None => return vec![],
         };
 
         // Use find_identifier_nodes_in_node to handle complex patterns like tuple_pattern
-        find_identifier_nodes_in_node(pattern)
+        self.find_identifier_nodes_in_node(pattern)
             .into_iter()
             .filter_map(|identifier_node| {
                 let name_text = identifier_node.utf8_text(source.as_bytes()).ok()?;
@@ -1104,6 +1102,20 @@ impl RustDefinitionExtractor {
             current = parent;
         }
         false
+    }
+
+    #[allow(clippy::only_used_in_recursion)]
+    fn find_identifier_nodes_in_node<'a>(&self, node: Node<'a>) -> Vec<Node<'a>> {
+        let mut identifiers = vec![];
+        if node.kind() == "identifier" {
+            identifiers.push(node);
+        } else {
+            let mut cursor = node.walk();
+            for child in node.children(&mut cursor) {
+                identifiers.extend(self.find_identifier_nodes_in_node(child));
+            }
+        }
+        identifiers
     }
 
     #[allow(clippy::only_used_in_recursion)]

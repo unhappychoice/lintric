@@ -5,7 +5,8 @@ use super::{
 };
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
-    scope::SymbolTable, Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind,
+    scope::{CodeAnalysisContext, SymbolTable},
+    Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind,
 };
 use tree_sitter::Node;
 
@@ -39,6 +40,23 @@ impl RustDependencyResolver {
             associated_type_resolver,
             lifetime_resolver,
         }
+    }
+
+    pub fn new_from_context(context: CodeAnalysisContext) -> Self {
+        // Create a SymbolTable from the new context for backward compatibility
+        let mut symbol_table = SymbolTable::new();
+
+        // Copy scope structure
+        symbol_table.scopes = context.scopes;
+
+        // Add definitions to the symbol table
+        for (name, definitions) in context.definitions.get_all_definitions() {
+            for definition in definitions {
+                symbol_table.add_enhanced_symbol(name.clone(), definition.clone());
+            }
+        }
+
+        Self::new(symbol_table)
     }
 
     pub fn get_module_resolver(&self) -> &ModuleResolver {
