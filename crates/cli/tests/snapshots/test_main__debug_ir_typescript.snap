@@ -763,7 +763,7 @@ expression: out
         "end_line": 20,
         "end_column": 20
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "p2",
@@ -785,7 +785,7 @@ expression: out
         "end_line": 20,
         "end_column": 26
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "y",
@@ -829,7 +829,7 @@ expression: out
         "end_line": 21,
         "end_column": 20
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "p2",
@@ -851,7 +851,7 @@ expression: out
         "end_line": 21,
         "end_column": 26
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })",
@@ -873,7 +873,7 @@ expression: out
         "end_line": 25,
         "end_column": 24
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "x",
@@ -884,7 +884,7 @@ expression: out
         "end_line": 25,
         "end_column": 30
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "y",
@@ -895,7 +895,7 @@ expression: out
         "end_line": 25,
         "end_column": 36
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "p5",
@@ -983,7 +983,7 @@ expression: out
         "end_line": 34,
         "end_column": 16
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "p3",
@@ -1027,7 +1027,7 @@ expression: out
         "end_line": 35,
         "end_column": 16
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "p4",
@@ -1082,7 +1082,7 @@ expression: out
         "end_line": 39,
         "end_column": 36
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "DefaultExport.init",
@@ -1115,7 +1115,7 @@ expression: out
         "end_line": 40,
         "end_column": 19
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "console.log",
@@ -1148,7 +1148,7 @@ expression: out
         "end_line": 43,
         "end_column": 16
       },
-      "context": "call_expression"
+      "context": null
     },
     {
       "name": "instance",

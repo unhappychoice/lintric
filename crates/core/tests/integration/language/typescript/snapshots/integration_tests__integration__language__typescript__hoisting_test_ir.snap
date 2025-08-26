@@ -220,6 +220,9 @@ IntermediateRepresentation {
         Definition { position: { 38:6 to 38:12 }, name: "MyType", definition_type: TypeDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
         Definition { position: { 41:10 to 41:17 }, name: "useEnum", definition_type: FunctionDefinition, scope_id: Some(9), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
         Definition { position: { 42:11 to 42:16 }, name: "value", definition_type: VariableDefinition, scope_id: Some(9), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 45:6 to 45:12 }, name: "MyEnum", definition_type: EnumDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 46:5 to 46:11 }, name: "Value1", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 47:5 to 47:11 }, name: "Value2", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
         Dependency { source_line: 3, target_line: 11, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:3:20") },
@@ -228,6 +231,8 @@ IntermediateRepresentation {
         Dependency { source_line: 17, target_line: 21, symbol: "field", dependency_type: StructFieldAccess, context: Some("field_access") },
         Dependency { source_line: 26, target_line: 29, symbol: "MyClass", dependency_type: VariableUse, context: Some("Identifier:26:26") },
         Dependency { source_line: 34, target_line: 38, symbol: "MyType", dependency_type: TypeReference, context: Some("TypeIdentifier:34:21") },
+        Dependency { source_line: 42, target_line: 45, symbol: "MyEnum", dependency_type: VariableUse, context: Some("Identifier:42:19") },
+        Dependency { source_line: 42, target_line: 46, symbol: "Value1", dependency_type: StructFieldAccess, context: Some("field_access") },
     ],
     usage: [
         Usage { position: { 3:20 to 3:28 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
@@ -236,13 +241,9 @@ IntermediateRepresentation {
         Usage { position: { 17:32 to 17:37 }, name: "field", kind: FieldExpression, context: None },
         Usage { position: { 21:5 to 21:10 }, name: "field", kind: FieldExpression, context: None },
         Usage { position: { 26:26 to 26:33 }, name: "MyClass", kind: Identifier, context: None },
-        Usage { position: { 30:5 to 30:16 }, name: "constructor", kind: FieldExpression, context: None },
         Usage { position: { 34:21 to 34:27 }, name: "MyType", kind: TypeIdentifier, context: None },
         Usage { position: { 42:19 to 42:25 }, name: "MyEnum", kind: Identifier, context: None },
         Usage { position: { 42:26 to 42:32 }, name: "Value1", kind: FieldExpression, context: None },
-        Usage { position: { 45:6 to 45:12 }, name: "MyEnum", kind: Identifier, context: None },
-        Usage { position: { 46:5 to 46:11 }, name: "Value1", kind: FieldExpression, context: None },
-        Usage { position: { 47:5 to 47:11 }, name: "Value2", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

@@ -14,7 +14,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "StructDefinition",
-      "scope_id": 0,
+      "scope_id": 1,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -27,7 +27,7 @@ expression: out
         "end_column": 6
       },
       "definition_type": "StructFieldDefinition",
-      "scope_id": 0,
+      "scope_id": 1,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -40,7 +40,7 @@ expression: out
         "end_column": 6
       },
       "definition_type": "StructFieldDefinition",
-      "scope_id": 0,
+      "scope_id": 1,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -53,7 +53,7 @@ expression: out
         "end_column": 7
       },
       "definition_type": "FunctionDefinition",
-      "scope_id": 1,
+      "scope_id": 2,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -66,7 +66,7 @@ expression: out
         "end_column": 9
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 1,
+      "scope_id": 2,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -79,7 +79,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 1,
+      "scope_id": 2,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -92,7 +92,7 @@ expression: out
         "end_column": 15
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 2,
+      "scope_id": 3,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -105,7 +105,7 @@ expression: out
         "end_column": 8
       },
       "definition_type": "FunctionDefinition",
-      "scope_id": 3,
+      "scope_id": 4,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -118,7 +118,7 @@ expression: out
         "end_column": 11
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -131,7 +131,7 @@ expression: out
         "end_column": 11
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -144,7 +144,7 @@ expression: out
         "end_column": 11
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -157,7 +157,7 @@ expression: out
         "end_column": 11
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -170,7 +170,7 @@ expression: out
         "end_column": 15
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 5,
+      "scope_id": 6,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -183,7 +183,7 @@ expression: out
         "end_column": 15
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 5,
+      "scope_id": 6,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -196,7 +196,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -209,7 +209,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -222,7 +222,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     }

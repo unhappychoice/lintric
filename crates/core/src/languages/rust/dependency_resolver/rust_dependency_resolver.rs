@@ -5,7 +5,8 @@ use super::{
 };
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
-    scope::SymbolTable, Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind,
+    scope::{CodeAnalysisContext, SymbolTable},
+    Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind,
 };
 use tree_sitter::Node;
 
@@ -39,6 +40,23 @@ impl RustDependencyResolver {
             associated_type_resolver,
             lifetime_resolver,
         }
+    }
+
+    pub fn new_from_context(context: CodeAnalysisContext) -> Self {
+        // Create a SymbolTable from the new context for backward compatibility
+        let mut symbol_table = SymbolTable::new();
+
+        // Copy scope structure
+        symbol_table.scopes = context.scopes;
+
+        // Add definitions to the symbol table
+        for (name, definitions) in context.definitions.get_all_definitions() {
+            for definition in definitions {
+                symbol_table.add_enhanced_symbol(name.clone(), definition.clone());
+            }
+        }
+
+        Self::new(symbol_table)
     }
 
     pub fn get_module_resolver(&self) -> &ModuleResolver {
@@ -352,7 +370,7 @@ impl RustDependencyResolver {
     }
 
     // Helper methods for Rust-specific dependency resolution
-    fn is_accessible_basic(&self, _usage: &Usage, definition: &Definition) -> bool {
+    fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
         // ImportDefinitions and ModuleDefinitions are always accessible from any scope
         if matches!(
             definition.definition_type,
@@ -383,6 +401,33 @@ impl RustDependencyResolver {
             return true;
         }
 
+        // For variable definitions, check scope accessibility
+        if matches!(
+            definition.definition_type,
+            crate::models::DefinitionType::VariableDefinition
+        ) {
+            let usage_scope_id = self
+                .symbol_table
+                .scopes
+                .find_scope_at_position(&usage.position)
+                .unwrap_or(0);
+
+            let def_scope_id = definition.scope_id.unwrap_or(0);
+
+            // In Rust, nested functions cannot access variables from outer functions
+            // Check if usage is in a nested function scope
+            if self.is_usage_in_nested_function(usage_scope_id, def_scope_id) {
+                return false;
+            }
+
+            // Variables are only accessible within the same scope or descendant scopes
+            return ScopeUtilities::is_scope_accessible(
+                &self.symbol_table,
+                usage_scope_id,
+                def_scope_id,
+            ) || usage_scope_id == def_scope_id;
+        }
+
         true
     }
 
@@ -398,6 +443,54 @@ impl RustDependencyResolver {
                 | DefinitionType::ModuleDefinition
                 | DefinitionType::MacroDefinition
         )
+    }
+
+    fn is_usage_in_nested_function(&self, usage_scope_id: ScopeId, def_scope_id: ScopeId) -> bool {
+        // Check if usage is in a nested function trying to access a variable from an outer function
+
+        // Find the function scope that contains the usage
+        let usage_function_scope = self.find_enclosing_function_scope(usage_scope_id);
+
+        // Find the function scope that contains the definition
+        let def_function_scope = self.find_enclosing_function_scope(def_scope_id);
+
+        // If both are in function scopes and they're different, this is a nested function access
+        if let (Some(usage_fn_scope), Some(def_fn_scope)) =
+            (usage_function_scope, def_function_scope)
+        {
+            if usage_fn_scope != def_fn_scope {
+                // Check if the usage function is nested within the definition function
+                let mut current_scope = usage_fn_scope;
+                while let Some(scope) = self.symbol_table.scopes.get_scope(current_scope) {
+                    if let Some(parent_id) = scope.parent {
+                        if parent_id == def_fn_scope {
+                            // This is a nested function trying to access outer function variable
+                            return true;
+                        }
+                        current_scope = parent_id;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+
+        false
+    }
+
+    fn find_enclosing_function_scope(&self, scope_id: ScopeId) -> Option<ScopeId> {
+        let mut current_scope = scope_id;
+        while let Some(scope) = self.symbol_table.scopes.get_scope(current_scope) {
+            if scope.scope_type == ScopeType::Function {
+                return Some(current_scope);
+            }
+            if let Some(parent_id) = scope.parent {
+                current_scope = parent_id;
+            } else {
+                break;
+            }
+        }
+        None
     }
 
     fn select_preferred_definition_rust_aware<'a>(
@@ -854,29 +947,8 @@ impl RustDependencyResolver {
             let source_line = usage_node.position.line_number();
             let target_line = def.line_number();
 
-            // In Rust, nested functions cannot access variables from outer function scopes
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::VariableDefinition
-            ) {
-                // Check if usage and definition are in different function scopes
-                let usage_func_scope = ScopeUtilities::find_enclosing_function_scope(
-                    &self.symbol_table,
-                    &usage_node.position,
-                );
-                let def_func_scope = ScopeUtilities::find_enclosing_function_scope(
-                    &self.symbol_table,
-                    &def.position,
-                );
-
-                if let (Some(usage_func), Some(def_func)) = (usage_func_scope, def_func_scope) {
-                    // If they are in different function scopes, block the dependency
-                    // Exception: Allow closures to capture variables from outer scopes
-                    if usage_func != def_func && !self.is_closure_capture(usage_node, def) {
-                        return dependencies;
-                    }
-                }
-            }
+            // Simplified approach: allow all variable dependencies for now
+            // The old implementation was more permissive
 
             if source_line != target_line {
                 dependencies.push(Dependency {
@@ -897,6 +969,8 @@ impl RustDependencyResolver {
         usage: &Usage,
         definitions: &'a [Definition],
     ) -> Option<&'a Definition> {
+        // Simple approach: find all matching definitions and apply priority logic
+        // This matches the old implementation behavior more closely
         let matching_definitions: Vec<&Definition> = definitions
             .iter()
             .filter(|d| d.name == usage.name && self.is_accessible_basic(usage, d))
@@ -906,12 +980,20 @@ impl RustDependencyResolver {
             return None;
         }
 
+        self.select_best_definition_by_priority(&matching_definitions, usage)
+    }
+
+    fn select_best_definition_by_priority<'a>(
+        &self,
+        matching_definitions: &[&'a Definition],
+        usage: &Usage,
+    ) -> Option<&'a Definition> {
         // Apply context-aware priority logic based on usage type
 
         // For main function usages, prefer ImportDefinition (imported symbols) FIRST
         // Check if this usage is within main function and there's an import available
         if self.is_usage_in_main_function(usage) {
-            for &def in &matching_definitions {
+            for &def in matching_definitions {
                 if matches!(
                     def.definition_type,
                     crate::models::DefinitionType::ImportDefinition
@@ -924,7 +1006,7 @@ impl RustDependencyResolver {
         // For method calls (CallExpression), prioritize methods over fields
         if matches!(usage.kind, crate::models::UsageKind::CallExpression) {
             // Prefer MethodDefinition and FunctionDefinition for method calls
-            for &def in &matching_definitions {
+            for &def in matching_definitions {
                 if matches!(
                     def.definition_type,
                     crate::models::DefinitionType::MethodDefinition
@@ -939,7 +1021,7 @@ impl RustDependencyResolver {
         // In case of StructFieldAccess dependency_type, prefer methods over fields (due to potential misclassification)
         if matches!(usage.kind, crate::models::UsageKind::FieldExpression) {
             // First try to find MethodDefinition in impl blocks (more specific)
-            for &def in &matching_definitions {
+            for &def in matching_definitions {
                 if matches!(
                     def.definition_type,
                     crate::models::DefinitionType::MethodDefinition
@@ -948,7 +1030,7 @@ impl RustDependencyResolver {
                 }
             }
             // Then try StructFieldDefinition for actual field access
-            for &def in &matching_definitions {
+            for &def in matching_definitions {
                 if matches!(
                     def.definition_type,
                     crate::models::DefinitionType::StructFieldDefinition
@@ -960,7 +1042,7 @@ impl RustDependencyResolver {
 
         // General priority for other cases (import statements themselves)
         // For module references, prefer ModuleDefinition
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::ModuleDefinition
@@ -970,7 +1052,7 @@ impl RustDependencyResolver {
         }
 
         // For function references, prefer FunctionDefinition
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::FunctionDefinition
@@ -980,7 +1062,7 @@ impl RustDependencyResolver {
         }
 
         // For methods, prefer MethodDefinition
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::MethodDefinition
@@ -990,7 +1072,7 @@ impl RustDependencyResolver {
         }
 
         // For constants, prefer ConstDefinition
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::ConstDefinition
@@ -1000,7 +1082,7 @@ impl RustDependencyResolver {
         }
 
         // For structs, prefer StructDefinition
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::StructDefinition
@@ -1011,7 +1093,7 @@ impl RustDependencyResolver {
 
         // First, try to find variable definitions in the same function scope
         let mut same_scope_defs = Vec::new();
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::VariableDefinition
@@ -1039,7 +1121,7 @@ impl RustDependencyResolver {
         }
 
         // Only fall back to ImportDefinition if no original definition is found
-        for &def in &matching_definitions {
+        for &def in matching_definitions {
             if matches!(
                 def.definition_type,
                 crate::models::DefinitionType::ImportDefinition
@@ -1188,6 +1270,7 @@ impl RustDependencyResolver {
     }
 
     /// Check if the usage represents a closure capturing a variable from an outer scope
+    #[allow(dead_code)]
     fn is_closure_capture(&self, _usage_node: &Usage, _def: &Definition) -> bool {
         // Find the closest enclosing function-like scope for the usage
         let usage_scope_id = self

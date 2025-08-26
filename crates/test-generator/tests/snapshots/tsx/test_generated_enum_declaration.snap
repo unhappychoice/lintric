@@ -19,13 +19,13 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
-    dependencies: [],
-    usage: [
-        Usage { position: { 1:6 to 1:14 }, name: "TestEnum", kind: Identifier, context: None },
-        Usage { position: { 1:17 to 1:18 }, name: "A", kind: FieldExpression, context: None },
-        Usage { position: { 1:20 to 1:21 }, name: "B", kind: FieldExpression, context: None },
+    definitions: [
+        Definition { position: { 1:6 to 1:14 }, name: "TestEnum", definition_type: EnumDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:17 to 1:18 }, name: "A", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:20 to 1:21 }, name: "B", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
+    dependencies: [],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

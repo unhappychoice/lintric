@@ -70,7 +70,7 @@ IntermediateRepresentation {
         Usage { position: { 6:20 to 6:28 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 7:5 to 7:24 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 7:5 to 7:12 }, name: "console", kind: Identifier, context: Some("call_expression") },
-        Usage { position: { 7:13 to 7:16 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 7:13 to 7:16 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 7:17 to 7:23 }, name: "result", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {

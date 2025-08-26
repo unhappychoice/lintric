@@ -50,7 +50,7 @@ IntermediateRepresentation {
         Usage { position: { 1:50 to 1:56 }, name: "error1", kind: Identifier, context: None },
         Usage { position: { 1:60 to 1:79 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:60 to 1:67 }, name: "console", kind: Identifier, context: Some("call_expression") },
-        Usage { position: { 1:68 to 1:71 }, name: "log", kind: FieldExpression, context: Some("call_expression") },
+        Usage { position: { 1:68 to 1:71 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 1:72 to 1:78 }, name: "error1", kind: Identifier, context: Some("call_expression") },
     ],
     analysis_metadata: AnalysisMetadata {

@@ -1,12 +1,10 @@
 pub mod ast_formatter;
-pub mod definition_collectors;
 pub mod definition_context;
 pub mod dependency_resolver;
 pub mod file_parser;
 pub mod languages;
 pub mod metric_calculator;
 pub mod models;
-pub mod usage_collector;
 
 use serde::Serialize;
 
@@ -14,8 +12,8 @@ pub use file_parser::FileParser;
 use languages::language_factory;
 use metric_calculator::calculate_metrics;
 pub use models::{
-    Accessibility, AnalysisResult, IntermediateRepresentation, Language, LineMetrics, ScopeId,
-    ScopeTree, ScopeType, SymbolTable,
+    Accessibility, AnalysisMetadata, AnalysisResult, IntermediateRepresentation, Language,
+    LineMetrics, ScopeId, ScopeTree, ScopeType,
 };
 
 #[derive(Debug, Serialize)]
@@ -91,37 +89,38 @@ fn _get_intermediate_representation(
     language: Language,
     tree: tree_sitter::Tree,
 ) -> Result<IntermediateRepresentation, String> {
-    let symbol_table = language_factory::collect_definitions_with_scopes(
-        language.clone(),
-        file_content,
-        tree.root_node(),
-    )?;
+    // Use new unified analysis with single AST traversal
+    let context =
+        language_factory::analyze_code_unified(language.clone(), file_content, tree.root_node())?;
 
-    let usages = language_factory::get_usage_node_collector(language.clone(), file_content)
-        .map_err(|e| format!("Failed to get usage node collector: {e}"))?
-        .collect_usage_nodes(tree.root_node(), file_content)
-        .map_err(|e| format!("Failed to collect usage nodes: {e}"))?;
-
-    let mut definitions: Vec<_> = symbol_table
-        .get_all_symbols()
+    let mut definitions: Vec<_> = context
+        .definitions
+        .get_all_definitions()
         .values()
         .flatten()
-        .map(|entry| entry.definition.clone())
+        .cloned()
         .collect();
 
     // Sort definitions by position for consistent output
     definitions.sort();
 
-    let dependencies = language_factory::get_dependency_resolver(language.clone(), symbol_table)?
+    let usages = context.usages.get_all_usages().clone();
+
+    // Resolve dependencies using new context-based resolver
+    let dependencies = language_factory::get_dependency_resolver(language.clone(), context)?
         .resolve_dependencies(file_content, tree.root_node(), &usages, &definitions)
         .map_err(|e| format!("Failed to resolve dependencies: {e}"))?;
 
-    Ok(IntermediateRepresentation::new(
-        file_path,
+    Ok(IntermediateRepresentation {
+        file_path: file_path.clone(),
         definitions,
+        usage: usages,
         dependencies,
-        usages,
-        language.to_string(),
-        file_content.lines().count(),
-    ))
+        analysis_metadata: AnalysisMetadata {
+            language: language.to_string(),
+            total_lines: file_content.lines().count(),
+            analysis_timestamp: "now".to_string(),
+            lintric_version: env!("CARGO_PKG_VERSION").to_string(),
+        },
+    })
 }

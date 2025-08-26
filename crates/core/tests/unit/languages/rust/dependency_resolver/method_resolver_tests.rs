@@ -163,6 +163,7 @@ fn main() {
         kind: UsageKind::CallExpression,
         position: create_test_position(20),
         context: None,
+        scope_id: None,
     };
 
     let definitions = vec![Definition {
@@ -191,6 +192,7 @@ fn test_associated_function_call_parsing() {
         kind: UsageKind::CallExpression,
         position: create_test_position(1),
         context: None,
+        scope_id: None,
     };
 
     let definitions = vec![Definition {
@@ -247,6 +249,7 @@ fn main() {
         kind: UsageKind::CallExpression,
         position: create_test_position(21),
         context: None,
+        scope_id: None,
     };
 
     let definitions = vec![Definition {
@@ -294,6 +297,7 @@ fn main() {
         kind: UsageKind::CallExpression,
         position: create_test_position(17),
         context: None,
+        scope_id: None,
     };
 
     let definitions = vec![Definition {
@@ -350,6 +354,7 @@ fn main() {
             kind: UsageKind::CallExpression,
             position: create_test_position(22),
             context: None,
+            scope_id: None,
         };
 
         let definitions = vec![Definition {

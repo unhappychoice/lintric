@@ -1,5 +1,8 @@
 use crate::dependency_resolver::DependencyResolverTrait;
-use crate::models::{scope::SymbolTable, Definition, Dependency, Usage};
+use crate::models::{
+    scope::{CodeAnalysisContext, SymbolTable},
+    Definition, Dependency, Usage,
+};
 use tree_sitter::Node;
 
 use super::method_resolver::MethodResolver;
@@ -20,6 +23,23 @@ impl TypeScriptDependencyResolver {
             method_resolver: MethodResolver::new(),
             module_resolver: ModuleResolver::new(),
         }
+    }
+
+    pub fn new_from_context(context: CodeAnalysisContext) -> Self {
+        // Create a SymbolTable from the new context for backward compatibility
+        let mut symbol_table = SymbolTable::new();
+
+        // Copy scope structure
+        symbol_table.scopes = context.scopes;
+
+        // Add definitions to the symbol table
+        for (name, definitions) in context.definitions.get_all_definitions() {
+            for definition in definitions {
+                symbol_table.add_enhanced_symbol(name.clone(), definition.clone());
+            }
+        }
+
+        Self::new(symbol_table)
     }
 
     /// TypeScript-specific field access resolution

@@ -83,11 +83,11 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/rust/fixtures/method_call_dependency.rs",
     definitions: [
-        Definition { position: { 1:8 to 1:16 }, name: "MyStruct", definition_type: StructDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 2:5 to 2:10 }, name: "value", definition_type: StructFieldDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 6:8 to 6:17 }, name: "my_method", definition_type: MethodDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 11:4 to 11:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 12:9 to 12:10 }, name: "s", definition_type: VariableDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:8 to 1:16 }, name: "MyStruct", definition_type: StructDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:5 to 2:10 }, name: "value", definition_type: StructFieldDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:8 to 6:17 }, name: "my_method", definition_type: MethodDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 11:4 to 11:8 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(5), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 12:9 to 12:10 }, name: "s", definition_type: VariableDefinition, scope_id: Some(6), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
         Dependency { source_line: 5, target_line: 1, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:5:6") },

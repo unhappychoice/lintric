@@ -64,7 +64,8 @@ impl<'a> AstFormatter<'a> {
 
         // Try to get text content first - this works for all meaningful text nodes
         if let Ok(text) = node.utf8_text(self.file_content.as_bytes()) {
-            let text_trimmed = text.trim();
+            let normalized_text = self.normalize_line_endings(text);
+            let text_trimmed = normalized_text.trim();
 
             // Only show text if it's not empty and not just structural characters
             if !text_trimmed.is_empty() && self.should_display_node_text(node_kind, text_trimmed) {
@@ -101,5 +102,9 @@ impl<'a> AstFormatter<'a> {
         // Show position for modifier nodes that might not have text content
         // This is now handled by the language-specific functions above
         false
+    }
+
+    fn normalize_line_endings(&self, text: &str) -> String {
+        text.replace("\r\n", "\n").replace('\r', "\n")
     }
 }
