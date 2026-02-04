@@ -13,4 +13,4 @@ syntect = "5.2.0"
 tera = "1.19.1"
 
 [dev-dependencies]
-insta = "1.34.0"
+insta = "1.46.3"
