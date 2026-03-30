@@ -12,7 +12,7 @@ tree-sitter-rust = "0.21.2"
 tree-sitter-typescript = "0.21.1"
 
 [dev-dependencies]
-insta = "1.47.0"
+insta = "1.47.1"
 
 [[test]]
 name = "integration_tests"
