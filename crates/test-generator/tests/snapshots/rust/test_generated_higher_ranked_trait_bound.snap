@@ -10,7 +10,9 @@ AST:
   (function_item
     name: (identifier "test_fn5")
     type_parameters: (type_parameters
-      (type_identifier "F")
+      (type_parameter
+        name: (type_identifier "F")
+      )
     )
     parameters: (parameters
       (parameter
@@ -24,8 +26,10 @@ AST:
         bounds: (trait_bounds
           (higher_ranked_trait_bound
             type_parameters: (type_parameters
-              (lifetime
-                (identifier "a")
+              (lifetime_parameter
+                name: (lifetime
+                  (identifier "a")
+                )
               )
             )
             type: (function_type
@@ -63,6 +67,7 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
+        Usage { position: { 1:13 to 1:14 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 1:19 to 1:20 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 1:28 to 1:29 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 1:39 to 1:41 }, name: "Fn", kind: TypeIdentifier, context: None },

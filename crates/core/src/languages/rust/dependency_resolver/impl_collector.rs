@@ -2,6 +2,7 @@ use crate::languages::rust::dependency_resolver::method_resolver::{
     ImplBlock, ImplBlockId, TraitDef, TraitId, TraitImpl, TraitImplId,
 };
 use crate::models::{Definition, DefinitionType, Position, Type};
+use streaming_iterator::StreamingIterator;
 use tree_sitter::{Node, Query, QueryCursor};
 
 pub struct RustImplCollector {
@@ -34,15 +35,15 @@ impl RustImplCollector {
             ) @impl_block
         "#;
 
-        let language = tree_sitter_rust::language();
+        let language: tree_sitter::Language = tree_sitter_rust::LANGUAGE.into();
         let query = Query::new(&language, query_str)
             .map_err(|e| format!("Failed to create impl query: {}", e))?;
 
         let mut cursor = QueryCursor::new();
-        let matches = cursor.matches(&query, root_node, source_code.as_bytes());
+        let mut matches = cursor.matches(&query, root_node, source_code.as_bytes());
 
-        for match_ in matches {
-            if let Some(impl_block) = self.parse_impl_block(&match_, source_code) {
+        while let Some(match_) = matches.next() {
+            if let Some(impl_block) = self.parse_impl_block(match_, source_code) {
                 impl_blocks.push(impl_block);
             }
         }
@@ -66,15 +67,15 @@ impl RustImplCollector {
             ) @trait_impl
         "#;
 
-        let language = tree_sitter_rust::language();
+        let language: tree_sitter::Language = tree_sitter_rust::LANGUAGE.into();
         let query = Query::new(&language, query_str)
             .map_err(|e| format!("Failed to create trait impl query: {}", e))?;
 
         let mut cursor = QueryCursor::new();
-        let matches = cursor.matches(&query, root_node, source_code.as_bytes());
+        let mut matches = cursor.matches(&query, root_node, source_code.as_bytes());
 
-        for match_ in matches {
-            if let Some(trait_impl) = self.parse_trait_impl(&match_, source_code) {
+        while let Some(match_) = matches.next() {
+            if let Some(trait_impl) = self.parse_trait_impl(match_, source_code) {
                 trait_impls.push(trait_impl);
             }
         }
@@ -97,15 +98,15 @@ impl RustImplCollector {
             ) @trait_def
         "#;
 
-        let language = tree_sitter_rust::language();
+        let language: tree_sitter::Language = tree_sitter_rust::LANGUAGE.into();
         let query = Query::new(&language, query_str)
             .map_err(|e| format!("Failed to create trait query: {}", e))?;
 
         let mut cursor = QueryCursor::new();
-        let matches = cursor.matches(&query, root_node, source_code.as_bytes());
+        let mut matches = cursor.matches(&query, root_node, source_code.as_bytes());
 
-        for match_ in matches {
-            if let Some(trait_def) = self.parse_trait_def(&match_, source_code) {
+        while let Some(match_) = matches.next() {
+            if let Some(trait_def) = self.parse_trait_def(match_, source_code) {
                 traits.push(trait_def);
             }
         }

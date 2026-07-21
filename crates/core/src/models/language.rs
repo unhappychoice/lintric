@@ -1,7 +1,5 @@
 use std::path::Path;
 use tree_sitter::Language as TreeSitterLanguage;
-use tree_sitter_rust;
-use tree_sitter_typescript;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Language {
@@ -24,9 +22,9 @@ impl Language {
 
     pub fn get_tree_sitter_language(&self) -> TreeSitterLanguage {
         match self {
-            Language::Rust => tree_sitter_rust::language(),
-            Language::TypeScript => tree_sitter_typescript::language_typescript(),
-            Language::TSX => tree_sitter_typescript::language_tsx(),
+            Language::Rust => tree_sitter_rust::LANGUAGE.into(),
+            Language::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+            Language::TSX => tree_sitter_typescript::LANGUAGE_TSX.into(),
         }
     }
 }

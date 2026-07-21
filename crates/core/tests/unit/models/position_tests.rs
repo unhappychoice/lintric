@@ -4,7 +4,7 @@ use tree_sitter::Parser;
 fn setup_rust_parser() -> Parser {
     let mut parser = Parser::new();
     parser
-        .set_language(&tree_sitter_rust::language())
+        .set_language(&tree_sitter_rust::LANGUAGE.into())
         .expect("Error loading Rust grammar");
     parser
 }
