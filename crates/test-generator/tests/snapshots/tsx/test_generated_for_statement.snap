@@ -14,13 +14,11 @@ AST:
         value: (number "0")
       )
     )
-    condition: (expression_statement
-      (binary_expression
-        left: (identifier "i1")
-        right: (member_expression
-          object: (identifier "arr1")
-          property: (property_identifier "length")
-        )
+    condition: (binary_expression
+      left: (identifier "i1")
+      right: (member_expression
+        object: (identifier "arr1")
+        property: (property_identifier "length")
       )
     )
     increment: (update_expression

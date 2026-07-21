@@ -113,8 +113,8 @@ AST:
   (function_item
     name: (identifier "spawn_task")
     type_parameters: (type_parameters
-      (constrained_type_parameter
-        left: (type_identifier "F")
+      (type_parameter
+        name: (type_identifier "F")
         bounds: (trait_bounds
           (generic_type
             type: (type_identifier "Future")
@@ -223,7 +223,6 @@ IntermediateRepresentation {
     dependencies: [
         Dependency { source_line: 8, target_line: 3, symbol: "fetch_data", dependency_type: FunctionCall, context: Some("CallExpression:8:16") },
         Dependency { source_line: 9, target_line: 8, symbol: "data", dependency_type: VariableUse, context: Some("Identifier:9:31") },
-        Dependency { source_line: 13, target_line: 1, symbol: "Future", dependency_type: TypeReference, context: Some("TypeIdentifier:13:18") },
         Dependency { source_line: 15, target_line: 13, symbol: "future", dependency_type: VariableUse, context: Some("Identifier:15:26") },
         Dependency { source_line: 19, target_line: 7, symbol: "process_data", dependency_type: FunctionCall, context: Some("CallExpression:19:13") },
         Dependency { source_line: 21, target_line: 13, symbol: "spawn_task", dependency_type: FunctionCall, context: Some("CallExpression:21:5") },
@@ -246,6 +245,7 @@ IntermediateRepresentation {
         Usage { position: { 9:5 to 9:12 }, name: "println", kind: Identifier, context: None },
         Usage { position: { 9:31 to 9:35 }, name: "data", kind: Identifier, context: None },
         Usage { position: { 10:5 to 10:11 }, name: "Ok", kind: CallExpression, context: Some("call_expression") },
+        Usage { position: { 13:15 to 13:16 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 13:18 to 13:24 }, name: "Future", kind: TypeIdentifier, context: None },
         Usage { position: { 13:25 to 13:31 }, name: "Output", kind: TypeIdentifier, context: None },
         Usage { position: { 13:47 to 13:48 }, name: "F", kind: TypeIdentifier, context: None },

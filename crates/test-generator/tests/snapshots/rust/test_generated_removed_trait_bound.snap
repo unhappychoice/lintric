@@ -10,7 +10,9 @@ AST:
   (function_item
     name: (identifier "test_fn9")
     type_parameters: (type_parameters
-      (type_identifier "T")
+      (type_parameter
+        name: (type_identifier "T")
+      )
     )
     parameters: (parameters
       (parameter
@@ -30,6 +32,7 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
+        Usage { position: { 1:13 to 1:14 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 1:19 to 1:20 }, name: "T", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

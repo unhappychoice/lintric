@@ -14,11 +14,9 @@ AST:
         value: (number "0")
       )
     )
-    condition: (expression_statement
-      (binary_expression
-        left: (identifier "i")
-        right: (number "10")
-      )
+    condition: (binary_expression
+      left: (identifier "i")
+      right: (number "10")
     )
     increment: (update_expression
       argument: (identifier "i")

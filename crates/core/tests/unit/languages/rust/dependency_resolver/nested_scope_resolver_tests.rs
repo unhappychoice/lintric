@@ -67,7 +67,7 @@ fn create_test_scope_tree() -> ScopeTree {
 fn setup_rust_parser() -> Parser {
     let mut parser = Parser::new();
     parser
-        .set_language(&tree_sitter_rust::language())
+        .set_language(&tree_sitter_rust::LANGUAGE.into())
         .expect("Error loading Rust grammar");
     parser
 }

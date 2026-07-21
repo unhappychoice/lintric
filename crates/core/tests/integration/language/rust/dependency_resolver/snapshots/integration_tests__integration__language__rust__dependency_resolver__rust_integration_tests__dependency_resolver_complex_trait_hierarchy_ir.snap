@@ -183,8 +183,8 @@ AST:
   (function_item
     name: (identifier "print_mammal_info")
     type_parameters: (type_parameters
-      (constrained_type_parameter
-        left: (type_identifier "T")
+      (type_parameter
+        name: (type_identifier "T")
         bounds: (trait_bounds
           (type_identifier "Mammal")
         )
@@ -328,6 +328,7 @@ IntermediateRepresentation {
         Usage { position: { 25:6 to 25:12 }, name: "Mammal", kind: TypeIdentifier, context: None },
         Usage { position: { 25:17 to 25:20 }, name: "Dog", kind: TypeIdentifier, context: None },
         Usage { position: { 27:10 to 27:18 }, name: "fur", kind: FieldExpression, context: Some("field_expression") },
+        Usage { position: { 31:22 to 31:23 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 31:25 to 31:31 }, name: "Mammal", kind: TypeIdentifier, context: None },
         Usage { position: { 31:42 to 31:43 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 32:5 to 32:12 }, name: "println", kind: Identifier, context: None },

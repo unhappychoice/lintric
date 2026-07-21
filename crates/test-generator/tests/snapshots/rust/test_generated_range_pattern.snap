@@ -14,8 +14,8 @@ AST:
         (match_arm
           pattern: (match_pattern
             (range_pattern
-              (integer_literal "0")
-              (integer_literal "10")
+              left: (integer_literal "0")
+              right: (integer_literal "10")
             )
           )
           value: (block)
