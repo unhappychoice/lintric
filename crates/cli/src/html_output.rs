@@ -176,20 +176,16 @@ fn generate_file_html(
             "".to_string()
         };
 
-        let mut line_data = Context::new();
-        line_data.insert("line_number", &line_number);
-
         let highlighted_code_line = highlighted_lines
             .get(i)
             .unwrap_or(&String::new())
             .to_string();
-        line_data.insert("code", &highlighted_code_line);
-        line_data.insert("metrics_str", &metrics_str);
-        line_data.insert(
-            "dependent_lines",
-            &line_metrics.map_or(vec![], |m| m.dependent_lines.clone()),
-        );
-        code_lines_for_template.push(line_data.into_json());
+        code_lines_for_template.push(serde_json::json!({
+            "line_number": line_number,
+            "code": highlighted_code_line,
+            "metrics_str": metrics_str,
+            "dependent_lines": line_metrics.map_or(vec![], |m| m.dependent_lines.clone()),
+        }));
     }
 
     let mut file_context = Context::new();
