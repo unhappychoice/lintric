@@ -249,23 +249,14 @@ impl ImportResolver {
         let mut current_module = from_module;
 
         for part in parts {
-            if let Some(module) = self.module_tree.modules.get(&current_module) {
-                let child_id = module.children.iter().find(|&&child_id| {
-                    if let Some(child) = self.module_tree.modules.get(&child_id) {
-                        child.name == part
-                    } else {
-                        false
-                    }
-                });
-
-                if let Some(&child_id) = child_id {
-                    current_module = child_id;
-                } else {
-                    return None;
-                }
-            } else {
-                return None;
-            }
+            let module = self.module_tree.modules.get(&current_module)?;
+            let &child_id = module.children.iter().find(|&&child_id| {
+                self.module_tree
+                    .modules
+                    .get(&child_id)
+                    .is_some_and(|child| child.name == part)
+            })?;
+            current_module = child_id;
         }
 
         Some(current_module)
