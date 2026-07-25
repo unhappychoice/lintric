@@ -192,7 +192,11 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
 
         Ok(all_dependencies)
     }
+}
 
+impl TypeScriptDependencyResolver {
+    /// Resolve one usage. Internal to this resolver: the Rust side reaches its own equivalent by a
+    /// different route, so there is nothing for the trait to abstract over.
     fn resolve_single_dependency(
         &self,
         _source_code: &str,

@@ -10,14 +10,6 @@ pub trait DependencyResolver: Send + Sync {
         definitions: &[Definition],
     ) -> Result<Vec<Dependency>, String>;
 
-    fn resolve_single_dependency(
-        &self,
-        source_code: &str,
-        root_node: Node,
-        usage_node: &Usage,
-        definitions: &[Definition],
-    ) -> Vec<Dependency>;
-
     /// Classify a resolved dependency.
     ///
     /// What a usage resolves to is usually the stronger signal: a method call and a field read are
