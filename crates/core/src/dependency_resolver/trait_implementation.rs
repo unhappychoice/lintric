@@ -110,8 +110,8 @@ fn supertypes(
         "super",
         |type_node, super_node| {
             Some((
-                text(source_code, type_node)?,
-                text(source_code, super_node)?,
+                type_text(source_code, type_node)?,
+                type_text(source_code, super_node)?,
             ))
         },
     )?;
@@ -190,10 +190,25 @@ fn capture<'a>(query_match: &QueryMatch<'a, 'a>, index: u32) -> Option<Node<'a>>
 
 fn method(source_code: &str, type_node: Node, method_node: Node) -> Option<Method> {
     Some(Method {
-        type_name: text(source_code, type_node)?,
+        type_name: type_text(source_code, type_node)?,
         name: text(source_code, method_node)?,
         line: method_node.start_position().row + 1,
     })
+}
+
+/// The bare name of a captured type, looking through type arguments so that `Box<number>` pairs
+/// with `Box`.
+///
+/// The two grammars disagree on which field holds the name, so both are tried.
+fn type_text(source_code: &str, node: Node) -> Option<String> {
+    let named = match node.kind() {
+        "generic_type" => node
+            .child_by_field_name("type")
+            .or_else(|| node.child_by_field_name("name"))?,
+        _ => node,
+    };
+
+    text(source_code, named)
 }
 
 fn text(source_code: &str, node: Node) -> Option<String> {
