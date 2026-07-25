@@ -9,6 +9,7 @@ what each capture means.
 ```
 crates/core/queries/<language>/definitions.scm               declaration patterns
 crates/core/queries/<language>/scopes.scm                    scope patterns
+crates/core/queries/<language>/bindings.scm                  which identifiers bind rather than read
 crates/core/src/languages/<language>/definition_queries.rs   capture name -> what it declares
 crates/core/src/query/mod.rs                                 runs a query, returns roles keyed by node
 ```
@@ -50,6 +51,25 @@ A query describes shape. When classifying needs more than shape, the extractor k
 The extractor asks the query **first** and falls through to its arms only when nothing was captured.
 That ordering matters: a `const_item`'s name is an `identifier`, and the `identifier` arm would
 otherwise swallow it before the query was consulted.
+
+### Bindings
+
+The same node shape means different things by position: `x` in `let x = y` declares a name, `x` in
+`f(x)` reads one. `bindings.scm` captures the declaring occurrences, and the usage extractor takes
+everything else as a reference — replacing a walk up the parent chain with a set lookup.
+
+One case a query cannot state directly is "every child of this pattern except the type it matches
+against", since there is no way to exclude a field. So the type is captured as `@reference` and a
+reference wins over a binding for the same node:
+
+```scheme
+(tuple_struct_pattern (identifier) @binding)
+(tuple_struct_pattern type: (identifier) @reference)
+```
+
+Writing the patterns out also showed which of the hand-written arms could never fire:
+`constrained_type_parameter` is not a node in this grammar at all, and `where_clause` and
+`type_parameters` have no identifier among their children. They are gone rather than transcribed.
 
 ### Scopes
 

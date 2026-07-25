@@ -60,3 +60,20 @@ fn the_receiver_narrowing_queries_compile_for_both_typescript_grammars() {
         );
     }
 }
+
+#[test]
+fn the_rust_binding_query_compiles_and_tells_a_binding_from_a_reference() {
+    // `Meters` is read while `value` is introduced, though both are direct children of the pattern.
+    let source = "struct Meters(i32);\nfn main() {\n    let m = Meters(1);\n    let Meters(value) = m;\n    let _ = value;\n}\n";
+    let (ir, _) = analyze_content(source.to_string(), Language::Rust).unwrap();
+
+    let edges: Vec<(usize, usize, &str)> = ir
+        .dependencies
+        .iter()
+        .map(|d| (d.source_line, d.target_line, d.symbol.as_str()))
+        .collect();
+
+    assert!(edges.contains(&(4, 1, "Meters")), "{edges:?}");
+    assert!(edges.contains(&(5, 4, "value")), "{edges:?}");
+    let _ = rust::binding_queries::bindings_and_references;
+}
