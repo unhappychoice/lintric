@@ -25,10 +25,10 @@
       "duplicates": 1
     },
     "rust/macros.rs": {
-      "expected": 8,
-      "detected": 5,
-      "correct": 5,
-      "missing": 3,
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -90,10 +90,10 @@
     }
   },
   "total": {
-    "expected": 91,
-    "detected": 78,
-    "correct": 78,
-    "missing": 13,
+    "expected": 92,
+    "detected": 82,
+    "correct": 82,
+    "missing": 10,
     "spurious": 0,
     "duplicates": 10
   }

@@ -13,8 +13,11 @@ pub trait NodeDefinitionExtractor {
 
 /// Trait for extracting usage information from AST nodes
 pub trait NodeUsageExtractor {
-    /// Extract usage from a node if it represents one
-    fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage>;
+    /// Extract usages from a node if it represents any
+    ///
+    /// A single node can carry more than one usage: a format string literal captures an
+    /// identifier per placeholder, and none of them exist as nodes of their own.
+    fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Usage>;
 }
 
 /// Unified AST traverser with scope management
@@ -92,8 +95,9 @@ impl ASTScopeTraverser {
                 .add_definition(definition.name.clone(), definition);
         }
 
-        // Extract usage from this node
-        if let Some(mut usage) = usage_extractor.extract_usage(node, self.current_scope, source) {
+        // Extract usages from this node
+        let usages = usage_extractor.extract_usage(node, self.current_scope, source);
+        for mut usage in usages {
             // Set scope context for the usage
             usage.set_scope_id(Some(self.current_scope));
             context.usages.add_usage(usage);
@@ -142,8 +146,8 @@ mod tests {
     }
 
     impl NodeUsageExtractor for MockUsageExtractor {
-        fn extract_usage(&self, _node: Node, _scope: ScopeId, _source: &str) -> Option<Usage> {
-            None
+        fn extract_usage(&self, _node: Node, _scope: ScopeId, _source: &str) -> Vec<Usage> {
+            vec![]
         }
     }
 

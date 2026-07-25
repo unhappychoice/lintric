@@ -6,6 +6,8 @@ fn main() {
     let msg = format!("{name} x{count}"); //~ depends: name@4, count@5
     println!("{msg}"); //~ depends: msg@6
     println!("{} {}", name, count); //~ depends: name@4, count@5
+    println!("{count:>8}"); //~ depends: count@5
+    println!("{{name}} is escaped");
     let items = vec![name, msg.as_str()]; //~ depends: name@4, msg@6
-    assert_eq!(items.len(), 2); //~ depends: items@9
+    assert_eq!(items.len(), 2); //~ depends: items@11
 }
