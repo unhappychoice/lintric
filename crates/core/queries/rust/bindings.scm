@@ -22,6 +22,11 @@
 (tuple_struct_pattern (identifier) @binding)
 (tuple_struct_pattern type: (identifier) @reference)
 
+; Not a binding, but not counted here either: the call expression itself is extracted as the usage,
+; so counting its callee again would record the same reference twice. A qualified callee such as
+; `HashMap::new` is deliberately absent — its path components are references worth recording.
+(call_expression function: (identifier) @call_target)
+
 (type_parameter name: (type_identifier) @binding)
 (lifetime (identifier) @binding)
 (bounded_type (type_identifier) @binding)

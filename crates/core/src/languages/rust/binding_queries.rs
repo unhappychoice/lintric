@@ -5,17 +5,25 @@ use tree_sitter::Node;
 /// Identifiers that bind a name rather than reference one.
 const QUERY: &str = include_str!("../../../queries/rust/bindings.scm");
 
-/// The identifiers the query calls bindings, and the ones it calls references.
+/// What the query says about each identifier it captures.
 ///
-/// Both come from one file because they answer one question. A reference wins: the type a pattern
-/// matches against is a direct child of that pattern just as the names it introduces are, so the
-/// only thing telling them apart is the field, and a query cannot say "every child but this one".
-pub fn bindings_and_references(
-    source_code: &str,
-    root_node: Node,
-) -> Result<(HashSet<usize>, HashSet<usize>), String> {
-    Ok((
-        query::captured_nodes(QUERY, source_code, root_node, "binding")?,
-        query::captured_nodes(QUERY, source_code, root_node, "reference")?,
-    ))
+/// One file because the extractor asks one question of it — whether this identifier is a reference
+/// worth recording — and the reasons it may not be sit side by side.
+pub struct Roles {
+    /// Identifiers that declare a name.
+    pub bindings: HashSet<usize>,
+    /// Identifiers a binding pattern names but that read rather than declare: the type the pattern
+    /// matches against, which is a direct child just as the names it introduces are. A query cannot
+    /// say "every child but this one", so this overrides `bindings`.
+    pub references: HashSet<usize>,
+    /// Callees already recorded through the call expression itself.
+    pub call_targets: HashSet<usize>,
+}
+
+pub fn roles(source_code: &str, root_node: Node) -> Result<Roles, String> {
+    Ok(Roles {
+        bindings: query::captured_nodes(QUERY, source_code, root_node, "binding")?,
+        references: query::captured_nodes(QUERY, source_code, root_node, "reference")?,
+        call_targets: query::captured_nodes(QUERY, source_code, root_node, "call_target")?,
+    })
 }
