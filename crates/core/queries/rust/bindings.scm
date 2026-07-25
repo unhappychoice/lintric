@@ -28,6 +28,8 @@
 (call_expression function: (identifier) @call_target)
 
 (type_parameter name: (type_identifier) @binding)
+(const_parameter name: (identifier) @binding)
+(extern_crate_declaration name: (identifier) @binding)
 (lifetime (identifier) @binding)
 (bounded_type (type_identifier) @binding)
 
