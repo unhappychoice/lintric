@@ -320,6 +320,14 @@
       "spurious": 0,
       "duplicates": 2
     },
+    "typescript/object_shapes.ts": {
+      "expected": 9,
+      "detected": 10,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 1,
+      "duplicates": 0
+    },
     "typescript/type_aliases.ts": {
       "expected": 9,
       "detected": 9,
@@ -338,11 +346,11 @@
     }
   },
   "total": {
-    "expected": 409,
-    "detected": 409,
-    "correct": 409,
+    "expected": 418,
+    "detected": 419,
+    "correct": 418,
     "missing": 0,
-    "spurious": 0,
+    "spurious": 1,
     "duplicates": 28
   }
 }

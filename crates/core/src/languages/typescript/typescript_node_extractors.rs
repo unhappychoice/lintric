@@ -656,6 +656,9 @@ impl NodeUsageExtractor for TypeScriptUsageExtractor {
             "property_identifier" | "private_property_identifier" => {
                 self.extract_property_identifier_usage(node, scope, source)
             }
+            // `{ x }` is shorthand for `{ x: x }`, so it reads the binding. The pattern form is a
+            // different node kind and stays a binding.
+            "shorthand_property_identifier" => self.extract_identifier_usage(node, scope, source),
             _ => None,
         };
 
@@ -864,7 +867,15 @@ impl TypeScriptUsageExtractor {
                     // Property identifiers in enum bodies are definitions, not usage
                     return None;
                 }
-                "public_field_definition" | "private_field_definition" | "field_definition" => {
+                // A member declaration is a definition. Left as a usage it resolved to any
+                // same-named member of another interface, and since that member's own declaration
+                // did the same, the two invented a cycle between themselves.
+                "public_field_definition"
+                | "private_field_definition"
+                | "field_definition"
+                | "property_signature"
+                | "method_signature"
+                | "abstract_method_signature" => {
                     // Property identifiers in field definitions are definitions, not usage
                     if let Some(name_field) = parent.child_by_field_name("name") {
                         if node.id() == name_field.id() {

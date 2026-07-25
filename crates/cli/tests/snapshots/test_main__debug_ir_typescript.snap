@@ -534,28 +534,6 @@ expression: out
       "context": null
     },
     {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 6,
-        "start_column": 5,
-        "end_line": 6,
-        "end_column": 6
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 7,
-        "start_column": 5,
-        "end_line": 7,
-        "end_column": 6
-      },
-      "context": null
-    },
-    {
       "name": "a",
       "kind": "Identifier",
       "position": {

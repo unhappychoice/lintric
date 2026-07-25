@@ -280,7 +280,6 @@ IntermediateRepresentation {
         Usage { position: { 5:14 to 5:19 }, name: "value", kind: FieldExpression, context: None },
         Usage { position: { 5:23 to 5:24 }, name: "n", kind: Identifier, context: None },
         Usage { position: { 9:21 to 9:26 }, name: "value", kind: FieldExpression, context: None },
-        Usage { position: { 14:5 to 14:9 }, name: "draw", kind: FieldExpression, context: None },
         Usage { position: { 17:25 to 17:33 }, name: "Drawable", kind: TypeIdentifier, context: None },
         Usage { position: { 21:14 to 21:20 }, name: "radius", kind: FieldExpression, context: None },
         Usage { position: { 21:23 to 21:29 }, name: "radius", kind: Identifier, context: None },
