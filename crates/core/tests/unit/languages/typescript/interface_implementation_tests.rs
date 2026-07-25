@@ -89,3 +89,34 @@ fn implementations(source: &str, language: Language) -> Vec<(usize, usize, Strin
         })
         .collect()
 }
+
+#[test]
+fn links_a_class_method_to_a_declaration_inherited_from_a_parent_interface() {
+    let source = "interface Base {\n    run(): void;\n}\n\ninterface Extended extends Base {}\n\nclass S implements Extended {\n    run(): void {}\n}\n";
+
+    assert_eq!(
+        implementations(source, Language::TypeScript),
+        vec![(8, 2, "run".to_string())]
+    );
+}
+
+#[test]
+fn links_an_override_to_the_base_class_method() {
+    let source = "class Base {\n    run(): void {}\n}\n\nclass Derived extends Base {\n    run(): void {}\n}\n";
+
+    assert_eq!(
+        implementations(source, Language::TypeScript),
+        vec![(6, 2, "run".to_string())]
+    );
+}
+
+#[test]
+fn reaches_an_interface_declaration_through_a_base_class() {
+    let source = "interface Shape {\n    area(): number;\n}\n\nclass Base implements Shape {\n    area(): number {\n        return 1;\n    }\n}\n\nclass Derived extends Base {\n    area(): number {\n        return 2;\n    }\n}\n";
+    let dependencies = implementations(source, Language::TypeScript);
+
+    assert!(
+        dependencies.contains(&(12, 6, "area".to_string())),
+        "the nearest declaration is the base class method: {dependencies:?}"
+    );
+}

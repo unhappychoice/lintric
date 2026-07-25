@@ -72,6 +72,14 @@
       "spurious": 0,
       "duplicates": 2
     },
+    "rust/supertraits.rs": {
+      "expected": 5,
+      "detected": 5,
+      "correct": 5,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "rust/traits.rs": {
       "expected": 12,
       "detected": 12,
@@ -128,6 +136,14 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "typescript/inheritance.ts": {
+      "expected": 6,
+      "detected": 6,
+      "correct": 6,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "typescript/interfaces.ts": {
       "expected": 10,
       "detected": 10,
@@ -146,9 +162,9 @@
     }
   },
   "total": {
-    "expected": 165,
-    "detected": 165,
-    "correct": 165,
+    "expected": 176,
+    "detected": 176,
+    "correct": 176,
     "missing": 0,
     "spurious": 0,
     "duplicates": 17

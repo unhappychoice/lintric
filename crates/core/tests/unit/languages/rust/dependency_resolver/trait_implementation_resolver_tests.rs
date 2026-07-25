@@ -79,3 +79,44 @@ fn trait_implementations(source: &str) -> Vec<(usize, usize, String)> {
         })
         .collect()
 }
+
+#[test]
+fn links_an_implementation_to_a_declaration_inherited_from_a_supertrait() {
+    let source = "trait Base {\n    fn run(&self);\n}\n\ntrait Extended: Base {}\n\nstruct S;\n\nimpl Extended for S {\n    fn run(&self) {}\n}\n";
+
+    assert_eq!(
+        trait_implementations(source),
+        vec![(10, 2, "run".to_string())]
+    );
+}
+
+#[test]
+fn follows_a_chain_of_supertraits() {
+    let source = "trait Base {\n    fn run(&self);\n}\n\ntrait Mid: Base {}\n\ntrait Top: Mid {}\n\nstruct S;\n\nimpl Top for S {\n    fn run(&self) {}\n}\n";
+
+    assert_eq!(
+        trait_implementations(source),
+        vec![(12, 2, "run".to_string())]
+    );
+}
+
+#[test]
+fn prefers_the_nearest_declaration_over_an_inherited_one() {
+    let source = "trait Base {\n    fn run(&self);\n}\n\ntrait Mid: Base {\n    fn run(&self);\n}\n\nstruct S;\n\nimpl Mid for S {\n    fn run(&self) {}\n}\n";
+
+    assert_eq!(
+        trait_implementations(source),
+        vec![(12, 6, "run".to_string())]
+    );
+}
+
+#[test]
+fn terminates_on_an_inheritance_cycle() {
+    // Invalid Rust, but it parses, so the walk must not loop.
+    let source = "trait A: B {\n    fn x(&self);\n}\n\ntrait B: A {}\n\nstruct S;\n\nimpl B for S {\n    fn x(&self) {}\n}\n";
+
+    assert_eq!(
+        trait_implementations(source),
+        vec![(10, 2, "x".to_string())]
+    );
+}
