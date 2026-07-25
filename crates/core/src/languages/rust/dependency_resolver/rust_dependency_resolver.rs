@@ -396,9 +396,16 @@ impl RustDependencyResolver {
             return true;
         }
 
-        // Check for hoisting rules first
+        // A hoisted definition is visible ahead of its own declaration, but only within the scope
+        // that declares it: a `fn` nested inside another function is not reachable from outside.
+        //
+        // This applies to bare names only. A member reached through a path or a receiver is
+        // reachable by qualification rather than by lexical nesting, so scope must not exclude it.
         if self.is_hoisted_basic(definition) {
-            return true;
+            return match self.is_reached_lexically(usage, definition) {
+                true => self.is_in_scope_chain(usage, definition),
+                false => true,
+            };
         }
 
         // For variable definitions, check scope accessibility
@@ -429,6 +436,100 @@ impl RustDependencyResolver {
         }
 
         true
+    }
+
+    /// Whether lexical scope governs how this usage finds this definition.
+    ///
+    /// A bare identifier is looked up lexically. A path or a receiver reaches its target by
+    /// qualification instead, and so does a method: a method is never found by bare lexical
+    /// lookup, which matters inside macro token trees where `c.get()` is not parsed as a call and
+    /// its method name arrives as a bare identifier.
+    fn is_reached_lexically(&self, usage: &Usage, definition: &Definition) -> bool {
+        let bare_name = matches!(usage.kind, crate::models::UsageKind::Identifier)
+            && !matches!(
+                usage.context.as_deref(),
+                Some("scoped_identifier") | Some("field_expression")
+            );
+
+        bare_name
+            && !matches!(
+                definition.definition_type,
+                crate::models::DefinitionType::MethodDefinition
+            )
+    }
+
+    /// Whether the definition sits in the usage's scope or one enclosing it.
+    ///
+    /// An item that creates a scope has its own name recorded inside that scope rather than
+    /// alongside it, so a top-level `fn` is registered in the function's own scope. The parent
+    /// therefore counts too, otherwise no such item would ever look reachable.
+    fn is_in_scope_chain(&self, usage: &Usage, definition: &Definition) -> bool {
+        let chain = self.usage_scope_chain(usage);
+
+        definition.scope_id.is_some_and(|def_scope| {
+            chain.contains(&def_scope)
+                || self
+                    .parent_scope(def_scope)
+                    .is_some_and(|parent| chain.contains(&parent))
+        })
+    }
+
+    fn parent_scope(&self, scope_id: ScopeId) -> Option<ScopeId> {
+        self.symbol_table
+            .scopes
+            .get_scope(scope_id)
+            .and_then(|scope| scope.parent)
+    }
+
+    /// The definition in the scope nearest the usage.
+    ///
+    /// A bare identifier names the nearest binding in scope, so proximity decides before
+    /// definition type does: a `let` binding in the enclosing block shadows a function item of the
+    /// same name declared further out.
+    fn select_nearest_in_scope_chain<'a>(
+        &self,
+        usage: &Usage,
+        matching_definitions: &[&'a Definition],
+    ) -> Option<&'a Definition> {
+        self.usage_scope_chain(usage)
+            .iter()
+            .find_map(|scope_id| self.select_within_scope(usage, matching_definitions, *scope_id))
+    }
+
+    /// Within one scope, the binding named is the last one declared before the usage: a later
+    /// `let` of the same name shadows an earlier one. A hoisted definition is visible even when
+    /// declared afterwards, so it is the fallback when nothing precedes.
+    fn select_within_scope<'a>(
+        &self,
+        usage: &Usage,
+        matching_definitions: &[&'a Definition],
+        scope_id: ScopeId,
+    ) -> Option<&'a Definition> {
+        let in_scope: Vec<&'a Definition> = matching_definitions
+            .iter()
+            .filter(|def| def.scope_id == Some(scope_id))
+            .copied()
+            .collect();
+
+        in_scope
+            .iter()
+            .filter(|def| def.position.start_line < usage.position.start_line)
+            .max_by_key(|def| def.position.start_line)
+            .copied()
+            .or_else(|| in_scope.first().copied())
+    }
+
+    /// The usage's own scope followed by its enclosing scopes, nearest first.
+    fn usage_scope_chain(&self, usage: &Usage) -> Vec<ScopeId> {
+        let usage_scope = self
+            .symbol_table
+            .scopes
+            .find_scope_at_position(&usage.position)
+            .unwrap_or(0);
+
+        std::iter::once(usage_scope)
+            .chain(self.symbol_table.scopes.get_parent_scopes(usage_scope))
+            .collect()
     }
 
     fn is_hoisted_basic(&self, definition: &Definition) -> bool {
@@ -1056,6 +1157,14 @@ impl RustDependencyResolver {
                 ) {
                     return Some(def);
                 }
+            }
+        }
+
+        // A bare identifier names the nearest binding in scope, so shadowing decides before the
+        // definition-type ladder below gets a say.
+        if matches!(usage.kind, crate::models::UsageKind::Identifier) {
+            if let Some(nearest) = self.select_nearest_in_scope_chain(usage, matching_definitions) {
+                return Some(nearest);
             }
         }
 
