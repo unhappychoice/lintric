@@ -277,10 +277,10 @@ IntermediateRepresentation {
         Dependency { source_line: 23, target_line: 22, symbol: "map", dependency_type: VariableUse, context: Some("Identifier:23:5") },
         Dependency { source_line: 24, target_line: 2, symbol: "Vec", dependency_type: VariableUse, context: Some("Identifier:24:24") },
         Dependency { source_line: 25, target_line: 24, symbol: "vec_data", dependency_type: VariableUse, context: Some("Identifier:25:5") },
-        Dependency { source_line: 26, target_line: 4, symbol: "TestStruct", dependency_type: VariableUse, context: Some("Identifier:26:16") },
-        Dependency { source_line: 26, target_line: 9, symbol: "new", dependency_type: VariableUse, context: Some("Identifier:26:28") },
+        Dependency { source_line: 26, target_line: 4, symbol: "TestStruct", dependency_type: TypeReference, context: Some("Identifier:26:16") },
+        Dependency { source_line: 26, target_line: 9, symbol: "new", dependency_type: FunctionCall, context: Some("Identifier:26:28") },
         Dependency { source_line: 26, target_line: 22, symbol: "map", dependency_type: VariableUse, context: Some("Identifier:26:32") },
-        Dependency { source_line: 27, target_line: 16, symbol: "process", dependency_type: StructFieldAccess, context: Some("FieldExpression:27:18") },
+        Dependency { source_line: 27, target_line: 16, symbol: "process", dependency_type: FunctionCall, context: Some("FieldExpression:27:18") },
         Dependency { source_line: 27, target_line: 26, symbol: "test", dependency_type: VariableUse, context: Some("Identifier:27:18") },
     ],
     usage: [

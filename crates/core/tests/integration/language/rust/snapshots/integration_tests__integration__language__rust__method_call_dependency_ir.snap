@@ -94,7 +94,7 @@ IntermediateRepresentation {
         Dependency { source_line: 7, target_line: 2, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldExpression:7:9") },
         Dependency { source_line: 12, target_line: 1, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:12:13") },
         Dependency { source_line: 12, target_line: 2, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldInitializer:12:24") },
-        Dependency { source_line: 13, target_line: 6, symbol: "my_method", dependency_type: StructFieldAccess, context: Some("FieldExpression:13:5") },
+        Dependency { source_line: 13, target_line: 6, symbol: "my_method", dependency_type: FunctionCall, context: Some("FieldExpression:13:5") },
         Dependency { source_line: 13, target_line: 12, symbol: "s", dependency_type: VariableUse, context: Some("Identifier:13:5") },
     ],
     usage: [

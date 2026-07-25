@@ -240,7 +240,7 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
                     source_line,
                     target_line,
                     symbol: usage_node.name.clone(),
-                    dependency_type: self.get_dependency_type(usage_node),
+                    dependency_type: self.get_dependency_type(usage_node, definition),
                     context: self.get_context(usage_node),
                 };
                 dependencies.push(dependency);

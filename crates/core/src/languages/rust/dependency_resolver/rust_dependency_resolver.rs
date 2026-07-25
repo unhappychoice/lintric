@@ -662,7 +662,7 @@ impl RustDependencyResolver {
                     source_line: import_def.position.start_line,
                     target_line: original_def.position.start_line,
                     symbol: import_def.name.clone(),
-                    dependency_type: crate::models::DependencyType::VariableUse,
+                    dependency_type: crate::models::DependencyType::Import,
                     context: Some(format!(
                         "ImportDefinition:{}:{}",
                         import_def.position.start_line, import_def.position.start_column
@@ -778,7 +778,7 @@ impl DependencyResolverTrait for RustDependencyResolver {
                     source_line,
                     target_line,
                     symbol: usage_node.name.clone(),
-                    dependency_type: self.get_dependency_type(usage_node),
+                    dependency_type: self.get_dependency_type(usage_node, &resolved_def),
                     context: self.get_context(usage_node),
                 };
                 dependencies.push(dependency);
@@ -884,7 +884,7 @@ impl DependencyResolverTrait for RustDependencyResolver {
                     source_line,
                     target_line,
                     symbol: usage_node.name.clone(),
-                    dependency_type: self.get_dependency_type(usage_node),
+                    dependency_type: self.get_dependency_type(usage_node, definition),
                     context: self.get_context(usage_node),
                 };
                 dependencies.push(dependency);
@@ -961,7 +961,7 @@ impl RustDependencyResolver {
                     source_line,
                     target_line,
                     symbol: usage_node.name.clone(),
-                    dependency_type: self.get_dependency_type(usage_node),
+                    dependency_type: self.get_dependency_type(usage_node, def),
                     context: self.get_context(usage_node),
                 });
             }

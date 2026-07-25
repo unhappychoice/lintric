@@ -174,8 +174,8 @@ IntermediateRepresentation {
         Dependency { source_line: 6, target_line: 7, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:6:13") },
         Dependency { source_line: 17, target_line: 20, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:17:20") },
         Dependency { source_line: 17, target_line: 21, symbol: "field", dependency_type: StructFieldAccess, context: Some("FieldInitializer:17:31") },
-        Dependency { source_line: 26, target_line: 29, symbol: "MyEnum", dependency_type: VariableUse, context: Some("Identifier:26:17") },
-        Dependency { source_line: 26, target_line: 30, symbol: "Variant1", dependency_type: VariableUse, context: Some("Identifier:26:25") },
+        Dependency { source_line: 26, target_line: 29, symbol: "MyEnum", dependency_type: TypeReference, context: Some("Identifier:26:17") },
+        Dependency { source_line: 26, target_line: 30, symbol: "Variant1", dependency_type: EnumVariantReference, context: Some("Identifier:26:25") },
         Dependency { source_line: 35, target_line: 39, symbol: "MyType", dependency_type: TypeReference, context: Some("TypeIdentifier:35:18") },
     ],
     usage: [
