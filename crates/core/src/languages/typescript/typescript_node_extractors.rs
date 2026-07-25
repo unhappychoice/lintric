@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use tree_sitter::Node;
 
 use crate::models::{
@@ -394,20 +393,15 @@ impl TypeScriptDefinitionExtractor {
 
 /// TypeScript-specific usage extractor
 pub struct TypeScriptUsageExtractor {
-    bindings: HashSet<usize>,
-    call_targets: HashSet<usize>,
+    roles: super::binding_queries::Roles,
 }
 
 impl TypeScriptUsageExtractor {
     /// Fails if the binding query does not compile, which is a bug in the `.scm` file rather than
     /// anything about the source being analyzed.
     pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
-        let (bindings, call_targets) =
-            super::binding_queries::bindings_and_call_targets(source_code, root_node)?;
-
         Ok(Self {
-            bindings,
-            call_targets,
+            roles: super::binding_queries::roles(source_code, root_node)?,
         })
     }
 }
@@ -452,7 +446,7 @@ impl TypeScriptUsageExtractor {
     ///
     /// The patterns live in `queries/typescript/bindings.scm`.
     fn is_usage_context(&self, node: Node) -> bool {
-        !self.bindings.contains(&node.id()) && !self.call_targets.contains(&node.id())
+        self.roles.reads(node)
     }
 
     fn extract_identifier_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
@@ -546,61 +540,17 @@ impl TypeScriptUsageExtractor {
         })
     }
 
+    /// A member read through a receiver, unless this occurrence declares the member instead.
+    ///
+    /// Which occurrences declare rather than read is stated in `queries/typescript/bindings.scm`.
     fn extract_property_identifier_usage(
         &self,
         node: Node,
         scope: ScopeId,
         source: &str,
     ) -> Option<Usage> {
-        // Check if this property_identifier is in a definition context
-        if let Some(parent) = node.parent() {
-            match parent.kind() {
-                "pair" | "pair_pattern" => {
-                    // An object literal's key, or a pattern's, does not reference a declared
-                    // member. TypeScript is
-                    // structurally typed, so `{ x: 1 }` is a self-contained value rather than a
-                    // reference to some `x` declared elsewhere — and the type it satisfies is
-                    // usually declared in another file, which single-file analysis cannot see. Any
-                    // same-file member of the same name is a coincidence.
-                    //
-                    // The coupling to a declared type is already recorded through the annotation
-                    // that names it, as in `const p: Point = { x: 1 }`.
-                    if let Some(key_field) = parent.child_by_field_name("key") {
-                        if node.id() == key_field.id() {
-                            return None;
-                        }
-                    }
-                }
-                "enum_body" => {
-                    // Property identifiers in enum bodies are definitions, not usage
-                    return None;
-                }
-                // A member declaration is a definition. Left as a usage it resolved to any
-                // same-named member of another interface, and since that member's own declaration
-                // did the same, the two invented a cycle between themselves.
-                "public_field_definition"
-                | "private_field_definition"
-                | "field_definition"
-                | "property_signature"
-                | "method_signature"
-                | "abstract_method_signature" => {
-                    // Property identifiers in field definitions are definitions, not usage
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        if node.id() == name_field.id() {
-                            return None;
-                        }
-                    }
-                }
-                "method_definition" => {
-                    // Property identifiers in method definitions (method names) are definitions, not usage
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        if node.id() == name_field.id() {
-                            return None;
-                        }
-                    }
-                }
-                _ => {}
-            }
+        if !self.roles.reads(node) {
+            return None;
         }
 
         // Property identifiers (like the "x" in "obj.x") should be treated as field expressions
@@ -617,6 +567,6 @@ impl TypeScriptUsageExtractor {
 
     /// Whether this type identifier is the name a declaration introduces.
     fn is_type_identifier_in_definition_context(&self, node: Node) -> bool {
-        self.bindings.contains(&node.id())
+        self.roles.declares(node)
     }
 }
