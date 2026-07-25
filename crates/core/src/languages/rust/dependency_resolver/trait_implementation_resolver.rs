@@ -5,7 +5,7 @@ use tree_sitter::Node;
 const QUERIES: Queries = Queries {
     implementations: r#"
         (impl_item
-          trait: (type_identifier) @type
+          trait: [(type_identifier) (generic_type)] @type
           body: (declaration_list
             (function_item name: (identifier) @method)))
     "#,
@@ -24,7 +24,7 @@ const QUERIES: Queries = Queries {
     supertypes: r#"
         (trait_item
           name: (type_identifier) @type
-          bounds: (trait_bounds (type_identifier) @super))
+          bounds: (trait_bounds [(type_identifier) (generic_type)] @super))
     "#,
 };
 

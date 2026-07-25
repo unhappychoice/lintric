@@ -8,7 +8,7 @@ const QUERIES: Queries = Queries {
     implementations: r#"
         (class_declaration
           (class_heritage [
-            (implements_clause (type_identifier) @type)
+            (implements_clause [(type_identifier) (generic_type)] @type)
             (extends_clause value: (identifier) @type)
           ])
           body: (class_body
@@ -40,18 +40,18 @@ const QUERIES: Queries = Queries {
         [
           (interface_declaration
             name: (type_identifier) @type
-            (extends_type_clause type: (type_identifier) @super))
+            (extends_type_clause type: [(type_identifier) (generic_type)] @super))
           (class_declaration
             name: (type_identifier) @type
             (class_heritage [
               (extends_clause value: (identifier) @super)
-              (implements_clause (type_identifier) @super)
+              (implements_clause [(type_identifier) (generic_type)] @super)
             ]))
           (abstract_class_declaration
             name: (type_identifier) @type
             (class_heritage [
               (extends_clause value: (identifier) @super)
-              (implements_clause (type_identifier) @super)
+              (implements_clause [(type_identifier) (generic_type)] @super)
             ]))
         ]
     "#,
