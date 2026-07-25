@@ -33,18 +33,18 @@
       "duplicates": 0
     },
     "rust/structs.rs": {
-      "expected": 11,
-      "detected": 9,
-      "correct": 9,
-      "missing": 2,
+      "expected": 18,
+      "detected": 18,
+      "correct": 18,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 2
     },
     "rust/traits.rs": {
       "expected": 12,
-      "detected": 11,
-      "correct": 11,
-      "missing": 1,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 1
     },
@@ -90,10 +90,10 @@
     }
   },
   "total": {
-    "expected": 92,
-    "detected": 89,
-    "correct": 89,
-    "missing": 3,
+    "expected": 99,
+    "detected": 99,
+    "correct": 99,
+    "missing": 0,
     "spurious": 0,
     "duplicates": 10
   }

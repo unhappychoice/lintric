@@ -1023,6 +1023,19 @@ impl RustDependencyResolver {
             }
         }
 
+        // A field named by a struct literal can only refer to a field declaration, so unlike a
+        // field expression there is no method to prefer over it
+        if matches!(usage.kind, crate::models::UsageKind::FieldInitializer) {
+            for &def in matching_definitions {
+                if matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::StructFieldDefinition
+                ) {
+                    return Some(def);
+                }
+            }
+        }
+
         // For field expressions, first check if these are actually method calls
         // In case of StructFieldAccess dependency_type, prefer methods over fields (due to potential misclassification)
         if matches!(usage.kind, crate::models::UsageKind::FieldExpression) {

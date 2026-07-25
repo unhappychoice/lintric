@@ -75,14 +75,19 @@ only integer counts and does not churn on float formatting.
 
 ## Interpreting the baseline
 
-The current numbers describe **these fixtures only**. They are small, focused files, and the
-recall figure should not be read as an overall accuracy claim for the analyzer — real code fares
-considerably worse. `crates/cli/src/logger.rs`, for instance, yields 2 dependencies for 24 lines
-because every method body is a single `println!("{message}")`.
+The recorded numbers describe **these fixtures only**. They currently read 1.000 for both
+precision and recall, which is a statement about the fixtures rather than about the analyzer:
+every construct these files cover is handled, and every construct they do not cover is
+unmeasured.
 
-Growing the fixture set will most likely push the recorded numbers *down*, and that is the
-intended direction: it means the harness is measuring more of what the analyzer actually has to
-handle.
+A perfect score is therefore a signal that the fixture set needs growing, not that dependency
+detection is finished. Imports, generics, lifetimes, nested modules, async, and most of
+TypeScript's type system have no fixtures at all. Adding them is expected to push the numbers
+*down*, and that is the intended direction — it means the harness is measuring more of what the
+analyzer actually has to handle.
+
+The one number still worth reading as a defect is the duplicates column, which stands at 10. See
+#172.
 
 ## Deliberately unsettled
 

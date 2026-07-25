@@ -823,6 +823,21 @@ impl NodeUsageExtractor for RustUsageExtractor {
                     .into_iter()
                     .collect();
             }
+            "field_initializer" => {
+                // `Point { x: value }` references the declaration of `x`, not just the value
+                return self
+                    .extract_field_initializer_usage(node, scope, source)
+                    .into_iter()
+                    .collect();
+            }
+            "shorthand_field_initializer" => {
+                // `Point { x }` references the declaration of `x` as well as reading the binding,
+                // which the inner identifier already covers
+                return self
+                    .extract_shorthand_field_initializer_usage(node, scope, source)
+                    .into_iter()
+                    .collect();
+            }
             "struct_expression" => Some(UsageKind::StructExpression),
             "metavariable" => Some(UsageKind::Metavariable),
             "string_content" => {
@@ -1016,6 +1031,38 @@ impl RustUsageExtractor {
             kind: UsageKind::CallExpression,
             position: Position::from_node(&node),
             context: Some("call_expression".to_string()),
+            scope_id: Some(scope),
+        })
+    }
+
+    /// The field named by `Point { x: value }`.
+    fn extract_field_initializer_usage(
+        &self,
+        node: Node,
+        scope: ScopeId,
+        source: &str,
+    ) -> Option<Usage> {
+        self.field_reference(node.child_by_field_name("field")?, scope, source)
+    }
+
+    /// The field named by the shorthand `Point { x }`, whose identifier also reads a binding.
+    fn extract_shorthand_field_initializer_usage(
+        &self,
+        node: Node,
+        scope: ScopeId,
+        source: &str,
+    ) -> Option<Usage> {
+        self.field_reference(node.child(0)?, scope, source)
+    }
+
+    fn field_reference(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
+        let name = node.utf8_text(source.as_bytes()).ok()?;
+
+        Some(Usage {
+            name: Usage::normalize_line_endings(name),
+            kind: UsageKind::FieldInitializer,
+            position: Position::from_node(&node),
+            context: Some("field_initializer".to_string()),
             scope_id: Some(scope),
         })
     }

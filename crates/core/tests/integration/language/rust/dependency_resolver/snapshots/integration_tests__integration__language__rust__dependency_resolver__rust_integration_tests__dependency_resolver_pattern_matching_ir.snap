@@ -302,6 +302,7 @@ IntermediateRepresentation {
     dependencies: [
         Dependency { source_line: 11, target_line: 7, symbol: "Handler", dependency_type: TypeReference, context: Some("TypeIdentifier:11:6") },
         Dependency { source_line: 13, target_line: 7, symbol: "Handler", dependency_type: TypeReference, context: Some("TypeIdentifier:13:9") },
+        Dependency { source_line: 13, target_line: 8, symbol: "name", dependency_type: StructFieldAccess, context: Some("FieldInitializer:13:19") },
         Dependency { source_line: 13, target_line: 12, symbol: "name", dependency_type: VariableUse, context: Some("Identifier:13:19") },
         Dependency { source_line: 16, target_line: 1, symbol: "Message", dependency_type: TypeReference, context: Some("TypeIdentifier:16:27") },
         Dependency { source_line: 17, target_line: 16, symbol: "msg", dependency_type: VariableUse, context: Some("Identifier:17:15") },
@@ -339,6 +340,7 @@ IntermediateRepresentation {
         Usage { position: { 12:29 to 12:33 }, name: "Self", kind: TypeIdentifier, context: None },
         Usage { position: { 13:9 to 13:25 }, name: "Handler { name }", kind: StructExpression, context: None },
         Usage { position: { 13:9 to 13:16 }, name: "Handler", kind: TypeIdentifier, context: None },
+        Usage { position: { 13:19 to 13:23 }, name: "name", kind: FieldInitializer, context: Some("field_initializer") },
         Usage { position: { 13:19 to 13:23 }, name: "name", kind: Identifier, context: None },
         Usage { position: { 16:27 to 16:34 }, name: "Message", kind: TypeIdentifier, context: None },
         Usage { position: { 17:15 to 17:18 }, name: "msg", kind: Identifier, context: None },

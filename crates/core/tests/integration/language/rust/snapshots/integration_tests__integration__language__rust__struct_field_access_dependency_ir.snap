@@ -68,12 +68,16 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency { source_line: 3, target_line: 1, symbol: "Point", dependency_type: TypeReference, context: Some("TypeIdentifier:3:13") },
+        Dependency { source_line: 3, target_line: 1, symbol: "x", dependency_type: StructFieldAccess, context: Some("FieldInitializer:3:21") },
+        Dependency { source_line: 3, target_line: 1, symbol: "y", dependency_type: StructFieldAccess, context: Some("FieldInitializer:3:27") },
         Dependency { source_line: 4, target_line: 1, symbol: "x", dependency_type: StructFieldAccess, context: Some("FieldExpression:4:15") },
         Dependency { source_line: 4, target_line: 3, symbol: "p", dependency_type: VariableUse, context: Some("Identifier:4:15") },
     ],
     usage: [
         Usage { position: { 3:13 to 3:33 }, name: "Point { x: 1, y: 2 }", kind: StructExpression, context: None },
         Usage { position: { 3:13 to 3:18 }, name: "Point", kind: TypeIdentifier, context: None },
+        Usage { position: { 3:21 to 3:22 }, name: "x", kind: FieldInitializer, context: Some("field_initializer") },
+        Usage { position: { 3:27 to 3:28 }, name: "y", kind: FieldInitializer, context: Some("field_initializer") },
         Usage { position: { 4:15 to 4:18 }, name: "x", kind: FieldExpression, context: Some("field_expression") },
         Usage { position: { 4:15 to 4:16 }, name: "p", kind: Identifier, context: Some("field_expression") },
     ],

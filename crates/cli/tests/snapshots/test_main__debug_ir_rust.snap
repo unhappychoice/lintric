@@ -257,6 +257,20 @@ expression: out
       "context": "TypeIdentifier:12:14"
     },
     {
+      "source_line": 12,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:12:22"
+    },
+    {
+      "source_line": 12,
+      "target_line": 3,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:12:28"
+    },
+    {
       "source_line": 13,
       "target_line": 1,
       "symbol": "Point",
@@ -264,11 +278,32 @@ expression: out
       "context": "TypeIdentifier:13:14"
     },
     {
+      "source_line": 13,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:13:22"
+    },
+    {
+      "source_line": 13,
+      "target_line": 3,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:13:28"
+    },
+    {
       "source_line": 15,
       "target_line": 1,
       "symbol": "Point",
       "dependency_type": "TypeReference",
       "context": "TypeIdentifier:15:14"
+    },
+    {
+      "source_line": 16,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:16:9"
     },
     {
       "source_line": 16,
@@ -304,6 +339,13 @@ expression: out
       "symbol": "p2",
       "dependency_type": "VariableUse",
       "context": "Identifier:16:22"
+    },
+    {
+      "source_line": 17,
+      "target_line": 3,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:17:9"
     },
     {
       "source_line": 17,
@@ -346,6 +388,20 @@ expression: out
       "symbol": "Point",
       "dependency_type": "TypeReference",
       "context": "TypeIdentifier:21:18"
+    },
+    {
+      "source_line": 21,
+      "target_line": 2,
+      "symbol": "x",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:21:26"
+    },
+    {
+      "source_line": 21,
+      "target_line": 3,
+      "symbol": "y",
+      "dependency_type": "StructFieldAccess",
+      "context": "FieldInitializer:21:32"
     },
     {
       "source_line": 22,
@@ -454,6 +510,28 @@ expression: out
       "context": null
     },
     {
+      "name": "x",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 12,
+        "start_column": 22,
+        "end_line": 12,
+        "end_column": 23
+      },
+      "context": "field_initializer"
+    },
+    {
+      "name": "y",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 12,
+        "start_column": 28,
+        "end_line": 12,
+        "end_column": 29
+      },
+      "context": "field_initializer"
+    },
+    {
       "name": "Point { x: 3, y: 4 }",
       "kind": "StructExpression",
       "position": {
@@ -476,6 +554,28 @@ expression: out
       "context": null
     },
     {
+      "name": "x",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 13,
+        "start_column": 22,
+        "end_line": 13,
+        "end_column": 23
+      },
+      "context": "field_initializer"
+    },
+    {
+      "name": "y",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 13,
+        "start_column": 28,
+        "end_line": 13,
+        "end_column": 29
+      },
+      "context": "field_initializer"
+    },
+    {
       "name": "Point {\n        x: add(p1.x, p2.x),\n        y: add(p1.y, p2.y),\n    }",
       "kind": "StructExpression",
       "position": {
@@ -496,6 +596,17 @@ expression: out
         "end_column": 19
       },
       "context": null
+    },
+    {
+      "name": "x",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 16,
+        "start_column": 9,
+        "end_line": 16,
+        "end_column": 10
+      },
+      "context": "field_initializer"
     },
     {
       "name": "add",
@@ -551,6 +662,17 @@ expression: out
         "end_column": 24
       },
       "context": "field_expression"
+    },
+    {
+      "name": "y",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 17,
+        "start_column": 9,
+        "end_line": 17,
+        "end_column": 10
+      },
+      "context": "field_initializer"
     },
     {
       "name": "add",
@@ -628,6 +750,28 @@ expression: out
         "end_column": 23
       },
       "context": null
+    },
+    {
+      "name": "x",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 21,
+        "start_column": 26,
+        "end_line": 21,
+        "end_column": 27
+      },
+      "context": "field_initializer"
+    },
+    {
+      "name": "y",
+      "kind": "FieldInitializer",
+      "position": {
+        "start_line": 21,
+        "start_column": 32,
+        "end_line": 21,
+        "end_column": 33
+      },
+      "context": "field_initializer"
     },
     {
       "name": "p5",
