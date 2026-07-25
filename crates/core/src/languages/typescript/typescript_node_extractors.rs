@@ -306,20 +306,23 @@ impl TypeScriptDefinitionExtractor {
         scope: ScopeId,
         source: &str,
     ) -> Vec<Definition> {
+        let in_constructor = self.is_constructor_parameter_list(node, source);
         let mut definitions = vec![];
         let mut cursor = node.walk();
         for child in node.children(&mut cursor) {
             match child.kind() {
                 "required_parameter" | "optional_parameter" => {
+                    let definition_type = match in_constructor && self.declares_property(child) {
+                        true => DefinitionType::PropertyDefinition,
+                        false => DefinitionType::VariableDefinition,
+                    };
+
                     if let Some(pattern_node) = child.child_by_field_name("pattern") {
                         // Find identifiers in the pattern node
                         let identifiers = self.find_identifier_nodes_in_node(pattern_node);
                         for identifier_node in identifiers {
-                            let mut def = Definition::new(
-                                &identifier_node,
-                                source,
-                                DefinitionType::VariableDefinition,
-                            );
+                            let mut def =
+                                Definition::new(&identifier_node, source, definition_type.clone());
                             def.set_context(
                                 scope,
                                 &crate::models::Accessibility::ScopeLocal,
@@ -333,6 +336,28 @@ impl TypeScriptDefinitionExtractor {
             }
         }
         definitions
+    }
+
+    /// Only a constructor can declare properties through its parameters.
+    fn is_constructor_parameter_list(&self, node: Node, source: &str) -> bool {
+        node.parent()
+            .filter(|parent| parent.kind() == "method_definition")
+            .and_then(|method| method.child_by_field_name("name"))
+            .and_then(|name| name.utf8_text(source.as_bytes()).ok())
+            .is_some_and(|name| name == "constructor")
+    }
+
+    /// `constructor(public value: number)` declares a class property as well as a parameter.
+    ///
+    /// An accessibility modifier is a named node, whereas `readonly` is an anonymous token, so
+    /// both named and unnamed children have to be considered.
+    fn declares_property(&self, parameter: Node) -> bool {
+        let mut cursor = parameter.walk();
+        let has_modifier = parameter
+            .children(&mut cursor)
+            .any(|child| matches!(child.kind(), "accessibility_modifier" | "readonly"));
+
+        has_modifier
     }
 
     #[allow(clippy::only_used_in_recursion)]
