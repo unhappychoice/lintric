@@ -6,15 +6,15 @@ class Counter {
     #count = 0;
 
     get current(): number {
-        return this.#count; //~ depends: count@6
+        return this.#count; //~ depends: #count@6
     }
 
     set current(next: number) {
-        this.#count = next; //~ depends: count@6, next@12
+        this.#count = next; //~ depends: #count@6, next@12
     }
 
     atLimit(): boolean {
-        return this.#count >= Counter.LIMIT; //~ depends: count@6, Counter@3, LIMIT@4
+        return this.#count >= Counter.LIMIT; //~ depends: #count@6, Counter@3, LIMIT@4
     }
 }
 

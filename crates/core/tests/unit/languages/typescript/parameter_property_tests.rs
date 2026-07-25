@@ -88,3 +88,69 @@ fn definition_type(source: &str, name: &str) -> Option<DefinitionType> {
         .find(|definition| definition.name == name)
         .map(|definition| definition.definition_type.clone())
 }
+
+#[test]
+fn resolves_a_private_field_reference() {
+    let source =
+        "class C {\n    #n = 0;\n\n    get(): number {\n        return this.#n;\n    }\n}\n";
+    let (ir, _) = analyze_content(source.to_string(), Language::TypeScript).unwrap();
+
+    let dependency = ir
+        .dependencies
+        .iter()
+        .find(|dependency| dependency.source_line == 5)
+        .expect("this.#n should depend on its declaration");
+
+    assert_eq!(dependency.target_line, 2);
+    assert_eq!(dependency.symbol, "#n");
+    assert_eq!(
+        dependency.dependency_type,
+        DependencyType::StructFieldAccess
+    );
+}
+
+#[test]
+fn resolves_a_private_field_written_to() {
+    let source = "class C {\n    #n = 0;\n\n    set(v: number) {\n        this.#n = v;\n    }\n}\n";
+    let (ir, _) = analyze_content(source.to_string(), Language::TypeScript).unwrap();
+
+    assert!(
+        ir.dependencies
+            .iter()
+            .any(|d| d.source_line == 5 && d.target_line == 2 && d.symbol == "#n"),
+        "{:?}",
+        ir.dependencies
+            .iter()
+            .map(|d| (d.source_line, d.target_line, &d.symbol))
+            .collect::<Vec<_>>()
+    );
+}
+
+#[test]
+fn resolves_a_private_method_call() {
+    let source = "class C {\n    #helper(): number {\n        return 1;\n    }\n\n    run(): number {\n        return this.#helper();\n    }\n}\n";
+    let (ir, _) = analyze_content(source.to_string(), Language::TypeScript).unwrap();
+
+    assert!(
+        ir.dependencies
+            .iter()
+            .any(|d| d.source_line == 7 && d.target_line == 2 && d.symbol == "#helper"),
+        "{:?}",
+        ir.dependencies
+            .iter()
+            .map(|d| (d.source_line, d.target_line, &d.symbol))
+            .collect::<Vec<_>>()
+    );
+}
+
+#[test]
+fn a_private_declaration_is_not_a_usage() {
+    let source = "class C {\n    #n = 0;\n}\n";
+    let (ir, _) = analyze_content(source.to_string(), Language::TypeScript).unwrap();
+
+    assert!(
+        !ir.usage.iter().any(|usage| usage.name == "#n"),
+        "{:?}",
+        ir.usage.iter().map(|u| &u.name).collect::<Vec<_>>()
+    );
+}
