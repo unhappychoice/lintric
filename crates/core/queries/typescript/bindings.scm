@@ -6,10 +6,25 @@
 
 ; A declaration's own name is not a use of itself.
 (function_declaration name: (identifier) @binding)
+(generator_function_declaration name: (identifier) @binding)
 (enum_declaration name: (identifier) @binding)
 (internal_module name: (identifier) @binding)
+(module name: (identifier) @binding)
 (variable_declarator name: (identifier) @binding)
 (import_specifier name: (identifier) @binding)
+
+; An overload signature and its implementation are one function declared twice, not a reference
+; from one to the other.
+(function_signature name: (identifier) @binding)
+
+; A function or class expression's name is bound inside its own body; it names nothing outside.
+(function_expression name: (identifier) @binding)
+(generator_function name: (identifier) @binding)
+(class name: (type_identifier) @binding)
+
+; `[key: string]: T` and `[K in keyof T]` each introduce the name they then use.
+(index_signature name: (identifier) @binding)
+(mapped_type_clause name: (type_identifier) @binding)
 
 (interface_declaration name: (type_identifier) @binding)
 (type_alias_declaration name: (type_identifier) @binding)
@@ -36,6 +51,7 @@
 (abstract_method_signature name: [(property_identifier) (private_property_identifier)] @binding)
 (method_definition name: [(property_identifier) (private_property_identifier)] @binding)
 (enum_body name: (property_identifier) @binding)
+(enum_assignment name: [(property_identifier) (private_property_identifier)] @binding)
 
 ; An object literal's key, or a pattern's, references no declared member: TypeScript is structurally
 ; typed, so `{ x: 1 }` is a self-contained value, and the type it satisfies is usually declared in
