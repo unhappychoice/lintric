@@ -256,6 +256,14 @@
       "spurious": 0,
       "duplicates": 0
     },
+    "typescript/block_scopes.ts": {
+      "expected": 3,
+      "detected": 3,
+      "correct": 2,
+      "missing": 1,
+      "spurious": 1,
+      "duplicates": 0
+    },
     "typescript/class_members.ts": {
       "expected": 9,
       "detected": 9,
@@ -362,11 +370,11 @@
     }
   },
   "total": {
-    "expected": 439,
-    "detected": 440,
-    "correct": 439,
-    "missing": 0,
-    "spurious": 1,
+    "expected": 442,
+    "detected": 443,
+    "correct": 441,
+    "missing": 1,
+    "spurious": 2,
     "duplicates": 25
   }
 }

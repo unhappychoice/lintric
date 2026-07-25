@@ -14,6 +14,7 @@ use crate::query::{DeclaredAs, Roles};
 /// than the node — a `function_item` is a method inside an impl and a function outside it.
 pub struct RustDefinitionExtractor {
     declared_types: Roles<DeclaredAs>,
+    scope_kinds: Roles<ScopeType>,
 }
 
 impl RustDefinitionExtractor {
@@ -22,6 +23,7 @@ impl RustDefinitionExtractor {
     pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
         Ok(Self {
             declared_types: super::definition_queries::declared_types(source_code, root_node)?,
+            scope_kinds: super::scope_queries::scope_kinds(source_code, root_node)?,
         })
     }
 
@@ -121,23 +123,9 @@ impl NodeDefinitionExtractor for RustDefinitionExtractor {
     }
 
     fn creates_scope(&self, node: Node) -> Option<(ScopeType, Position)> {
-        let scope_type = match node.kind() {
-            "function_item" => ScopeType::Function,
-            "impl_item" => ScopeType::Impl,
-            "trait_item" => ScopeType::Trait,
-            "struct_item" => ScopeType::Block, // Structs create block-like scopes for their fields
-            "union_item" => ScopeType::Block,  // Unions create block-like scopes for their fields
-            "enum_item" => ScopeType::Block,   // Enums create block-like scopes for their variants
-            "block" => ScopeType::Block,
-            "mod_item" => ScopeType::Module,
-            "closure_expression" => ScopeType::Closure,
-            "for_expression" | "while_expression" | "if_expression" | "match_expression" => {
-                ScopeType::Block
-            }
-            _ => return None,
-        };
-
-        Some((scope_type, Position::from_node(&node)))
+        self.scope_kinds
+            .get(&node.id())
+            .map(|scope_type| (scope_type.clone(), Position::from_node(&node)))
     }
 }
 

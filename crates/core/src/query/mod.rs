@@ -80,3 +80,15 @@ impl DeclaredAs {
         }
     }
 }
+
+/// Run a scope query and give the kind of scope each captured node introduces.
+///
+/// The captured node is the whole item, since a scope spans it.
+pub fn scope_kinds(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    mapping: &[(&str, crate::models::ScopeType)],
+) -> Result<Roles<crate::models::ScopeType>, String> {
+    capture_roles(query_source, source_code, root_node, mapping)
+}

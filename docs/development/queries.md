@@ -7,7 +7,8 @@ what each capture means.
 ### Where things live
 
 ```
-crates/core/queries/<language>/definitions.scm               the patterns
+crates/core/queries/<language>/definitions.scm               declaration patterns
+crates/core/queries/<language>/scopes.scm                    scope patterns
 crates/core/src/languages/<language>/definition_queries.rs   capture name -> what it declares
 crates/core/src/query/mod.rs                                 runs a query, returns roles keyed by node
 ```
@@ -49,6 +50,20 @@ A query describes shape. When classifying needs more than shape, the extractor k
 The extractor asks the query **first** and falls through to its arms only when nothing was captured.
 That ordering matters: a `const_item`'s name is an `identifier`, and the `identifier` arm would
 otherwise swallow it before the query was consulted.
+
+### Scopes
+
+`scopes.scm` captures the whole node rather than a name, since a scope spans the item:
+
+```scheme
+(function_item) @scope.function
+(block) @scope.block
+```
+
+Writing these out is what exposed #223: the TypeScript extractor matched `block`, a node this
+grammar does not have — its blocks are `statement_block` — so blocks had never scoped. The query
+preserves that behaviour and says so in a comment rather than fixing it in passing, because adding
+the node changes what is found rather than where the pattern lives.
 
 ### A broken query must fail loudly
 
