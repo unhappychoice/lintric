@@ -73,9 +73,9 @@
       "duplicates": 0
     },
     "rust/generics.rs": {
-      "expected": 10,
-      "detected": 10,
-      "correct": 10,
+      "expected": 13,
+      "detected": 13,
+      "correct": 13,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -386,9 +386,9 @@
     }
   },
   "total": {
-    "expected": 473,
-    "detected": 473,
-    "correct": 473,
+    "expected": 476,
+    "detected": 476,
+    "correct": 476,
     "missing": 0,
     "spurious": 0,
     "duplicates": 26

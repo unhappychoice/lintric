@@ -14,6 +14,8 @@
 (type_item name: (type_identifier) @definition.type)
 (associated_type name: (type_identifier) @definition.type)
 (type_parameter name: (type_identifier) @definition.type)
+; A const generic declares a value, not a type, though it is written among the type parameters.
+(const_parameter name: (identifier) @definition.const)
 
 (mod_item name: (identifier) @definition.module)
 
