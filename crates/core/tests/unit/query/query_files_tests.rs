@@ -97,5 +97,5 @@ fn the_typescript_binding_query_compiles_and_finds_a_renaming_binding() {
             "{language:?}: {edges:?}"
         );
     }
-    let _ = typescript::binding_queries::bindings_and_call_targets;
+    let _ = typescript::binding_queries::roles;
 }

@@ -83,10 +83,6 @@ impl NodeDefinitionExtractor for RustDefinitionExtractor {
                 .extract_metavariable_definition(node, scope, source)
                 .into_iter()
                 .collect(),
-            "constrained_type_parameter" => self
-                .extract_constrained_type_parameter_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "type_parameters" => self.extract_type_parameters_definitions(node, scope, source),
             "identifier" => {
                 // Check if this identifier is in a definition context
@@ -311,29 +307,6 @@ impl RustDefinitionExtractor {
         } else {
             None
         }
-    }
-
-    fn extract_constrained_type_parameter_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        if let Some(first_child) = node.child(0) {
-            if first_child.kind() == "type_identifier" {
-                let name_text = first_child.utf8_text(source.as_bytes()).ok()?;
-
-                return Some(Definition {
-                    name: name_text.to_string(),
-                    definition_type: DefinitionType::TypeDefinition,
-                    position: Position::from_node(&first_child),
-                    scope_id: Some(scope),
-                    accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-                    is_hoisted: Some(false),
-                });
-            }
-        }
-        None
     }
 
     #[allow(dead_code)]

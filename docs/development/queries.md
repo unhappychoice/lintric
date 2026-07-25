@@ -131,6 +131,13 @@ TypeScript declaration missing.
 `crates/core/tests/unit/query/query_files_tests.rs` asserts each file compiles against its grammar,
 including TSX, which is a separate grammar from TypeScript.
 
+A hand-written `match node.kind()` has no such check: an arm naming a node the grammar does not have
+compiles, runs, and never matches. Checking the arms against `node-types.json` is what found
+`constrained_type_parameter`, `field_definition` and `private_field_definition` — three arms and the
+function behind one of them, all unreachable. The same sweep over `child_by_field_name` came back
+clean. It is worth re-running after a grammar upgrade, since that is how such an arm becomes dead in
+the first place.
+
 ### Adding a language
 
 1. Write `crates/core/queries/<language>/definitions.scm`

@@ -28,6 +28,21 @@
 ; `{ key: renamed }` binds `renamed` and reads `key`.
 (pair_pattern value: (identifier) @binding)
 
+; A member declaration's own name. Left as a usage it resolved to any same-named member of another
+; interface, and since that member's declaration did the same, the two invented a cycle.
+(public_field_definition name: [(property_identifier) (private_property_identifier)] @binding)
+(property_signature name: [(property_identifier) (private_property_identifier)] @binding)
+(method_signature name: [(property_identifier) (private_property_identifier)] @binding)
+(abstract_method_signature name: [(property_identifier) (private_property_identifier)] @binding)
+(method_definition name: [(property_identifier) (private_property_identifier)] @binding)
+(enum_body name: (property_identifier) @binding)
+
+; An object literal's key, or a pattern's, references no declared member: TypeScript is structurally
+; typed, so `{ x: 1 }` is a self-contained value, and the type it satisfies is usually declared in
+; another file. See "Object shapes" in crates/accuracy/README.md.
+(pair key: [(property_identifier) (private_property_identifier)] @shape_key)
+(pair_pattern key: [(property_identifier) (private_property_identifier)] @shape_key)
+
 ; Not a binding, but not counted here either: the call expression itself is extracted as the usage,
 ; so counting its callee again would record the same reference twice.
 (call_expression function: (identifier) @call_target)
