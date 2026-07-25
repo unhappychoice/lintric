@@ -6,3 +6,4 @@ pub mod format_string_tests;
 pub mod pattern_tests;
 pub mod qualified_path_tests;
 pub mod scope_precedence_tests;
+pub mod self_type_tests;

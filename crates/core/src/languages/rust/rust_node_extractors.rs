@@ -784,6 +784,14 @@ pub struct RustUsageExtractor;
 impl NodeUsageExtractor for RustUsageExtractor {
     fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Usage> {
         let kind = match node.kind() {
+            "identifier" | "type_identifier" if self.is_self_type(node, source) => {
+                // `Self` names a type without spelling it, so resolution needs the name it stands
+                // for rather than the keyword
+                return self
+                    .extract_self_type_usage(node, scope, source)
+                    .into_iter()
+                    .collect();
+            }
             "identifier" => {
                 // Only treat identifier as usage if it's not in a definition context
                 // and not the function name part of a call_expression (to avoid duplication)
@@ -1059,6 +1067,60 @@ impl RustUsageExtractor {
         source: &str,
     ) -> Option<Usage> {
         self.field_reference(node.child_by_field_name("field")?, scope, source)
+    }
+
+    fn is_self_type(&self, node: Node, source: &str) -> bool {
+        node.utf8_text(source.as_bytes()) == Ok("Self")
+    }
+
+    /// `Self`, resolved to the type it stands for.
+    ///
+    /// Rewriting the usage to that name is what lets ordinary resolution reach the type's own
+    /// declaration. The position stays on the keyword and the context records the rewrite, so
+    /// `debug ir` still shows where the name came from.
+    fn extract_self_type_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
+        let name = self.enclosing_self_type(node, source)?;
+
+        Some(Usage {
+            name,
+            kind: UsageKind::TypeIdentifier,
+            position: Position::from_node(&node),
+            context: Some("self_type".to_string()),
+            scope_id: Some(scope),
+        })
+    }
+
+    /// The name `Self` stands for: the type of the nearest enclosing `impl`, or the trait itself
+    /// inside a trait declaration.
+    fn enclosing_self_type(&self, node: Node, source: &str) -> Option<String> {
+        let mut current = node.parent();
+
+        while let Some(parent) = current {
+            let named = match parent.kind() {
+                "impl_item" => parent.child_by_field_name("type"),
+                "trait_item" => parent.child_by_field_name("name"),
+                _ => None,
+            };
+
+            if let Some(named) = named {
+                return self.type_name_text(named, source);
+            }
+
+            current = parent.parent();
+        }
+
+        None
+    }
+
+    /// The bare name of a type, looking through generic arguments so that `Container<T>` yields
+    /// `Container`.
+    fn type_name_text(&self, node: Node, source: &str) -> Option<String> {
+        let named = match node.kind() {
+            "generic_type" => node.child_by_field_name("type")?,
+            _ => node,
+        };
+
+        named.utf8_text(source.as_bytes()).ok().map(str::to_string)
     }
 
     /// The field named by a pattern, as in `let Point { x, y: renamed } = p`.
