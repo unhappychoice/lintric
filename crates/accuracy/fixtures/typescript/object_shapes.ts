@@ -3,8 +3,8 @@
 // A shorthand property reads the binding it names but does not reference a declared member; see
 // "Object shapes" in the crate README.
 //
-// The two interfaces deliberately share a member name: reading `first.id` currently also links to
-// `Second.id`, which this fixture records as a known spurious edge. See #213.
+// The two interfaces deliberately share a member name, so `first.id` is told apart from
+// `Second.id` only by the type the receiver is annotated with.
 
 interface First {
     id: string;

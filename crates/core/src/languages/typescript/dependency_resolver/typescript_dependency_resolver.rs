@@ -7,6 +7,7 @@ use tree_sitter::Node;
 
 use super::method_resolver::MethodResolver;
 use super::module_resolver::ModuleResolver;
+use super::receiver_narrowing::ReceiverNarrowing;
 
 /// TypeScript-specific dependency resolver
 pub struct TypeScriptDependencyResolver {
@@ -44,11 +45,26 @@ impl TypeScriptDependencyResolver {
     /// TypeScript-specific field access resolution
     fn resolve_typescript_field_access(
         &self,
+        narrowing: &ReceiverNarrowing,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
         self.method_resolver
-            .resolve_struct_field_access(usage_node, definitions)
+            .resolve_struct_field_access(usage_node, definitions, narrowing)
+    }
+
+    /// Whether a member would be reached by its bare name.
+    ///
+    /// `receiver.member` reaches only what the receiver's type declares, which the field access
+    /// path above decides. Matching the name here as well would undo that decision and resolve
+    /// `first.id` to any type's `id`.
+    fn is_member_reached_by_name(usage: &Usage, definition: &Definition) -> bool {
+        usage.kind == crate::models::UsageKind::FieldExpression
+            && matches!(
+                definition.definition_type,
+                crate::models::DefinitionType::StructFieldDefinition
+                    | crate::models::DefinitionType::PropertyDefinition
+            )
     }
 
     /// Check if definition is accessible from usage (TypeScript-specific rules)
@@ -218,13 +234,14 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
         usage_nodes: &[Usage],
         definitions: &[Definition],
     ) -> Result<Vec<Dependency>, String> {
-        let mut all_dependencies = Vec::new();
+        // Read off the file once rather than per usage: every member access asks the same questions
+        // of it, and a malformed query must fail rather than quietly resolve nothing.
+        let narrowing = ReceiverNarrowing::new(source_code, root_node)?;
 
-        for usage_node in usage_nodes {
-            let mut deps =
-                self.resolve_single_dependency(source_code, root_node, usage_node, definitions);
-            all_dependencies.append(&mut deps);
-        }
+        let mut all_dependencies: Vec<Dependency> = usage_nodes
+            .iter()
+            .flat_map(|usage| self.resolve_single_dependency(&narrowing, usage, definitions))
+            .collect();
 
         // Add interface implementation dependencies (class method -> interface declaration), which
         // have no usage to resolve and are derived from the class heritage instead
@@ -241,8 +258,7 @@ impl TypeScriptDependencyResolver {
     /// different route, so there is nothing for the trait to abstract over.
     fn resolve_single_dependency(
         &self,
-        _source_code: &str,
-        _root_node: Node,
+        narrowing: &ReceiverNarrowing,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
@@ -250,7 +266,8 @@ impl TypeScriptDependencyResolver {
 
         // Try TypeScript-specific field access resolution
         if usage_node.kind == crate::models::UsageKind::FieldExpression {
-            let field_dependencies = self.resolve_typescript_field_access(usage_node, definitions);
+            let field_dependencies =
+                self.resolve_typescript_field_access(narrowing, usage_node, definitions);
             if !field_dependencies.is_empty() {
                 dependencies.extend(field_dependencies);
                 return dependencies;
@@ -265,6 +282,7 @@ impl TypeScriptDependencyResolver {
 
         let matching_definitions: Vec<&Definition> = all_matching_definitions
             .into_iter()
+            .filter(|def| !Self::is_member_reached_by_name(usage_node, def))
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.module_resolver.is_valid_dependency(usage_node, def))
             .collect();

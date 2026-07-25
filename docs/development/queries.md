@@ -65,6 +65,28 @@ grammar does not have — its blocks are `statement_block` — so blocks had nev
 preserves that behaviour and says so in a comment rather than fixing it in passing, because adding
 the node changes what is found rather than where the pattern lives.
 
+### Queries that answer a relationship
+
+Not every query labels a node. Some answer a question about a pair of nodes — which type declares a
+member, which type a binding is annotated with — and those capture both halves:
+
+```scheme
+(interface_declaration
+  name: (type_identifier) @owner
+  body: (interface_body (property_signature name: (property_identifier) @member)))
+```
+
+`query::text_by_position` and `query::text_by_span` turn such a match into the shape the caller
+needs: one capture's text keyed by the other's position, or paired with the other's line span. When
+the caller needs the nodes themselves — reading the type names out of a union annotation, which nests as it
+grows — `query::map_pairs` hands them over inside the match loop, since a captured node's lifetime
+ends with the query cursor.
+
+Position is how a captured node is matched back to a `Definition`, which carries a position rather
+than a node; both count lines and columns from one.
+
+`trait_implementation.rs` and `receiver_narrowing.rs` are both built this way.
+
 ### A broken query must fail loudly
 
 `declared_types` returns a `Result`. An earlier version swallowed the error and returned no

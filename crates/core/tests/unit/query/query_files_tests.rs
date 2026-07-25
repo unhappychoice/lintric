@@ -41,3 +41,22 @@ fn the_typescript_definition_query_compiles_against_tsx_too() {
         ir.definitions.iter().map(|d| &d.name).collect::<Vec<_>>()
     );
 }
+
+#[test]
+fn the_receiver_narrowing_queries_compile_for_both_typescript_grammars() {
+    // These run on every file, so a node name absent from one grammar would fail all analysis of
+    // that dialect rather than only the member access it was written for.
+    let source = "interface R {\n    label: string;\n}\nfunction f(r: R): string {\n    return r.label;\n}\n";
+
+    for language in [Language::TypeScript, Language::TSX] {
+        let (ir, _) = analyze_content(source.to_string(), language.clone()).unwrap();
+
+        assert!(
+            ir.dependencies
+                .iter()
+                .any(|d| d.symbol == "label" && d.target_line == 2),
+            "{language:?}: {:?}",
+            ir.dependencies
+        );
+    }
+}

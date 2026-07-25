@@ -167,7 +167,35 @@ mean resolving the annotation, the enclosing function's return type, or a callee
 which is type resolution, and out of reach today. A missing edge understates coupling; an invented
 one sends a reader to unrelated code.
 
-Ordinary member access, `origin.x`, is untouched and still resolves.
+Ordinary member access, `origin.x`, is untouched and still resolves — see below for which `x`.
+
+## Member access and the receiver's type
+
+`receiver.member` reaches what the receiver's **type** declares, so two types declaring the same
+member name are told apart by what the receiver is:
+
+```typescript
+interface Reader { label: string; }   // L1
+class Writer { label: number; }       // L2
+
+function f(reader: Reader) {
+    return reader.label;              // depends on L1's label, not L2's
+}
+```
+
+The receiver's type is taken from where the file states it: a parameter or variable annotation, or
+`this` inside a class. A union annotation names several types, and the member may be declared by any
+of them, so all of them are reached.
+
+Where the file does not state it — an unannotated parameter, or a chained `a.b.c` whose receiver is
+an expression — **and** more than one declaration shares the name, no edge is produced. Choosing one
+would point a reader at a type the line never mentions, which is the same reasoning as for object
+shapes above. A single declaration of the name needs no receiver type, since there is nothing to
+tell apart.
+
+The cost is symmetrical to the object-shape decision and worth stating: a genuine access through an
+unannotated receiver loses its edge. `typescript/member_access.ts` pins both halves, including the
+non-edge.
 
 ## Still unsettled
 
