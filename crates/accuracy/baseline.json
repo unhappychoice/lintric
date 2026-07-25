@@ -337,9 +337,9 @@
       "duplicates": 1
     },
     "typescript/member_access.ts": {
-      "expected": 12,
-      "detected": 12,
-      "correct": 12,
+      "expected": 24,
+      "detected": 24,
+      "correct": 24,
       "missing": 0,
       "spurious": 0,
       "duplicates": 1
@@ -378,9 +378,9 @@
     }
   },
   "total": {
-    "expected": 454,
-    "detected": 454,
-    "correct": 454,
+    "expected": 466,
+    "detected": 466,
+    "correct": 466,
     "missing": 0,
     "spurious": 0,
     "duplicates": 26
