@@ -40,7 +40,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage { position: { 1:18 to 1:23 }, name: "prop4", kind: FieldExpression, context: None },
-        Usage { position: { 1:38 to 1:43 }, name: "prop4", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",

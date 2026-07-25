@@ -844,6 +844,22 @@ impl TypeScriptUsageExtractor {
         // Check if this property_identifier is in a definition context
         if let Some(parent) = node.parent() {
             match parent.kind() {
+                "pair" | "pair_pattern" => {
+                    // An object literal's key, or a pattern's, does not reference a declared
+                    // member. TypeScript is
+                    // structurally typed, so `{ x: 1 }` is a self-contained value rather than a
+                    // reference to some `x` declared elsewhere — and the type it satisfies is
+                    // usually declared in another file, which single-file analysis cannot see. Any
+                    // same-file member of the same name is a coincidence.
+                    //
+                    // The coupling to a declared type is already recorded through the annotation
+                    // that names it, as in `const p: Point = { x: 1 }`.
+                    if let Some(key_field) = parent.child_by_field_name("key") {
+                        if node.id() == key_field.id() {
+                            return None;
+                        }
+                    }
+                }
                 "enum_body" => {
                     // Property identifiers in enum bodies are definitions, not usage
                     return None;
