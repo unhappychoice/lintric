@@ -1,3 +1,4 @@
+pub mod definition_queries;
 pub mod dependency_resolver;
 pub mod format_string;
 pub mod formatter;
