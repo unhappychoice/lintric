@@ -43,7 +43,6 @@ IntermediateRepresentation {
         Dependency { source_line: 2, target_line: 1, symbol: "f", dependency_type: FunctionCall, context: Some("Identifier:2:4") },
     ],
     usage: [
-        Usage { position: { 2:1 to 2:7 }, name: "m::f", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 2:1 to 2:2 }, name: "m", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 2:4 to 2:5 }, name: "f", kind: Identifier, context: Some("scoped_identifier") },
     ],

@@ -74,7 +74,6 @@ IntermediateRepresentation {
         Dependency { source_line: 4, target_line: 3, symbol: "p", dependency_type: VariableUse, context: Some("Identifier:4:15") },
     ],
     usage: [
-        Usage { position: { 3:13 to 3:33 }, name: "Point { x: 1, y: 2 }", kind: StructExpression, context: None },
         Usage { position: { 3:13 to 3:18 }, name: "Point", kind: TypeIdentifier, context: None },
         Usage { position: { 3:21 to 3:22 }, name: "x", kind: FieldInitializer, context: Some("field_initializer") },
         Usage { position: { 3:27 to 3:28 }, name: "y", kind: FieldInitializer, context: Some("field_initializer") },

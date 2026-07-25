@@ -51,7 +51,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:42 to 1:54 }, name: "x.toString", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:42 to 1:43 }, name: "x", kind: Identifier, context: Some("call_expression") },
         Usage { position: { 1:44 to 1:52 }, name: "toString", kind: FieldExpression, context: None },
     ],

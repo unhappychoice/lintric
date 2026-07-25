@@ -710,17 +710,6 @@ expression: out
       "context": null
     },
     {
-      "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 24,
-        "start_column": 16,
-        "end_line": 28,
-        "end_column": 9
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "Point",
       "kind": "TypeIdentifier",
       "position": {
@@ -787,17 +776,6 @@ expression: out
       "context": null
     },
     {
-      "name": "console.log",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 34,
-        "start_column": 5,
-        "end_line": 34,
-        "end_column": 20
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "console",
       "kind": "Identifier",
       "position": {
@@ -827,17 +805,6 @@ expression: out
         "start_column": 17,
         "end_line": 34,
         "end_column": 19
-      },
-      "context": "call_expression"
-    },
-    {
-      "name": "console.log",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 35,
-        "start_column": 5,
-        "end_line": 35,
-        "end_column": 20
       },
       "context": "call_expression"
     },
@@ -886,17 +853,6 @@ expression: out
       "context": null
     },
     {
-      "name": "Utils.helperFunction",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 39,
-        "start_column": 16,
-        "end_line": 39,
-        "end_column": 38
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "Utils",
       "kind": "Identifier",
       "position": {
@@ -919,17 +875,6 @@ expression: out
       "context": null
     },
     {
-      "name": "DefaultExport.init",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 40,
-        "start_column": 1,
-        "end_line": 40,
-        "end_column": 21
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "DefaultExport",
       "kind": "Identifier",
       "position": {
@@ -950,17 +895,6 @@ expression: out
         "end_column": 19
       },
       "context": null
-    },
-    {
-      "name": "console.log",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 43,
-        "start_column": 5,
-        "end_line": 43,
-        "end_column": 34
-      },
-      "context": "call_expression"
     },
     {
       "name": "console",

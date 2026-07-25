@@ -488,17 +488,6 @@ expression: out
       "context": null
     },
     {
-      "name": "Point { x: 1, y: 2 }",
-      "kind": "StructExpression",
-      "position": {
-        "start_line": 12,
-        "start_column": 14,
-        "end_line": 12,
-        "end_column": 34
-      },
-      "context": null
-    },
-    {
       "name": "Point",
       "kind": "TypeIdentifier",
       "position": {
@@ -532,17 +521,6 @@ expression: out
       "context": "field_initializer"
     },
     {
-      "name": "Point { x: 3, y: 4 }",
-      "kind": "StructExpression",
-      "position": {
-        "start_line": 13,
-        "start_column": 14,
-        "end_line": 13,
-        "end_column": 34
-      },
-      "context": null
-    },
-    {
       "name": "Point",
       "kind": "TypeIdentifier",
       "position": {
@@ -574,17 +552,6 @@ expression: out
         "end_column": 29
       },
       "context": "field_initializer"
-    },
-    {
-      "name": "Point {\n        x: add(p1.x, p2.x),\n        y: add(p1.y, p2.y),\n    }",
-      "kind": "StructExpression",
-      "position": {
-        "start_line": 15,
-        "start_column": 14,
-        "end_line": 18,
-        "end_column": 6
-      },
-      "context": null
     },
     {
       "name": "Point",
@@ -728,17 +695,6 @@ expression: out
         "end_column": 24
       },
       "context": "field_expression"
-    },
-    {
-      "name": "Point { x: 5, y: 6 }",
-      "kind": "StructExpression",
-      "position": {
-        "start_line": 21,
-        "start_column": 18,
-        "end_line": 21,
-        "end_column": 38
-      },
-      "context": null
     },
     {
       "name": "Point",

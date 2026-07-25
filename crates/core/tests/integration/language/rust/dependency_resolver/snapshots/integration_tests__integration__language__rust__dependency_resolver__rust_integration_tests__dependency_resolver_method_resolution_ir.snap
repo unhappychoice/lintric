@@ -246,7 +246,6 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 5:6 to 5:16 }, name: "Calculator", kind: TypeIdentifier, context: None },
         Usage { position: { 6:17 to 6:21 }, name: "Calculator", kind: TypeIdentifier, context: Some("self_type") },
-        Usage { position: { 7:9 to 7:32 }, name: "Calculator { value: 0 }", kind: StructExpression, context: None },
         Usage { position: { 7:9 to 7:19 }, name: "Calculator", kind: TypeIdentifier, context: None },
         Usage { position: { 7:22 to 7:27 }, name: "value", kind: FieldInitializer, context: Some("field_initializer") },
         Usage { position: { 11:9 to 11:19 }, name: "value", kind: FieldExpression, context: Some("field_expression") },
@@ -258,10 +257,8 @@ IntermediateRepresentation {
         Usage { position: { 24:26 to 24:32 }, name: "String", kind: TypeIdentifier, context: None },
         Usage { position: { 25:9 to 25:15 }, name: "format", kind: Identifier, context: None },
         Usage { position: { 25:40 to 25:45 }, name: "value", kind: Identifier, context: None },
-        Usage { position: { 30:20 to 30:37 }, name: "Calculator::new", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 30:20 to 30:30 }, name: "Calculator", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 30:32 to 30:35 }, name: "new", kind: Identifier, context: Some("scoped_identifier") },
-        Usage { position: { 31:5 to 31:16 }, name: "calc.add", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 31:5 to 31:13 }, name: "add", kind: FieldExpression, context: Some("field_expression") },
         Usage { position: { 31:5 to 31:9 }, name: "calc", kind: Identifier, context: Some("field_expression") },
         Usage { position: { 32:5 to 32:12 }, name: "println", kind: Identifier, context: None },

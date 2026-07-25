@@ -33,7 +33,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:23 to 1:39 }, name: "std::ptr::null", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:23 to 1:26 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:28 to 1:31 }, name: "ptr", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:33 to 1:37 }, name: "null", kind: Identifier, context: Some("scoped_identifier") },
