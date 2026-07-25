@@ -1,0 +1,22 @@
+[package]
+name = "lintric-accuracy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+lintric-core = { path = "../core" }
+comfy-table = "7.2.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[[bin]]
+name = "accuracy"
+path = "src/bin/accuracy.rs"
+
+[[test]]
+name = "baseline"
+path = "tests/baseline.rs"
+
+[[test]]
+name = "unit"
+path = "tests/unit/mod.rs"

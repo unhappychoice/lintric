@@ -53,6 +53,28 @@ jobs:
         uses: Swatinem/rust-cache@v2
       - run: cargo test --workspace --locked
 
+  accuracy:
+    name: Dependency detection accuracy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cache cargo build
+        uses: Swatinem/rust-cache@v2
+      - name: Report accuracy against the recorded baseline
+        # The test job already gates on the baseline; this job exists to surface the
+        # precision/recall table in the run summary. Differences in either direction fail, so
+        # improvements and regressions both have to be recorded deliberately.
+        run: |
+          cargo run -q -p lintric-accuracy -- --check > accuracy.txt 2>&1 || status=$?
+          {
+            echo '```'
+            cat accuracy.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          cat accuracy.txt
+          exit "${status:-0}"
+
   coverage:
     name: Code coverage
     runs-on: ubuntu-latest

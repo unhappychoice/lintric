@@ -1,0 +1,100 @@
+{
+  "fixtures": {
+    "rust/closures.rs": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/enums.rs": {
+      "expected": 13,
+      "detected": 8,
+      "correct": 8,
+      "missing": 5,
+      "spurious": 0,
+      "duplicates": 3
+    },
+    "rust/functions.rs": {
+      "expected": 8,
+      "detected": 8,
+      "correct": 8,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/macros.rs": {
+      "expected": 8,
+      "detected": 5,
+      "correct": 5,
+      "missing": 3,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/structs.rs": {
+      "expected": 11,
+      "detected": 9,
+      "correct": 9,
+      "missing": 2,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "rust/traits.rs": {
+      "expected": 12,
+      "detected": 9,
+      "correct": 9,
+      "missing": 3,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/variables.rs": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "tsx/component.tsx": {
+      "expected": 2,
+      "detected": 2,
+      "correct": 2,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/classes.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "typescript/functions.ts": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/variables.ts": {
+      "expected": 5,
+      "detected": 5,
+      "correct": 5,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    }
+  },
+  "total": {
+    "expected": 91,
+    "detected": 78,
+    "correct": 78,
+    "missing": 13,
+    "spurious": 0,
+    "duplicates": 10
+  }
+}
