@@ -47,6 +47,8 @@ A query describes shape. When classifying needs more than shape, the extractor k
 - `let` patterns need their bindings told apart from the type they match, and a path component from
   a binding
 - format string captures do not exist as nodes at all and are parsed out of the literal
+- "sits anywhere inside a `use` tree" is an ancestor at any depth, and enumerating the depths a path
+  can nest to would be worse than the walk it replaces
 
 The extractor asks the query **first** and falls through to its arms only when nothing was captured.
 That ordering matters: a `const_item`'s name is an `identifier`, and the `identifier` arm would
