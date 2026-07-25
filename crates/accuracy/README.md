@@ -87,17 +87,29 @@ only integer counts and does not churn on float formatting.
 ## Interpreting the baseline
 
 The recorded numbers describe **these fixtures only**, and are not an accuracy claim for the
-analyzer as a whole. Constructs the fixtures do not reach are simply unmeasured — lifetimes,
-async, trait objects, and most of TypeScript's type system have no fixtures yet.
+analyzer as a whole. Constructs the fixtures do not reach are simply unmeasured.
 
-Growing the fixture set is expected to push the numbers *down*, and that is the intended
-direction: it means the harness is measuring more of what the analyzer actually has to handle. It
-has already worked that way. Precision stood at 1.000 across every fixture until
-`rust/nested_scopes.rs` was added, which produced the first spurious edge ever recorded (#187) and
-falsified the assumption that the analyzer only ever under-reports.
+A high score is therefore a signal to add fixtures, not a sign that detection is finished — and
+the history here is unambiguous on that point. Every time the fixture set has grown, it has found
+defects that a green harness had been reporting as perfect:
 
-A near-perfect score is therefore a signal to add fixtures, not a sign that detection is
-finished.
+| Fixtures added | Score before | Score after | Found |
+| --- | --- | --- | --- |
+| `nested_scopes` | 1.000 / 1.000 | 0.994 / 0.988 | #187, the first spurious edge ever recorded |
+| `supertraits`, `inheritance` | 1.000 / 1.000 | — | #191, which the harness could not see until then |
+| 11 more across both languages | 1.000 / 1.000 | 0.979 / 0.956 | #194, #195, #196, #197, #198, #199 |
+
+So the numbers being at 1.000 has twice meant "the fixtures do not reach the bug" rather than
+"there is no bug". Treat any perfect score as an invitation to write the fixture that breaks it.
+
+The same growth also corrected assumptions recorded here earlier: that the analyzer only
+under-reports (#187 disproved it), and that it makes no false positives (#197 invents edges from
+nothing more than a shared field name).
+
+Writing expectations is not free of error either. Several apparent defects turned out to be wrong
+annotations — a JSX attribute does reference the prop it names, a type parameter reference is real,
+`super::X` does not depend on the module's declaration. When a fixture disagrees with the analyzer,
+check which one is wrong before filing.
 
 ## Import resolution
 
