@@ -37,6 +37,10 @@ impl NodeDefinitionExtractor for RustDefinitionExtractor {
                 .extract_enum_definition(node, scope, source)
                 .into_iter()
                 .collect(),
+            "enum_variant" => self
+                .extract_enum_variant_definition(node, scope, source)
+                .into_iter()
+                .collect(),
             "trait_item" => self
                 .extract_trait_definition(node, scope, source)
                 .into_iter()
@@ -529,6 +533,25 @@ impl RustDefinitionExtractor {
         })
     }
 
+    fn extract_enum_variant_definition(
+        &self,
+        node: Node,
+        scope: ScopeId,
+        source: &str,
+    ) -> Option<Definition> {
+        let name = self.find_child_by_field_name(node, "name")?;
+        let name_text = name.utf8_text(source.as_bytes()).ok()?;
+
+        Some(Definition {
+            name: name_text.to_string(),
+            definition_type: DefinitionType::EnumVariantDefinition,
+            position: Position::from_node(&name),
+            scope_id: Some(scope),
+            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
+            is_hoisted: Some(false),
+        })
+    }
+
     #[allow(dead_code)]
     fn extract_impl_definition(
         &self,
@@ -878,7 +901,8 @@ impl RustUsageExtractor {
                 | "static_item"
                 | "type_item"
                 | "associated_type"
-                | "function_signature_item" => {
+                | "function_signature_item"
+                | "enum_variant" => {
                     if let Some(name_field) = parent.child_by_field_name("name") {
                         return node.id() == name_field.id();
                     }
