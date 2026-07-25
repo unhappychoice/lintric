@@ -336,6 +336,14 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "typescript/member_access.ts": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
     "typescript/namespaces.ts": {
       "expected": 10,
       "detected": 10,
@@ -346,10 +354,10 @@
     },
     "typescript/object_shapes.ts": {
       "expected": 9,
-      "detected": 10,
+      "detected": 9,
       "correct": 9,
       "missing": 0,
-      "spurious": 1,
+      "spurious": 0,
       "duplicates": 0
     },
     "typescript/type_aliases.ts": {
@@ -370,11 +378,11 @@
     }
   },
   "total": {
-    "expected": 442,
-    "detected": 443,
-    "correct": 442,
+    "expected": 454,
+    "detected": 454,
+    "correct": 454,
     "missing": 0,
-    "spurious": 1,
-    "duplicates": 25
+    "spurious": 0,
+    "duplicates": 26
   }
 }
