@@ -651,7 +651,11 @@ impl NodeUsageExtractor for TypeScriptUsageExtractor {
                     self.extract_type_usage(node, scope, source)
                 }
             }
-            "property_identifier" => self.extract_property_identifier_usage(node, scope, source),
+            // A `#name` member is the same thing under a different node kind, and the definition
+            // positions it can occupy are already covered
+            "property_identifier" | "private_property_identifier" => {
+                self.extract_property_identifier_usage(node, scope, source)
+            }
             _ => None,
         };
 
