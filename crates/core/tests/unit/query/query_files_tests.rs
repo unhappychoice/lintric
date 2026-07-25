@@ -75,7 +75,7 @@ fn the_rust_binding_query_compiles_and_tells_a_binding_from_a_reference() {
 
     assert!(edges.contains(&(4, 1, "Meters")), "{edges:?}");
     assert!(edges.contains(&(5, 4, "value")), "{edges:?}");
-    let _ = rust::binding_queries::bindings_and_references;
+    let _ = rust::binding_queries::roles;
 }
 
 #[test]

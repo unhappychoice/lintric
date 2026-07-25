@@ -1,4 +1,3 @@
-use std::collections::HashSet;
 use tree_sitter::Node;
 
 use super::format_string;
@@ -490,20 +489,15 @@ impl RustDefinitionExtractor {
 
 /// Rust-specific usage extractor
 pub struct RustUsageExtractor {
-    bindings: HashSet<usize>,
-    references: HashSet<usize>,
+    roles: super::binding_queries::Roles,
 }
 
 impl RustUsageExtractor {
     /// Fails if the binding query does not compile, which is a bug in the `.scm` file rather than
     /// anything about the source being analyzed.
     pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
-        let (bindings, references) =
-            super::binding_queries::bindings_and_references(source_code, root_node)?;
-
         Ok(Self {
-            bindings,
-            references,
+            roles: super::binding_queries::roles(source_code, root_node)?,
         })
     }
 }
@@ -524,7 +518,6 @@ impl NodeUsageExtractor for RustUsageExtractor {
                 // and not the function name part of a call_expression (to avoid duplication)
                 if self.is_identifier_in_definition_context(node)
                     || self.is_function_name_in_call_expression(node)
-                    || self.is_identifier_part_of_field_access(node, source)
                 {
                     None
                 } else if self.is_identifier_in_type_context(node) {
@@ -611,46 +604,18 @@ impl RustUsageExtractor {
     /// The patterns live in `queries/rust/bindings.scm`; a reference capture wins, which is how the
     /// type a pattern matches against stays a usage while the names it introduces do not.
     fn is_identifier_in_definition_context(&self, node: Node) -> bool {
-        self.bindings.contains(&node.id()) && !self.references.contains(&node.id())
+        self.roles.bindings.contains(&node.id()) && !self.roles.references.contains(&node.id())
     }
 
+    /// Whether the call expression around this identifier already records it.
     fn is_function_name_in_call_expression(&self, node: Node) -> bool {
-        let mut current = node.parent();
-        while let Some(parent) = current {
-            match parent.kind() {
-                "call_expression" => {
-                    // For simple function calls, check if this is directly the function name
-                    if let Some(function_node) = parent.child(0) {
-                        if function_node.id() == node.id() {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-                "scoped_identifier" => {
-                    // For qualified calls (e.g., HashMap::new), continue checking if this scoped_identifier
-                    // is the function part of a call_expression, but don't exclude path components
-                    current = parent.parent();
-                    continue;
-                }
-                _ => current = parent.parent(),
-            }
-        }
-        false
+        self.roles.call_targets.contains(&node.id())
     }
 
-    fn is_identifier_part_of_field_access(&self, node: Node, _source_code: &str) -> bool {
-        // Check if this identifier is the field part of a field_expression
-        if let Some(parent) = node.parent() {
-            if parent.kind() == "field_expression" {
-                if let Some(field_node) = parent.child_by_field_name("field") {
-                    return node.id() == field_node.id();
-                }
-            }
-        }
-        false
-    }
-
+    /// Whether this identifier sits anywhere inside a `use` tree.
+    ///
+    /// Stays here rather than moving to the query file: an ancestor at any depth is not a shape a
+    /// query states, and enumerating the depths a path can nest to would be worse than the walk.
     fn is_identifier_in_type_context(&self, node: Node) -> bool {
         let mut current = node.parent();
         while let Some(parent) = current {
