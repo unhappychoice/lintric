@@ -14,6 +14,7 @@ use crate::query::{DeclaredAs, Roles};
 /// constructor parameter may declare a property.
 pub struct TypeScriptDefinitionExtractor {
     declared_types: Roles<DeclaredAs>,
+    scope_kinds: Roles<ScopeType>,
 }
 
 impl TypeScriptDefinitionExtractor {
@@ -22,6 +23,7 @@ impl TypeScriptDefinitionExtractor {
     pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
         Ok(Self {
             declared_types: super::definition_queries::declared_types(source_code, root_node)?,
+            scope_kinds: super::scope_queries::scope_kinds(source_code, root_node)?,
         })
     }
 
@@ -80,17 +82,9 @@ impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
     }
 
     fn creates_scope(&self, node: Node) -> Option<(ScopeType, Position)> {
-        let scope_type = match node.kind() {
-            "function_declaration" | "method_definition" | "arrow_function" => ScopeType::Function,
-            "class_declaration" | "abstract_class_declaration" => ScopeType::Class,
-            "interface_declaration" => ScopeType::Interface,
-            "namespace_declaration" | "internal_module" => ScopeType::Module,
-            "block" => ScopeType::Block,
-            "for_statement" | "while_statement" | "if_statement" => ScopeType::Block,
-            _ => return None,
-        };
-
-        Some((scope_type, Position::from_node(&node)))
+        self.scope_kinds
+            .get(&node.id())
+            .map(|scope_type| (scope_type.clone(), Position::from_node(&node)))
     }
 }
 
