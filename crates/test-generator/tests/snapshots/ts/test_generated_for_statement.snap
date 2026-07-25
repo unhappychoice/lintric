@@ -43,7 +43,7 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition { position: { 1:10 to 1:12 }, name: "i1", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 1:50 to 1:54 }, name: "item", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:50 to 1:54 }, name: "item", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [

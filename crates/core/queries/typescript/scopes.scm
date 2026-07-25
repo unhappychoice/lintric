@@ -14,9 +14,9 @@
 ; A namespace is an `internal_module` in this grammar.
 (internal_module) @scope.module
 
-; Note: no block scope. The extractor matched `block`, which this grammar does not have —
-; its blocks are `statement_block` — so blocks have never scoped. Adding it here would change
-; behaviour rather than move a pattern; see the issue linked from the migration PR.
+; `const` and `let` are block-scoped, so a block is a scope. The extractor used to match `block`,
+; which this grammar does not have — its blocks are `statement_block`.
+(statement_block) @scope.block
 (for_statement) @scope.block
 (while_statement) @scope.block
 (if_statement) @scope.block
