@@ -147,3 +147,23 @@ fn an_abstract_declaration_does_not_depend_on_its_implementation() {
             .collect::<Vec<_>>()
     );
 }
+
+#[test]
+fn links_an_implementation_of_a_generic_interface() {
+    let source = "interface Box<T> {\n    get(): T;\n}\n\nclass NumberBox implements Box<number> {\n    get(): number {\n        return 1;\n    }\n}\n";
+
+    assert_eq!(
+        implementations(source, Language::TypeScript),
+        vec![(6, 2, "get".to_string())]
+    );
+}
+
+#[test]
+fn follows_a_generic_parent_interface() {
+    let source = "interface Base<T> {\n    run(v: T): void;\n}\n\ninterface Extended<T> extends Base<T> {}\n\nclass Impl implements Extended<number> {\n    run(v: number): void {}\n}\n";
+
+    assert_eq!(
+        implementations(source, Language::TypeScript),
+        vec![(8, 2, "run".to_string())]
+    );
+}

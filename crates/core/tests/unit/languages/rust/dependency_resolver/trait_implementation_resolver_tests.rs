@@ -120,3 +120,23 @@ fn terminates_on_an_inheritance_cycle() {
         vec![(10, 2, "x".to_string())]
     );
 }
+
+#[test]
+fn links_an_implementation_of_a_generic_trait() {
+    let source = "trait Base<T> {\n    fn run(&self, v: T);\n}\n\nstruct S;\n\nimpl Base<i32> for S {\n    fn run(&self, v: i32) {}\n}\n";
+
+    assert_eq!(
+        trait_implementations(source),
+        vec![(8, 2, "run".to_string())]
+    );
+}
+
+#[test]
+fn follows_a_generic_supertrait() {
+    let source = "trait Base<T> {\n    fn run(&self, v: T);\n}\n\ntrait Extended<T>: Base<T> {}\n\nstruct S;\n\nimpl Extended<i32> for S {\n    fn run(&self, v: i32) {}\n}\n";
+
+    assert_eq!(
+        trait_implementations(source),
+        vec![(10, 2, "run".to_string())]
+    );
+}

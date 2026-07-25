@@ -64,6 +64,14 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "rust/generic_traits.rs": {
+      "expected": 10,
+      "detected": 11,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 1,
+      "duplicates": 1
+    },
     "rust/generics.rs": {
       "expected": 10,
       "detected": 10,
@@ -288,6 +296,14 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "typescript/generic_interfaces.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "typescript/generics.ts": {
       "expected": 12,
       "detected": 12,
@@ -346,11 +362,11 @@
     }
   },
   "total": {
-    "expected": 418,
-    "detected": 419,
-    "correct": 418,
+    "expected": 437,
+    "detected": 439,
+    "correct": 437,
     "missing": 0,
-    "spurious": 1,
-    "duplicates": 28
+    "spurious": 2,
+    "duplicates": 29
   }
 }
