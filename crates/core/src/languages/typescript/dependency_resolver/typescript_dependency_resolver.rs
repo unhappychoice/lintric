@@ -5,6 +5,7 @@ use crate::models::{
 };
 use tree_sitter::Node;
 
+use super::accessor_direction::AccessorDirection;
 use super::method_resolver::MethodResolver;
 use super::module_resolver::ModuleResolver;
 use super::receiver_narrowing::ReceiverNarrowing;
@@ -237,10 +238,13 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
         // Read off the file once rather than per usage: every member access asks the same questions
         // of it, and a malformed query must fail rather than quietly resolve nothing.
         let narrowing = ReceiverNarrowing::new(source_code, root_node)?;
+        let direction = AccessorDirection::new(source_code, root_node)?;
 
         let mut all_dependencies: Vec<Dependency> = usage_nodes
             .iter()
-            .flat_map(|usage| self.resolve_single_dependency(&narrowing, usage, definitions))
+            .flat_map(|usage| {
+                self.resolve_single_dependency(&narrowing, &direction, usage, definitions)
+            })
             .collect();
 
         // Add interface implementation dependencies (class method -> interface declaration), which
@@ -259,6 +263,7 @@ impl TypeScriptDependencyResolver {
     fn resolve_single_dependency(
         &self,
         narrowing: &ReceiverNarrowing,
+        direction: &AccessorDirection,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
@@ -280,12 +285,16 @@ impl TypeScriptDependencyResolver {
             .filter(|def| def.name == usage_node.name)
             .collect();
 
-        let matching_definitions: Vec<&Definition> = all_matching_definitions
+        let accessible: Vec<&Definition> = all_matching_definitions
             .into_iter()
             .filter(|def| !Self::is_member_reached_by_name(usage_node, def))
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.module_resolver.is_valid_dependency(usage_node, def))
             .collect();
+
+        // A getter and a setter share a name, so which one is reached is decided by whether this
+        // access reads or writes rather than by any preference among them.
+        let matching_definitions = direction.narrow(usage_node, accessible);
 
         // Apply TypeScript-specific preference logic
         let preferred_definition = if usage_node.kind == crate::models::UsageKind::TypeIdentifier {
