@@ -1379,16 +1379,17 @@ impl RustDependencyResolver {
             return false;
         }
 
-        // Check if there's a qualifier before this on the same line
-        let has_qualifier_before = all_usage_nodes.iter().any(|u| {
-            u.position.start_line == usage_node.position.start_line
-                && u.position.end_column < usage_node.position.start_column
-                && u.context.as_ref() == Some(&"scoped_identifier".to_string())
-                && (matches!(u.kind, crate::models::UsageKind::Identifier)
-                    || matches!(u.kind, crate::models::UsageKind::TypeIdentifier))
-        });
-
-        has_qualifier_before
+        // The qualifier must be the segment immediately before this one. Accepting anything
+        // earlier on the line confused two separate paths, so `crate::V + crate::W` treated `V`
+        // as the qualifier of `W`.
+        all_usage_nodes.iter().any(|other| {
+            is_in_path(other)
+                && is_adjacent_segment(other, usage_node)
+                && matches!(
+                    other.kind,
+                    crate::models::UsageKind::Identifier | crate::models::UsageKind::TypeIdentifier
+                )
+        })
     }
 
     /// Check if this usage is a type reference in a scoped identifier context
@@ -1428,38 +1429,43 @@ impl RustDependencyResolver {
     }
 
     /// Check if a TypeIdentifier is part of a qualified path (like "future" in "std::future::Future")
+    /// Whether this name qualifies a later segment of a path rather than being what the path names.
+    ///
+    /// `Foo` in `std::Foo::Bar` qualifies `Bar`, so resolving it against a local definition of the
+    /// same name would be wrong. `Foo` in `Foo::Bar` is not a qualifier of that kind — it is the
+    /// type the associated item belongs to, and does resolve.
+    ///
+    /// Being inside a path at all is a fact about the tree, carried by the usage's context. Only
+    /// which segment it is comes from position, and then only from adjacency across the `::`, so
+    /// two names that merely share a line are never mistaken for one path.
     fn is_part_of_qualified_path(&self, usage_node: &Usage, all_usage_nodes: &[Usage]) -> bool {
-        let usage_line = usage_node.position.start_line;
-        let usage_column = usage_node.position.start_column;
-
-        // Look for other usage nodes on the same line that suggest this is part of a qualified path
-        // Only consider it as part of qualified path if there are both preceding AND following identifiers
-        let mut has_preceding = false;
-        let mut has_following = false;
-
-        for other_usage in all_usage_nodes {
-            if other_usage.position.start_line == usage_line {
-                // Check for preceding identifier (like "std" before "future")
-                if other_usage.position.end_column < usage_column {
-                    let distance = usage_column - other_usage.position.end_column;
-                    if distance <= 3 {
-                        // accounting for ::
-                        has_preceding = true;
-                    }
-                }
-                // Check for following identifier (like "Future" after "future")
-                if other_usage.position.start_column > usage_node.position.end_column {
-                    let distance =
-                        other_usage.position.start_column - usage_node.position.end_column;
-                    if distance <= 3 {
-                        // accounting for ::
-                        has_following = true;
-                    }
-                }
-            }
+        if !is_in_path(usage_node) {
+            return false;
         }
 
-        // Only consider it part of qualified path if it's in the middle (has both preceding and following)
+        let has_preceding = all_usage_nodes
+            .iter()
+            .any(|other| is_adjacent_segment(other, usage_node));
+        let has_following = all_usage_nodes
+            .iter()
+            .any(|other| is_adjacent_segment(usage_node, other));
+
         has_preceding && has_following
     }
+}
+
+/// Width of the `::` between path segments.
+const PATH_SEPARATOR: usize = 2;
+
+fn is_in_path(usage: &Usage) -> bool {
+    matches!(
+        usage.context.as_deref(),
+        Some("scoped_identifier") | Some("scoped_type_identifier")
+    )
+}
+
+/// Whether `earlier` is the segment immediately before `later` in one path.
+fn is_adjacent_segment(earlier: &Usage, later: &Usage) -> bool {
+    earlier.position.start_line == later.position.start_line
+        && earlier.position.end_column + PATH_SEPARATOR == later.position.start_column
 }

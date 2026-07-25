@@ -989,6 +989,8 @@ impl RustUsageExtractor {
         while let Some(parent) = current {
             match parent.kind() {
                 "scoped_identifier" => return Some("scoped_identifier".to_string()),
+                // A path in type position is a different node, but it is still a path
+                "scoped_type_identifier" => return Some("scoped_type_identifier".to_string()),
                 "field_expression" => return Some("field_expression".to_string()),
                 "call_expression" => return Some("call_expression".to_string()),
                 _ => current = parent.parent(),
