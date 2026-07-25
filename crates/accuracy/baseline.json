@@ -10,9 +10,9 @@
     },
     "rust/enums.rs": {
       "expected": 13,
-      "detected": 8,
-      "correct": 8,
-      "missing": 5,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 3
     },
@@ -91,9 +91,9 @@
   },
   "total": {
     "expected": 92,
-    "detected": 84,
-    "correct": 84,
-    "missing": 8,
+    "detected": 89,
+    "correct": 89,
+    "missing": 3,
     "spurious": 0,
     "duplicates": 10
   }
