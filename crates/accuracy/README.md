@@ -139,6 +139,36 @@ This was an open question when the harness was written, and `rust/imports.rs` no
 answer. It is a decision rather than a fact about the language, so it is revisitable — but it
 should be revisited by changing that fixture, not by discovering that behaviour drifted.
 
+## Object shapes
+
+A TypeScript object literal's field name, and a destructuring pattern's, do **not** reference a
+declared member:
+
+```typescript
+const origin: Point = { x: 0, y: 0 };   // depends on Point, not on Point.x
+function shift({ x, y }: Point) { .. }  // same
+```
+
+The reasoning, in order of weight:
+
+- TypeScript is structurally typed, so `{ x: 0 }` is a self-contained value rather than a reference
+  to some `x` declared elsewhere. Unlike Rust's `Point { x: 0 }`, the literal does not name a type.
+- **Single-file analysis cannot see the type anyway.** The interface a literal satisfies is usually
+  declared in another file, so any same-file member of a matching name is more likely a coincidence
+  than the real referent.
+- The coupling to a declared type *is* recorded, through the annotation that names it.
+- Matching by name alone was inventing edges: a literal in a function with no relation to an
+  interface linked to it whenever a field name happened to coincide, and names like `id`, `name` and
+  `value` recur across interfaces in any real codebase.
+
+This has a real cost, which is worth stating rather than glossing: `const obj: MyInterface = { field: 10 }`
+genuinely couples that line to `MyInterface.field`, and that edge is now gone. Recovering it would
+mean resolving the annotation, the enclosing function's return type, or a callee's parameter type —
+which is type resolution, and out of reach today. A missing edge understates coupling; an invented
+one sends a reader to unrelated code.
+
+Ordinary member access, `origin.x`, is untouched and still resolves.
+
 ## Still unsettled
 
 **Functional update.** Whether `Point { ..other }` should imply a dependency on every field

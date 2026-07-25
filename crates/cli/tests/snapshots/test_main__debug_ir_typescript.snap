@@ -335,20 +335,6 @@ expression: out
       "context": "TypeIdentifier:16:15"
     },
     {
-      "source_line": 16,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 16,
-      "target_line": 7,
-      "symbol": "y",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
       "source_line": 17,
       "target_line": 5,
       "symbol": "Point",
@@ -356,32 +342,11 @@ expression: out
       "context": "TypeIdentifier:17:15"
     },
     {
-      "source_line": 17,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 17,
-      "target_line": 7,
-      "symbol": "y",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
       "source_line": 19,
       "target_line": 5,
       "symbol": "Point",
       "dependency_type": "TypeReference",
       "context": "TypeIdentifier:19:15"
-    },
-    {
-      "source_line": 20,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
     },
     {
       "source_line": 20,
@@ -415,13 +380,6 @@ expression: out
       "source_line": 20,
       "target_line": 6,
       "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 21,
-      "target_line": 7,
-      "symbol": "y",
       "dependency_type": "StructFieldAccess",
       "context": "field_access"
     },
@@ -466,20 +424,6 @@ expression: out
       "symbol": "Point",
       "dependency_type": "TypeReference",
       "context": "TypeIdentifier:25:19"
-    },
-    {
-      "source_line": 25,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 25,
-      "target_line": 7,
-      "symbol": "y",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
     },
     {
       "source_line": 26,
@@ -656,28 +600,6 @@ expression: out
       "context": null
     },
     {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 16,
-        "start_column": 25,
-        "end_line": 16,
-        "end_column": 26
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 16,
-        "start_column": 31,
-        "end_line": 16,
-        "end_column": 32
-      },
-      "context": null
-    },
-    {
       "name": "Point",
       "kind": "TypeIdentifier",
       "position": {
@@ -685,28 +607,6 @@ expression: out
         "start_column": 15,
         "end_line": 17,
         "end_column": 20
-      },
-      "context": null
-    },
-    {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 17,
-        "start_column": 25,
-        "end_line": 17,
-        "end_column": 26
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 17,
-        "start_column": 31,
-        "end_line": 17,
-        "end_column": 32
       },
       "context": null
     },
@@ -718,17 +618,6 @@ expression: out
         "start_column": 15,
         "end_line": 19,
         "end_column": 20
-      },
-      "context": null
-    },
-    {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 20,
-        "start_column": 9,
-        "end_line": 20,
-        "end_column": 10
       },
       "context": null
     },
@@ -784,17 +673,6 @@ expression: out
         "start_column": 25,
         "end_line": 20,
         "end_column": 26
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 21,
-        "start_column": 9,
-        "end_line": 21,
-        "end_column": 10
       },
       "context": null
     },
@@ -872,28 +750,6 @@ expression: out
         "start_column": 19,
         "end_line": 25,
         "end_column": 24
-      },
-      "context": null
-    },
-    {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 25,
-        "start_column": 29,
-        "end_line": 25,
-        "end_column": 30
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 25,
-        "start_column": 35,
-        "end_line": 25,
-        "end_column": 36
       },
       "context": null
     },
