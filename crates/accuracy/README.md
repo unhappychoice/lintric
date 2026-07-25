@@ -181,7 +181,6 @@ annotate lifetime references, because the representation is undecided: it is unc
 symbol should be `'a` or `a`, and annotating a guess would fix the wrong answer in the baseline.
 Decide the representation first, then add the expectations.
 
-**An impl's own associated type.** `fn first(&self) -> Self::Item` inside an impl resolves to the
-trait's `type Item;` rather than the impl's own `type Item = i32`. `rust/associated_types.rs`
-follows the trait declaration and says so in a comment; the nearer alias is arguably the better
-answer.
+**Settled since:** an impl's `Self::Item` now names the impl's own `type Item = i32` rather than
+the trait's declaration, because the nearest enclosing scope decides. `rust/associated_types.rs`
+pins it.
