@@ -32,8 +32,8 @@ expression: "serde_json :: to_string_pretty(& result).unwrap()"
       "depth": 2,
       "transitive_dependencies": 4,
       "dependent_lines": [
-        3,
-        5
+        5,
+        3
       ]
     }
   ],

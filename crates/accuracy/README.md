@@ -61,14 +61,15 @@ Rules:
 | Correct | Detected edges that were expected |
 | Missing | Expected edges not detected |
 | Spurious | Detected edges not expected |
-| Duplicates | Edges the analyzer reported more than once |
+| Duplicates | Edges the IR reported more than once, before the graph collapses them |
 | Precision | Correct / Detected |
 | Recall | Correct / Expected |
 
-Duplicates are reported separately rather than folded into precision. The line-to-line
-dependency graph should contain each edge once, so repeated edges are an over-counting defect in
-their own right — see #172 — and keeping them in their own column stops them from being confused
-with false positives.
+Duplicates count edges the IR reports more than once, and are kept out of precision rather than
+folded into it. They are **not** a defect: the IR deliberately keeps every occurrence because they
+are useful when inspecting it, and the metric calculator collapses them when building the
+line-to-line graph, so `self.x * self.x` depends on one line rather than two. The column measures
+how often the fixtures reference the same target twice, which is a property of the fixtures.
 
 Precision and recall are derived when reporting rather than stored, so `baseline.json` holds
 only integer counts and does not churn on float formatting.
@@ -85,9 +86,6 @@ detection is finished. Imports, generics, lifetimes, nested modules, async, and 
 TypeScript's type system have no fixtures at all. Adding them is expected to push the numbers
 *down*, and that is the intended direction — it means the harness is measuring more of what the
 analyzer actually has to handle.
-
-The one number still worth reading as a defect is the duplicates column, which stands at 10. See
-#172.
 
 ## Deliberately unsettled
 

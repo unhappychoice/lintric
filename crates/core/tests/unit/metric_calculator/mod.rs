@@ -188,3 +188,79 @@ fn test_no_dependencies() {
         .unwrap();
     assert_eq!(line2_metrics.total_dependencies, 0);
 }
+
+#[test]
+fn counts_a_repeated_reference_as_one_dependency() {
+    // `self.x * self.x` references the same line twice but depends on one line.
+    let ir = ir_with(vec![dependency(2, 1, "x"), dependency(2, 1, "x")], 2);
+    let metrics = line_metrics(
+        &ir,
+        "struct P { x: i32 }\nfn f(p: &P) -> i32 { p.x * p.x }",
+        2,
+    );
+
+    assert_eq!(metrics.total_dependencies, 1);
+    assert_eq!(metrics.transitive_dependencies, 1);
+    assert_eq!(metrics.dependent_lines, vec![1]);
+}
+
+#[test]
+fn charges_the_distance_of_a_repeated_reference_once() {
+    let ir = ir_with(vec![dependency(3, 1, "x"), dependency(3, 1, "x")], 3);
+    let metrics = line_metrics(&ir, "a\nb\nc", 3);
+
+    // One edge spanning two lines out of three.
+    assert_eq!(metrics.dependency_distance_cost, 2.0 / 3.0);
+}
+
+#[test]
+fn keeps_distinct_targets_of_one_line_separate() {
+    let ir = ir_with(vec![dependency(3, 1, "x"), dependency(3, 2, "y")], 3);
+    let metrics = line_metrics(&ir, "a\nb\nc", 3);
+
+    assert_eq!(metrics.total_dependencies, 2);
+    assert_eq!(metrics.transitive_dependencies, 2);
+}
+
+#[test]
+fn counts_a_repeated_reference_once_even_when_the_symbols_differ() {
+    // Distinct symbols on the same pair of lines are still one line-to-line edge.
+    let ir = ir_with(vec![dependency(3, 1, "x"), dependency(3, 1, "y")], 3);
+    let metrics = line_metrics(&ir, "a\nb\nc", 3);
+
+    assert_eq!(metrics.total_dependencies, 1);
+}
+
+fn dependency(source_line: usize, target_line: usize, symbol: &str) -> Dependency {
+    Dependency {
+        source_line,
+        target_line,
+        symbol: symbol.to_string(),
+        dependency_type: DependencyType::VariableUse,
+        context: None,
+    }
+}
+
+fn ir_with(dependencies: Vec<Dependency>, total_lines: usize) -> IntermediateRepresentation {
+    IntermediateRepresentation::new(
+        "test.rs".to_string(),
+        vec![],
+        dependencies,
+        vec![],
+        "Rust".to_string(),
+        total_lines,
+    )
+}
+
+fn line_metrics(
+    ir: &IntermediateRepresentation,
+    code: &str,
+    line: usize,
+) -> lintric_core::LineMetrics {
+    calculate_metrics(ir, code)
+        .unwrap()
+        .line_metrics
+        .into_iter()
+        .find(|metrics| metrics.line_number == line)
+        .unwrap()
+}
