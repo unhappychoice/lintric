@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use tree_sitter::Node;
 
 use crate::models::{
@@ -392,7 +393,24 @@ impl TypeScriptDefinitionExtractor {
 }
 
 /// TypeScript-specific usage extractor
-pub struct TypeScriptUsageExtractor;
+pub struct TypeScriptUsageExtractor {
+    bindings: HashSet<usize>,
+    call_targets: HashSet<usize>,
+}
+
+impl TypeScriptUsageExtractor {
+    /// Fails if the binding query does not compile, which is a bug in the `.scm` file rather than
+    /// anything about the source being analyzed.
+    pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
+        let (bindings, call_targets) =
+            super::binding_queries::bindings_and_call_targets(source_code, root_node)?;
+
+        Ok(Self {
+            bindings,
+            call_targets,
+        })
+    }
+}
 
 impl NodeUsageExtractor for TypeScriptUsageExtractor {
     fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Usage> {
@@ -429,84 +447,12 @@ impl NodeUsageExtractor for TypeScriptUsageExtractor {
 }
 
 impl TypeScriptUsageExtractor {
+    /// Whether this identifier reads a name, as opposed to declaring one or naming the callee of a
+    /// call expression that is already recorded as the usage.
+    ///
+    /// The patterns live in `queries/typescript/bindings.scm`.
     fn is_usage_context(&self, node: Node) -> bool {
-        if let Some(parent) = node.parent() {
-            match parent.kind() {
-                // These are definition contexts, not usage
-                "function_declaration"
-                | "class_declaration"
-                | "abstract_class_declaration"
-                | "interface_declaration"
-                | "type_alias_declaration"
-                | "enum_declaration"
-                | "namespace_declaration"
-                | "internal_module"
-                | "variable_declarator"
-                | "method_definition"
-                | "property_signature"
-                | "method_signature"
-                | "abstract_method_signature"
-                | "import_specifier" => {
-                    // Check if this identifier is the name being defined
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        return node.id() != name_field.id();
-                    }
-                }
-                // Destructuring patterns are definition contexts, not usage
-                "array_pattern" | "object_pattern" => {
-                    // Identifiers inside destructuring patterns are definitions
-                    return false;
-                }
-                "rest_pattern" => {
-                    // Identifiers inside rest patterns (like ...rest) are definitions
-                    return false;
-                }
-                "shorthand_property_identifier_pattern" => {
-                    // Shorthand property identifiers in destructuring are definitions
-                    return false;
-                }
-                "assignment_pattern" => {
-                    // In patterns like [first = 1], 'first' is definition, '1' might be usage
-                    if let Some(left_field) = parent.child_by_field_name("left") {
-                        // If this node is the left side (the identifier being defined), it's not usage
-                        return node.id() != left_field.id();
-                    }
-                }
-                "pair_pattern" => {
-                    // In patterns like { x: renamed }, only 'x' is usage, 'renamed' is definition
-                    if let Some(value_field) = parent.child_by_field_name("value") {
-                        // If this node is the value (the identifier being defined), it's not usage
-                        return node.id() != value_field.id();
-                    }
-                }
-                "required_parameter" | "optional_parameter" => {
-                    // Check if this is the parameter name
-                    if let Some(pattern_field) = parent.child_by_field_name("pattern") {
-                        return node.id() != pattern_field.id();
-                    }
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        return node.id() != name_field.id();
-                    }
-                }
-                "arrow_function" => {
-                    // Check if this identifier is a parameter of the arrow function
-                    // For single parameter arrow functions without parentheses: item => ...
-                    if let Some(parameter_field) = parent.child_by_field_name("parameter") {
-                        return node.id() != parameter_field.id();
-                    }
-                }
-                "call_expression" => {
-                    // Check if this identifier is the function name (function field) of call_expression
-                    // If so, it should not be treated as a separate identifier usage
-                    // because call_expression itself will handle the usage
-                    if let Some(function_field) = parent.child_by_field_name("function") {
-                        return node.id() != function_field.id();
-                    }
-                }
-                _ => {}
-            }
-        }
-        true
+        !self.bindings.contains(&node.id()) && !self.call_targets.contains(&node.id())
     }
 
     fn extract_identifier_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
@@ -669,28 +615,8 @@ impl TypeScriptUsageExtractor {
         })
     }
 
+    /// Whether this type identifier is the name a declaration introduces.
     fn is_type_identifier_in_definition_context(&self, node: Node) -> bool {
-        // Check if this type_identifier is directly defining something (the name being defined)
-        if let Some(parent) = node.parent() {
-            match parent.kind() {
-                "interface_declaration"
-                | "type_alias_declaration"
-                | "class_declaration"
-                | "abstract_class_declaration" => {
-                    // Check if this is the name field (being defined) or usage within the declaration
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        return node.id() == name_field.id();
-                    }
-                }
-                "type_parameter" => {
-                    // Type parameters are definitions
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        return node.id() == name_field.id();
-                    }
-                }
-                _ => {}
-            }
-        }
-        false
+        self.bindings.contains(&node.id())
     }
 }

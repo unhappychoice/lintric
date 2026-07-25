@@ -22,7 +22,7 @@ pub fn analyze_code_unified<'a>(
         }
         Language::TypeScript | Language::TSX => {
             let def_extractor = TypeScriptDefinitionExtractor::new(source_code, root_node)?;
-            let usage_extractor = TypeScriptUsageExtractor;
+            let usage_extractor = TypeScriptUsageExtractor::new(source_code, root_node)?;
             Ok(traverser.traverse(root_node, source_code, &def_extractor, &usage_extractor))
         }
     }
