@@ -51,9 +51,9 @@
     "rust/nested_scopes.rs": {
       "expected": 5,
       "detected": 5,
-      "correct": 4,
-      "missing": 1,
-      "spurious": 1,
+      "correct": 5,
+      "missing": 0,
+      "spurious": 0,
       "duplicates": 0
     },
     "rust/patterns.rs": {
@@ -148,9 +148,9 @@
   "total": {
     "expected": 165,
     "detected": 164,
-    "correct": 163,
-    "missing": 2,
-    "spurious": 1,
+    "correct": 164,
+    "missing": 1,
+    "spurious": 0,
     "duplicates": 17
   }
 }
