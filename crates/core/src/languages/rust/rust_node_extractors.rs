@@ -5,12 +5,53 @@ use crate::models::{
     ast_traverser::{NodeDefinitionExtractor, NodeUsageExtractor},
     Definition, DefinitionType, Position, ScopeId, ScopeType, Usage, UsageKind,
 };
+use crate::query::Roles;
 
 /// Rust-specific definition extractor
-pub struct RustDefinitionExtractor;
+///
+/// Declarations whose shape alone identifies them are located by
+/// `queries/rust/definitions.scm`; the arms below handle the rest, where classifying needs more
+/// than the node — a `function_item` is a method inside an impl and a function outside it.
+pub struct RustDefinitionExtractor {
+    declared_types: Roles<DefinitionType>,
+}
+
+impl RustDefinitionExtractor {
+    pub fn new(source_code: &str, root_node: Node) -> Self {
+        Self {
+            declared_types: super::definition_queries::declared_types(source_code, root_node),
+        }
+    }
+
+    /// The declaration this node introduces, if the query located one here.
+    fn queried_definition(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
+        let Some(definition_type) = self.declared_types.get(&node.id()) else {
+            return vec![];
+        };
+        let Ok(name) = node.utf8_text(source.as_bytes()) else {
+            return vec![];
+        };
+
+        vec![Definition {
+            name: name.to_string(),
+            definition_type: definition_type.clone(),
+            position: Position::from_node(&node),
+            scope_id: Some(scope),
+            accessibility: None,
+            is_hoisted: Some(false),
+        }]
+    }
+}
 
 impl NodeDefinitionExtractor for RustDefinitionExtractor {
     fn extract_definition(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
+        // The query is the primary source; the arms below are the exceptions it cannot express.
+        // Asking it first also keeps a name node from being swallowed by the `identifier` arm.
+        let queried = self.queried_definition(node, scope, source);
+        if !queried.is_empty() {
+            return queried;
+        }
+
         match node.kind() {
             // Scope-creating items: definitions go to PARENT scope
             "function_item" => {
@@ -25,73 +66,17 @@ impl NodeDefinitionExtractor for RustDefinitionExtractor {
                         .collect()
                 }
             }
-            "struct_item" => self
-                .extract_struct_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "union_item" => self
-                .extract_union_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "enum_item" => self
-                .extract_enum_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "enum_variant" => self
-                .extract_enum_variant_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "trait_item" => self
-                .extract_trait_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "impl_item" => vec![], // impl items don't create definitions themselves
-            "mod_item" => self
-                .extract_module_definition(node, scope, source)
-                .into_iter()
-                .collect(),
 
             // Non-scope-creating items: definitions go to CURRENT scope
             "let_declaration" => self.extract_let_definition(node, scope, source),
-            "const_item" => self
-                .extract_const_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "static_item" => self
-                .extract_static_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "type_item" => self
-                .extract_type_alias_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "parameter" => self
                 .extract_parameter_definition(node, scope, source)
                 .into_iter()
                 .collect(),
-            "function_signature_item" => self
-                .extract_function_signature_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "associated_type" => self
-                .extract_associated_type_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "field_declaration" => self
-                .extract_field_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "use_declaration" => self.extract_import_definition(node, scope, source),
-            "macro_definition" => self
-                .extract_macro_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "metavariable" => self
                 .extract_metavariable_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "type_parameter" => self
-                .extract_type_parameter_definition(node, scope, source)
                 .into_iter()
                 .collect(),
             "constrained_type_parameter" => self
@@ -228,82 +213,6 @@ impl RustDefinitionExtractor {
             .collect()
     }
 
-    fn extract_function_signature_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::FunctionDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_associated_type_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::TypeDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_trait_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::TypeDefinition, // Match old implementation
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_field_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::StructFieldDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
     fn extract_import_definition(
         &self,
         node: Node,
@@ -391,25 +300,6 @@ impl RustDefinitionExtractor {
         definitions
     }
 
-    fn extract_macro_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::MacroDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
     fn extract_metavariable_definition(
         &self,
         node: Node,
@@ -431,25 +321,6 @@ impl RustDefinitionExtractor {
         } else {
             None
         }
-    }
-
-    fn extract_type_parameter_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::TypeDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
     }
 
     fn extract_constrained_type_parameter_definition(
@@ -475,82 +346,6 @@ impl RustDefinitionExtractor {
         None
     }
 
-    fn extract_struct_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::StructDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_union_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::StructDefinition, // Unions are similar to structs in Rust
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_enum_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::EnumDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_enum_variant_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::EnumVariantDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
     #[allow(dead_code)]
     fn extract_impl_definition(
         &self,
@@ -566,25 +361,6 @@ impl RustDefinitionExtractor {
             name: format!("impl {}", type_text),
             definition_type: DefinitionType::ClassDefinition,
             position: Position::from_node(&type_node),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_module_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::ModuleDefinition,
-            position: Position::from_node(&name),
             scope_id: Some(scope),
             accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
             is_hoisted: Some(false),
@@ -611,63 +387,6 @@ impl RustDefinitionExtractor {
         Some(Definition {
             name: name_text.to_string(),
             definition_type: DefinitionType::VariableDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_const_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::ConstDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_static_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::VariableDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_type_alias_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: name_text.to_string(),
-            definition_type: DefinitionType::TypeDefinition,
             position: Position::from_node(&name),
             scope_id: Some(scope),
             accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal

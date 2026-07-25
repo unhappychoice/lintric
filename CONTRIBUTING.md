@@ -51,6 +51,8 @@ For detailed information on debugging methods, such as displaying AST and IR, pl
 
 If you are implementing dependency collection for a new language feature, please refer to the [Implementing New Language Features documentation](docs/development/implementing.md).
 
+Declarations are located by tree-sitter queries rather than hand-written traversal where their shape is enough to identify them; see [Locating declarations with queries](docs/development/queries.md).
+
 ## Commit Message Guidelines
 
 We follow a [conventional commit style](https://www.conventionalcommits.org/en/v1.0.0/) for our commit messages.
