@@ -1,17 +1,19 @@
 use crate::models::{Dependency, DependencyType};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet, VecDeque};
 use streaming_iterator::StreamingIterator;
 use tree_sitter::{Language, Node, Query, QueryCursor, QueryMatch};
 
-/// Queries locating the two sides of an implementation relationship in one language.
+/// Queries locating the parts of an implementation relationship in one language.
 ///
-/// Each must capture `@type` for the trait or interface being named, and `@method` for the method
-/// name. Everything else about the relationship is language independent.
+/// Each captures `@type` for the trait, interface or class being named, plus one other capture
+/// named below. Everything else about the relationship is language independent.
 pub struct Queries {
-    /// Methods an implementing block provides, captured with the type it implements.
+    /// Methods an implementing block provides, as `@method`, with the type it implements.
     pub implementations: &'static str,
-    /// Methods a trait or interface declares, captured with its own name.
+    /// Methods a trait or interface declares, as `@method`, with its own name.
     pub declarations: &'static str,
+    /// Types a trait, interface or class inherits, as `@super`, with the inheriting type's name.
+    pub supertypes: &'static str,
 }
 
 /// Resolve dependencies from a method implementation to the declaration it satisfies.
@@ -32,14 +34,13 @@ pub fn resolve(
     // such as TSX work without a separate entry point.
     let language = &*root_node.language();
     let declared = declarations(language, queries.declarations, source_code, root_node)?;
+    let inherited = supertypes(language, queries.supertypes, source_code, root_node)?;
 
     Ok(
         methods(language, queries.implementations, source_code, root_node)?
             .iter()
             .filter_map(|method| {
-                declared
-                    .get(&(method.type_name.clone(), method.name.clone()))
-                    .map(|line| dependency(method, *line))
+                declaration_line(&declared, &inherited, method).map(|line| dependency(method, line))
             })
             .filter(|dependency| dependency.source_line != dependency.target_line)
             .collect(),
@@ -51,6 +52,36 @@ struct Method {
     type_name: String,
     name: String,
     line: usize,
+}
+
+/// The line declaring this method, looked up on the named type and then on what it inherits.
+///
+/// The search is breadth first, so the nearest declaration wins when a type and one of its
+/// supertypes both declare the method. The visited set also keeps an inheritance cycle — invalid
+/// but parseable — from looping.
+fn declaration_line(
+    declared: &HashMap<(String, String), usize>,
+    inherited: &HashMap<String, Vec<String>>,
+    method: &Method,
+) -> Option<usize> {
+    let mut visited: HashSet<&str> = HashSet::new();
+    let mut pending: VecDeque<&str> = VecDeque::from([method.type_name.as_str()]);
+
+    while let Some(type_name) = pending.pop_front() {
+        if !visited.insert(type_name) {
+            continue;
+        }
+
+        if let Some(line) = declared.get(&(type_name.to_string(), method.name.clone())) {
+            return Some(*line);
+        }
+
+        if let Some(supertypes) = inherited.get(type_name) {
+            pending.extend(supertypes.iter().map(String::as_str));
+        }
+    }
+
+    None
 }
 
 fn declarations(
@@ -65,34 +96,82 @@ fn declarations(
         .collect())
 }
 
+fn supertypes(
+    language: &Language,
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+) -> Result<HashMap<String, Vec<String>>, String> {
+    let pairs = map_pairs(
+        language,
+        query_source,
+        source_code,
+        root_node,
+        "super",
+        |type_node, super_node| {
+            Some((
+                text(source_code, type_node)?,
+                text(source_code, super_node)?,
+            ))
+        },
+    )?;
+
+    let mut inherited: HashMap<String, Vec<String>> = HashMap::new();
+    for (type_name, super_name) in pairs {
+        inherited.entry(type_name).or_default().push(super_name);
+    }
+
+    Ok(inherited)
+}
+
 fn methods(
     language: &Language,
     query_source: &str,
     source_code: &str,
     root_node: Node,
 ) -> Result<Vec<Method>, String> {
+    map_pairs(
+        language,
+        query_source,
+        source_code,
+        root_node,
+        "method",
+        |type_node, method_node| method(source_code, type_node, method_node),
+    )
+}
+
+/// Map the `@type` node paired with the other named capture, for every match of the query.
+///
+/// The mapping happens inside the loop because a captured node's lifetime is tied to the query
+/// cursor, so nodes cannot outlive this call.
+fn map_pairs<T>(
+    language: &Language,
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    second: &str,
+    mut map: impl FnMut(Node, Node) -> Option<T>,
+) -> Result<Vec<T>, String> {
     let query = Query::new(language, query_source)
         .map_err(|error| format!("Failed to create trait implementation query: {error}"))?;
 
     let type_index = capture_index(&query, "type")?;
-    let method_index = capture_index(&query, "method")?;
+    let second_index = capture_index(&query, second)?;
 
     let mut cursor = QueryCursor::new();
     let mut matches = cursor.matches(&query, root_node, source_code.as_bytes());
-    let mut found = Vec::new();
+    let mut mapped = Vec::new();
 
     while let Some(query_match) = matches.next() {
         let type_node = capture(query_match, type_index);
-        let method_node = capture(query_match, method_index);
+        let second_node = capture(query_match, second_index);
 
-        if let (Some(type_node), Some(method_node)) = (type_node, method_node) {
-            if let Some(method) = method(source_code, type_node, method_node) {
-                found.push(method);
-            }
+        if let (Some(type_node), Some(second_node)) = (type_node, second_node) {
+            mapped.extend(map(type_node, second_node));
         }
     }
 
-    Ok(found)
+    Ok(mapped)
 }
 
 fn capture_index(query: &Query, name: &str) -> Result<u32, String> {

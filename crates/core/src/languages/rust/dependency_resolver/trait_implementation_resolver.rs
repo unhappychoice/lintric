@@ -19,6 +19,13 @@ const QUERIES: Queries = Queries {
             (function_item name: (identifier) @method)
           ]))
     "#,
+    // `trait Extended: Base` inherits Base's declarations, so an implementation of Extended can be
+    // satisfying something Base declared.
+    supertypes: r#"
+        (trait_item
+          name: (type_identifier) @type
+          bounds: (trait_bounds (type_identifier) @super))
+    "#,
 };
 
 /// Resolve dependencies from a Rust trait method implementation to the declaration it satisfies.
