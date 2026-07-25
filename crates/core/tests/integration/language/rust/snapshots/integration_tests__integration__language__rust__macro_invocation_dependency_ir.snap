@@ -63,7 +63,7 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency { source_line: 3, target_line: 2, symbol: "$e", dependency_type: MacroVariable, context: Some("Metavariable:3:24") },
-        Dependency { source_line: 8, target_line: 1, symbol: "my_macro", dependency_type: VariableUse, context: Some("Identifier:8:5") },
+        Dependency { source_line: 8, target_line: 1, symbol: "my_macro", dependency_type: MacroInvocation, context: Some("Identifier:8:5") },
     ],
     usage: [
         Usage { position: { 1:14 to 1:22 }, name: "my_macro", kind: Identifier, context: None },

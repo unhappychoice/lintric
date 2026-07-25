@@ -229,9 +229,9 @@ IntermediateRepresentation {
         Dependency { source_line: 6, target_line: 7, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:6:15") },
         Dependency { source_line: 17, target_line: 20, symbol: "MyInterface", dependency_type: TypeReference, context: Some("TypeIdentifier:17:16") },
         Dependency { source_line: 17, target_line: 21, symbol: "field", dependency_type: StructFieldAccess, context: Some("field_access") },
-        Dependency { source_line: 26, target_line: 29, symbol: "MyClass", dependency_type: VariableUse, context: Some("Identifier:26:26") },
+        Dependency { source_line: 26, target_line: 29, symbol: "MyClass", dependency_type: TypeReference, context: Some("Identifier:26:26") },
         Dependency { source_line: 34, target_line: 38, symbol: "MyType", dependency_type: TypeReference, context: Some("TypeIdentifier:34:21") },
-        Dependency { source_line: 42, target_line: 45, symbol: "MyEnum", dependency_type: VariableUse, context: Some("Identifier:42:19") },
+        Dependency { source_line: 42, target_line: 45, symbol: "MyEnum", dependency_type: TypeReference, context: Some("Identifier:42:19") },
         Dependency { source_line: 42, target_line: 46, symbol: "Value1", dependency_type: StructFieldAccess, context: Some("field_access") },
     ],
     usage: [

@@ -83,10 +83,10 @@ IntermediateRepresentation {
         Definition { position: { 5:5 to 5:13 }, name: "instance", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
-        Dependency { source_line: 3, target_line: 2, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldExpression:3:32") },
-        Dependency { source_line: 5, target_line: 1, symbol: "MyClass", dependency_type: VariableUse, context: Some("Identifier:5:20") },
+        Dependency { source_line: 3, target_line: 2, symbol: "value", dependency_type: VariableUse, context: Some("FieldExpression:3:32") },
+        Dependency { source_line: 5, target_line: 1, symbol: "MyClass", dependency_type: TypeReference, context: Some("Identifier:5:20") },
         Dependency { source_line: 6, target_line: 5, symbol: "instance", dependency_type: VariableUse, context: Some("Identifier:6:1") },
-        Dependency { source_line: 6, target_line: 3, symbol: "greet", dependency_type: StructFieldAccess, context: Some("FieldExpression:6:10") },
+        Dependency { source_line: 6, target_line: 3, symbol: "greet", dependency_type: FunctionCall, context: Some("FieldExpression:6:10") },
     ],
     usage: [
         Usage { position: { 3:15 to 3:38 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
