@@ -67,9 +67,20 @@ reference wins over a binding for the same node:
 (tuple_struct_pattern type: (identifier) @reference)
 ```
 
-Writing the patterns out also showed which of the hand-written arms could never fire:
-`constrained_type_parameter` is not a node in this grammar at all, and `where_clause` and
-`type_parameters` have no identifier among their children. They are gone rather than transcribed.
+TypeScript's file also carries `@call_target`, which is not a binding: a call expression is itself
+extracted as the usage, so counting its callee again would record the same reference twice.
+
+Writing the patterns out is what showed which hand-written arms could never fire. In Rust,
+`constrained_type_parameter` is not a node in the grammar at all, and `where_clause` and
+`type_parameters` have no identifier among their children. In TypeScript, `namespace_declaration` is
+the same non-existent node #222 found in `definitions.scm`, `shorthand_property_identifier_pattern`
+is a leaf so nothing has it as a parent, `object_pattern` has no bare identifier child, and eight
+arms named declarations whose `name:` is a `type_identifier` or `property_identifier` — never the
+`identifier` the function was consulted for. All are gone rather than transcribed.
+
+Checking a field against `node-types.json` before writing the pattern is worth the minute it takes:
+a field name the node does not have fails to compile, and a node type that cannot appear there
+compiles into a pattern that silently never matches.
 
 ### Scopes
 

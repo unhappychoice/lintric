@@ -77,3 +77,25 @@ fn the_rust_binding_query_compiles_and_tells_a_binding_from_a_reference() {
     assert!(edges.contains(&(5, 4, "value")), "{edges:?}");
     let _ = rust::binding_queries::bindings_and_references;
 }
+
+#[test]
+fn the_typescript_binding_query_compiles_and_finds_a_renaming_binding() {
+    // `{ key: renamed }` reads `key` and introduces `renamed`, which the later line depends on.
+    let source = "interface P {\n    key: number;\n}\nfunction f(p: P): number {\n    const { key: renamed } = p;\n    return renamed;\n}\n";
+
+    for language in [Language::TypeScript, Language::TSX] {
+        let (ir, _) = analyze_content(source.to_string(), language.clone()).unwrap();
+
+        let edges: Vec<(usize, usize, &str)> = ir
+            .dependencies
+            .iter()
+            .map(|d| (d.source_line, d.target_line, d.symbol.as_str()))
+            .collect();
+
+        assert!(
+            edges.contains(&(6, 5, "renamed")),
+            "{language:?}: {edges:?}"
+        );
+    }
+    let _ = typescript::binding_queries::bindings_and_call_targets;
+}
