@@ -149,12 +149,12 @@ IntermediateRepresentation {
         Dependency { source_line: 24, target_line: 13, symbol: "MyType", dependency_type: TypeReference, context: Some("TypeIdentifier:24:6") },
         Dependency { source_line: 24, target_line: 9, symbol: "MyTrait", dependency_type: TypeReference, context: Some("TypeIdentifier:24:16") },
         Dependency { source_line: 24, target_line: 10, symbol: "my_function", dependency_type: VariableUse, context: Some("Identifier:24:26") },
+        Dependency { source_line: 16, target_line: 10, symbol: "my_function", dependency_type: TraitImplementation, context: Some("trait_implementation::MyTrait") },
     ],
     usage: [
         Usage { position: { 3:6 to 3:14 }, name: "MyStruct", kind: TypeIdentifier, context: None },
         Usage { position: { 4:17 to 4:25 }, name: "MyStruct", kind: TypeIdentifier, context: None },
         Usage { position: { 5:9 to 5:17 }, name: "MyStruct", kind: Identifier, context: None },
-        Usage { position: { 10:8 to 10:19 }, name: "my_function", kind: Identifier, context: None },
         Usage { position: { 15:6 to 15:13 }, name: "MyTrait", kind: TypeIdentifier, context: None },
         Usage { position: { 15:18 to 15:24 }, name: "MyType", kind: TypeIdentifier, context: None },
         Usage { position: { 17:9 to 17:16 }, name: "println", kind: Identifier, context: None },

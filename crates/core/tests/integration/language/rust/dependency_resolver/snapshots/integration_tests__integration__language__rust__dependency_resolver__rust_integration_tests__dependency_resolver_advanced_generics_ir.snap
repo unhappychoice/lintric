@@ -252,11 +252,11 @@ IntermediateRepresentation {
         Dependency { source_line: 32, target_line: 9, symbol: "process_item", dependency_type: FunctionCall, context: Some("CallExpression:32:18") },
         Dependency { source_line: 32, target_line: 31, symbol: "item", dependency_type: VariableUse, context: Some("Identifier:32:32") },
         Dependency { source_line: 33, target_line: 32, symbol: "result", dependency_type: VariableUse, context: Some("Identifier:33:20") },
+        Dependency { source_line: 19, target_line: 2, symbol: "clone", dependency_type: TraitImplementation, context: Some("trait_implementation::Clone") },
+        Dependency { source_line: 25, target_line: 6, symbol: "display", dependency_type: TraitImplementation, context: Some("trait_implementation::Display") },
     ],
     usage: [
-        Usage { position: { 2:8 to 2:13 }, name: "clone", kind: Identifier, context: None },
         Usage { position: { 2:24 to 2:28 }, name: "Self", kind: TypeIdentifier, context: None },
-        Usage { position: { 6:8 to 6:15 }, name: "display", kind: Identifier, context: None },
         Usage { position: { 6:26 to 6:32 }, name: "String", kind: TypeIdentifier, context: None },
         Usage { position: { 9:17 to 9:18 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 9:20 to 9:25 }, name: "Clone", kind: TypeIdentifier, context: None },

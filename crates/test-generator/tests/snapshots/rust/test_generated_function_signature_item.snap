@@ -21,9 +21,7 @@ IntermediateRepresentation {
         Definition { position: { 1:4 to 1:12 }, name: "test_fn4", definition_type: FunctionDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:4 to 1:12 }, name: "test_fn4", kind: Identifier, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,
