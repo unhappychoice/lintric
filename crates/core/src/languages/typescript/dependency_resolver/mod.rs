@@ -1,3 +1,4 @@
+pub mod accessor_direction;
 pub mod interface_implementation_resolver;
 pub mod method_resolver;
 pub mod module_resolver;
