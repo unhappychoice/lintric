@@ -141,6 +141,17 @@ should be revisited by changing that fixture, not by discovering that behaviour 
 
 ## Still unsettled
 
-Whether a functional update, `Point { ..other }`, should imply a dependency on every field
+**Functional update.** Whether `Point { ..other }` should imply a dependency on every field
 declaration of the struct. It currently reads only the base expression, pinned by a test in
 `crates/core/tests/unit/languages/rust/field_initializer_tests.rs`.
+
+**Lifetime parameters.** `struct H<'a> { v: &'a str }` produces no definition for `'a` and no edge
+from the field to it, though renaming the parameter would break the field. The fixtures do not
+annotate lifetime references, because the representation is undecided: it is unclear whether the
+symbol should be `'a` or `a`, and annotating a guess would fix the wrong answer in the baseline.
+Decide the representation first, then add the expectations.
+
+**An impl's own associated type.** `fn first(&self) -> Self::Item` inside an impl resolves to the
+trait's `type Item;` rather than the impl's own `type Item = i32`. `rust/associated_types.rs`
+follows the trait declaration and says so in a comment; the nearer alias is arguably the better
+answer.
