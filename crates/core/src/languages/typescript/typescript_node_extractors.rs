@@ -608,8 +608,8 @@ impl TypeScriptDefinitionExtractor {
 pub struct TypeScriptUsageExtractor;
 
 impl NodeUsageExtractor for TypeScriptUsageExtractor {
-    fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
-        match node.kind() {
+    fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Usage> {
+        let usage = match node.kind() {
             "identifier" => {
                 if self.is_usage_context(node) {
                     self.extract_identifier_usage(node, scope, source)
@@ -628,7 +628,9 @@ impl NodeUsageExtractor for TypeScriptUsageExtractor {
             }
             "property_identifier" => self.extract_property_identifier_usage(node, scope, source),
             _ => None,
-        }
+        };
+
+        usage.into_iter().collect()
     }
 }
 
