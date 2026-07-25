@@ -38,9 +38,9 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:15 to 1:18 }, name: "Vec", kind: TypeIdentifier, context: None },
-        Usage { position: { 1:27 to 1:39 }, name: "IntoIterator", kind: TypeIdentifier, context: None },
-        Usage { position: { 1:42 to 1:46 }, name: "Item", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:15 to 1:18 }, name: "Vec", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
+        Usage { position: { 1:27 to 1:39 }, name: "IntoIterator", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
+        Usage { position: { 1:42 to 1:46 }, name: "Item", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

@@ -236,6 +236,7 @@ IntermediateRepresentation {
         Definition { position: { 32:9 to 32:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(13), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
+        Dependency { source_line: 9, target_line: 1, symbol: "Clone", dependency_type: TypeReference, context: Some("TypeIdentifier:9:20") },
         Dependency { source_line: 9, target_line: 5, symbol: "Display", dependency_type: TypeReference, context: Some("TypeIdentifier:9:28") },
         Dependency { source_line: 10, target_line: 19, symbol: "clone", dependency_type: FunctionCall, context: Some("FieldExpression:10:18") },
         Dependency { source_line: 10, target_line: 9, symbol: "item", dependency_type: VariableUse, context: Some("Identifier:10:18") },
