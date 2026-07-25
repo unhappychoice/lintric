@@ -34,10 +34,10 @@
     },
     "rust/destructuring.rs": {
       "expected": 14,
-      "detected": 12,
-      "correct": 10,
-      "missing": 4,
-      "spurious": 2,
+      "detected": 14,
+      "correct": 14,
+      "missing": 0,
+      "spurious": 0,
       "duplicates": 0
     },
     "rust/enums.rs": {
@@ -90,9 +90,9 @@
     },
     "rust/let_else.rs": {
       "expected": 12,
-      "detected": 10,
-      "correct": 10,
-      "missing": 2,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -186,9 +186,9 @@
     },
     "rust/tuple_structs.rs": {
       "expected": 13,
-      "detected": 11,
-      "correct": 11,
-      "missing": 2,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -339,10 +339,10 @@
   },
   "total": {
     "expected": 412,
-    "detected": 401,
-    "correct": 392,
-    "missing": 20,
-    "spurious": 9,
+    "detected": 407,
+    "correct": 400,
+    "missing": 12,
+    "spurious": 7,
     "duplicates": 27
   }
 }

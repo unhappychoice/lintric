@@ -32,8 +32,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage { position: { 1:8 to 1:13 }, name: "Point", kind: Identifier, context: None },
-        Usage { position: { 1:14 to 1:17 }, name: "x16", kind: Identifier, context: None },
-        Usage { position: { 1:19 to 1:21 }, name: "y5", kind: Identifier, context: None },
         Usage { position: { 1:25 to 1:34 }, name: "point_val", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
