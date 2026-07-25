@@ -43,7 +43,7 @@ IntermediateRepresentation {
     definitions: [
         Definition { position: { 1:10 to 1:17 }, name: "testFn1", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
         Definition { position: { 1:18 to 1:23 }, name: "param", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 1:49 to 1:54 }, name: "local", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:49 to 1:54 }, name: "local", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [

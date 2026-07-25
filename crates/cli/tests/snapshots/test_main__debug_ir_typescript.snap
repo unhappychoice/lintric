@@ -131,7 +131,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 2,
+      "scope_id": 3,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -144,7 +144,7 @@ expression: out
         "end_column": 14
       },
       "definition_type": "FunctionDefinition",
-      "scope_id": 3,
+      "scope_id": 4,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -157,7 +157,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -170,7 +170,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -183,7 +183,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -196,7 +196,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -209,7 +209,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 7,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -222,7 +222,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 7,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -235,7 +235,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -248,7 +248,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -261,7 +261,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -300,7 +300,7 @@ expression: out
         "end_column": 25
       },
       "definition_type": "FunctionDefinition",
-      "scope_id": 5,
+      "scope_id": 8,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     }

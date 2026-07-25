@@ -10,7 +10,6 @@ use super::module_resolver::ModuleResolver;
 
 /// TypeScript-specific dependency resolver
 pub struct TypeScriptDependencyResolver {
-    #[allow(dead_code)]
     symbol_table: SymbolTable,
     method_resolver: MethodResolver,
     module_resolver: ModuleResolver,
@@ -54,21 +53,64 @@ impl TypeScriptDependencyResolver {
 
     /// Check if definition is accessible from usage (TypeScript-specific rules)
     fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
-        // Check for hoisting rules first
+        // A function, class, interface, enum, type alias or namespace is visible before its own
+        // line, so where it sits does not restrict who can name it.
         if self.is_hoisted_basic(definition) {
             return true;
         }
 
-        // For non-hoisted definitions, check TypeScript-specific scope rules
-        if !self.is_hoisted_basic(definition)
-            && !self
-                .module_resolver
-                .are_in_same_function_scope(usage, definition)
-        {
-            return false;
+        // A member is reached through a receiver rather than by a name in scope, so where it sits
+        // does not restrict who can name it either.
+        if Self::is_member(definition) {
+            return true;
         }
 
-        true
+        // Everything else is reachable only from inside the scope that declares it. `const` and
+        // `let` are block-scoped, so a binding inside a block is invisible outside it.
+        self.is_in_scope_chain(usage, definition)
+    }
+
+    fn is_member(definition: &Definition) -> bool {
+        use crate::models::DefinitionType;
+        matches!(
+            definition.definition_type,
+            DefinitionType::MethodDefinition | DefinitionType::PropertyDefinition
+        )
+    }
+
+    /// Whether the definition sits in the usage's scope or one enclosing it.
+    ///
+    /// A declaration that opens a scope has its own name recorded inside that scope rather than
+    /// beside it, so the parent counts too — otherwise no such declaration would look reachable.
+    fn is_in_scope_chain(&self, usage: &Usage, definition: &Definition) -> bool {
+        let chain = self.usage_scope_chain(usage);
+
+        definition.scope_id.is_some_and(|def_scope| {
+            chain.contains(&def_scope)
+                || self
+                    .parent_scope(def_scope)
+                    .is_some_and(|parent| chain.contains(&parent))
+        })
+    }
+
+    /// The usage's own scope followed by its enclosing scopes.
+    fn usage_scope_chain(&self, usage: &Usage) -> Vec<crate::models::ScopeId> {
+        let usage_scope = self
+            .symbol_table
+            .scopes
+            .find_scope_at_position(&usage.position)
+            .unwrap_or(0);
+
+        std::iter::once(usage_scope)
+            .chain(self.symbol_table.scopes.get_parent_scopes(usage_scope))
+            .collect()
+    }
+
+    fn parent_scope(&self, scope_id: crate::models::ScopeId) -> Option<crate::models::ScopeId> {
+        self.symbol_table
+            .scopes
+            .get_scope(scope_id)
+            .and_then(|scope| scope.parent)
     }
 
     fn is_hoisted_basic(&self, definition: &Definition) -> bool {
