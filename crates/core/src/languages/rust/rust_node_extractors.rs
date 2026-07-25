@@ -1,5 +1,6 @@
 use tree_sitter::Node;
 
+use super::format_string;
 use crate::models::{
     ast_traverser::{NodeDefinitionExtractor, NodeUsageExtractor},
     Definition, DefinitionType, Position, ScopeId, ScopeType, Usage, UsageKind,
@@ -759,7 +760,7 @@ impl RustDefinitionExtractor {
 pub struct RustUsageExtractor;
 
 impl NodeUsageExtractor for RustUsageExtractor {
-    fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
+    fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Usage> {
         let kind = match node.kind() {
             "identifier" => {
                 // Only treat identifier as usage if it's not in a definition context
@@ -787,14 +788,25 @@ impl NodeUsageExtractor for RustUsageExtractor {
             }
             "call_expression" => {
                 // Use special handling for call expressions to extract function name
-                return self.extract_call_usage(node, scope, source);
+                return self
+                    .extract_call_usage(node, scope, source)
+                    .into_iter()
+                    .collect();
             }
             "field_expression" => {
                 // Use special handling for field expressions to extract field name
-                return self.extract_field_usage(node, scope, source);
+                return self
+                    .extract_field_usage(node, scope, source)
+                    .into_iter()
+                    .collect();
             }
             "struct_expression" => Some(UsageKind::StructExpression),
             "metavariable" => Some(UsageKind::Metavariable),
+            "string_content" => {
+                // Inline format string captures have no nodes of their own, so they are parsed
+                // out of the literal rather than reached by traversal
+                return format_string::capture_usages(node, scope, source);
+            }
             _ => None,
         };
 
@@ -808,6 +820,8 @@ impl NodeUsageExtractor for RustUsageExtractor {
                 scope_id: Some(scope),
             })
         })
+        .into_iter()
+        .collect()
     }
 }
 
