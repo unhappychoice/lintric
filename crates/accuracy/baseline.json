@@ -248,6 +248,14 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "typescript/accessors.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "typescript/async_functions.ts": {
       "expected": 6,
       "detected": 6,
@@ -386,9 +394,9 @@
     }
   },
   "total": {
-    "expected": 476,
-    "detected": 476,
-    "correct": 476,
+    "expected": 485,
+    "detected": 485,
+    "correct": 485,
     "missing": 0,
     "spurious": 0,
     "duplicates": 26
