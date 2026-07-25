@@ -70,6 +70,33 @@ pub fn captured_nodes(
     Ok(roles.into_keys().collect())
 }
 
+/// The positions one capture name matches.
+///
+/// Positions rather than node ids, because both a `Definition` and a `Usage` carry a position and
+/// neither carries a node.
+pub fn captured_positions(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    capture: &str,
+) -> Result<HashSet<(usize, usize)>, String> {
+    let located = map_pairs(
+        query_source,
+        source_code,
+        root_node,
+        capture,
+        capture,
+        |node, _| {
+            Some((
+                node.start_position().row + 1,
+                node.start_position().column + 1,
+            ))
+        },
+    )?;
+
+    Ok(located.into_iter().collect())
+}
+
 /// What a captured name node declares.
 ///
 /// Both languages need the kind, and TypeScript needs hoisting as well — a class is visible before
