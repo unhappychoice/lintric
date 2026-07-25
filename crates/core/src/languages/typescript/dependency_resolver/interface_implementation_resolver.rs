@@ -15,7 +15,7 @@ const QUERIES: Queries = Queries {
             (method_definition name: (property_identifier) @method)))
     "#,
     // A base class declares by providing a body, so its methods count as declarations alongside
-    // the signatures an interface declares.
+    // the signatures an interface declares. An abstract class declares both ways at once.
     declarations: r#"
         [
           (interface_declaration
@@ -26,6 +26,12 @@ const QUERIES: Queries = Queries {
             name: (type_identifier) @type
             body: (class_body
               (method_definition name: (property_identifier) @method)))
+          (abstract_class_declaration
+            name: (type_identifier) @type
+            body: (class_body [
+              (abstract_method_signature name: (property_identifier) @method)
+              (method_definition name: (property_identifier) @method)
+            ]))
         ]
     "#,
     // `interface Extended extends Base` and `class Derived extends Base` both inherit
@@ -36,6 +42,12 @@ const QUERIES: Queries = Queries {
             name: (type_identifier) @type
             (extends_type_clause type: (type_identifier) @super))
           (class_declaration
+            name: (type_identifier) @type
+            (class_heritage [
+              (extends_clause value: (identifier) @super)
+              (implements_clause (type_identifier) @super)
+            ]))
+          (abstract_class_declaration
             name: (type_identifier) @type
             (class_heritage [
               (extends_clause value: (identifier) @super)

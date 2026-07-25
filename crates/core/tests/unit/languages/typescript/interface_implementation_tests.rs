@@ -120,3 +120,30 @@ fn reaches_an_interface_declaration_through_a_base_class() {
         "the nearest declaration is the base class method: {dependencies:?}"
     );
 }
+
+#[test]
+fn links_an_implementation_to_an_abstract_method_declaration() {
+    let source = "abstract class Shape {\n    abstract area(): number;\n}\n\nclass Square extends Shape {\n    area(): number {\n        return 1;\n    }\n}\n";
+
+    assert_eq!(
+        implementations(source, Language::TypeScript),
+        vec![(6, 2, "area".to_string())]
+    );
+}
+
+#[test]
+fn an_abstract_declaration_does_not_depend_on_its_implementation() {
+    let source = "abstract class Shape {\n    abstract area(): number;\n}\n\nclass Square extends Shape {\n    area(): number {\n        return 1;\n    }\n}\n";
+    let (ir, _) = analyze_content(source.to_string(), Language::TypeScript).unwrap();
+
+    assert!(
+        !ir.dependencies
+            .iter()
+            .any(|dependency| dependency.source_line == 2 && dependency.target_line == 6),
+        "{:?}",
+        ir.dependencies
+            .iter()
+            .map(|d| (d.source_line, d.target_line, &d.symbol))
+            .collect::<Vec<_>>()
+    );
+}

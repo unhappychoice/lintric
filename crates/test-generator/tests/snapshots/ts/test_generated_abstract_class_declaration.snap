@@ -24,10 +24,12 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition { position: { 1:16 to 1:25 }, name: "TestClass", definition_type: ClassDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:37 to 1:43 }, name: "method", definition_type: MethodDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+    ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:16 to 1:25 }, name: "TestClass", kind: TypeIdentifier, context: None },
         Usage { position: { 1:37 to 1:43 }, name: "method", kind: FieldExpression, context: None },
     ],
     analysis_metadata: AnalysisMetadata {
