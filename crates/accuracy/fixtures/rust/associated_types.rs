@@ -1,7 +1,7 @@
 // Associated types in traits and their implementations.
 //
-// Whether `Self::Item` inside the impl should name the impl's own alias rather than the trait's
-// declaration is unsettled; these annotations follow the trait declaration.
+// `Self::Item` inside the impl names the impl's own alias, which is nearer than the trait's
+// declaration. `Self` itself is the type inside an impl and the trait inside a trait.
 
 trait Container {
     type Item;
@@ -14,13 +14,12 @@ struct Numbers;
 impl Container for Numbers { //~ depends: Container@6, Numbers@12
     type Item = i32;
 
-    // In `impl Trait for Type`, `Self` is the type, not the trait.
-    fn first(&self) -> Self::Item { //~ depends: first@9, Numbers@12, Item@7
+    fn first(&self) -> Self::Item { //~ depends: first@9, Numbers@12, Item@15
         1
     }
 }
 
 fn main() {
     let n = Numbers; //~ depends: Numbers@12
-    let _ = n.first(); //~ depends: first@18, n@24
+    let _ = n.first(); //~ depends: first@17, n@23
 }

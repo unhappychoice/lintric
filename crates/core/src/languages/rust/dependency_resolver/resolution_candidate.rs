@@ -31,11 +31,15 @@ impl ResolutionCandidate {
         }
     }
 
+    /// Rank a candidate so that the nearest enclosing scope wins.
+    ///
+    /// `shadowing_level` is the candidate's index within its scope's symbol list, so it only breaks
+    /// ties between definitions found at the same distance. Weighting it above the distance, as
+    /// this did, let a candidate at index 0 in a distant scope beat one at index 1 in the enclosing
+    /// scope — which is how every `T` in a file came to resolve to the first one declared.
     fn calculate_priority_score(scope_distance: usize, shadowing_level: usize) -> f64 {
-        let distance_weight = 1.0 / (scope_distance as f64 + 1.0);
-        // For Rust, prioritize definitions within the same function scope
-        // Lower shadowing_level means closer to the usage context (higher priority)
-        let shadowing_weight = 100.0 / (shadowing_level as f64 + 1.0);
+        let distance_weight = 100.0 / (scope_distance as f64 + 1.0);
+        let shadowing_weight = 1.0 / (shadowing_level as f64 + 1.0);
         distance_weight + shadowing_weight
     }
 }

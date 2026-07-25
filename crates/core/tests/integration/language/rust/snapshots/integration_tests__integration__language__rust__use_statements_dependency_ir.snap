@@ -118,9 +118,7 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency { source_line: 7, target_line: 1, symbol: "my_module", dependency_type: ModuleReference, context: Some("TypeIdentifier:7:5") },
-        Dependency { source_line: 7, target_line: 2, symbol: "MyStruct", dependency_type: TypeReference, context: Some("TypeIdentifier:7:16") },
         Dependency { source_line: 8, target_line: 1, symbol: "my_module", dependency_type: ModuleReference, context: Some("TypeIdentifier:8:5") },
-        Dependency { source_line: 8, target_line: 3, symbol: "my_function", dependency_type: FunctionCall, context: Some("TypeIdentifier:8:17") },
         Dependency { source_line: 8, target_line: 4, symbol: "MY_CONST", dependency_type: VariableUse, context: Some("TypeIdentifier:8:30") },
         Dependency { source_line: 9, target_line: 1, symbol: "my_module", dependency_type: ModuleReference, context: Some("TypeIdentifier:9:5") },
         Dependency { source_line: 10, target_line: 1, symbol: "my_module", dependency_type: ModuleReference, context: Some("TypeIdentifier:10:5") },

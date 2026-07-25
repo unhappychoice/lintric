@@ -505,9 +505,27 @@ impl RustDependencyResolver {
         matching_definitions: &[&'a Definition],
         scope_id: ScopeId,
     ) -> Option<&'a Definition> {
+        // An item that creates a scope records its own name inside that scope, so a struct declared
+        // in a module is registered one level in. Counting the parent too keeps it findable at the
+        // level that actually declares it, instead of losing to a farther candidate.
         let in_scope: Vec<&'a Definition> = matching_definitions
             .iter()
-            .filter(|def| def.scope_id == Some(scope_id))
+            // A field is only reachable through a receiver, never by a name in scope. Inside a
+            // macro token tree `x.field()` arrives as a bare identifier, so without this a field
+            // could win over the method actually being called.
+            .filter(|def| {
+                !matches!(
+                    def.definition_type,
+                    crate::models::DefinitionType::StructFieldDefinition
+                )
+            })
+            .filter(|def| {
+                def.scope_id == Some(scope_id)
+                    || def
+                        .scope_id
+                        .and_then(|def_scope| self.parent_scope(def_scope))
+                        == Some(scope_id)
+            })
             .copied()
             .collect();
 
@@ -1160,9 +1178,13 @@ impl RustDependencyResolver {
             }
         }
 
-        // A bare identifier names the nearest binding in scope, so shadowing decides before the
-        // definition-type ladder below gets a say.
-        if matches!(usage.kind, crate::models::UsageKind::Identifier) {
+        // A bare identifier names the nearest binding in scope, and a type parameter belongs to the
+        // generic item that declares it, so proximity decides before the definition-type ladder
+        // below gets a say.
+        if matches!(
+            usage.kind,
+            crate::models::UsageKind::Identifier | crate::models::UsageKind::TypeIdentifier
+        ) {
             if let Some(nearest) = self.select_nearest_in_scope_chain(usage, matching_definitions) {
                 return Some(nearest);
             }
