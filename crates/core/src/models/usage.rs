@@ -10,6 +10,8 @@ pub enum UsageKind {
     TypeIdentifier,
     CallExpression,
     FieldExpression,
+    /// A field named by a struct literal, which references the field's declaration.
+    FieldInitializer,
     StructExpression,
     Metavariable,
     Read, // Added for testing

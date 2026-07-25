@@ -24,6 +24,7 @@ pub trait DependencyResolver: Send + Sync {
             UsageKind::TypeIdentifier => DependencyType::TypeReference,
             UsageKind::CallExpression => DependencyType::FunctionCall,
             UsageKind::FieldExpression => DependencyType::StructFieldAccess,
+            UsageKind::FieldInitializer => DependencyType::StructFieldAccess,
             UsageKind::StructExpression => DependencyType::TypeReference,
             UsageKind::Metavariable => DependencyType::MacroVariable,
             UsageKind::Read => DependencyType::VariableUse,
