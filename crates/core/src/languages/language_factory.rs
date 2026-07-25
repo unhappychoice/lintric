@@ -16,12 +16,12 @@ pub fn analyze_code_unified<'a>(
 
     match language {
         Language::Rust => {
-            let def_extractor = RustDefinitionExtractor::new(source_code, root_node);
+            let def_extractor = RustDefinitionExtractor::new(source_code, root_node)?;
             let usage_extractor = RustUsageExtractor;
             Ok(traverser.traverse(root_node, source_code, &def_extractor, &usage_extractor))
         }
         Language::TypeScript | Language::TSX => {
-            let def_extractor = TypeScriptDefinitionExtractor;
+            let def_extractor = TypeScriptDefinitionExtractor::new(source_code, root_node)?;
             let usage_extractor = TypeScriptUsageExtractor;
             Ok(traverser.traverse(root_node, source_code, &def_extractor, &usage_extractor))
         }
