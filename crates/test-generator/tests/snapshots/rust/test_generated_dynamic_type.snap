@@ -46,7 +46,7 @@ IntermediateRepresentation {
         Usage { position: { 1:11 to 1:14 }, name: "Box", kind: TypeIdentifier, context: None },
         Usage { position: { 1:19 to 1:22 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:24 to 1:27 }, name: "fmt", kind: Identifier, context: Some("scoped_identifier") },
-        Usage { position: { 1:29 to 1:36 }, name: "Display", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:29 to 1:36 }, name: "Display", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
         Usage { position: { 1:40 to 1:52 }, name: "Box::new", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:40 to 1:43 }, name: "Box", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:45 to 1:48 }, name: "new", kind: Identifier, context: Some("scoped_identifier") },

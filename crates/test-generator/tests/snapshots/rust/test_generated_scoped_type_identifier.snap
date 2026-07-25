@@ -38,7 +38,7 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 1:11 to 1:14 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:16 to 1:19 }, name: "vec", kind: Identifier, context: Some("scoped_identifier") },
-        Usage { position: { 1:21 to 1:24 }, name: "Vec", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:21 to 1:24 }, name: "Vec", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
         Usage { position: { 1:32 to 1:35 }, name: "vec", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

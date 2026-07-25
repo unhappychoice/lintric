@@ -50,9 +50,9 @@
     },
     "rust/error_handling.rs": {
       "expected": 11,
-      "detected": 10,
-      "correct": 10,
-      "missing": 1,
+      "detected": 11,
+      "correct": 11,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -122,9 +122,9 @@
     },
     "rust/nested_modules.rs": {
       "expected": 11,
-      "detected": 10,
-      "correct": 10,
-      "missing": 1,
+      "detected": 11,
+      "correct": 11,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -206,7 +206,7 @@
       "correct": 14,
       "missing": 0,
       "spurious": 0,
-      "duplicates": 1
+      "duplicates": 2
     },
     "rust/variables.rs": {
       "expected": 7,
@@ -339,10 +339,10 @@
   },
   "total": {
     "expected": 412,
-    "detected": 399,
-    "correct": 390,
-    "missing": 22,
+    "detected": 401,
+    "correct": 392,
+    "missing": 20,
     "spurious": 9,
-    "duplicates": 26
+    "duplicates": 27
   }
 }

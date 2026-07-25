@@ -223,6 +223,7 @@ IntermediateRepresentation {
     dependencies: [
         Dependency { source_line: 8, target_line: 3, symbol: "fetch_data", dependency_type: FunctionCall, context: Some("CallExpression:8:16") },
         Dependency { source_line: 9, target_line: 8, symbol: "data", dependency_type: VariableUse, context: Some("Identifier:9:31") },
+        Dependency { source_line: 13, target_line: 1, symbol: "Future", dependency_type: TypeReference, context: Some("TypeIdentifier:13:18") },
         Dependency { source_line: 15, target_line: 13, symbol: "future", dependency_type: VariableUse, context: Some("Identifier:15:26") },
         Dependency { source_line: 19, target_line: 7, symbol: "process_data", dependency_type: FunctionCall, context: Some("CallExpression:19:13") },
         Dependency { source_line: 21, target_line: 13, symbol: "spawn_task", dependency_type: FunctionCall, context: Some("CallExpression:21:5") },
