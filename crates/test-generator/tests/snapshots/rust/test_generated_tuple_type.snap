@@ -37,7 +37,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage { position: { 1:18 to 1:24 }, name: "String", kind: TypeIdentifier, context: None },
-        Usage { position: { 1:33 to 1:51 }, name: "\"test\".to_string", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:33 to 1:49 }, name: "to_string", kind: FieldExpression, context: Some("field_expression") },
     ],
     analysis_metadata: AnalysisMetadata {

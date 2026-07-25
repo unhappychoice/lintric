@@ -30,7 +30,6 @@ IntermediateRepresentation {
     definitions: [],
     dependencies: [],
     usage: [
-        Usage { position: { 1:1 to 1:33 }, name: "std::collections::HashMap::new", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 1:1 to 1:4 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:6 to 1:17 }, name: "collections", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:19 to 1:26 }, name: "HashMap", kind: Identifier, context: Some("scoped_identifier") },

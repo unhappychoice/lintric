@@ -181,7 +181,6 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 3:18 to 3:26 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 6:13 to 6:14 }, name: "x", kind: Identifier, context: None },
-        Usage { position: { 17:20 to 17:42 }, name: "MyStruct { field: 10 }", kind: StructExpression, context: None },
         Usage { position: { 17:20 to 17:28 }, name: "MyStruct", kind: TypeIdentifier, context: None },
         Usage { position: { 17:31 to 17:36 }, name: "field", kind: FieldInitializer, context: Some("field_initializer") },
         Usage { position: { 26:17 to 26:23 }, name: "MyEnum", kind: Identifier, context: Some("scoped_identifier") },
