@@ -274,6 +274,7 @@ IntermediateRepresentation {
         Dependency { source_line: 34, target_line: 17, symbol: "Circle", dependency_type: TypeReference, context: Some("Identifier:34:24") },
         Dependency { source_line: 35, target_line: 34, symbol: "circle", dependency_type: VariableUse, context: Some("Identifier:35:5") },
         Dependency { source_line: 35, target_line: 24, symbol: "draw", dependency_type: FunctionCall, context: Some("FieldExpression:35:12") },
+        Dependency { source_line: 24, target_line: 14, symbol: "draw", dependency_type: TraitImplementation, context: Some("trait_implementation::Drawable") },
     ],
     usage: [
         Usage { position: { 5:14 to 5:19 }, name: "value", kind: FieldExpression, context: None },
