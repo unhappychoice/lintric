@@ -199,7 +199,6 @@ IntermediateRepresentation {
     ],
     dependencies: [
         Dependency { source_line: 2, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:2:11") },
-        Dependency { source_line: 5, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:5:6") },
         Dependency { source_line: 5, target_line: 1, symbol: "Container", dependency_type: TypeReference, context: Some("TypeIdentifier:5:9") },
         Dependency { source_line: 5, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:5:19") },
         Dependency { source_line: 6, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:6:18") },
@@ -209,7 +208,6 @@ IntermediateRepresentation {
         Dependency { source_line: 7, target_line: 6, symbol: "item", dependency_type: VariableUse, context: Some("Identifier:7:21") },
         Dependency { source_line: 10, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:10:23") },
         Dependency { source_line: 11, target_line: 2, symbol: "item", dependency_type: StructFieldAccess, context: Some("FieldExpression:11:10") },
-        Dependency { source_line: 15, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:15:12") },
         Dependency { source_line: 15, target_line: 1, symbol: "Container", dependency_type: TypeReference, context: Some("TypeIdentifier:15:34") },
         Dependency { source_line: 15, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:15:44") },
         Dependency { source_line: 15, target_line: 1, symbol: "T", dependency_type: TypeReference, context: Some("TypeIdentifier:15:51") },
@@ -222,9 +220,7 @@ IntermediateRepresentation {
         Dependency { source_line: 22, target_line: 21, symbol: "value", dependency_type: VariableUse, context: Some("Identifier:22:20") },
     ],
     usage: [
-        Usage { position: { 1:18 to 1:19 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 2:11 to 2:12 }, name: "T", kind: TypeIdentifier, context: None },
-        Usage { position: { 5:6 to 5:7 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 5:9 to 5:18 }, name: "Container", kind: TypeIdentifier, context: None },
         Usage { position: { 5:19 to 5:20 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 6:18 to 6:19 }, name: "T", kind: TypeIdentifier, context: None },
@@ -235,7 +231,6 @@ IntermediateRepresentation {
         Usage { position: { 7:21 to 7:25 }, name: "item", kind: Identifier, context: None },
         Usage { position: { 10:23 to 10:24 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 11:10 to 11:19 }, name: "item", kind: FieldExpression, context: Some("field_expression") },
-        Usage { position: { 15:12 to 15:13 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 15:15 to 15:20 }, name: "Clone", kind: TypeIdentifier, context: None },
         Usage { position: { 15:34 to 15:43 }, name: "Container", kind: TypeIdentifier, context: None },
         Usage { position: { 15:44 to 15:45 }, name: "T", kind: TypeIdentifier, context: None },

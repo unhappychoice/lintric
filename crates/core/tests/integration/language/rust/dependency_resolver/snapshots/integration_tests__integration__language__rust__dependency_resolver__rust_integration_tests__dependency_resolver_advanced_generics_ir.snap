@@ -263,7 +263,6 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 2:24 to 2:28 }, name: "Clone", kind: TypeIdentifier, context: Some("self_type") },
         Usage { position: { 6:26 to 6:32 }, name: "String", kind: TypeIdentifier, context: None },
-        Usage { position: { 9:17 to 9:18 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 9:20 to 9:25 }, name: "Clone", kind: TypeIdentifier, context: None },
         Usage { position: { 9:28 to 9:35 }, name: "Display", kind: TypeIdentifier, context: None },
         Usage { position: { 9:44 to 9:45 }, name: "T", kind: TypeIdentifier, context: None },
