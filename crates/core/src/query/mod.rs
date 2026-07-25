@@ -92,3 +92,116 @@ pub fn scope_kinds(
 ) -> Result<Roles<crate::models::ScopeType>, String> {
     capture_roles(query_source, source_code, root_node, mapping)
 }
+
+/// The position of the second capture paired with the text of the first.
+///
+/// Positions are how a captured node is matched back to a `Definition`, which carries a position
+/// rather than a node.
+pub fn text_by_position(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    text_capture: &str,
+    position_capture: &str,
+) -> Result<HashMap<(usize, usize), String>, String> {
+    let pairs = map_pairs(
+        query_source,
+        source_code,
+        root_node,
+        text_capture,
+        position_capture,
+        |named, located| {
+            let position = (
+                located.start_position().row + 1,
+                located.start_position().column + 1,
+            );
+            Some((position, text(source_code, named)?))
+        },
+    )?;
+
+    Ok(pairs.into_iter().collect())
+}
+
+fn text(source_code: &str, node: Node) -> Option<String> {
+    node.utf8_text(source_code.as_bytes())
+        .ok()
+        .map(str::to_string)
+}
+
+/// Map the two named captures of every match with a caller-supplied closure.
+///
+/// The mapping happens inside the match loop because a captured node's lifetime is tied to the
+/// query cursor, so a language needing the nodes themselves — to read a type annotation's shape,
+/// say — reaches them here rather than through a returned node.
+pub fn map_pairs<T>(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    first: &str,
+    second: &str,
+    mut map: impl FnMut(Node, Node) -> Option<T>,
+) -> Result<Vec<T>, String> {
+    let language = &*root_node.language();
+    let query = Query::new(language, query_source)
+        .map_err(|error| format!("Failed to create query: {error}"))?;
+
+    let first_index = query
+        .capture_index_for_name(first)
+        .ok_or_else(|| format!("Query is missing the @{first} capture"))?;
+    let second_index = query
+        .capture_index_for_name(second)
+        .ok_or_else(|| format!("Query is missing the @{second} capture"))?;
+
+    let mut cursor = QueryCursor::new();
+    let mut matches = cursor.matches(&query, root_node, source_code.as_bytes());
+    let mut mapped = Vec::new();
+
+    while let Some(query_match) = matches.next() {
+        let of = |index: u32| {
+            query_match
+                .captures
+                .iter()
+                .find(|capture| capture.index == index)
+                .map(|capture| capture.node)
+        };
+
+        if let (Some(a), Some(b)) = (of(first_index), of(second_index)) {
+            mapped.extend(map(a, b));
+        }
+    }
+
+    Ok(mapped)
+}
+
+/// The first and last line of a captured node.
+pub type LineSpan = (usize, usize);
+
+/// A captured name together with the lines another capture spans.
+pub type NamedSpan = (String, LineSpan);
+
+/// The text of one capture paired with the line span of another.
+///
+/// Spans answer containment questions — which class body a line sits inside — that a single
+/// position cannot.
+pub fn text_by_span(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    text_capture: &str,
+    span_capture: &str,
+) -> Result<Vec<NamedSpan>, String> {
+    map_pairs(
+        query_source,
+        source_code,
+        root_node,
+        text_capture,
+        span_capture,
+        |named, spanned| {
+            let span = (
+                spanned.start_position().row + 1,
+                spanned.end_position().row + 1,
+            );
+            Some((text(source_code, named)?, span))
+        },
+    )
+}
