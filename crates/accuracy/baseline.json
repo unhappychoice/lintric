@@ -234,10 +234,10 @@
     },
     "typescript/abstract_classes.ts": {
       "expected": 7,
-      "detected": 6,
-      "correct": 4,
-      "missing": 3,
-      "spurious": 2,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
       "duplicates": 1
     },
     "typescript/async_functions.ts": {
@@ -339,10 +339,10 @@
   },
   "total": {
     "expected": 412,
-    "detected": 411,
-    "correct": 404,
-    "missing": 8,
-    "spurious": 7,
+    "detected": 412,
+    "correct": 407,
+    "missing": 5,
+    "spurious": 5,
     "duplicates": 28
   }
 }
