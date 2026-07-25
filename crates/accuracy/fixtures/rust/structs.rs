@@ -16,5 +16,8 @@ fn main() {
     let b = 2;
     let p = Point { x: a, y: b }; //~ depends: Point@3, x@4, y@5, a@15, b@16
     let n = p.norm(); //~ depends: norm@9, p@17
+    let x = 3;
+    let shorthand = Point { x, y: b }; //~ depends: Point@3, x@4, x@19, y@5, b@16
+    let updated = Point { ..shorthand }; //~ depends: Point@3, shorthand@20
     let _ = n; //~ depends: n@18
 }
