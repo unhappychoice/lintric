@@ -8,6 +8,7 @@ pub mod nested_scope_resolver;
 pub mod resolution_candidate;
 pub mod rust_dependency_resolver;
 pub mod trait_database;
+pub mod trait_implementation_resolver;
 pub mod type_system;
 
 pub use associated_type_resolver::AssociatedTypeResolver;
