@@ -24,10 +24,42 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "rust/generics.rs": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/imports.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
     "rust/macros.rs": {
       "expected": 9,
       "detected": 9,
       "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/nested_scopes.rs": {
+      "expected": 5,
+      "detected": 5,
+      "correct": 4,
+      "missing": 1,
+      "spurious": 1,
+      "duplicates": 0
+    },
+    "rust/patterns.rs": {
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -64,6 +96,14 @@
       "spurious": 0,
       "duplicates": 0
     },
+    "tsx/props.tsx": {
+      "expected": 6,
+      "detected": 6,
+      "correct": 6,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "typescript/classes.ts": {
       "expected": 9,
       "detected": 9,
@@ -72,11 +112,27 @@
       "spurious": 0,
       "duplicates": 2
     },
+    "typescript/enums.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 4
+    },
     "typescript/functions.ts": {
       "expected": 7,
       "detected": 7,
       "correct": 7,
       "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/interfaces.ts": {
+      "expected": 10,
+      "detected": 9,
+      "correct": 9,
+      "missing": 1,
       "spurious": 0,
       "duplicates": 1
     },
@@ -90,11 +146,11 @@
     }
   },
   "total": {
-    "expected": 99,
-    "detected": 99,
-    "correct": 99,
-    "missing": 0,
-    "spurious": 0,
-    "duplicates": 10
+    "expected": 165,
+    "detected": 164,
+    "correct": 163,
+    "missing": 2,
+    "spurious": 1,
+    "duplicates": 17
   }
 }
