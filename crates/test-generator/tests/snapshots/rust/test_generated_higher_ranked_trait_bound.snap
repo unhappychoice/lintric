@@ -67,7 +67,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:13 to 1:14 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 1:19 to 1:20 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 1:28 to 1:29 }, name: "F", kind: TypeIdentifier, context: None },
         Usage { position: { 1:39 to 1:41 }, name: "Fn", kind: TypeIdentifier, context: None },

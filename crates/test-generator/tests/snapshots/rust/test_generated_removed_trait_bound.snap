@@ -32,7 +32,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:13 to 1:14 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 1:19 to 1:20 }, name: "T", kind: TypeIdentifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

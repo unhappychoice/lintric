@@ -105,3 +105,19 @@ fn dependencies(source: &str) -> Vec<(usize, usize, String)> {
         })
         .collect()
 }
+
+#[test]
+fn a_type_parameter_declaration_does_not_depend_on_another_of_the_same_name() {
+    // `trait B<T>` declares its own parameter. Left as a usage it resolved to A's, so one
+    // declaration depended on another.
+    let source =
+        "trait A<T> {\n    fn a(&self, v: T);\n}\n\ntrait B<T> {\n    fn b(&self, v: T);\n}\n";
+    let dependencies = dependencies(source);
+
+    assert!(
+        !dependencies
+            .iter()
+            .any(|(from, _, symbol)| *from == 5 && symbol == "T"),
+        "line 5 declares T and references nothing: {dependencies:?}"
+    );
+}

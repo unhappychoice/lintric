@@ -65,11 +65,11 @@
       "duplicates": 1
     },
     "rust/generic_traits.rs": {
-      "expected": 10,
-      "detected": 11,
-      "correct": 10,
+      "expected": 12,
+      "detected": 14,
+      "correct": 12,
       "missing": 0,
-      "spurious": 1,
+      "spurious": 2,
       "duplicates": 1
     },
     "rust/generics.rs": {
@@ -362,11 +362,11 @@
     }
   },
   "total": {
-    "expected": 437,
-    "detected": 439,
-    "correct": 437,
+    "expected": 439,
+    "detected": 442,
+    "correct": 439,
     "missing": 0,
-    "spurious": 2,
+    "spurious": 3,
     "duplicates": 29
   }
 }
