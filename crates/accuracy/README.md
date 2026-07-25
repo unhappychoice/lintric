@@ -5,14 +5,24 @@ baseline so that changes in detection behaviour are visible in diffs.
 
 ## Why this exists
 
-The rest of the test suite cannot answer "how accurate are we?". Snapshot tests record whatever
-the analyzer currently outputs, so wrong output is locked in as faithfully as right output. The
-generated tests in `crates/test-generator` assert that a node kind analyzes without panicking,
-which is a useful crash net but silent about correctness.
+This crate does **not** replace the snapshot suite, and covers far less ground than it does. The
+352 snapshots across `crates/core`, `crates/cli` and `crates/test-generator` exercise a much wider
+range of constructs than the fixtures here, and they remain the right tool for detecting that
+analysis output changed at all — a behaviour-preserving refactor should leave every one of them
+untouched.
+
+What they cannot answer is "how accurate are we?". A snapshot records whatever the analyzer
+currently outputs, so wrong output is locked in as faithfully as right output. Every defect fixed
+in #171, #172, #175, #176 and #177 sat inside green snapshots as an accepted expected value — a
+trait method declaration recorded as a usage, `dependent_lines: [1, 1, 1]` for a line depending on
+one line. Nothing was failing.
 
 This crate takes the opposite approach: expectations are written by hand from the language's
-semantics, **independent of what the analyzer currently produces**. That makes it possible to
-report precision and recall rather than merely detecting change.
+semantics, **independent of what the analyzer currently produces**. That is what makes precision
+and recall meaningful, and what lets a diff say whether a change was an improvement rather than
+just a change.
+
+Use both. Snapshots tell you something moved; these fixtures tell you which direction.
 
 ## Running it
 
@@ -76,35 +86,49 @@ only integer counts and does not churn on float formatting.
 
 ## Interpreting the baseline
 
-The recorded numbers describe **these fixtures only**. They currently read 1.000 for both
-precision and recall, which is a statement about the fixtures rather than about the analyzer:
-every construct these files cover is handled, and every construct they do not cover is
-unmeasured.
+The recorded numbers describe **these fixtures only**, and are not an accuracy claim for the
+analyzer as a whole. Constructs the fixtures do not reach are simply unmeasured — lifetimes,
+async, trait objects, and most of TypeScript's type system have no fixtures yet.
 
-A perfect score is therefore a signal that the fixture set needs growing, not that dependency
-detection is finished. Imports, generics, lifetimes, nested modules, async, and most of
-TypeScript's type system have no fixtures at all. Adding them is expected to push the numbers
-*down*, and that is the intended direction — it means the harness is measuring more of what the
-analyzer actually has to handle.
+Growing the fixture set is expected to push the numbers *down*, and that is the intended
+direction: it means the harness is measuring more of what the analyzer actually has to handle. It
+has already worked that way. Precision stood at 1.000 across every fixture until
+`rust/nested_scopes.rs` was added, which produced the first spurious edge ever recorded (#187) and
+falsified the assumption that the analyzer only ever under-reports.
 
-## Deliberately unsettled
+A near-perfect score is therefore a signal to add fixtures, not a sign that detection is
+finished.
 
-Import and cross-scope resolution is not covered yet, because the expected shape is a design
-question rather than a fact about the language. Given
+## Import resolution
+
+Given
 
 ```rust
 mod geometry {
     pub struct Rect { pub width: i32 }
 }
-use geometry::Rect;
+use geometry::Rect;          // L4
 
 fn main() {
     let r = Rect { width: 1 };
 }
 ```
 
-it is unclear whether `Rect` in `main` should depend on the `use` line (treating the import as
-the local binding) or directly on the struct definition. #87 proposes that import-like
-dependencies be placed at the top scope level, which implies the former, but this has not been
-decided. Fixtures for modules and imports should be added once it is, so that the baseline does
-not encode an accidental answer.
+`Rect` in `main` depends on the **`use` line**, and the `use` line depends on the struct
+definition. The chain, rather than a direct edge to the definition, is deliberate:
+
+- a `use` statement creates a local binding, and that binding is what the reference names
+- both edges are real: changing the `use` line breaks the reference, and renaming the struct
+  breaks the `use` line
+- transitive metrics recover the full chain anyway, so nothing is lost by going through it
+- it agrees with #87's proposal that import-like dependencies belong at the top scope level
+
+This was an open question when the harness was written, and `rust/imports.rs` now pins the
+answer. It is a decision rather than a fact about the language, so it is revisitable — but it
+should be revisited by changing that fixture, not by discovering that behaviour drifted.
+
+## Still unsettled
+
+Whether a functional update, `Point { ..other }`, should imply a dependency on every field
+declaration of the struct. It currently reads only the base expression, pinned by a test in
+`crates/core/tests/unit/languages/rust/field_initializer_tests.rs`.
