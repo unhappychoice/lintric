@@ -17,7 +17,7 @@ pub fn analyze_code_unified<'a>(
     match language {
         Language::Rust => {
             let def_extractor = RustDefinitionExtractor::new(source_code, root_node)?;
-            let usage_extractor = RustUsageExtractor;
+            let usage_extractor = RustUsageExtractor::new(source_code, root_node)?;
             Ok(traverser.traverse(root_node, source_code, &def_extractor, &usage_extractor))
         }
         Language::TypeScript | Language::TSX => {

@@ -5,7 +5,7 @@
 //! and this module returns the answer keyed by node, so an extractor can ask about the node it is
 //! looking at without repeating the pattern in Rust.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use streaming_iterator::StreamingIterator;
 use tree_sitter::{Node, Query, QueryCursor};
 
@@ -53,6 +53,21 @@ fn indexed_roles<T: Clone>(query: &Query, mapping: &[(&str, T)]) -> HashMap<u32,
                 .map(|index| (index, role.clone()))
         })
         .collect()
+}
+
+/// The nodes one capture name matches, as a set of node ids.
+///
+/// Useful when the query answers a yes-or-no question about a node — whether an identifier binds a
+/// name or reads one — rather than labelling it.
+pub fn captured_nodes(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    capture: &str,
+) -> Result<HashSet<usize>, String> {
+    let roles = capture_roles(query_source, source_code, root_node, &[(capture, ())])?;
+
+    Ok(roles.into_keys().collect())
 }
 
 /// What a captured name node declares.

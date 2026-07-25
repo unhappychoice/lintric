@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use tree_sitter::Node;
 
 use super::format_string;
@@ -488,7 +489,24 @@ impl RustDefinitionExtractor {
 }
 
 /// Rust-specific usage extractor
-pub struct RustUsageExtractor;
+pub struct RustUsageExtractor {
+    bindings: HashSet<usize>,
+    references: HashSet<usize>,
+}
+
+impl RustUsageExtractor {
+    /// Fails if the binding query does not compile, which is a bug in the `.scm` file rather than
+    /// anything about the source being analyzed.
+    pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
+        let (bindings, references) =
+            super::binding_queries::bindings_and_references(source_code, root_node)?;
+
+        Ok(Self {
+            bindings,
+            references,
+        })
+    }
+}
 
 impl NodeUsageExtractor for RustUsageExtractor {
     fn extract_usage(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Usage> {
@@ -588,83 +606,12 @@ impl NodeUsageExtractor for RustUsageExtractor {
 }
 
 impl RustUsageExtractor {
+    /// Whether this identifier declares the name rather than reading it.
+    ///
+    /// The patterns live in `queries/rust/bindings.scm`; a reference capture wins, which is how the
+    /// type a pattern matches against stays a usage while the names it introduces do not.
     fn is_identifier_in_definition_context(&self, node: Node) -> bool {
-        // Use the same definition patterns as the original implementation
-        if let Some(parent) = node.parent() {
-            match parent.kind() {
-                "let_declaration" => {
-                    if let Some(pattern_field) = parent.child_by_field_name("pattern") {
-                        return node.id() == pattern_field.id();
-                    }
-                }
-                // Pattern types are definition contexts
-                "tuple_pattern" | "slice_pattern" | "reference_pattern" | "ref_pattern" => {
-                    // Identifiers inside patterns are definitions
-                    return true;
-                }
-                "struct_pattern" => {
-                    // Check if this is the type field (usage) or a field identifier (definition)
-                    if let Some(type_field) = parent.child_by_field_name("type") {
-                        if node.id() == type_field.id() {
-                            // This is the struct type being matched against (usage)
-                            return false;
-                        }
-                    }
-                    // Other identifiers in struct_pattern are field bindings (definitions)
-                    return true;
-                }
-                "tuple_struct_pattern" => {
-                    // The type being matched is a reference; the elements are bindings.
-                    if let Some(type_field) = parent.child_by_field_name("type") {
-                        return node.id() != type_field.id();
-                    }
-                    return true;
-                }
-                "parameter" => {
-                    if let Some(pattern_field) = parent.child_by_field_name("pattern") {
-                        return node.id() == pattern_field.id();
-                    }
-                }
-                "for_expression" => {
-                    if let Some(pattern_field) = parent.child_by_field_name("pattern") {
-                        return node.id() == pattern_field.id();
-                    }
-                }
-                "closure_parameters" => return true,
-                "type_parameters" => return true,
-                // `T` in `<T>` sits under a `type_parameter`, so the list above never sees it and
-                // the declaration was being collected as a usage
-                "type_parameter" => {
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        return node.id() == name_field.id();
-                    }
-                    return true;
-                }
-                "lifetime" => return true,
-                "trait_bounds" => return false,
-                "where_clause" => return true,
-                "bounded_type" => return true,
-                "constrained_type_parameter" => return true,
-                "function_item"
-                | "struct_item"
-                | "union_item"
-                | "enum_item"
-                | "trait_item"
-                | "mod_item"
-                | "const_item"
-                | "static_item"
-                | "type_item"
-                | "associated_type"
-                | "function_signature_item"
-                | "enum_variant" => {
-                    if let Some(name_field) = parent.child_by_field_name("name") {
-                        return node.id() == name_field.id();
-                    }
-                }
-                _ => {}
-            }
-        }
-        false
+        self.bindings.contains(&node.id()) && !self.references.contains(&node.id())
     }
 
     fn is_function_name_in_call_expression(&self, node: Node) -> bool {
