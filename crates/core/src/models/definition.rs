@@ -17,6 +17,7 @@ pub enum DefinitionType {
     VariableDefinition,
     StructDefinition,
     EnumDefinition,
+    EnumVariantDefinition,
     TypeDefinition,
     ModuleDefinition,
     ClassDefinition,
