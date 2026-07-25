@@ -31,9 +31,7 @@ IntermediateRepresentation {
         Definition { position: { 1:23 to 1:30 }, name: "method1", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:23 to 1:30 }, name: "method1", kind: Identifier, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

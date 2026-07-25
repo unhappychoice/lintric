@@ -692,6 +692,12 @@ impl DependencyResolverTrait for RustDependencyResolver {
         let import_deps = self.resolve_import_dependencies(definitions);
         dependencies.extend(import_deps);
 
+        // Add trait implementation dependencies (impl method -> trait declaration), which have no
+        // usage to resolve and are derived from the impl block's structure instead
+        let trait_impl_deps =
+            super::trait_implementation_resolver::resolve(source_code, root_node)?;
+        dependencies.extend(trait_impl_deps);
+
         Ok(dependencies)
     }
 

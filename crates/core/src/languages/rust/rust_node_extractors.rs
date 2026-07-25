@@ -868,8 +868,17 @@ impl RustUsageExtractor {
                 "where_clause" => return true,
                 "bounded_type" => return true,
                 "constrained_type_parameter" => return true,
-                "function_item" | "struct_item" | "union_item" | "enum_item" | "trait_item"
-                | "mod_item" | "const_item" | "static_item" | "type_item" | "associated_type" => {
+                "function_item"
+                | "struct_item"
+                | "union_item"
+                | "enum_item"
+                | "trait_item"
+                | "mod_item"
+                | "const_item"
+                | "static_item"
+                | "type_item"
+                | "associated_type"
+                | "function_signature_item" => {
                     if let Some(name_field) = parent.child_by_field_name("name") {
                         return node.id() == name_field.id();
                     }

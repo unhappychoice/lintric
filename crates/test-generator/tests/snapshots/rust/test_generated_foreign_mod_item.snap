@@ -29,9 +29,7 @@ IntermediateRepresentation {
         Definition { position: { 1:17 to 1:26 }, name: "extern_fn", definition_type: FunctionDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:17 to 1:26 }, name: "extern_fn", kind: Identifier, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

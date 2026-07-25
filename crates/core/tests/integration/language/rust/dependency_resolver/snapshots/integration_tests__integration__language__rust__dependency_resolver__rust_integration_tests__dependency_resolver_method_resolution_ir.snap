@@ -239,6 +239,7 @@ IntermediateRepresentation {
         Dependency { source_line: 32, target_line: 14, symbol: "get_value", dependency_type: VariableUse, context: Some("Identifier:32:25") },
         Dependency { source_line: 33, target_line: 30, symbol: "calc", dependency_type: VariableUse, context: Some("Identifier:33:20") },
         Dependency { source_line: 33, target_line: 20, symbol: "display", dependency_type: VariableUse, context: Some("Identifier:33:25") },
+        Dependency { source_line: 24, target_line: 20, symbol: "display", dependency_type: TraitImplementation, context: Some("trait_implementation::Display") },
     ],
     usage: [
         Usage { position: { 5:6 to 5:16 }, name: "Calculator", kind: TypeIdentifier, context: None },
@@ -248,7 +249,6 @@ IntermediateRepresentation {
         Usage { position: { 11:9 to 11:19 }, name: "value", kind: FieldExpression, context: Some("field_expression") },
         Usage { position: { 11:23 to 11:24 }, name: "n", kind: Identifier, context: None },
         Usage { position: { 15:9 to 15:19 }, name: "value", kind: FieldExpression, context: Some("field_expression") },
-        Usage { position: { 20:8 to 20:15 }, name: "display", kind: Identifier, context: None },
         Usage { position: { 20:26 to 20:32 }, name: "String", kind: TypeIdentifier, context: None },
         Usage { position: { 23:6 to 23:13 }, name: "Display", kind: TypeIdentifier, context: None },
         Usage { position: { 23:18 to 23:28 }, name: "Calculator", kind: TypeIdentifier, context: None },

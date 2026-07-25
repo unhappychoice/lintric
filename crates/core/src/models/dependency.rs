@@ -11,6 +11,8 @@ pub enum DependencyType {
     ModuleReference,
     MacroInvocation,
     MacroVariable,
+    /// A method implementation satisfying the declaration of the trait it implements.
+    TraitImplementation,
     Other(String),
 }
 

@@ -42,9 +42,9 @@
     },
     "rust/traits.rs": {
       "expected": 12,
-      "detected": 9,
-      "correct": 9,
-      "missing": 3,
+      "detected": 11,
+      "correct": 11,
+      "missing": 1,
       "spurious": 0,
       "duplicates": 1
     },
@@ -91,9 +91,9 @@
   },
   "total": {
     "expected": 92,
-    "detected": 82,
-    "correct": 82,
-    "missing": 10,
+    "detected": 84,
+    "correct": 84,
+    "missing": 8,
     "spurious": 0,
     "duplicates": 10
   }
