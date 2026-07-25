@@ -54,3 +54,29 @@ fn indexed_roles<T: Clone>(query: &Query, mapping: &[(&str, T)]) -> HashMap<u32,
         })
         .collect()
 }
+
+/// What a captured name node declares.
+///
+/// Both languages need the kind, and TypeScript needs hoisting as well — a class is visible before
+/// its declaration while a method is not — so it travels with the role rather than being assumed.
+#[derive(Debug, Clone, PartialEq)]
+pub struct DeclaredAs {
+    pub definition_type: crate::models::DefinitionType,
+    pub is_hoisted: bool,
+}
+
+impl DeclaredAs {
+    pub const fn plain(definition_type: crate::models::DefinitionType) -> Self {
+        Self {
+            definition_type,
+            is_hoisted: false,
+        }
+    }
+
+    pub const fn hoisted(definition_type: crate::models::DefinitionType) -> Self {
+        Self {
+            definition_type,
+            is_hoisted: true,
+        }
+    }
+}

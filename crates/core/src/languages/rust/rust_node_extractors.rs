@@ -5,7 +5,7 @@ use crate::models::{
     ast_traverser::{NodeDefinitionExtractor, NodeUsageExtractor},
     Definition, DefinitionType, Position, ScopeId, ScopeType, Usage, UsageKind,
 };
-use crate::query::Roles;
+use crate::query::{DeclaredAs, Roles};
 
 /// Rust-specific definition extractor
 ///
@@ -13,19 +13,21 @@ use crate::query::Roles;
 /// `queries/rust/definitions.scm`; the arms below handle the rest, where classifying needs more
 /// than the node — a `function_item` is a method inside an impl and a function outside it.
 pub struct RustDefinitionExtractor {
-    declared_types: Roles<DefinitionType>,
+    declared_types: Roles<DeclaredAs>,
 }
 
 impl RustDefinitionExtractor {
-    pub fn new(source_code: &str, root_node: Node) -> Self {
-        Self {
-            declared_types: super::definition_queries::declared_types(source_code, root_node),
-        }
+    /// Fails if the declaration query does not compile, which is a bug in the `.scm` file rather
+    /// than anything about the source being analyzed.
+    pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
+        Ok(Self {
+            declared_types: super::definition_queries::declared_types(source_code, root_node)?,
+        })
     }
 
     /// The declaration this node introduces, if the query located one here.
     fn queried_definition(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
-        let Some(definition_type) = self.declared_types.get(&node.id()) else {
+        let Some(declared) = self.declared_types.get(&node.id()) else {
             return vec![];
         };
         let Ok(name) = node.utf8_text(source.as_bytes()) else {
@@ -34,11 +36,11 @@ impl RustDefinitionExtractor {
 
         vec![Definition {
             name: name.to_string(),
-            definition_type: definition_type.clone(),
+            definition_type: declared.definition_type.clone(),
             position: Position::from_node(&node),
             scope_id: Some(scope),
             accessibility: None,
-            is_hoisted: Some(false),
+            is_hoisted: Some(declared.is_hoisted),
         }]
     }
 }

@@ -4,65 +4,61 @@ use crate::models::{
     ast_traverser::{NodeDefinitionExtractor, NodeUsageExtractor},
     Definition, DefinitionType, Position, ScopeId, ScopeType, Usage, UsageKind,
 };
+use crate::query::{DeclaredAs, Roles};
 
 /// TypeScript-specific definition extractor
-pub struct TypeScriptDefinitionExtractor;
+///
+/// Declarations whose shape alone identifies them are located by
+/// `queries/typescript/definitions.scm`; the arms below handle the rest, where classifying needs
+/// more than the node — a `variable_declarator` hoists or not depending on its keyword, and a
+/// constructor parameter may declare a property.
+pub struct TypeScriptDefinitionExtractor {
+    declared_types: Roles<DeclaredAs>,
+}
+
+impl TypeScriptDefinitionExtractor {
+    /// Fails if the declaration query does not compile, which is a bug in the `.scm` file rather
+    /// than anything about the source being analyzed.
+    pub fn new(source_code: &str, root_node: Node) -> Result<Self, String> {
+        Ok(Self {
+            declared_types: super::definition_queries::declared_types(source_code, root_node)?,
+        })
+    }
+
+    /// The declaration this node introduces, if the query located one here.
+    fn queried_definition(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
+        let Some(declared) = self.declared_types.get(&node.id()) else {
+            return vec![];
+        };
+        let Ok(name) = node.utf8_text(source.as_bytes()) else {
+            return vec![];
+        };
+
+        vec![Definition {
+            name: Usage::normalize_line_endings(name),
+            definition_type: declared.definition_type.clone(),
+            position: Position::from_node(&node),
+            scope_id: Some(scope),
+            accessibility: None,
+            is_hoisted: Some(declared.is_hoisted),
+        }]
+    }
+}
 
 impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
     fn extract_definition(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
+        // The query is the primary source; the arms below are the exceptions it cannot express.
+        // Asking it first also keeps a name node from being swallowed by a kind arm.
+        let queried = self.queried_definition(node, scope, source);
+        if !queried.is_empty() {
+            return queried;
+        }
+
         match node.kind() {
-            "function_declaration" => self
-                .extract_function_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "method_definition" => self
-                .extract_method_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "arrow_function" => self.extract_arrow_function_definition(node, scope, source),
-            "class_declaration" | "abstract_class_declaration" => self
-                .extract_class_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "interface_declaration" => self
-                .extract_interface_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "type_alias_declaration" => self
-                .extract_type_alias_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "enum_declaration" => self
-                .extract_enum_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "namespace_declaration" | "internal_module" => self
-                .extract_namespace_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "variable_declarator" => self.extract_variable_definition(node, scope, source),
             "formal_parameters" => self.extract_function_parameters(node, scope, source),
-            "type_parameter" => self
-                .extract_type_parameter_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "enum_body" => self.extract_enum_members(node, scope, source),
-            "public_field_definition" | "private_field_definition" | "field_definition" => self
-                .extract_field_definition(node, scope, source)
-                .into_iter()
-                .collect(),
-            "property_signature" => self
-                .extract_property_signature(node, scope, source)
-                .into_iter()
-                .collect(),
-            "method_signature" | "abstract_method_signature" => self
-                .extract_method_signature(node, scope, source)
-                .into_iter()
-                .collect(),
-            "import_specifier" => self
-                .extract_import_specifier_definition(node, scope, source)
-                .into_iter()
-                .collect(),
             "import_statement" => self
                 .extract_import_statement_definition(node, scope, source)
                 .into_iter()
@@ -99,44 +95,6 @@ impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
 }
 
 impl TypeScriptDefinitionExtractor {
-    fn extract_function_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::FunctionDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(true), // Functions are hoisted in TypeScript/JavaScript
-        })
-    }
-
-    fn extract_method_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::MethodDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
     fn extract_arrow_function_definition(
         &self,
         node: Node,
@@ -163,101 +121,6 @@ impl TypeScriptDefinitionExtractor {
         }
 
         definitions
-    }
-
-    fn extract_class_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::ClassDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(true), // Classes are hoisted
-        })
-    }
-
-    fn extract_interface_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::InterfaceDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(true),
-        })
-    }
-
-    fn extract_type_alias_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::TypeDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(true),
-        })
-    }
-
-    fn extract_enum_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::EnumDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(true),
-        })
-    }
-
-    fn extract_namespace_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::ModuleDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(true),
-        })
     }
 
     fn extract_variable_definition(
@@ -404,63 +267,6 @@ impl TypeScriptDefinitionExtractor {
         })
     }
 
-    fn extract_property_signature(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::PropertyDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_method_signature(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::MethodDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
-    fn extract_import_specifier_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::ImportDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false), // Match old implementation
-        })
-    }
-
     fn extract_import_statement_definition(
         &self,
         _node: Node,
@@ -527,25 +333,6 @@ impl TypeScriptDefinitionExtractor {
         None
     }
 
-    fn extract_type_parameter_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::TypeDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
-    }
-
     fn extract_enum_members(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
         let mut definitions = vec![];
         let mut cursor = node.walk();
@@ -566,25 +353,6 @@ impl TypeScriptDefinitionExtractor {
         }
 
         definitions
-    }
-
-    fn extract_field_definition(
-        &self,
-        node: Node,
-        scope: ScopeId,
-        source: &str,
-    ) -> Option<Definition> {
-        let name = self.find_child_by_field_name(node, "name")?;
-        let name_text = name.utf8_text(source.as_bytes()).ok()?;
-
-        Some(Definition {
-            name: Usage::normalize_line_endings(name_text),
-            definition_type: DefinitionType::PropertyDefinition,
-            position: Position::from_node(&name),
-            scope_id: Some(scope),
-            accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-            is_hoisted: Some(false),
-        })
     }
 
     fn find_child_by_field_name<'a>(&self, node: Node<'a>, field_name: &str) -> Option<Node<'a>> {
