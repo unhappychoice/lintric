@@ -1,3 +1,4 @@
+pub mod interface_implementation_resolver;
 pub mod method_resolver;
 pub mod module_resolver;
 pub mod typescript_dependency_resolver;

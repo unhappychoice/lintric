@@ -184,6 +184,12 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
             all_dependencies.append(&mut deps);
         }
 
+        // Add interface implementation dependencies (class method -> interface declaration), which
+        // have no usage to resolve and are derived from the class heritage instead
+        let implementation_deps =
+            super::interface_implementation_resolver::resolve(source_code, root_node)?;
+        all_dependencies.extend(implementation_deps);
+
         Ok(all_dependencies)
     }
 
