@@ -11,6 +11,8 @@ pub enum DependencyType {
     ModuleReference,
     MacroInvocation,
     MacroVariable,
+    /// A reference to a variant of an enum, as in `Direction::Left`.
+    EnumVariantReference,
     /// A method implementation satisfying the declaration of the trait it implements.
     TraitImplementation,
     Other(String),
@@ -23,23 +25,6 @@ pub struct Dependency {
     pub symbol: String,
     pub dependency_type: DependencyType,
     pub context: Option<String>,
-}
-
-impl Dependency {
-    pub fn new_with_scope(
-        source_position: crate::models::Position,
-        target_position: crate::models::Position,
-        usage: crate::models::Usage,
-        _definition: crate::models::Definition,
-    ) -> Self {
-        Self {
-            source_line: source_position.start_line,
-            target_line: target_position.start_line,
-            symbol: usage.name,
-            dependency_type: DependencyType::VariableUse, // Default, can be improved later
-            context: None,
-        }
-    }
 }
 
 impl fmt::Debug for Dependency {
