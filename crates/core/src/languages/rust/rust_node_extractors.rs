@@ -923,6 +923,14 @@ impl RustUsageExtractor {
                 }
                 "closure_parameters" => return true,
                 "type_parameters" => return true,
+                // `T` in `<T>` sits under a `type_parameter`, so the list above never sees it and
+                // the declaration was being collected as a usage
+                "type_parameter" => {
+                    if let Some(name_field) = parent.child_by_field_name("name") {
+                        return node.id() == name_field.id();
+                    }
+                    return true;
+                }
                 "lifetime" => return true,
                 "trait_bounds" => return false,
                 "where_clause" => return true,
