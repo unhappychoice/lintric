@@ -74,8 +74,8 @@ expression: "serde_json :: to_string_pretty(& result).unwrap()"
       "depth": 1,
       "transitive_dependencies": 2,
       "dependent_lines": [
-        10,
-        13
+        13,
+        10
       ]
     },
     {
@@ -85,9 +85,9 @@ expression: "serde_json :: to_string_pretty(& result).unwrap()"
       "depth": 1,
       "transitive_dependencies": 3,
       "dependent_lines": [
+        13,
         10,
-        9,
-        13
+        9
       ]
     }
   ],

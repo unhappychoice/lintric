@@ -9,12 +9,11 @@ expression: out
       "line_metrics": [
         {
           "line_number": 7,
-          "total_dependencies": 2,
-          "dependency_distance_cost": 0.0625,
+          "total_dependencies": 1,
+          "dependency_distance_cost": 0.03125,
           "depth": 1,
           "transitive_dependencies": 1,
           "dependent_lines": [
-            6,
             6
           ]
         },
@@ -64,30 +63,26 @@ expression: out
         },
         {
           "line_number": 16,
-          "total_dependencies": 6,
-          "dependency_distance_cost": 1.84375,
+          "total_dependencies": 4,
+          "dependency_distance_cost": 0.96875,
           "depth": 2,
           "transitive_dependencies": 6,
           "dependent_lines": [
             13,
-            2,
             12,
-            2,
             6,
             2
           ]
         },
         {
           "line_number": 17,
-          "total_dependencies": 6,
-          "dependency_distance_cost": 1.9375,
+          "total_dependencies": 4,
+          "dependency_distance_cost": 1.0625,
           "depth": 2,
           "transitive_dependencies": 6,
           "dependent_lines": [
             13,
-            3,
             12,
-            3,
             6,
             3
           ]
@@ -141,8 +136,8 @@ expression: out
           "depth": 2,
           "transitive_dependencies": 2,
           "dependent_lines": [
-            26,
-            27
+            27,
+            26
           ]
         },
         {
@@ -166,10 +161,10 @@ expression: out
           ]
         }
       ],
-      "overall_complexity_score": 62.90624999999999
+      "overall_complexity_score": 57.728125
     }
   ],
   "total_files_analyzed": 1,
-  "total_overall_complexity_score": 62.90624999999999,
-  "average_complexity_score": 62.90624999999999
+  "total_overall_complexity_score": 57.728125,
+  "average_complexity_score": 57.728125
 }
