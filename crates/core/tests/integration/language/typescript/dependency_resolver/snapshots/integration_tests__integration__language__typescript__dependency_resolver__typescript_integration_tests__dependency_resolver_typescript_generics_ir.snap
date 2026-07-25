@@ -374,9 +374,7 @@ IntermediateRepresentation {
         Dependency { source_line: 33, target_line: 32, symbol: "users", dependency_type: VariableUse, context: Some("Identifier:33:35") },
     ],
     usage: [
-        Usage { position: { 2:5 to 2:9 }, name: "save", kind: FieldExpression, context: None },
         Usage { position: { 2:16 to 2:17 }, name: "T", kind: TypeIdentifier, context: None },
-        Usage { position: { 3:5 to 3:13 }, name: "findById", kind: FieldExpression, context: None },
         Usage { position: { 3:27 to 3:28 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 6:33 to 6:43 }, name: "Repository", kind: TypeIdentifier, context: None },
         Usage { position: { 6:44 to 6:48 }, name: "User", kind: TypeIdentifier, context: None },
@@ -393,8 +391,6 @@ IntermediateRepresentation {
         Usage { position: { 14:37 to 14:38 }, name: "u", kind: Identifier, context: Some("call_expression") },
         Usage { position: { 14:39 to 14:41 }, name: "id", kind: FieldExpression, context: None },
         Usage { position: { 14:46 to 14:48 }, name: "id", kind: Identifier, context: Some("call_expression") },
-        Usage { position: { 19:5 to 19:7 }, name: "id", kind: FieldExpression, context: None },
-        Usage { position: { 20:5 to 20:9 }, name: "name", kind: FieldExpression, context: None },
         Usage { position: { 23:33 to 23:34 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 23:39 to 23:40 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 24:12 to 24:47 }, name: "items.filter", kind: CallExpression, context: Some("call_expression") },

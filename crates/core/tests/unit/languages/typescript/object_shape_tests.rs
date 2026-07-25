@@ -69,3 +69,51 @@ fn dependencies(source: &str) -> Vec<(usize, usize, String)> {
         })
         .collect()
 }
+
+#[test]
+fn a_shorthand_property_reads_the_binding_it_names() {
+    let source = "const x = 1;\nconst b = { x };\n";
+
+    assert!(
+        dependencies(&source).contains(&(2, 1, "x".to_string())),
+        "{:?}",
+        dependencies(&source)
+    );
+}
+
+#[test]
+fn a_shorthand_property_does_not_reference_a_member() {
+    let source = format!("{POINT}\nconst x = 1;\nconst b = {{ x }};\n");
+
+    assert!(!references_member(&source), "{:?}", dependencies(&source));
+}
+
+#[test]
+fn two_interfaces_sharing_a_member_name_do_not_depend_on_each_other() {
+    let source =
+        "interface First {\n    id: string;\n}\n\ninterface Second {\n    id: number;\n}\n";
+    let dependencies = dependencies(source);
+
+    assert!(dependencies.is_empty(), "{dependencies:?}");
+}
+
+#[test]
+fn a_method_signature_declaration_is_not_a_usage() {
+    let source =
+        "interface First {\n    run(): void;\n}\n\ninterface Second {\n    run(): void;\n}\n";
+    let dependencies = dependencies(source);
+
+    assert!(dependencies.is_empty(), "{dependencies:?}");
+}
+
+#[test]
+fn a_declared_member_is_still_reachable_through_a_value() {
+    let source =
+        "interface A {\n    id: string;\n}\n\nfunction f(a: A): string {\n    return a.id;\n}\n";
+
+    assert!(
+        dependencies(source).contains(&(6, 2, "id".to_string())),
+        "{:?}",
+        dependencies(source)
+    );
+}
