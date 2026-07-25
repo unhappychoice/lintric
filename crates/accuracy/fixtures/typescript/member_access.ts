@@ -28,3 +28,13 @@ function fromVariable(): number {
 function fromUnannotated(untyped: Reader | Writer): string { //~ depends: Reader@7, Writer@11
     return String(untyped.label); //~ depends: untyped@28, label@8, label@12
 }
+
+function throughWrappers(maybe?: Reader): void { //~ depends: Reader@7
+    void maybe?.label; //~ depends: maybe@32, label@8
+    void maybe!.label; //~ depends: maybe@32, label@8
+    void (maybe).label; //~ depends: maybe@32, label@8
+}
+
+function statedAtTheAccess(unknownType: Reader | Writer): void { //~ depends: Reader@7, Writer@11
+    void (unknownType as Writer).label; //~ depends: unknownType@38, Writer@11, label@12
+}
