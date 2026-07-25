@@ -20,7 +20,7 @@ impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
                 .into_iter()
                 .collect(),
             "arrow_function" => self.extract_arrow_function_definition(node, scope, source),
-            "class_declaration" => self
+            "class_declaration" | "abstract_class_declaration" => self
                 .extract_class_definition(node, scope, source)
                 .into_iter()
                 .collect(),
@@ -55,7 +55,7 @@ impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
                 .extract_property_signature(node, scope, source)
                 .into_iter()
                 .collect(),
-            "method_signature" => self
+            "method_signature" | "abstract_method_signature" => self
                 .extract_method_signature(node, scope, source)
                 .into_iter()
                 .collect(),
@@ -86,7 +86,7 @@ impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
     fn creates_scope(&self, node: Node) -> Option<(ScopeType, Position)> {
         let scope_type = match node.kind() {
             "function_declaration" | "method_definition" | "arrow_function" => ScopeType::Function,
-            "class_declaration" => ScopeType::Class,
+            "class_declaration" | "abstract_class_declaration" => ScopeType::Class,
             "interface_declaration" => ScopeType::Interface,
             "namespace_declaration" | "internal_module" => ScopeType::Module,
             "block" => ScopeType::Block,
@@ -666,6 +666,7 @@ impl TypeScriptUsageExtractor {
                 // These are definition contexts, not usage
                 "function_declaration"
                 | "class_declaration"
+                | "abstract_class_declaration"
                 | "interface_declaration"
                 | "type_alias_declaration"
                 | "enum_declaration"
@@ -675,6 +676,7 @@ impl TypeScriptUsageExtractor {
                 | "method_definition"
                 | "property_signature"
                 | "method_signature"
+                | "abstract_method_signature"
                 | "import_specifier" => {
                     // Check if this identifier is the name being defined
                     if let Some(name_field) = parent.child_by_field_name("name") {
@@ -878,7 +880,10 @@ impl TypeScriptUsageExtractor {
         // Check if this type_identifier is directly defining something (the name being defined)
         if let Some(parent) = node.parent() {
             match parent.kind() {
-                "interface_declaration" | "type_alias_declaration" | "class_declaration" => {
+                "interface_declaration"
+                | "type_alias_declaration"
+                | "class_declaration"
+                | "abstract_class_declaration" => {
                     // Check if this is the name field (being defined) or usage within the declaration
                     if let Some(name_field) = parent.child_by_field_name("name") {
                         return node.id() == name_field.id();
