@@ -546,7 +546,6 @@ impl NodeUsageExtractor for RustUsageExtractor {
                     .into_iter()
                     .collect();
             }
-            "struct_expression" => Some(UsageKind::StructExpression),
             "metavariable" => Some(UsageKind::Metavariable),
             "string_content" => {
                 // Inline format string captures have no nodes of their own, so they are parsed
@@ -637,20 +636,12 @@ impl RustUsageExtractor {
     }
 
     fn extract_call_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
-        // Use the same logic as Usage::new_call_expression from the original
-        let function_name = if let Some(function_node) = node.child(0) {
-            function_node
-                .utf8_text(source.as_bytes())
-                .unwrap_or("")
-                .trim()
-                .replace("\r\n", "\n")
-        } else {
-            // Fallback to full text if we can't get the function child
-            node.utf8_text(source.as_bytes())
-                .unwrap_or("")
-                .trim()
-                .replace("\r\n", "\n")
-        };
+        let function_node = node.child(0)?;
+        if function_node.kind() != "identifier" {
+            return None;
+        }
+        let function_name =
+            Usage::normalize_line_endings(function_node.utf8_text(source.as_bytes()).ok()?);
 
         Some(Usage {
             name: function_name,

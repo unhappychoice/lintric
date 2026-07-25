@@ -477,19 +477,12 @@ impl TypeScriptUsageExtractor {
 
     fn extract_call_usage(&self, node: Node, scope: ScopeId, source: &str) -> Option<Usage> {
         // Extract function name from call_expression by getting the function field
-        let function_name = if let Some(function_node) = node.child_by_field_name("function") {
-            function_node
-                .utf8_text(source.as_bytes())
-                .unwrap_or("")
-                .trim()
-                .replace("\r\n", "\n")
-        } else {
-            // Fallback to full text if we can't get the function field
-            node.utf8_text(source.as_bytes())
-                .unwrap_or("")
-                .trim()
-                .replace("\r\n", "\n")
-        };
+        let function_node = node.child_by_field_name("function")?;
+        if function_node.kind() != "identifier" {
+            return None;
+        }
+        let function_name =
+            Usage::normalize_line_endings(function_node.utf8_text(source.as_bytes()).ok()?);
 
         Some(Usage {
             name: function_name,
