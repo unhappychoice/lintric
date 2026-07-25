@@ -212,8 +212,7 @@ impl RustDefinitionExtractor {
             None => return vec![],
         };
 
-        // Use find_identifier_nodes_in_node to handle complex patterns like tuple_pattern
-        self.find_identifier_nodes_in_node(pattern)
+        self.find_pattern_bindings(pattern)
             .into_iter()
             .filter_map(|identifier_node| {
                 let name_text = identifier_node.utf8_text(source.as_bytes()).ok()?;
@@ -830,6 +829,14 @@ impl NodeUsageExtractor for RustUsageExtractor {
                     .into_iter()
                     .collect();
             }
+            "field_identifier" | "shorthand_field_identifier" => {
+                // A field named by a pattern references the field's declaration, the same way one
+                // named by a struct literal does
+                return self
+                    .extract_pattern_field_usage(node, scope, source)
+                    .into_iter()
+                    .collect();
+            }
             "shorthand_field_initializer" => {
                 // `Point { x }` references the declaration of `x` as well as reading the binding,
                 // which the inner identifier already covers
@@ -887,6 +894,13 @@ impl RustUsageExtractor {
                         }
                     }
                     // Other identifiers in struct_pattern are field bindings (definitions)
+                    return true;
+                }
+                "tuple_struct_pattern" => {
+                    // The type being matched is a reference; the elements are bindings.
+                    if let Some(type_field) = parent.child_by_field_name("type") {
+                        return node.id() != type_field.id();
+                    }
                     return true;
                 }
                 "parameter" => {
@@ -1047,6 +1061,21 @@ impl RustUsageExtractor {
         self.field_reference(node.child_by_field_name("field")?, scope, source)
     }
 
+    /// The field named by a pattern, as in `let Point { x, y: renamed } = p`.
+    ///
+    /// Restricted to `field_pattern`, since the same node kinds appear in field declarations and
+    /// field expressions, which are handled elsewhere.
+    fn extract_pattern_field_usage(
+        &self,
+        node: Node,
+        scope: ScopeId,
+        source: &str,
+    ) -> Option<Usage> {
+        node.parent()
+            .filter(|parent| parent.kind() == "field_pattern")
+            .and_then(|_| self.field_reference(node, scope, source))
+    }
+
     /// The field named by the shorthand `Point { x }`, whose identifier also reads a binding.
     fn extract_shorthand_field_initializer_usage(
         &self,
@@ -1200,7 +1229,30 @@ impl RustDefinitionExtractor {
         false
     }
 
+    /// The identifiers a pattern binds.
+    ///
+    /// A pattern's `type:` field names the struct or variant being matched, so it is a reference
+    /// rather than a binding and is skipped — otherwise `let S::F(v) = s` would register the enum
+    /// and its variant as locals. A shorthand field pattern binds under the field's own name, which
+    /// is a `shorthand_field_identifier` rather than an `identifier`.
     #[allow(clippy::only_used_in_recursion)]
+    fn find_pattern_bindings<'a>(&self, pattern: Node<'a>) -> Vec<Node<'a>> {
+        if matches!(pattern.kind(), "identifier" | "shorthand_field_identifier") {
+            return vec![pattern];
+        }
+
+        let matched_type = pattern.child_by_field_name("type").map(|node| node.id());
+        let mut cursor = pattern.walk();
+        let children: Vec<Node<'a>> = pattern.children(&mut cursor).collect();
+
+        children
+            .into_iter()
+            .filter(|child| Some(child.id()) != matched_type)
+            .flat_map(|child| self.find_pattern_bindings(child))
+            .collect()
+    }
+
+    #[allow(clippy::only_used_in_recursion, dead_code)]
     fn find_identifier_nodes_in_node<'a>(&self, node: Node<'a>) -> Vec<Node<'a>> {
         let mut identifiers = vec![];
         if node.kind() == "identifier" {
