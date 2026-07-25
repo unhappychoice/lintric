@@ -1,12 +1,8 @@
 use super::nested_scope_resolver::ScopeUtilities;
-use super::{
-    AssociatedTypeResolver, GenericTypeResolver, LifetimeResolver, MethodResolver, ModuleResolver,
-    NestedScopeResolver, TraitBound,
-};
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
     scope::{CodeAnalysisContext, SymbolTable},
-    Definition, Dependency, ScopeId, ScopeType, Type, Usage, UsageKind,
+    Definition, Dependency, ScopeId, ScopeType, Usage, UsageKind,
 };
 use tree_sitter::Node;
 
@@ -14,32 +10,11 @@ use tree_sitter::Node;
 /// including generics, lifetimes, traits, and Rust-specific language features
 pub struct RustDependencyResolver {
     symbol_table: SymbolTable,
-    nested_scope_resolver: NestedScopeResolver,
-    module_resolver: ModuleResolver,
-    pub method_resolver: MethodResolver,
-    generic_type_resolver: GenericTypeResolver,
-    associated_type_resolver: AssociatedTypeResolver,
-    lifetime_resolver: LifetimeResolver,
 }
 
 impl RustDependencyResolver {
     pub fn new(symbol_table: SymbolTable) -> Self {
-        let nested_scope_resolver = NestedScopeResolver::new(symbol_table.scopes.clone());
-        let module_resolver = ModuleResolver::new();
-        let method_resolver = MethodResolver::new();
-        let generic_type_resolver = GenericTypeResolver::new();
-        let associated_type_resolver = AssociatedTypeResolver::new();
-        let lifetime_resolver = LifetimeResolver::new();
-
-        Self {
-            symbol_table,
-            nested_scope_resolver,
-            module_resolver,
-            method_resolver,
-            generic_type_resolver,
-            associated_type_resolver,
-            lifetime_resolver,
-        }
+        Self { symbol_table }
     }
 
     pub fn new_from_context(context: CodeAnalysisContext) -> Self {
@@ -57,54 +32,6 @@ impl RustDependencyResolver {
         }
 
         Self::new(symbol_table)
-    }
-
-    pub fn get_module_resolver(&self) -> &ModuleResolver {
-        &self.module_resolver
-    }
-
-    pub fn get_module_resolver_mut(&mut self) -> &mut ModuleResolver {
-        &mut self.module_resolver
-    }
-
-    pub fn get_method_resolver(&self) -> &MethodResolver {
-        &self.method_resolver
-    }
-
-    pub fn get_generic_type_resolver(&self) -> &GenericTypeResolver {
-        &self.generic_type_resolver
-    }
-
-    pub fn get_generic_type_resolver_mut(&mut self) -> &mut GenericTypeResolver {
-        &mut self.generic_type_resolver
-    }
-
-    pub fn get_associated_type_resolver(&self) -> &AssociatedTypeResolver {
-        &self.associated_type_resolver
-    }
-
-    pub fn get_lifetime_resolver(&self) -> &LifetimeResolver {
-        &self.lifetime_resolver
-    }
-
-    /// Validate trait bounds for a given type
-    pub fn validate_trait_bounds(
-        &self,
-        type_arg: &Type,
-        bounds: &[TraitBound],
-        _scope_id: ScopeId,
-    ) -> bool {
-        self.generic_type_resolver
-            .constraint_solver
-            .check_trait_bounds(std::slice::from_ref(type_arg), bounds)
-    }
-
-    /// Get nested scope information using nested scope resolver
-    pub fn analyze_nested_scopes(&self, scope_id: ScopeId) -> bool {
-        self.nested_scope_resolver
-            .scope_tree
-            .get_scope(scope_id)
-            .is_some()
     }
 
     /// Calculate scope distance between two scopes
