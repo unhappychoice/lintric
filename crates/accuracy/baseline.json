@@ -2,17 +2,17 @@
   "fixtures": {
     "rust/associated_items.rs": {
       "expected": 10,
-      "detected": 8,
-      "correct": 8,
-      "missing": 2,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
       "spurious": 0,
-      "duplicates": 0
+      "duplicates": 1
     },
     "rust/associated_types.rs": {
       "expected": 10,
-      "detected": 8,
-      "correct": 8,
-      "missing": 2,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -339,10 +339,10 @@
   },
   "total": {
     "expected": 412,
-    "detected": 407,
-    "correct": 400,
-    "missing": 12,
+    "detected": 411,
+    "correct": 404,
+    "missing": 8,
     "spurious": 7,
-    "duplicates": 27
+    "duplicates": 28
   }
 }

@@ -236,6 +236,7 @@ IntermediateRepresentation {
         Definition { position: { 32:9 to 32:15 }, name: "result", definition_type: VariableDefinition, scope_id: Some(13), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
+        Dependency { source_line: 2, target_line: 1, symbol: "Clone", dependency_type: TypeReference, context: Some("TypeIdentifier:2:24") },
         Dependency { source_line: 9, target_line: 1, symbol: "Clone", dependency_type: TypeReference, context: Some("TypeIdentifier:9:20") },
         Dependency { source_line: 9, target_line: 5, symbol: "Display", dependency_type: TypeReference, context: Some("TypeIdentifier:9:28") },
         Dependency { source_line: 10, target_line: 19, symbol: "clone", dependency_type: FunctionCall, context: Some("FieldExpression:10:18") },
@@ -244,6 +245,7 @@ IntermediateRepresentation {
         Dependency { source_line: 11, target_line: 10, symbol: "cloned", dependency_type: VariableUse, context: Some("Identifier:11:5") },
         Dependency { source_line: 18, target_line: 1, symbol: "Clone", dependency_type: TypeReference, context: Some("TypeIdentifier:18:6") },
         Dependency { source_line: 18, target_line: 14, symbol: "Item", dependency_type: TypeReference, context: Some("TypeIdentifier:18:16") },
+        Dependency { source_line: 19, target_line: 14, symbol: "Item", dependency_type: TypeReference, context: Some("TypeIdentifier:19:24") },
         Dependency { source_line: 20, target_line: 14, symbol: "Item", dependency_type: TypeReference, context: Some("TypeIdentifier:20:9") },
         Dependency { source_line: 20, target_line: 15, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldInitializer:20:16") },
         Dependency { source_line: 20, target_line: 15, symbol: "value", dependency_type: StructFieldAccess, context: Some("FieldExpression:20:23") },
@@ -259,7 +261,7 @@ IntermediateRepresentation {
         Dependency { source_line: 25, target_line: 6, symbol: "display", dependency_type: TraitImplementation, context: Some("trait_implementation::Display") },
     ],
     usage: [
-        Usage { position: { 2:24 to 2:28 }, name: "Self", kind: TypeIdentifier, context: None },
+        Usage { position: { 2:24 to 2:28 }, name: "Clone", kind: TypeIdentifier, context: Some("self_type") },
         Usage { position: { 6:26 to 6:32 }, name: "String", kind: TypeIdentifier, context: None },
         Usage { position: { 9:17 to 9:18 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 9:20 to 9:25 }, name: "Clone", kind: TypeIdentifier, context: None },
@@ -274,7 +276,7 @@ IntermediateRepresentation {
         Usage { position: { 11:5 to 11:11 }, name: "cloned", kind: Identifier, context: Some("field_expression") },
         Usage { position: { 18:6 to 18:11 }, name: "Clone", kind: TypeIdentifier, context: None },
         Usage { position: { 18:16 to 18:20 }, name: "Item", kind: TypeIdentifier, context: None },
-        Usage { position: { 19:24 to 19:28 }, name: "Self", kind: TypeIdentifier, context: None },
+        Usage { position: { 19:24 to 19:28 }, name: "Item", kind: TypeIdentifier, context: Some("self_type") },
         Usage { position: { 20:9 to 20:35 }, name: "Item { value: self.value }", kind: StructExpression, context: None },
         Usage { position: { 20:9 to 20:13 }, name: "Item", kind: TypeIdentifier, context: None },
         Usage { position: { 20:16 to 20:21 }, name: "value", kind: FieldInitializer, context: Some("field_initializer") },

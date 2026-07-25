@@ -14,12 +14,13 @@ struct Numbers;
 impl Container for Numbers { //~ depends: Container@6, Numbers@12
     type Item = i32;
 
-    fn first(&self) -> Self::Item { //~ depends: first@9, Container@6, Item@7
+    // In `impl Trait for Type`, `Self` is the type, not the trait.
+    fn first(&self) -> Self::Item { //~ depends: first@9, Numbers@12, Item@7
         1
     }
 }
 
 fn main() {
     let n = Numbers; //~ depends: Numbers@12
-    let _ = n.first(); //~ depends: first@17, n@23
+    let _ = n.first(); //~ depends: first@18, n@24
 }
