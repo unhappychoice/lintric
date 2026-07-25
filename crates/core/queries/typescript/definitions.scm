@@ -17,6 +17,7 @@
 (internal_module name: (identifier) @definition.namespace)
 
 (function_declaration name: (identifier) @definition.function)
+(generator_function_declaration name: (identifier) @definition.function)
 
 (method_definition name: (property_identifier) @definition.method)
 (method_definition name: (private_property_identifier) @definition.method)

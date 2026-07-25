@@ -280,6 +280,14 @@
       "spurious": 0,
       "duplicates": 2
     },
+    "typescript/declaration_names.ts": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "typescript/destructuring.ts": {
       "expected": 11,
       "detected": 11,
@@ -378,9 +386,9 @@
     }
   },
   "total": {
-    "expected": 466,
-    "detected": 466,
-    "correct": 466,
+    "expected": 473,
+    "detected": 473,
+    "correct": 473,
     "missing": 0,
     "spurious": 0,
     "duplicates": 26
