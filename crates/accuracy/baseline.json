@@ -250,9 +250,9 @@
     },
     "typescript/class_members.ts": {
       "expected": 9,
-      "detected": 6,
-      "correct": 6,
-      "missing": 3,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
       "spurious": 0,
       "duplicates": 0
     },
@@ -339,9 +339,9 @@
   },
   "total": {
     "expected": 412,
-    "detected": 412,
-    "correct": 407,
-    "missing": 5,
+    "detected": 415,
+    "correct": 410,
+    "missing": 2,
     "spurious": 5,
     "duplicates": 28
   }
