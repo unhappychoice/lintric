@@ -155,6 +155,10 @@ definition. The chain, rather than a direct edge to the definition, is deliberat
 - transitive metrics recover the full chain anyway, so nothing is lost by going through it
 - it agrees with #87's proposal that import-like dependencies belong at the top scope level
 
+A `use` line names the declaration and creates a binding of it at one position, so the name refers
+to the declaration while the binding is what it produces. Without that distinction the line resolved
+to its own import and produced no edge at all.
+
 This was an open question when the harness was written, and `rust/imports.rs` now pins the
 answer. It is a decision rather than a fact about the language, so it is revisitable — but it
 should be revisited by changing that fixture, not by discovering that behaviour drifted.

@@ -94,7 +94,7 @@
       "correct": 12,
       "missing": 0,
       "spurious": 0,
-      "duplicates": 1
+      "duplicates": 2
     },
     "rust/let_else.rs": {
       "expected": 12,
@@ -153,9 +153,9 @@
       "duplicates": 0
     },
     "rust/nested_scopes.rs": {
-      "expected": 5,
-      "detected": 5,
-      "correct": 5,
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -230,7 +230,7 @@
       "correct": 14,
       "missing": 0,
       "spurious": 0,
-      "duplicates": 0
+      "duplicates": 2
     },
     "rust/variables.rs": {
       "expected": 7,
@@ -281,9 +281,9 @@
       "duplicates": 0
     },
     "typescript/block_scopes.ts": {
-      "expected": 3,
-      "detected": 3,
-      "correct": 3,
+      "expected": 5,
+      "detected": 5,
+      "correct": 5,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -418,11 +418,11 @@
     }
   },
   "total": {
-    "expected": 562,
-    "detected": 562,
-    "correct": 562,
+    "expected": 569,
+    "detected": 569,
+    "correct": 569,
     "missing": 0,
     "spurious": 0,
-    "duplicates": 27
+    "duplicates": 30
   }
 }
