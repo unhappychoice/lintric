@@ -60,7 +60,6 @@ impl NodeDefinitionExtractor for TypeScriptDefinitionExtractor {
             "arrow_function" => self.extract_arrow_function_definition(node, scope, source),
             "variable_declarator" => self.extract_variable_definition(node, scope, source),
             "formal_parameters" => self.extract_function_parameters(node, scope, source),
-            "enum_body" => self.extract_enum_members(node, scope, source),
             "import_statement" => self
                 .extract_import_statement_definition(node, scope, source)
                 .into_iter()
@@ -325,28 +324,6 @@ impl TypeScriptDefinitionExtractor {
             }
         }
         None
-    }
-
-    fn extract_enum_members(&self, node: Node, scope: ScopeId, source: &str) -> Vec<Definition> {
-        let mut definitions = vec![];
-        let mut cursor = node.walk();
-
-        for child in node.children(&mut cursor) {
-            if child.kind() == "property_identifier" {
-                if let Ok(name_text) = child.utf8_text(source.as_bytes()) {
-                    definitions.push(Definition {
-                        name: Usage::normalize_line_endings(name_text),
-                        definition_type: DefinitionType::PropertyDefinition,
-                        position: Position::from_node(&child),
-                        scope_id: Some(scope),
-                        accessibility: None, // Will be set by ASTScopeTraverser to ScopeLocal
-                        is_hoisted: Some(false),
-                    });
-                }
-            }
-        }
-
-        definitions
     }
 
     fn find_child_by_field_name<'a>(&self, node: Node<'a>, field_name: &str) -> Option<Node<'a>> {

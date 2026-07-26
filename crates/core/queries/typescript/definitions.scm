@@ -14,6 +14,11 @@
 (type_alias_declaration name: (type_identifier) @definition.type_alias)
 (enum_declaration name: (identifier) @definition.enum)
 
+; An enum member, with or without an initializer. `A,` hangs off the body while `A = 1` is an
+; `enum_assignment`, and only the second kind was reached by the traversal this replaces.
+(enum_body name: (property_identifier) @definition.property)
+(enum_assignment name: [(property_identifier) (private_property_identifier)] @definition.property)
+
 (internal_module name: (identifier) @definition.namespace)
 
 (function_declaration name: (identifier) @definition.function)
