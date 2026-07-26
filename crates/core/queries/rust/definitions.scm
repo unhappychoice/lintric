@@ -19,6 +19,13 @@
 
 (mod_item name: (identifier) @definition.module)
 
+; Every local name a `use` introduces: the last segment of a path, an item in a braced list, or an
+; alias. A wildcard introduces no name of its own, so it is absent.
+(use_declaration (scoped_identifier name: (identifier) @definition.import))
+(use_list (identifier) @definition.import)
+(use_list (scoped_identifier name: (identifier) @definition.import))
+(use_as_clause alias: (identifier) @definition.import)
+
 (const_item name: (identifier) @definition.const)
 (static_item name: (identifier) @definition.variable)
 

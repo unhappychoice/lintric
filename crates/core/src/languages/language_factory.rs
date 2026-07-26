@@ -1,4 +1,5 @@
-use super::rust::rust_node_extractors::{RustDefinitionExtractor, RustUsageExtractor};
+use super::rust::definition_extractor::RustDefinitionExtractor;
+use super::rust::usage_extractor::RustUsageExtractor;
 use super::typescript::typescript_node_extractors::{
     TypeScriptDefinitionExtractor, TypeScriptUsageExtractor,
 };
