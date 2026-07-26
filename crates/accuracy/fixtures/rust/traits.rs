@@ -24,3 +24,21 @@ fn main() {
     let a = s.scaled(2); //~ depends: scaled@17, s@23
     let _ = a; //~ depends: a@24
 }
+
+// A trait declares consts alongside methods, and an implementation is coupled to each of them the
+// same way.
+trait Bounded {
+    const LIMIT: i32;
+
+    fn headroom(&self) -> i32;
+}
+
+struct Gauge;
+
+impl Bounded for Gauge { //~ depends: Bounded@30, Gauge@36
+    const LIMIT: i32 = 10; //~ depends: LIMIT@31
+
+    fn headroom(&self) -> i32 { //~ depends: headroom@33
+        Self::LIMIT //~ depends: Gauge@36, LIMIT@39
+    }
+}
