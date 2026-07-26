@@ -859,14 +859,12 @@ impl RustDefinitionExtractor {
                         }
                     }
                 }
-                "if_expression" | "while_expression" => {
-                    if let Some(condition) = parent.child_by_field_name("condition") {
-                        if condition.kind() == "let_condition" {
-                            if let Some(pattern_field) = condition.child_by_field_name("pattern") {
-                                if self.is_child_of(node, pattern_field) {
-                                    return true;
-                                }
-                            }
+                // `if let` and `while let`, chained or not: a chain holds several `let_condition`s,
+                // so asking about the condition itself misses every pattern in one.
+                "let_condition" => {
+                    if let Some(pattern_field) = parent.child_by_field_name("pattern") {
+                        if self.is_child_of(node, pattern_field) {
+                            return true;
                         }
                     }
                 }
