@@ -179,3 +179,18 @@ impl fmt::Debug for Definition {
             self.position, self.name, self.definition_type, self.scope_id, self.accessibility, self.is_hoisted)
     }
 }
+
+impl Definition {
+    /// A definition with nothing but a name, a kind and a position, for tests that do not care
+    /// about scope or visibility.
+    pub fn new_simple(name: String, definition_type: DefinitionType, position: Position) -> Self {
+        Self {
+            name,
+            definition_type,
+            position,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
+        }
+    }
+}

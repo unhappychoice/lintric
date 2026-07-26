@@ -1,8 +1,5 @@
 use crate::dependency_resolver::DependencyResolverTrait;
-use crate::models::{
-    scope::{CodeAnalysisContext, SymbolTable},
-    Definition, Dependency, Usage,
-};
+use crate::models::{CodeAnalysisContext, Definition, Dependency, SymbolTable, Usage};
 use tree_sitter::Node;
 
 use super::accessor_direction::AccessorDirection;

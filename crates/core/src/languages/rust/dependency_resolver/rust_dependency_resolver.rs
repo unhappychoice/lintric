@@ -3,8 +3,7 @@ use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::self_reference::SelfReference;
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
-    scope::{CodeAnalysisContext, SymbolTable},
-    Definition, DefinitionType, Dependency, Usage, UsageKind,
+    CodeAnalysisContext, Definition, DefinitionType, Dependency, SymbolTable, Usage, UsageKind,
 };
 use tree_sitter::Node;
 
