@@ -32,6 +32,12 @@
 (abstract_class_declaration name: (type_identifier) @binding)
 (type_parameter name: (type_identifier) @binding)
 
+; `catch (e)` declares `e`, and `for (const x of xs)` declares `x`. A `for` without `kind:` assigns
+; to a binding that already exists, so it reads rather than declares — which is why the field is
+; required rather than the shape alone.
+(catch_clause parameter: (identifier) @binding)
+(for_in_statement kind: _ left: (identifier) @binding)
+
 ; Names a pattern or parameter list introduces.
 (array_pattern (identifier) @binding)
 (rest_pattern (identifier) @binding)

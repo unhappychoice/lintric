@@ -6,7 +6,7 @@ use tree_sitter::Node;
 const QUERY: &str = include_str!("../../../queries/typescript/definitions.scm");
 
 /// What each capture in that file means, and whether it hoists.
-const ROLES: [(&str, DeclaredAs); 10] = [
+const ROLES: [(&str, DeclaredAs); 11] = [
     (
         "definition.class",
         DeclaredAs::hoisted(DefinitionType::ClassDefinition),
@@ -38,6 +38,10 @@ const ROLES: [(&str, DeclaredAs); 10] = [
     (
         "definition.property",
         DeclaredAs::plain(DefinitionType::PropertyDefinition),
+    ),
+    (
+        "definition.variable",
+        DeclaredAs::plain(DefinitionType::VariableDefinition),
     ),
     (
         "definition.import",
