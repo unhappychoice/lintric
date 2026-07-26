@@ -249,9 +249,9 @@
       "duplicates": 0
     },
     "typescript/abstract_classes.ts": {
-      "expected": 7,
-      "detected": 7,
-      "correct": 7,
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
       "missing": 0,
       "spurious": 0,
       "duplicates": 1
@@ -410,9 +410,9 @@
     }
   },
   "total": {
-    "expected": 526,
-    "detected": 526,
-    "correct": 526,
+    "expected": 534,
+    "detected": 534,
+    "correct": 534,
     "missing": 0,
     "spurious": 0,
     "duplicates": 27
