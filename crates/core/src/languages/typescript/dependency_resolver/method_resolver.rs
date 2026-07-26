@@ -1,4 +1,4 @@
-use super::receiver_narrowing::ReceiverNarrowing;
+use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::models::{Definition, Dependency, Type, Usage, UsageKind};
 use std::collections::HashMap;
 use tree_sitter::Node;
