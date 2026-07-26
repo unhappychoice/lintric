@@ -1,5 +1,9 @@
 use super::nested_scope_resolver::ScopeUtilities;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
+use crate::dependency_resolver::self_reference::SelfReference;
+
+/// Each `let` paired with its initializer, so a binding stays out of the names it reads.
+const OWN_INITIALIZERS: &str = include_str!("../../../../queries/rust/own_initializers.scm");
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
     scope::{CodeAnalysisContext, SymbolTable},
@@ -226,10 +230,18 @@ impl RustDependencyResolver {
 
         in_scope
             .iter()
-            .filter(|def| def.position.start_line < usage.position.start_line)
+            // Up to and including the usage's own line: a closure parameter and a generic are
+            // declared on the line their body reads them from. A binding declared *later* is not
+            // visible, so it is no longer the answer of last resort — only a hoisted declaration is.
+            .filter(|def| def.position.start_line <= usage.position.start_line)
             .max_by_key(|def| def.position.start_line)
             .copied()
-            .or_else(|| in_scope.first().copied())
+            .or_else(|| {
+                in_scope
+                    .iter()
+                    .find(|def| self.is_hoisted_basic(def))
+                    .copied()
+            })
     }
 
     /// The usage's own scope followed by its enclosing scopes, nearest first.
@@ -382,12 +394,14 @@ impl RustDependencyResolver {
         // it, and a malformed query must fail rather than quietly resolve nothing.
         let narrowing =
             ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
+        let own = SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?;
 
         Ok(usage_nodes
             .iter()
             .flat_map(|usage_node| {
                 self.resolve_single_dependency_with_scope_aware_external_filtering(
                     &narrowing,
+                    &own,
                     usage_node,
                     definitions,
                     usage_nodes,
@@ -399,6 +413,7 @@ impl RustDependencyResolver {
     fn resolve_single_dependency_with_scope_aware_external_filtering(
         &self,
         narrowing: &ReceiverNarrowing,
+        own: &SelfReference,
         usage_node: &Usage,
         definitions: &[Definition],
         all_usage_nodes: &[Usage],
@@ -429,7 +444,7 @@ impl RustDependencyResolver {
 
         // Proceed with normal resolution
         if let Some(def) =
-            self.find_closest_accessible_definition_basic(narrowing, usage_node, definitions)
+            self.find_closest_accessible_definition_basic(narrowing, own, usage_node, definitions)
         {
             let source_line = usage_node.position.line_number();
             let target_line = def.line_number();
@@ -454,6 +469,7 @@ impl RustDependencyResolver {
     fn find_closest_accessible_definition_basic<'a>(
         &self,
         narrowing: &ReceiverNarrowing,
+        own: &SelfReference,
         usage: &Usage,
         definitions: &'a [Definition],
     ) -> Option<&'a Definition> {
@@ -462,6 +478,9 @@ impl RustDependencyResolver {
         let matching_definitions: Vec<&Definition> = definitions
             .iter()
             .filter(|d| d.name == usage.name && self.is_accessible_basic(usage, d))
+            // A binding is not among the candidates for its own initializer, so `let w = w + 1`
+            // looks past it and finds the previous `w`.
+            .filter(|d| !own.declares(usage, d))
             .collect();
 
         // `receiver.method()` reaches only what the receiver's type declares, so the priority logic

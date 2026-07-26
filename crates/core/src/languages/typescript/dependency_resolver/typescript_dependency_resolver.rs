@@ -9,6 +9,10 @@ use super::accessor_direction::AccessorDirection;
 use super::method_resolver::MethodResolver;
 use super::module_resolver::ModuleResolver;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
+use crate::dependency_resolver::self_reference::SelfReference;
+
+/// Each declarator paired with its initializer, so a binding stays out of the names it reads.
+const OWN_INITIALIZERS: &str = include_str!("../../../../queries/typescript/own_initializers.scm");
 
 /// TypeScript-specific dependency resolver
 pub struct TypeScriptDependencyResolver {
@@ -240,11 +244,12 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
         let narrowing =
             ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
         let direction = AccessorDirection::new(source_code, root_node)?;
+        let own = SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?;
 
         let mut all_dependencies: Vec<Dependency> = usage_nodes
             .iter()
             .flat_map(|usage| {
-                self.resolve_single_dependency(&narrowing, &direction, usage, definitions)
+                self.resolve_single_dependency(&narrowing, &direction, &own, usage, definitions)
             })
             .collect();
 
@@ -265,6 +270,7 @@ impl TypeScriptDependencyResolver {
         &self,
         narrowing: &ReceiverNarrowing,
         direction: &AccessorDirection,
+        own: &SelfReference,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
@@ -288,6 +294,9 @@ impl TypeScriptDependencyResolver {
 
         let accessible: Vec<&Definition> = all_matching_definitions
             .into_iter()
+            // A binding is not among the candidates for its own initializer, so `let x = x + 1`
+            // looks past it and finds the previous `x`.
+            .filter(|def| !own.declares(usage_node, def))
             .filter(|def| !Self::is_member_reached_by_name(usage_node, def))
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.module_resolver.is_valid_dependency(usage_node, def))
