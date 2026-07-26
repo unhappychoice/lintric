@@ -217,6 +217,18 @@ The cost is symmetrical to the object-shape decision and worth stating: a genuin
 unannotated receiver loses its edge. `typescript/member_access.ts` pins both halves, including the
 non-edge.
 
+Rust works the same way, with the type read from a parameter, a `let` annotation, a `let` whose
+initializer names a type, or `self` inside an impl. `rust/method_receivers.rs` pins it.
+
+Two consequences are worth stating outright, because they look like lost edges and are not:
+
+- `fn measure(shape: impl Shape)` and `fn measure(shape: &dyn Shape)` state **the trait**, so
+  `shape.area()` reaches the trait's declaration rather than any implementor's. Both fixtures
+  recorded an implementor before the receiver's type was consulted, and both were wrong.
+- a receiver whose type comes from a return value — `let cloned = item.clone(); cloned.display()` —
+  is unknown, so a method name declared by more than one type resolves to nothing. Guessing pointed
+  at an arbitrary implementor.
+
 ## Still unsettled
 
 **Functional update.** Whether `Point { ..other }` should imply a dependency on every field
