@@ -11,26 +11,36 @@ const QUERIES: Queries = Queries {
             (implements_clause [(type_identifier) (generic_type)] @type)
             (extends_clause value: (identifier) @type)
           ])
-          body: (class_body
-            (method_definition name: (property_identifier) @method)))
+          body: (class_body [
+            (method_definition name: (property_identifier) @method)
+            (public_field_definition name: (property_identifier) @method)
+          ]))
     "#,
     // A base class declares by providing a body, so its methods count as declarations alongside
     // the signatures an interface declares. An abstract class declares both ways at once.
+    //
+    // An interface declares properties as well as methods, and a class field satisfying one is
+    // coupled to it the same way a method is, so both are captured under one name.
     declarations: r#"
         [
           (interface_declaration
             name: (type_identifier) @type
-            body: (interface_body
-              (method_signature name: (property_identifier) @method)))
+            body: (interface_body [
+              (method_signature name: (property_identifier) @method)
+              (property_signature name: (property_identifier) @method)
+            ]))
           (class_declaration
             name: (type_identifier) @type
-            body: (class_body
-              (method_definition name: (property_identifier) @method)))
+            body: (class_body [
+              (method_definition name: (property_identifier) @method)
+              (public_field_definition name: (property_identifier) @method)
+            ]))
           (abstract_class_declaration
             name: (type_identifier) @type
             body: (class_body [
               (abstract_method_signature name: (property_identifier) @method)
               (method_definition name: (property_identifier) @method)
+              (public_field_definition name: (property_identifier) @method)
             ]))
         ]
     "#,
