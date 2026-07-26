@@ -5,3 +5,8 @@
 
 (method_definition "get" name: (property_identifier) @getter)
 (method_definition "set" name: (property_identifier) @setter)
+
+; An interface declares them the same way, and a class getter satisfies the interface's getter rather
+; than its setter.
+(method_signature "get" name: (property_identifier) @getter)
+(method_signature "set" name: (property_identifier) @setter)

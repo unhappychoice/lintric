@@ -26,6 +26,9 @@ const QUERIES: Queries = Queries {
             (associated_type name: (type_identifier) @method)
           ]))
     "#,
+    // Rust has no accessors: a getter and a setter would be two ordinary methods with different
+    // names.
+    accessors: None,
     // `trait Extended: Base` inherits Base's declarations, so an implementation of Extended can be
     // satisfying something Base declared.
     supertypes: r#"
