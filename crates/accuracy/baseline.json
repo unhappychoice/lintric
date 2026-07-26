@@ -265,9 +265,9 @@
       "duplicates": 1
     },
     "typescript/accessors.ts": {
-      "expected": 9,
-      "detected": 9,
-      "correct": 9,
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -418,9 +418,9 @@
     }
   },
   "total": {
-    "expected": 569,
-    "detected": 569,
-    "correct": 569,
+    "expected": 575,
+    "detected": 575,
+    "correct": 575,
     "missing": 0,
     "spurious": 0,
     "duplicates": 30

@@ -32,3 +32,21 @@ class Counter {
 
 const counter = new Counter(); //~ depends: Counter@9
 const observed = counter.value; //~ depends: counter@33, value@12
+
+// An interface declares a getter and a setter separately, and each is satisfied by its own half.
+interface Measured {
+    get value(): number;
+    set value(next: number);
+}
+
+class Gauge implements Measured { //~ depends: Measured@37
+    private held = 0;
+
+    get value(): number { //~ depends: value@38
+        return this.held; //~ depends: held@43
+    }
+
+    set value(next: number) { //~ depends: value@39
+        this.held = next; //~ depends: held@43, next@49
+    }
+}
