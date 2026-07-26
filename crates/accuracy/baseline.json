@@ -137,9 +137,9 @@
       "duplicates": 0
     },
     "rust/method_receivers.rs": {
-      "expected": 17,
-      "detected": 17,
-      "correct": 17,
+      "expected": 23,
+      "detected": 23,
+      "correct": 23,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -434,9 +434,9 @@
     }
   },
   "total": {
-    "expected": 594,
-    "detected": 594,
-    "correct": 594,
+    "expected": 600,
+    "detected": 600,
+    "correct": 600,
     "missing": 0,
     "spurious": 0,
     "duplicates": 33

@@ -40,14 +40,21 @@ pub struct Dialect {
 /// What each member access can be narrowed to, read off the file once.
 pub struct ReceiverNarrowing {
     owner_by_member_position: HashMap<(usize, usize), String>,
-    /// Every member access, keyed by the position a `Usage` carries for it.
+    /// Every member access, keyed by the span a `Usage` carries for it.
+    ///
+    /// The span rather than the start, because `a.to_b().shared()` nests two accesses that begin at
+    /// the same token — Rust records a method call at the start of its receiver, so only the end
+    /// tells the outer one from the inner.
     ///
     /// Held separately from the types below so that "an access whose receiver's type is unknown" is
     /// distinguishable from "not an access at all". The first must resolve to nothing; the second
     /// must be left entirely alone, since most usages are not member accesses.
-    access_positions: HashSet<(usize, usize)>,
-    receiver_types_by_access: HashMap<(usize, usize), Vec<String>>,
+    access_spans: HashSet<Span>,
+    receiver_types_by_access: HashMap<Span, Vec<String>>,
 }
+
+/// Where an access begins and ends.
+type Span = ((usize, usize), (usize, usize));
 
 impl ReceiverNarrowing {
     pub fn new(dialect: &Dialect, source_code: &str, root_node: Node) -> Result<Self, String> {
@@ -61,10 +68,7 @@ impl ReceiverNarrowing {
             "accessed",
             |receiver, accessed| {
                 Some((
-                    (
-                        accessed.start_position().row + 1,
-                        accessed.start_position().column + 1,
-                    ),
+                    span(accessed),
                     annotations.types_of(dialect, receiver, source_code),
                 ))
             },
@@ -78,10 +82,10 @@ impl ReceiverNarrowing {
                 "owner",
                 "member",
             )?,
-            access_positions: accesses.iter().map(|(position, _)| *position).collect(),
+            access_spans: accesses.iter().map(|(span, _)| *span).collect(),
             receiver_types_by_access: accesses
                 .into_iter()
-                .filter_map(|(position, types)| types.map(|types| (position, types)))
+                .filter_map(|(span, types)| types.map(|types| (span, types)))
                 .collect(),
         })
     }
@@ -97,13 +101,13 @@ impl ReceiverNarrowing {
         usage: &Usage,
         candidates: Vec<&'a Definition>,
     ) -> Vec<&'a Definition> {
-        let position = (usage.position.start_line, usage.position.start_column);
+        let accessed = usage_span(usage);
 
-        if candidates.len() <= 1 || !self.access_positions.contains(&position) {
+        if candidates.len() <= 1 || !self.access_spans.contains(&accessed) {
             return candidates;
         }
 
-        let Some(owners) = self.receiver_types_by_access.get(&position) else {
+        let Some(owners) = self.receiver_types_by_access.get(&accessed) else {
             return Vec::new();
         };
 
@@ -213,6 +217,23 @@ fn merged(pairs: Vec<(String, Vec<String>)>) -> HashMap<String, Vec<String>> {
             merged.entry(binding).or_default().extend(types);
             merged
         })
+}
+
+fn span(node: Node) -> Span {
+    (
+        (
+            node.start_position().row + 1,
+            node.start_position().column + 1,
+        ),
+        (node.end_position().row + 1, node.end_position().column + 1),
+    )
+}
+
+fn usage_span(usage: &Usage) -> Span {
+    (
+        (usage.position.start_line, usage.position.start_column),
+        (usage.position.end_line, usage.position.end_column),
+    )
 }
 
 /// The type names something stated as a type, reading a bare name as one.
