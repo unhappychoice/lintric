@@ -56,6 +56,14 @@
       "spurious": 0,
       "duplicates": 0
     },
+    "rust/function_types.rs": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
     "rust/functions.rs": {
       "expected": 8,
       "detected": 8,
@@ -183,6 +191,14 @@
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
+    },
+    "rust/qualified_paths.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
     },
     "rust/structs.rs": {
       "expected": 18,
@@ -400,6 +416,14 @@
       "spurious": 0,
       "duplicates": 1
     },
+    "typescript/member_syntax.ts": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
     "typescript/namespaces.ts": {
       "expected": 10,
       "detected": 10,
@@ -432,6 +456,14 @@
       "spurious": 0,
       "duplicates": 3
     },
+    "typescript/type_operators.ts": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "typescript/variables.ts": {
       "expected": 5,
       "detected": 5,
@@ -442,11 +474,11 @@
     }
   },
   "total": {
-    "expected": 640,
-    "detected": 640,
-    "correct": 640,
+    "expected": 694,
+    "detected": 694,
+    "correct": 694,
     "missing": 0,
     "spurious": 0,
-    "duplicates": 34
+    "duplicates": 37
   }
 }
