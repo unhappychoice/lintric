@@ -5,11 +5,13 @@ pub mod lifetime_resolver;
 pub mod method_resolver;
 pub mod module_resolver;
 pub mod nested_scope_resolver;
+pub mod qualified_paths;
 pub mod receiver_narrowing;
 pub mod rust_dependency_resolver;
 pub mod trait_database;
 pub mod trait_implementation_resolver;
 pub mod type_system;
+pub mod visibility;
 
 pub use associated_type_resolver::AssociatedTypeResolver;
 pub use constraint_solver::ConstraintSolver;
