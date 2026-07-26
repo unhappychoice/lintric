@@ -12,6 +12,7 @@ pub mod edge;
 pub mod expectation;
 pub mod fixtures;
 pub mod report;
+pub mod shift;
 
 use std::path::{Path, PathBuf};
 
