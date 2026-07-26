@@ -168,6 +168,14 @@
       "spurious": 0,
       "duplicates": 3
     },
+    "rust/path_head_names.rs": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "rust/patterns.rs": {
       "expected": 14,
       "detected": 14,
@@ -426,9 +434,9 @@
     }
   },
   "total": {
-    "expected": 585,
-    "detected": 585,
-    "correct": 585,
+    "expected": 594,
+    "detected": 594,
+    "correct": 594,
     "missing": 0,
     "spurious": 0,
     "duplicates": 33
