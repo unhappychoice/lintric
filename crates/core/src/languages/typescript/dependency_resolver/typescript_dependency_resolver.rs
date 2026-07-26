@@ -58,6 +58,26 @@ impl TypeScriptDependencyResolver {
             .resolve_struct_field_access(usage_node, definitions, narrowing)
     }
 
+    /// Whether this declaration can be named from the position this usage sits in.
+    ///
+    /// TypeScript keeps types and values in separate namespaces, so an interface and a `const` may
+    /// share a name and each is invisible where the other belongs. A class, an enum and a namespace
+    /// declare in both, which is why the rule is about what a declaration introduces rather than
+    /// about matching a type usage to a type declaration.
+    fn is_in_usage_namespace(usage: &Usage, definition: &Definition) -> bool {
+        use crate::models::DefinitionType::*;
+
+        match definition.definition_type {
+            InterfaceDefinition | TypeDefinition => {
+                usage.kind == crate::models::UsageKind::TypeIdentifier
+            }
+            VariableDefinition | ConstDefinition | FunctionDefinition => {
+                usage.kind != crate::models::UsageKind::TypeIdentifier
+            }
+            _ => true,
+        }
+    }
+
     /// Whether a member would be reached by its bare name.
     ///
     /// `receiver.member` reaches only what the receiver's type declares, which the field access
@@ -297,6 +317,7 @@ impl TypeScriptDependencyResolver {
             // A binding is not among the candidates for its own initializer, so `let x = x + 1`
             // looks past it and finds the previous `x`.
             .filter(|def| !own.declares(usage_node, def))
+            .filter(|def| Self::is_in_usage_namespace(usage_node, def))
             .filter(|def| !Self::is_member_reached_by_name(usage_node, def))
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.module_resolver.is_valid_dependency(usage_node, def))
