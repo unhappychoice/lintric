@@ -131,6 +131,28 @@ annotations — a JSX attribute does reference the prop it names, a type paramet
 `super::X` does not depend on the module's declaration. When a fixture disagrees with the analyzer,
 check which one is wrong before filing.
 
+## Auditing real code for self-consistency
+
+The fixtures measure correctness on cases written by hand, which is why they are small. A
+complementary check runs the analyzer over the repository's own source and asserts something weaker
+but at scale: **for every edge, the symbol appears as a word on both the source and the target line.**
+
+Over 7,990 edges from `crates/**/*.rs`, target lines matched in every case, and every source-line
+mismatch fell into one of two documented behaviours:
+
+| Count | Why the source line does not contain the symbol |
+| --- | --- |
+| 206 | `Self` is rewritten to the type it stands for, so the line says `Self` while the edge names the type |
+| 48 | a multi-line expression is recorded at its start, so `let x = thing` carries an edge for a method called two lines further down |
+
+Nothing else. The check finds a different class of defect from the fixtures — a resolution pointing
+at a line that does not mention the name at all cannot survive it, however exotic the construct — and
+it costs a couple of minutes to run over a few thousand edges rather than a few hundred expectations.
+
+It is a sweep to re-run after changing resolution, not a test: it is too slow for CI, and it proves
+consistency rather than correctness. An edge can name the right symbol on the wrong line, which is
+what the fixtures are for.
+
 ## Import resolution
 
 Given
