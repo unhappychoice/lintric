@@ -7,21 +7,18 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use super::definition::ScopeId;
-use super::symbol_table::TypeParameter;
 use super::{Definition, Usage};
 
 /// Registry for managing definitions with single responsibility
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DefinitionRegistry {
     definitions: HashMap<String, Vec<Definition>>,
-    type_parameters: HashMap<String, Vec<TypeParameter>>,
 }
 
 impl DefinitionRegistry {
     pub fn new() -> Self {
         Self {
             definitions: HashMap::new(),
-            type_parameters: HashMap::new(),
         }
     }
 

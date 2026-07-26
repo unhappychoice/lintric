@@ -35,18 +35,9 @@ impl SymbolEntry {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct TypeParameter {
-    pub name: String,
-    pub constraint_type: Option<String>,
-    pub default_type: Option<String>,
-    pub scope_id: ScopeId,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SymbolTable {
     symbols: HashMap<String, Vec<SymbolEntry>>,
     pub scopes: ScopeTree,
-    type_parameters: HashMap<String, Vec<TypeParameter>>,
 }
 
 impl SymbolTable {
@@ -54,7 +45,6 @@ impl SymbolTable {
         Self {
             symbols: HashMap::new(),
             scopes: ScopeTree::new(),
-            type_parameters: HashMap::new(),
         }
     }
 
@@ -102,23 +92,6 @@ impl SymbolTable {
         } else {
             panic!("Definition must have context information set");
         }
-    }
-
-    #[allow(dead_code)]
-    fn is_scope_accessible(&self, from_scope: ScopeId, to_scope: ScopeId) -> bool {
-        // Simple implementation: check if to_scope is a parent of from_scope
-        let mut current = from_scope;
-        while let Some(scope) = self.scopes.get_scope(current) {
-            if current == to_scope {
-                return true;
-            }
-            if let Some(parent) = scope.parent {
-                current = parent;
-            } else {
-                break;
-            }
-        }
-        false
     }
 }
 
