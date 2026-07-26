@@ -1,8 +1,7 @@
 use super::rust::definition_extractor::RustDefinitionExtractor;
 use super::rust::usage_extractor::RustUsageExtractor;
-use super::typescript::typescript_node_extractors::{
-    TypeScriptDefinitionExtractor, TypeScriptUsageExtractor,
-};
+use super::typescript::definition_extractor::TypeScriptDefinitionExtractor;
+use super::typescript::usage_extractor::TypeScriptUsageExtractor;
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{ASTScopeTraverser, CodeAnalysisContext, Language};
 use tree_sitter::Node;
