@@ -289,9 +289,9 @@
       "duplicates": 0
     },
     "typescript/block_scopes.ts": {
-      "expected": 5,
-      "detected": 5,
-      "correct": 5,
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -434,9 +434,9 @@
     }
   },
   "total": {
-    "expected": 600,
-    "detected": 600,
-    "correct": 600,
+    "expected": 610,
+    "detected": 610,
+    "correct": 610,
     "missing": 0,
     "spurious": 0,
     "duplicates": 33
