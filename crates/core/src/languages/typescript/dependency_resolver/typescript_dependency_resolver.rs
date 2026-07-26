@@ -126,12 +126,9 @@ impl TypeScriptDependencyResolver {
     fn is_in_scope_chain(&self, usage: &Usage, definition: &Definition) -> bool {
         let chain = self.usage_scope_chain(usage);
 
-        definition.scope_id.is_some_and(|def_scope| {
-            chain.contains(&def_scope)
-                || self
-                    .parent_scope(def_scope)
-                    .is_some_and(|parent| chain.contains(&parent))
-        })
+        definition
+            .scope_id
+            .is_some_and(|def_scope| chain.contains(&def_scope))
     }
 
     /// The usage's own scope followed by its enclosing scopes.
@@ -145,13 +142,6 @@ impl TypeScriptDependencyResolver {
         std::iter::once(usage_scope)
             .chain(self.symbol_table.scopes.get_parent_scopes(usage_scope))
             .collect()
-    }
-
-    fn parent_scope(&self, scope_id: crate::models::ScopeId) -> Option<crate::models::ScopeId> {
-        self.symbol_table
-            .scopes
-            .get_scope(scope_id)
-            .and_then(|scope| scope.parent)
     }
 
     fn is_hoisted_basic(&self, definition: &Definition) -> bool {
