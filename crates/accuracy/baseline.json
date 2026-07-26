@@ -313,9 +313,9 @@
       "duplicates": 0
     },
     "typescript/enums.ts": {
-      "expected": 9,
-      "detected": 9,
-      "correct": 9,
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
       "missing": 0,
       "spurious": 0,
       "duplicates": 4
@@ -410,9 +410,9 @@
     }
   },
   "total": {
-    "expected": 510,
-    "detected": 510,
-    "correct": 510,
+    "expected": 515,
+    "detected": 515,
+    "correct": 515,
     "missing": 0,
     "spurious": 0,
     "duplicates": 27
