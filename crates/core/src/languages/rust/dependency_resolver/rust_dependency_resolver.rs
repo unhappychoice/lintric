@@ -1,15 +1,15 @@
 use super::nested_scope_resolver::ScopeUtilities;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::self_reference::SelfReference;
-
-/// Each `let` paired with its initializer, so a binding stays out of the names it reads.
-const OWN_INITIALIZERS: &str = include_str!("../../../../queries/rust/own_initializers.scm");
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
     scope::{CodeAnalysisContext, SymbolTable},
-    Definition, Dependency, ScopeId, ScopeType, Usage, UsageKind,
+    Definition, DefinitionType, Dependency, ScopeId, ScopeType, Usage, UsageKind,
 };
 use tree_sitter::Node;
+
+/// Each `let` paired with its initializer, so a binding stays out of the names it reads.
+const OWN_INITIALIZERS: &str = include_str!("../../../../queries/rust/own_initializers.scm");
 
 /// Rust-specific dependency resolver that implements comprehensive dependency resolution
 /// including generics, lifetimes, traits, and Rust-specific language features
@@ -516,180 +516,64 @@ impl RustDependencyResolver {
         self.select_best_definition_by_priority(&matching_definitions, usage)
     }
 
+    /// The definition a usage names, chosen by what kind of usage it is.
+    ///
+    /// Preferences are tiers: every candidate is offered to the first tier before the second is
+    /// tried, so `obj.field()` reaches a method rather than a field declared earlier in the file.
+    /// Within a tier, declaration order decides.
     fn select_best_definition_by_priority<'a>(
         &self,
         matching_definitions: &[&'a Definition],
         usage: &Usage,
     ) -> Option<&'a Definition> {
-        // Apply context-aware priority logic based on usage type
-
-        // For main function usages, prefer ImportDefinition (imported symbols) FIRST
-        // Check if this usage is within main function and there's an import available
+        // An import is what a name in `main` reaches, since that is where a `use` was written for.
         if self.is_usage_in_main_function(usage) {
-            for &def in matching_definitions {
-                if matches!(
-                    def.definition_type,
-                    crate::models::DefinitionType::ImportDefinition
-                ) {
-                    return Some(def);
-                }
+            if let Some(imported) = first_of(matching_definitions, IMPORTED) {
+                return Some(imported);
             }
         }
 
-        // For method calls (CallExpression), prioritize methods over fields
-        if matches!(usage.kind, crate::models::UsageKind::CallExpression) {
-            // Prefer MethodDefinition and FunctionDefinition for method calls
-            for &def in matching_definitions {
-                if matches!(
-                    def.definition_type,
-                    crate::models::DefinitionType::MethodDefinition
-                        | crate::models::DefinitionType::FunctionDefinition
-                ) {
-                    return Some(def);
-                }
-            }
-        }
-
-        // A field named by a struct literal can only refer to a field declaration, so unlike a
-        // field expression there is no method to prefer over it
-        if matches!(usage.kind, crate::models::UsageKind::FieldInitializer) {
-            for &def in matching_definitions {
-                if matches!(
-                    def.definition_type,
-                    crate::models::DefinitionType::StructFieldDefinition
-                ) {
-                    return Some(def);
-                }
-            }
-        }
-
-        // For field expressions, first check if these are actually method calls
-        // In case of StructFieldAccess dependency_type, prefer methods over fields (due to potential misclassification)
-        if matches!(usage.kind, crate::models::UsageKind::FieldExpression) {
-            // First try to find MethodDefinition in impl blocks (more specific)
-            for &def in matching_definitions {
-                if matches!(
-                    def.definition_type,
-                    crate::models::DefinitionType::MethodDefinition
-                ) {
-                    return Some(def);
-                }
-            }
-            // Then try StructFieldDefinition for actual field access
-            for &def in matching_definitions {
-                if matches!(
-                    def.definition_type,
-                    crate::models::DefinitionType::StructFieldDefinition
-                ) {
-                    return Some(def);
-                }
-            }
+        if let Some(preferred) = preference_for(usage.kind.clone())
+            .and_then(|tiers| first_of(matching_definitions, tiers))
+        {
+            return Some(preferred);
         }
 
         // A bare identifier names the nearest binding in scope, and a type parameter belongs to the
-        // generic item that declares it, so proximity decides before the definition-type ladder
-        // below gets a say.
+        // generic item that declares it, so proximity decides before the ladder gets a say.
         if matches!(
             usage.kind,
-            crate::models::UsageKind::Identifier | crate::models::UsageKind::TypeIdentifier
+            UsageKind::Identifier | UsageKind::TypeIdentifier
         ) {
             if let Some(nearest) = self.select_nearest_in_scope_chain(usage, matching_definitions) {
                 return Some(nearest);
             }
         }
 
-        // General priority for other cases (import statements themselves)
-        // For module references, prefer ModuleDefinition
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::ModuleDefinition
-            ) {
-                return Some(def);
-            }
-        }
+        first_of(matching_definitions, LADDER)
+            .or_else(|| self.nearest_preceding_local(matching_definitions, usage))
+            .or_else(|| first_of(matching_definitions, IMPORTED))
+            .or_else(|| matching_definitions.first().copied())
+    }
 
-        // For function references, prefer FunctionDefinition
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::FunctionDefinition
-            ) {
-                return Some(def);
-            }
-        }
-
-        // For methods, prefer MethodDefinition
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::MethodDefinition
-            ) {
-                return Some(def);
-            }
-        }
-
-        // For constants, prefer ConstDefinition
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::ConstDefinition
-            ) {
-                return Some(def);
-            }
-        }
-
-        // For structs, prefer StructDefinition
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::StructDefinition
-            ) {
-                return Some(def);
-            }
-        }
-
-        // First, try to find variable definitions in the same function scope
-        let mut same_scope_defs = Vec::new();
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::VariableDefinition
-            ) && ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, def)
-            {
-                // Among same-scope definitions, only consider those defined before the usage
-                if def.position.start_line < usage.position.start_line
-                    || (def.position.start_line == usage.position.start_line
-                        && def.position.start_column < usage.position.start_column)
-                {
-                    same_scope_defs.push(def);
-                }
-            }
-        }
-
-        if !same_scope_defs.is_empty() {
-            // Return the closest preceding definition in the same scope
-            same_scope_defs.sort_by_key(|def| {
-                (
-                    std::cmp::Reverse(def.position.start_line),
-                    std::cmp::Reverse(def.position.start_column),
-                )
-            });
-            return same_scope_defs.first().copied();
-        }
-
-        // Only fall back to ImportDefinition if no original definition is found
-        for &def in matching_definitions {
-            if matches!(
-                def.definition_type,
-                crate::models::DefinitionType::ImportDefinition
-            ) {
-                return Some(def);
-            }
-        }
-
-        // As absolute fallback, return any remaining definition
-        matching_definitions.first().copied()
+    /// The last local declared before the usage in its own function scope.
+    ///
+    /// Reached only once the ladder has declined, so this is about a plain variable rather than
+    /// anything a kind preference would have claimed.
+    fn nearest_preceding_local<'a>(
+        &self,
+        matching_definitions: &[&'a Definition],
+        usage: &Usage,
+    ) -> Option<&'a Definition> {
+        matching_definitions
+            .iter()
+            .filter(|def| def.definition_type == DefinitionType::VariableDefinition)
+            .filter(|def| {
+                ScopeUtilities::are_in_same_function_scope(&self.symbol_table, usage, def)
+            })
+            .filter(|def| precedes(def, usage))
+            .max_by_key(|def| (def.position.start_line, def.position.start_column))
+            .copied()
     }
 
     fn is_usage_in_main_function(&self, usage: &Usage) -> bool {
@@ -894,6 +778,61 @@ impl RustDependencyResolver {
                 .iter()
                 .any(|other| is_adjacent_segment(usage_node, other))
     }
+}
+
+/// Definition kinds to prefer, most specific tier first.
+type Tiers = &'static [&'static [DefinitionType]];
+
+/// What each usage kind reaches before the general ladder is consulted.
+///
+/// A call reaches a method or a plain function, whichever is declared first — both are things that
+/// can be called. A field expression is not symmetrical that way: a method wins over a field of the
+/// same name wherever each is declared, because a call is what the syntax says.
+fn preference_for(kind: UsageKind) -> Option<Tiers> {
+    match kind {
+        UsageKind::CallExpression => Some(&[&[
+            DefinitionType::MethodDefinition,
+            DefinitionType::FunctionDefinition,
+        ]]),
+        // A field named by a struct literal can only be a field declaration, so there is no method
+        // to prefer over it.
+        UsageKind::FieldInitializer => Some(&[&[DefinitionType::StructFieldDefinition]]),
+        UsageKind::FieldExpression => Some(&[
+            &[DefinitionType::MethodDefinition],
+            &[DefinitionType::StructFieldDefinition],
+        ]),
+        _ => None,
+    }
+}
+
+/// What anything reaches once its own kind has no preference: the most specific declaration first.
+const LADDER: Tiers = &[
+    &[DefinitionType::ModuleDefinition],
+    &[DefinitionType::FunctionDefinition],
+    &[DefinitionType::MethodDefinition],
+    &[DefinitionType::ConstDefinition],
+    &[DefinitionType::StructDefinition],
+];
+
+/// An import is both the first thing a name in `main` reaches and the last resort elsewhere.
+const IMPORTED: Tiers = &[&[DefinitionType::ImportDefinition]];
+
+/// The first candidate matching the earliest tier that matches anything.
+fn first_of<'a>(definitions: &[&'a Definition], tiers: Tiers) -> Option<&'a Definition> {
+    tiers.iter().find_map(|tier| {
+        definitions
+            .iter()
+            .find(|def| tier.contains(&def.definition_type))
+            .copied()
+    })
+}
+
+/// Whether this declaration comes before the usage in the file.
+fn precedes(definition: &Definition, usage: &Usage) -> bool {
+    (
+        definition.position.start_line,
+        definition.position.start_column,
+    ) < (usage.position.start_line, usage.position.start_column)
 }
 
 /// Width of the `::` between path segments.
