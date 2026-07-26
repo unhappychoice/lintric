@@ -5,16 +5,30 @@ use tree_sitter::Node;
 const QUERIES: Queries = Queries {
     // A class method can satisfy an interface it implements or override one from the class it
     // extends, so both heritage clauses name a type whose declarations it may be satisfying.
+    // An abstract class implements and extends the same way a concrete one does, so it appears here
+    // as well as among the declarations — it satisfies a contract while declaring one of its own.
     implementations: r#"
-        (class_declaration
-          (class_heritage [
-            (implements_clause [(type_identifier) (generic_type)] @type)
-            (extends_clause value: (identifier) @type)
-          ])
-          body: (class_body [
-            (method_definition name: (property_identifier) @method)
-            (public_field_definition name: (property_identifier) @method)
-          ]))
+        [
+          (class_declaration
+            (class_heritage [
+              (implements_clause [(type_identifier) (generic_type)] @type)
+              (extends_clause value: (identifier) @type)
+            ])
+            body: (class_body [
+              (method_definition name: (property_identifier) @method)
+              (public_field_definition name: (property_identifier) @method)
+            ]))
+          (abstract_class_declaration
+            (class_heritage [
+              (implements_clause [(type_identifier) (generic_type)] @type)
+              (extends_clause value: (identifier) @type)
+            ])
+            body: (class_body [
+              (method_definition name: (property_identifier) @method)
+              (public_field_definition name: (property_identifier) @method)
+              (abstract_method_signature name: (property_identifier) @method)
+            ]))
+        ]
     "#,
     // A base class declares by providing a body, so its methods count as declarations alongside
     // the signatures an interface declares. An abstract class declares both ways at once.
