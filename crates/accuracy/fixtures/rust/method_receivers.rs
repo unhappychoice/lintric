@@ -41,3 +41,16 @@ fn from_initializer() -> i32 {
 fn through_a_borrow(s: &Second) -> i32 { //~ depends: Second@9
     (*s).value() //~ depends: s@41, value@22
 }
+
+// A chained call's receiver is an expression whose type the file does not state, so the second call
+// is left unresolved. Both accesses begin at the same token — Rust records a method call at the start
+// of its receiver — so only their extent tells them apart.
+impl First { //~ depends: First@7
+    fn to_second(&self) -> Second { //~ depends: Second@9
+        Second //~ depends: Second@9
+    }
+}
+
+fn through_a_chain(f: First) -> i32 { //~ depends: First@7
+    f.to_second().value() //~ depends: f@54, to_second@49
+}
