@@ -97,12 +97,12 @@
       "duplicates": 2
     },
     "rust/let_else.rs": {
-      "expected": 12,
-      "detected": 12,
-      "correct": 12,
+      "expected": 32,
+      "detected": 32,
+      "correct": 32,
       "missing": 0,
       "spurious": 0,
-      "duplicates": 0
+      "duplicates": 1
     },
     "rust/loops.rs": {
       "expected": 7,
@@ -434,11 +434,11 @@
     }
   },
   "total": {
-    "expected": 610,
-    "detected": 610,
-    "correct": 610,
+    "expected": 630,
+    "detected": 630,
+    "correct": 630,
     "missing": 0,
     "spurious": 0,
-    "duplicates": 33
+    "duplicates": 34
   }
 }
