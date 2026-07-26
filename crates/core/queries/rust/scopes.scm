@@ -19,3 +19,6 @@
 (while_expression) @scope.block
 (if_expression) @scope.block
 (match_expression) @scope.block
+; Each arm scopes the names its pattern binds. Two arms are alternative branches, so one arm's
+; binding is invisible in another — without this, `n` in a later arm resolved to an earlier arm's `n`.
+(match_arm) @scope.block

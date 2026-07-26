@@ -873,7 +873,7 @@ impl RustDefinitionExtractor {
                 "match_arm" => {
                     if let Some(pattern_field) = parent.child_by_field_name("pattern") {
                         if self.is_child_of(node, pattern_field) {
-                            return true;
+                            return !self.is_in_match_guard(node);
                         }
                     }
                 }
@@ -882,6 +882,20 @@ impl RustDefinitionExtractor {
             current = parent;
         }
         false
+    }
+
+    /// Whether this identifier sits in a match arm's guard.
+    ///
+    /// A guard is the `condition:` field of the `match_pattern`, so it is a descendant of the arm's
+    /// `pattern:` field — but it reads the names the pattern binds rather than binding any itself.
+    /// `n if flag` makes the guard the identifier itself rather than an expression containing one,
+    /// which is why the condition is compared as well as searched.
+    fn is_in_match_guard(&self, node: Node) -> bool {
+        std::iter::successors(node.parent(), |parent| parent.parent())
+            .take_while(|parent| parent.kind() != "match_arm")
+            .filter(|parent| parent.kind() == "match_pattern")
+            .filter_map(|pattern| pattern.child_by_field_name("condition"))
+            .any(|condition| condition.id() == node.id() || self.is_child_of(node, condition))
     }
 
     /// The identifiers a pattern binds.

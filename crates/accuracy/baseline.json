@@ -120,6 +120,14 @@
       "spurious": 0,
       "duplicates": 0
     },
+    "rust/match_arms.rs": {
+      "expected": 13,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
     "rust/method_chains.rs": {
       "expected": 10,
       "detected": 10,
@@ -394,11 +402,11 @@
     }
   },
   "total": {
-    "expected": 485,
-    "detected": 485,
-    "correct": 485,
+    "expected": 498,
+    "detected": 498,
+    "correct": 498,
     "missing": 0,
     "spurious": 0,
-    "duplicates": 26
+    "duplicates": 27
   }
 }
