@@ -6,7 +6,7 @@ use tree_sitter::Node;
 const QUERY: &str = include_str!("../../../queries/rust/definitions.scm");
 
 /// What each capture in that file means.
-const ROLES: [(&str, DeclaredAs); 10] = [
+const ROLES: [(&str, DeclaredAs); 11] = [
     (
         "definition.struct",
         DeclaredAs::plain(DefinitionType::StructDefinition),
@@ -42,6 +42,10 @@ const ROLES: [(&str, DeclaredAs); 10] = [
     (
         "definition.field",
         DeclaredAs::plain(DefinitionType::StructFieldDefinition),
+    ),
+    (
+        "definition.import",
+        DeclaredAs::plain(DefinitionType::ImportDefinition),
     ),
     (
         "definition.macro",
