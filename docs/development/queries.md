@@ -134,9 +134,36 @@ including TSX, which is a separate grammar from TypeScript.
 A hand-written `match node.kind()` has no such check: an arm naming a node the grammar does not have
 compiles, runs, and never matches. Checking the arms against `node-types.json` is what found
 `constrained_type_parameter`, `field_definition` and `private_field_definition` — three arms and the
-function behind one of them, all unreachable. The same sweep over `child_by_field_name` came back
-clean. It is worth re-running after a grammar upgrade, since that is how such an arm becomes dead in
-the first place.
+function behind one of them, all unreachable. It is worth re-running after a grammar upgrade, since
+that is how such an arm becomes dead in the first place.
+
+### Sweeping the grammar for declarations
+
+The same file answers the opposite question — which declarations the queries do **not** cover. List
+every node with a field that can hold an identifier, and subtract what the query files capture:
+
+| Field swept | Found |
+| --- | --- |
+| `name:` | #233 (nine TypeScript forms), #234 (`const_parameter`) |
+| `parameter:`, `left:`, `pattern:` | #241 (`catch_clause`, `for_in_statement`) |
+
+#241 is why the field list matters: the first sweep looked only at `name:`, and a catch parameter is
+`parameter:`. Sweep the fields a declaration can hang off, not one of them.
+
+What comes back is a list of candidates, not of bugs — most entries are references and correctly
+uncovered. `where_predicate left:`, `range_pattern left:`, `type_binding name:`, `type_predicate
+name:`, `export_specifier name:` and the `jsx_*_element` names were all checked and were already
+right. Probe each candidate before changing anything.
+
+Two traps worth knowing:
+
+- **A field can be the deciding factor.** `for (const x of xs)` declares `x` while `for (x of xs)`
+  assigns to an existing binding, and the two are identical in `left:`. Requiring the field that
+  distinguishes them is what a query can say: `(for_in_statement kind: _ left: (identifier))`.
+- **The same shape can be a declaration or a reference depending on what else is in the file.** A
+  bare identifier in a Rust match arm binds a name unless it names a variant or a constant, and no
+  query can tell. Capturing it as a binding loses those references — see #239, which records the
+  attempt and why it was reverted.
 
 ### Adding a language
 
