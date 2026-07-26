@@ -91,8 +91,11 @@ fn row(name: &str, counts: &Counts) -> Vec<String> {
 fn fixture_details(fixture: &FixtureReport) -> String {
     let missing = edge_lines("missing", &fixture.missing);
     let spurious = edge_lines("spurious", &fixture.spurious);
+    let shift = crate::shift::detect(&fixture.missing, &fixture.spurious)
+        .map(crate::shift::explain)
+        .unwrap_or_default();
 
-    format!("{}\n{missing}{spurious}", fixture.name)
+    format!("{}\n{missing}{spurious}{shift}", fixture.name)
 }
 
 fn edge_lines(label: &str, edges: &[crate::edge::Edge]) -> String {

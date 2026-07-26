@@ -106,6 +106,26 @@ The same growth also corrected assumptions recorded here earlier: that the analy
 under-reports (#187 disproved it), and that it makes no false positives (#197 invents edges from
 nothing more than a shared field name).
 
+### Editing a fixture's header moves every annotation below it
+
+Adding a sentence to the comment at the top of a fixture shifts every line under it, and every
+`@line` written before that edit now points one short. The harness reports a wall of missing and
+spurious edges, which reads like a broken analyzer.
+
+It says so instead:
+
+```
+  every missing edge is a spurious one 1 line later: the annotations were written against a
+  different numbering, so check whether a line was added or removed above them
+```
+
+The signature is that each missing edge has a spurious twin naming the same symbol from the same
+source line, all at one offset. Where the offsets disagree, or only some edges have a twin, nothing
+is claimed — two unrelated defects are not a shift, and explaining them away would hide them.
+
+When it fires, strip every annotation and re-derive them against the new numbering rather than
+adjusting them one at a time.
+
 Writing expectations is not free of error either. Several apparent defects turned out to be wrong
 annotations — a JSX attribute does reference the prop it names, a type parameter reference is real,
 `super::X` does not depend on the module's declaration. When a fixture disagrees with the analyzer,
