@@ -8,7 +8,7 @@ use tree_sitter::Node;
 use super::accessor_direction::AccessorDirection;
 use super::method_resolver::MethodResolver;
 use super::module_resolver::ModuleResolver;
-use super::receiver_narrowing::ReceiverNarrowing;
+use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 
 /// TypeScript-specific dependency resolver
 pub struct TypeScriptDependencyResolver {
@@ -237,7 +237,8 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
     ) -> Result<Vec<Dependency>, String> {
         // Read off the file once rather than per usage: every member access asks the same questions
         // of it, and a malformed query must fail rather than quietly resolve nothing.
-        let narrowing = ReceiverNarrowing::new(source_code, root_node)?;
+        let narrowing =
+            ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
         let direction = AccessorDirection::new(source_code, root_node)?;
 
         let mut all_dependencies: Vec<Dependency> = usage_nodes

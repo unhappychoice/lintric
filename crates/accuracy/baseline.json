@@ -136,6 +136,14 @@
       "spurious": 0,
       "duplicates": 0
     },
+    "rust/method_receivers.rs": {
+      "expected": 17,
+      "detected": 17,
+      "correct": 17,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "rust/nested_modules.rs": {
       "expected": 11,
       "detected": 11,
@@ -410,9 +418,9 @@
     }
   },
   "total": {
-    "expected": 545,
-    "detected": 545,
-    "correct": 545,
+    "expected": 562,
+    "detected": 562,
+    "correct": 562,
     "missing": 0,
     "spurious": 0,
     "duplicates": 27

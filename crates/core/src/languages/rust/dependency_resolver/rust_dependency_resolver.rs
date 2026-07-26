@@ -1,4 +1,5 @@
 use super::nested_scope_resolver::ScopeUtilities;
+use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::DependencyResolverTrait;
 use crate::models::{
     scope::{CodeAnalysisContext, SymbolTable},
@@ -372,27 +373,32 @@ impl RustDependencyResolver {
     /// Basic fallback resolution for cases where advanced resolution fails
     fn resolve_basic_dependencies(
         &self,
-        _source_code: &str,
-        _root_node: Node,
+        source_code: &str,
+        root_node: Node,
         usage_nodes: &[Usage],
         definitions: &[Definition],
     ) -> Result<Vec<Dependency>, String> {
-        let mut all_dependencies = Vec::new();
+        // Read off the file once rather than per usage: every method call asks the same questions of
+        // it, and a malformed query must fail rather than quietly resolve nothing.
+        let narrowing =
+            ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
 
-        for usage_node in usage_nodes {
-            let mut deps = self.resolve_single_dependency_with_scope_aware_external_filtering(
-                usage_node,
-                definitions,
-                usage_nodes,
-            );
-            all_dependencies.append(&mut deps);
-        }
-
-        Ok(all_dependencies)
+        Ok(usage_nodes
+            .iter()
+            .flat_map(|usage_node| {
+                self.resolve_single_dependency_with_scope_aware_external_filtering(
+                    &narrowing,
+                    usage_node,
+                    definitions,
+                    usage_nodes,
+                )
+            })
+            .collect())
     }
 
     fn resolve_single_dependency_with_scope_aware_external_filtering(
         &self,
+        narrowing: &ReceiverNarrowing,
         usage_node: &Usage,
         definitions: &[Definition],
         all_usage_nodes: &[Usage],
@@ -422,7 +428,9 @@ impl RustDependencyResolver {
         }
 
         // Proceed with normal resolution
-        if let Some(def) = self.find_closest_accessible_definition_basic(usage_node, definitions) {
+        if let Some(def) =
+            self.find_closest_accessible_definition_basic(narrowing, usage_node, definitions)
+        {
             let source_line = usage_node.position.line_number();
             let target_line = def.line_number();
 
@@ -445,6 +453,7 @@ impl RustDependencyResolver {
 
     fn find_closest_accessible_definition_basic<'a>(
         &self,
+        narrowing: &ReceiverNarrowing,
         usage: &Usage,
         definitions: &'a [Definition],
     ) -> Option<&'a Definition> {
@@ -454,6 +463,10 @@ impl RustDependencyResolver {
             .iter()
             .filter(|d| d.name == usage.name && self.is_accessible_basic(usage, d))
             .collect();
+
+        // `receiver.method()` reaches only what the receiver's type declares, so the priority logic
+        // below chooses among those rather than among every method sharing the name.
+        let matching_definitions = narrowing.narrow(usage, matching_definitions);
 
         if matching_definitions.is_empty() {
             return None;
