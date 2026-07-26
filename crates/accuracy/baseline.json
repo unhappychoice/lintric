@@ -128,6 +128,14 @@
       "spurious": 0,
       "duplicates": 0
     },
+    "rust/macros_and_unions.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
     "rust/match_arms.rs": {
       "expected": 13,
       "detected": 13,
@@ -180,6 +188,14 @@
       "expected": 9,
       "detected": 9,
       "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/pattern_forms.rs": {
+      "expected": 20,
+      "detected": 20,
+      "correct": 20,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -292,6 +308,14 @@
       "expected": 15,
       "detected": 15,
       "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/assertions_and_exports.ts": {
+      "expected": 17,
+      "detected": 17,
+      "correct": 17,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -474,9 +498,9 @@
     }
   },
   "total": {
-    "expected": 694,
-    "detected": 694,
-    "correct": 694,
+    "expected": 743,
+    "detected": 743,
+    "correct": 743,
     "missing": 0,
     "spurious": 0,
     "duplicates": 37
