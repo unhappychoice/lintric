@@ -43,11 +43,11 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition { position: { 1:13 to 1:20 }, name: "result1", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:50 to 1:56 }, name: "error1", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
         Usage { position: { 1:23 to 1:39 }, name: "riskyOperation", kind: CallExpression, context: Some("call_expression") },
-        Usage { position: { 1:50 to 1:56 }, name: "error1", kind: Identifier, context: None },
         Usage { position: { 1:60 to 1:67 }, name: "console", kind: Identifier, context: Some("call_expression") },
         Usage { position: { 1:68 to 1:71 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 1:72 to 1:78 }, name: "error1", kind: Identifier, context: Some("call_expression") },
