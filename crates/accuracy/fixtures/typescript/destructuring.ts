@@ -19,3 +19,17 @@ const total = first + rest.length; //~ depends: first@17, rest@17
 
 const { x: renamed } = origin; //~ depends: origin@11
 const _ = shift(origin) + total + renamed; //~ depends: shift@13, origin@11, total@18, renamed@20
+
+// A default value and a computed key are read rather than declared, so each references what it
+// names instead of shadowing it.
+const fallback = 9;
+const key = "x";
+
+const { x = fallback } = origin; //~ depends: fallback@25, origin@11
+const { [key]: byKey } = origin; //~ depends: key@26, origin@11
+
+function withDefault({ y = fallback }: Point): number { //~ depends: Point@6, fallback@25
+    return y; //~ depends: y@31
+}
+
+const used = x + byKey + withDefault(origin); //~ depends: x@28, byKey@29, withDefault@31, origin@11

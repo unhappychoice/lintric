@@ -305,9 +305,9 @@
       "duplicates": 0
     },
     "typescript/destructuring.ts": {
-      "expected": 11,
-      "detected": 11,
-      "correct": 11,
+      "expected": 22,
+      "detected": 22,
+      "correct": 22,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -410,9 +410,9 @@
     }
   },
   "total": {
-    "expected": 534,
-    "detected": 534,
-    "correct": 534,
+    "expected": 545,
+    "detected": 545,
+    "correct": 545,
     "missing": 0,
     "spurious": 0,
     "duplicates": 27
