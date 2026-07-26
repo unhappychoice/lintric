@@ -38,6 +38,9 @@
 (catch_clause parameter: (identifier) @definition.variable)
 (for_in_statement kind: _ left: (identifier) @definition.variable)
 
-(import_specifier name: (identifier) @definition.import)
+; An alias is the local name; without one the imported name is. `name:` when aliased belongs to the
+; other module and is not a local name at all, which the negated field says.
+(import_specifier alias: (identifier) @definition.import)
+(import_specifier !alias name: (identifier) @definition.import)
 
 (type_parameter name: (type_identifier) @definition.type_parameter)
