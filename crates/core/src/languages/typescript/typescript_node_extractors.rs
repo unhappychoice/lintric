@@ -216,21 +216,42 @@ impl TypeScriptDefinitionExtractor {
         has_modifier
     }
 
+    /// The names a destructuring pattern binds.
+    ///
+    /// Not every identifier under a pattern is one: a default value and a computed key are read
+    /// rather than declared, and collecting them as bindings made each shadow the declaration it
+    /// was naming.
     #[allow(clippy::only_used_in_recursion)]
     fn find_identifier_nodes_in_node<'a>(&self, node: Node<'a>) -> Vec<Node<'a>> {
-        let mut identifiers = vec![];
-        if node.kind() == "identifier" {
-            identifiers.push(node);
-        } else if node.kind() == "shorthand_property_identifier_pattern" {
-            // shorthand_property_identifier_pattern is itself an identifier in destructuring
-            identifiers.push(node);
-        } else {
-            let mut cursor = node.walk();
-            for child in node.children(&mut cursor) {
-                identifiers.extend(self.find_identifier_nodes_in_node(child));
+        // A shorthand pattern name is itself the identifier, since `{ x }` has no separate node.
+        if matches!(
+            node.kind(),
+            "identifier" | "shorthand_property_identifier_pattern"
+        ) {
+            return vec![node];
+        }
+
+        Self::binding_children(node)
+            .iter()
+            .flat_map(|child| self.find_identifier_nodes_in_node(*child))
+            .collect()
+    }
+
+    /// The children of a pattern node that can hold a bound name.
+    ///
+    /// `x = fallback` binds only its left side, and `[k]: v` binds only the value — the key names
+    /// something declared elsewhere.
+    fn binding_children<'a>(node: Node<'a>) -> Vec<Node<'a>> {
+        match node.kind() {
+            "assignment_pattern" | "object_assignment_pattern" => {
+                node.child_by_field_name("left").into_iter().collect()
+            }
+            "computed_property_name" => vec![],
+            _ => {
+                let mut cursor = node.walk();
+                node.children(&mut cursor).collect()
             }
         }
-        identifiers
     }
 
     #[allow(dead_code)]
