@@ -443,9 +443,13 @@ impl RustDependencyResolver {
         }
 
         // Proceed with normal resolution
-        if let Some(def) =
-            self.find_closest_accessible_definition_basic(narrowing, own, usage_node, definitions)
-        {
+        if let Some(def) = self.find_closest_accessible_definition_basic(
+            narrowing,
+            own,
+            usage_node,
+            definitions,
+            all_usage_nodes,
+        ) {
             let source_line = usage_node.position.line_number();
             let target_line = def.line_number();
 
@@ -466,12 +470,29 @@ impl RustDependencyResolver {
         dependencies
     }
 
+    /// Whether this candidate is a value the usage cannot be naming because something is reached
+    /// through it.
+    fn is_value_reached_through(
+        &self,
+        usage: &Usage,
+        definition: &Definition,
+        all_usage_nodes: &[Usage],
+    ) -> bool {
+        use crate::models::DefinitionType::{FunctionDefinition, VariableDefinition};
+
+        matches!(
+            definition.definition_type,
+            FunctionDefinition | VariableDefinition
+        ) && self.is_path_head(usage, all_usage_nodes)
+    }
+
     fn find_closest_accessible_definition_basic<'a>(
         &self,
         narrowing: &ReceiverNarrowing,
         own: &SelfReference,
         usage: &Usage,
         definitions: &'a [Definition],
+        all_usage_nodes: &[Usage],
     ) -> Option<&'a Definition> {
         // Simple approach: find all matching definitions and apply priority logic
         // This matches the old implementation behavior more closely
@@ -481,6 +502,7 @@ impl RustDependencyResolver {
             // A binding is not among the candidates for its own initializer, so `let w = w + 1`
             // looks past it and finds the previous `w`.
             .filter(|d| !own.declares(usage, d))
+            .filter(|d| !self.is_value_reached_through(usage, d, all_usage_nodes))
             .collect();
 
         // `receiver.method()` reaches only what the receiver's type declares, so the priority logic
@@ -859,6 +881,18 @@ impl RustDependencyResolver {
             .any(|other| is_adjacent_segment(usage_node, other));
 
         has_preceding && has_following
+    }
+
+    /// Whether this usage is a segment that something else is reached through.
+    ///
+    /// A path head names a module or a type — never a function or a local — so `mod T` beside
+    /// `fn T` resolves `T::V` to the module. A later segment can be anything, which is why the
+    /// question is about having a follower rather than about being in a path at all.
+    fn is_path_head(&self, usage_node: &Usage, all_usage_nodes: &[Usage]) -> bool {
+        is_in_path(usage_node)
+            && all_usage_nodes
+                .iter()
+                .any(|other| is_adjacent_segment(usage_node, other))
     }
 }
 
