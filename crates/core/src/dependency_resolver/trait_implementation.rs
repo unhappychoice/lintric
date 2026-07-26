@@ -12,6 +12,11 @@ pub struct Queries {
     pub implementations: &'static str,
     /// Methods a trait or interface declares, as `@method`, with its own name.
     pub declarations: &'static str,
+    /// Getters and setters, as `@getter` and `@setter`, where the language has them.
+    ///
+    /// A getter and a setter share a name, so without this a class getter would satisfy whichever of
+    /// the pair the interface happened to declare last.
+    pub accessors: Option<&'static str>,
     /// Types a trait, interface or class inherits, as `@super`, with the inheriting type's name.
     pub supertypes: &'static str,
 }
@@ -23,30 +28,92 @@ pub struct Queries {
 /// this relationship is derived from the structure of the implementing block rather than from name
 /// resolution.
 ///
-/// Matching is on the pair of declaring type and method name, so two traits declaring the same
-/// method resolve independently.
+/// Matching is on the declaring type, the member's name and, where a language has accessors, whether
+/// it reads or writes — so two traits declaring the same method resolve independently, and a getter
+/// satisfies a getter.
 pub fn resolve(
     queries: &Queries,
     source_code: &str,
     root_node: Node,
 ) -> Result<Vec<Dependency>, String> {
-    let declared = declarations(queries.declarations, source_code, root_node)?;
+    let roles = Roles::read(queries.accessors, source_code, root_node)?;
+    let declared = declarations(queries.declarations, source_code, root_node, &roles)?;
     let inherited = supertypes(queries.supertypes, source_code, root_node)?;
 
-    Ok(methods(queries.implementations, source_code, root_node)?
-        .iter()
-        .filter_map(|method| {
-            declaration_line(&declared, &inherited, method).map(|line| dependency(method, line))
-        })
-        .filter(|dependency| dependency.source_line != dependency.target_line)
-        .collect())
+    Ok(
+        methods(queries.implementations, source_code, root_node, &roles)?
+            .iter()
+            .filter_map(|method| {
+                declaration_line(&declared, &inherited, method).map(|line| dependency(method, line))
+            })
+            .filter(|dependency| dependency.source_line != dependency.target_line)
+            .collect(),
+    )
 }
 
-/// A method named within a trait or interface, or within one of its implementations.
+/// A member named within a trait or interface, or within one of its implementations.
 struct Method {
     type_name: String,
     name: String,
+    role: Role,
     line: usize,
+}
+
+/// Which half of an accessor pair a member is, where the language has them.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+enum Role {
+    Plain,
+    Getter,
+    Setter,
+}
+
+/// The accessor role of each member, by the position of its name.
+struct Roles {
+    getters: HashSet<(usize, usize)>,
+    setters: HashSet<(usize, usize)>,
+}
+
+impl Roles {
+    fn read(
+        query_source: Option<&str>,
+        source_code: &str,
+        root_node: Node,
+    ) -> Result<Self, String> {
+        let Some(query_source) = query_source else {
+            return Ok(Self {
+                getters: HashSet::new(),
+                setters: HashSet::new(),
+            });
+        };
+
+        Ok(Self {
+            getters: crate::query::captured_positions(
+                query_source,
+                source_code,
+                root_node,
+                "getter",
+            )?,
+            setters: crate::query::captured_positions(
+                query_source,
+                source_code,
+                root_node,
+                "setter",
+            )?,
+        })
+    }
+
+    fn of(&self, node: Node) -> Role {
+        let position = (
+            node.start_position().row + 1,
+            node.start_position().column + 1,
+        );
+
+        match position {
+            _ if self.getters.contains(&position) => Role::Getter,
+            _ if self.setters.contains(&position) => Role::Setter,
+            _ => Role::Plain,
+        }
+    }
 }
 
 /// The line declaring this method, looked up on the named type and then on what it inherits.
@@ -54,8 +121,10 @@ struct Method {
 /// The search is breadth first, so the nearest declaration wins when a type and one of its
 /// supertypes both declare the method. The visited set also keeps an inheritance cycle — invalid
 /// but parseable — from looping.
+type DeclarationKey = (String, String, Role);
+
 fn declaration_line(
-    declared: &HashMap<(String, String), usize>,
+    declared: &HashMap<DeclarationKey, usize>,
     inherited: &HashMap<String, Vec<String>>,
     method: &Method,
 ) -> Option<usize> {
@@ -67,7 +136,8 @@ fn declaration_line(
             continue;
         }
 
-        if let Some(line) = declared.get(&(type_name.to_string(), method.name.clone())) {
+        if let Some(line) = declared.get(&(type_name.to_string(), method.name.clone(), method.role))
+        {
             return Some(*line);
         }
 
@@ -83,10 +153,11 @@ fn declarations(
     query_source: &str,
     source_code: &str,
     root_node: Node,
-) -> Result<HashMap<(String, String), usize>, String> {
-    Ok(methods(query_source, source_code, root_node)?
+    roles: &Roles,
+) -> Result<HashMap<DeclarationKey, usize>, String> {
+    Ok(methods(query_source, source_code, root_node, roles)?
         .into_iter()
-        .map(|method| ((method.type_name, method.name), method.line))
+        .map(|method| ((method.type_name, method.name, method.role), method.line))
         .collect())
 }
 
@@ -117,21 +188,27 @@ fn supertypes(
     Ok(inherited)
 }
 
-fn methods(query_source: &str, source_code: &str, root_node: Node) -> Result<Vec<Method>, String> {
+fn methods(
+    query_source: &str,
+    source_code: &str,
+    root_node: Node,
+    roles: &Roles,
+) -> Result<Vec<Method>, String> {
     map_pairs(
         query_source,
         source_code,
         root_node,
         "type",
         "method",
-        |type_node, method_node| method(source_code, type_node, method_node),
+        |type_node, method_node| method(source_code, type_node, method_node, roles),
     )
 }
 
-fn method(source_code: &str, type_node: Node, method_node: Node) -> Option<Method> {
+fn method(source_code: &str, type_node: Node, method_node: Node, roles: &Roles) -> Option<Method> {
     Some(Method {
         type_name: type_text(source_code, type_node)?,
         name: text(source_code, method_node)?,
+        role: roles.of(method_node),
         line: method_node.start_position().row + 1,
     })
 }

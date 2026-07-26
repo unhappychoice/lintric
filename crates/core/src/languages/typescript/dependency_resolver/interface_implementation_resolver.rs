@@ -58,6 +58,7 @@ const QUERIES: Queries = Queries {
             ]))
         ]
     "#,
+    accessors: Some(include_str!("../../../../queries/typescript/accessors.scm")),
     // `interface Extended extends Base` and `class Derived extends Base` both inherit
     // declarations, so a lookup that misses the named type continues into these.
     supertypes: r#"
