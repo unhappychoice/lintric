@@ -142,7 +142,9 @@ Coverage now stands at **107 of 163** Rust kinds and **119 of 183** TypeScript o
 remainder carries no names to resolve: literals, comments, `debugger_statement`, `shebang`, regex.
 
 The other use is the reverse. Probing turns up constructs that are *already correct*, and verifying
-one by hand leaves nothing behind — so those go into a fixture too, marked as such. Type-level
+one by hand leaves nothing behind — so those go into a fixture too, marked as such. #272 is what that
+is for: the export forms had been probed and found correct, nothing pinned them, and #260 broke one
+of them two merges later without the harness noticing. Type-level
 operators, function types, higher-ranked bounds, qualified paths and member syntax are all pinned
 that way rather than re-derived the next time someone wonders.
 

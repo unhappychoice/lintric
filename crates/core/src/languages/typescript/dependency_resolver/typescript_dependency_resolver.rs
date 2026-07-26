@@ -10,6 +10,11 @@ use super::method_resolver::MethodResolver;
 use super::module_resolver::ModuleResolver;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::self_reference::SelfReference;
+use crate::query;
+
+/// Names an export clause exposes, which belong to either namespace.
+const EXPORT_SPECIFIERS: &str =
+    include_str!("../../../../queries/typescript/export_specifiers.scm");
 
 /// Each declarator paired with its initializer, so a binding stays out of the names it reads.
 const OWN_INITIALIZERS: &str = include_str!("../../../../queries/typescript/own_initializers.scm");
@@ -64,8 +69,18 @@ impl TypeScriptDependencyResolver {
     /// share a name and each is invisible where the other belongs. A class, an enum and a namespace
     /// declare in both, which is why the rule is about what a declaration introduces rather than
     /// about matching a type usage to a type declaration.
-    fn is_in_usage_namespace(usage: &Usage, definition: &Definition) -> bool {
+    fn is_in_usage_namespace(
+        exported: &std::collections::HashSet<(usize, usize)>,
+        usage: &Usage,
+        definition: &Definition,
+    ) -> bool {
         use crate::models::DefinitionType::*;
+
+        // An export names a local declaration of either kind, and `export type { X }` reads as an
+        // ordinary identifier, so the two namespaces are not kept apart there.
+        if exported.contains(&(usage.position.start_line, usage.position.start_column)) {
+            return true;
+        }
 
         match definition.definition_type {
             InterfaceDefinition | TypeDefinition => {
@@ -255,11 +270,20 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
             ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
         let direction = AccessorDirection::new(source_code, root_node)?;
         let own = SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?;
+        let exported =
+            query::captured_positions(EXPORT_SPECIFIERS, source_code, root_node, "exported")?;
 
         let mut all_dependencies: Vec<Dependency> = usage_nodes
             .iter()
             .flat_map(|usage| {
-                self.resolve_single_dependency(&narrowing, &direction, &own, usage, definitions)
+                self.resolve_single_dependency(
+                    &narrowing,
+                    &direction,
+                    &own,
+                    &exported,
+                    usage,
+                    definitions,
+                )
             })
             .collect();
 
@@ -281,6 +305,7 @@ impl TypeScriptDependencyResolver {
         narrowing: &ReceiverNarrowing,
         direction: &AccessorDirection,
         own: &SelfReference,
+        exported: &std::collections::HashSet<(usize, usize)>,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
@@ -307,7 +332,7 @@ impl TypeScriptDependencyResolver {
             // A binding is not among the candidates for its own initializer, so `let x = x + 1`
             // looks past it and finds the previous `x`.
             .filter(|def| !own.declares(usage_node, def))
-            .filter(|def| Self::is_in_usage_namespace(usage_node, def))
+            .filter(|def| Self::is_in_usage_namespace(exported, usage_node, def))
             .filter(|def| !Self::is_member_reached_by_name(usage_node, def))
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.module_resolver.is_valid_dependency(usage_node, def))
