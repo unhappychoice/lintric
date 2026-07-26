@@ -13,3 +13,13 @@ function inner(): number {
 
 const outside = a; //~ depends: a@5
 const result = inner(); //~ depends: inner@7
+
+// A binding is not among the candidates for its own initializer, so `let x = x + 1` reads the
+// previous `x` even when that one is in an enclosing scope.
+function shadowing(): number {
+    let v = 1;
+    {
+        let v = v + 1; //~ depends: v@20
+        return v; //~ depends: v@22
+    }
+}
