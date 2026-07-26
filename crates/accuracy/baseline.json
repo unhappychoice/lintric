@@ -9,9 +9,9 @@
       "duplicates": 1
     },
     "rust/associated_types.rs": {
-      "expected": 10,
-      "detected": 10,
-      "correct": 10,
+      "expected": 11,
+      "detected": 11,
+      "correct": 11,
       "missing": 0,
       "spurious": 0,
       "duplicates": 0
@@ -193,9 +193,9 @@
       "duplicates": 0
     },
     "rust/traits.rs": {
-      "expected": 12,
-      "detected": 12,
-      "correct": 12,
+      "expected": 18,
+      "detected": 18,
+      "correct": 18,
       "missing": 0,
       "spurious": 0,
       "duplicates": 1
@@ -353,9 +353,9 @@
       "duplicates": 0
     },
     "typescript/interfaces.ts": {
-      "expected": 10,
-      "detected": 10,
-      "correct": 10,
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
       "missing": 0,
       "spurious": 0,
       "duplicates": 1
@@ -410,9 +410,9 @@
     }
   },
   "total": {
-    "expected": 515,
-    "detected": 515,
-    "correct": 515,
+    "expected": 526,
+    "detected": 526,
+    "correct": 526,
     "missing": 0,
     "spurious": 0,
     "duplicates": 27
