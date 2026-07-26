@@ -131,6 +131,21 @@ annotations — a JSX attribute does reference the prop it names, a type paramet
 `super::X` does not depend on the module's declaration. When a fixture disagrees with the analyzer,
 check which one is wrong before filing.
 
+## Which constructs the fixtures reach
+
+Listing the named node kinds each grammar defines and subtracting those appearing in any fixture says
+what is unmeasured. It found three defects in a row — #265 (`for_statement`, `switch_case`), #267
+(`let_chain`) and #269 (`import_statement` and friends, where TypeScript had no import fixture at
+all) — because a construct no fixture contains is one nothing keeps honest.
+
+Coverage now stands at **107 of 163** Rust kinds and **119 of 183** TypeScript ones. Most of the
+remainder carries no names to resolve: literals, comments, `debugger_statement`, `shebang`, regex.
+
+The other use is the reverse. Probing turns up constructs that are *already correct*, and verifying
+one by hand leaves nothing behind — so those go into a fixture too, marked as such. Type-level
+operators, function types, higher-ranked bounds, qualified paths and member syntax are all pinned
+that way rather than re-derived the next time someone wonders.
+
 ## Auditing real code for self-consistency
 
 The fixtures measure correctness on cases written by hand, which is why they are small. A
