@@ -51,7 +51,7 @@ pub fn display_verbose(
             format_file_path_for_display(&result.file_path, base_paths)
         ));
         let mut table = Table::new();
-        table.load_preset(UTF8_FULL_CONDENSED);
+        table.load_style(UTF8_FULL_CONDENSED);
         table.set_header(vec![
             "Line",
             "Total Deps",
@@ -85,7 +85,7 @@ pub fn display_summary(
     logger: &dyn Logger,
 ) {
     let mut table = Table::new();
-    table.load_preset(UTF8_FULL_CONDENSED);
+    table.load_style(UTF8_FULL_CONDENSED);
     table.set_header(vec!["File", "Overall Complexity Score"]);
 
     let mut sorted_results = overall_report.results.clone();

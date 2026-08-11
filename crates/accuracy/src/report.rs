@@ -32,7 +32,7 @@ impl Report {
     /// Per-fixture counts plus an aggregate row.
     pub fn to_table(&self) -> String {
         let mut table = Table::new();
-        table.load_preset(UTF8_FULL);
+        table.load_style(UTF8_FULL);
         table.set_header(vec![
             "Fixture",
             "Expected",
