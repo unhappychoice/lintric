@@ -256,7 +256,7 @@ impl RustUsageExtractor {
                 .unwrap_or("")
                 .trim()
                 .replace("\r\n", "\n")
-        } else if let Some(last_child) = node.child(node.child_count().saturating_sub(1)) {
+        } else if let Some(last_child) = node.children(&mut node.walk()).last() {
             // Fallback: try the last child
             last_child
                 .utf8_text(source.as_bytes())

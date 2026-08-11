@@ -265,8 +265,7 @@ fn type_names(node: &Node, source_code: &str) -> Vec<String> {
             .unwrap_or_default();
     }
 
-    (0..node.child_count())
-        .filter_map(|index| node.child(index))
+    node.children(&mut node.walk())
         .filter(|child| child.kind() != "type_arguments")
         .flat_map(|child| type_names(&child, source_code))
         .collect()

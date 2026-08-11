@@ -76,8 +76,7 @@ fn read_positions(node: Node) -> Vec<Position> {
         return vec![position(node)];
     }
 
-    (0..node.child_count())
-        .filter_map(|index| node.child(index))
+    node.children(&mut node.walk())
         .flat_map(read_positions)
         .collect()
 }
