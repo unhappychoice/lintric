@@ -25,11 +25,10 @@ IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
         Definition { position: { 1:6 to 1:14 }, name: "TestEnum", definition_type: EnumDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:17 to 1:24 }, name: "Variant", definition_type: EnumVariantDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:17 to 1:24 }, name: "Variant", kind: Identifier, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",
         total_lines: 1,

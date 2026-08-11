@@ -55,12 +55,7 @@ IntermediateRepresentation {
         Definition { position: { 1:34 to 1:35 }, name: "b", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:18 to 1:19 }, name: "a", kind: FieldExpression, context: None },
-        Usage { position: { 1:34 to 1:35 }, name: "b", kind: FieldExpression, context: None },
-        Usage { position: { 1:50 to 1:51 }, name: "a", kind: FieldExpression, context: None },
-        Usage { position: { 1:57 to 1:58 }, name: "b", kind: FieldExpression, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TSX",
         total_lines: 1,

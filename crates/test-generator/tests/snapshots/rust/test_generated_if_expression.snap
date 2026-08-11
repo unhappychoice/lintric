@@ -40,7 +40,6 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage { position: { 1:8 to 1:12 }, name: "Some", kind: Identifier, context: None },
-        Usage { position: { 1:13 to 1:19 }, name: "value1", kind: Identifier, context: None },
         Usage { position: { 1:23 to 1:26 }, name: "opt", kind: Identifier, context: None },
         Usage { position: { 1:29 to 1:35 }, name: "value1", kind: Identifier, context: None },
     ],

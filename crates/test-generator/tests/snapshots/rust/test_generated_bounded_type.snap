@@ -55,7 +55,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:9 to 1:10 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 1:12 to 1:17 }, name: "Clone", kind: TypeIdentifier, context: None },
         Usage { position: { 1:20 to 1:24 }, name: "Send", kind: TypeIdentifier, context: None },
         Usage { position: { 1:29 to 1:30 }, name: "T", kind: TypeIdentifier, context: None },
@@ -63,7 +62,7 @@ IntermediateRepresentation {
         Usage { position: { 1:43 to 1:44 }, name: "T", kind: TypeIdentifier, context: None },
         Usage { position: { 1:46 to 1:49 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:51 to 1:54 }, name: "fmt", kind: Identifier, context: Some("scoped_identifier") },
-        Usage { position: { 1:56 to 1:61 }, name: "Debug", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:56 to 1:61 }, name: "Debug", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
         Usage { position: { 1:64 to 1:65 }, name: "x", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

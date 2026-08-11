@@ -35,7 +35,7 @@ IntermediateRepresentation {
     usage: [
         Usage { position: { 1:22 to 1:25 }, name: "std", kind: Identifier, context: Some("scoped_identifier") },
         Usage { position: { 1:27 to 1:30 }, name: "fmt", kind: Identifier, context: Some("scoped_identifier") },
-        Usage { position: { 1:32 to 1:37 }, name: "Debug", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:32 to 1:37 }, name: "Debug", kind: TypeIdentifier, context: Some("scoped_type_identifier") },
     ],
     analysis_metadata: AnalysisMetadata {
         language: "Rust",

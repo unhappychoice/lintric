@@ -1,6 +1,6 @@
 use petgraph::graph::{DiGraph, NodeIndex};
 use petgraph::visit::Dfs;
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeSet, HashMap, HashSet};
 
 use crate::models::{AnalysisResult, IntermediateRepresentation, LineMetrics};
 
@@ -161,19 +161,27 @@ fn dfs_longest_path(
 
 fn ir_to_graph(ir: &IntermediateRepresentation) -> DiGraph<usize, usize> {
     let mut graph: DiGraph<usize, usize> = DiGraph::new();
-    let mut line_nodes: HashMap<usize, NodeIndex> = HashMap::new();
+    let line_nodes: HashMap<usize, NodeIndex> = (1..=ir.analysis_metadata.total_lines)
+        .map(|line| (line, graph.add_node(line)))
+        .collect();
 
-    for i in 1..=ir.analysis_metadata.total_lines {
-        line_nodes.insert(i, graph.add_node(i));
-    }
-
-    // Add edges for dependencies
-    for dep in &ir.dependencies {
-        let source_node = line_nodes[&dep.source_line];
-        let target_node = line_nodes[&dep.target_line];
-        let distance = dep.source_line.abs_diff(dep.target_line);
-        graph.add_edge(source_node, target_node, distance);
+    for (source, target) in unique_edges(ir) {
+        let distance = source.abs_diff(target);
+        graph.add_edge(line_nodes[&source], line_nodes[&target], distance);
     }
 
     graph
+}
+
+/// The distinct line-to-line edges of the dependency graph.
+///
+/// A line referencing the same target several times, as in `self.x * self.x`, depends on one
+/// line, not two. The IR keeps every occurrence because they are useful when inspecting it, so
+/// the collapsing happens here; counting occurrences would inflate every metric derived from the
+/// graph. Ordered so that the graph, and therefore reported neighbour order, is reproducible.
+fn unique_edges(ir: &IntermediateRepresentation) -> BTreeSet<(usize, usize)> {
+    ir.dependencies
+        .iter()
+        .map(|dependency| (dependency.source_line, dependency.target_line))
+        .collect()
 }

@@ -33,6 +33,7 @@ IntermediateRepresentation {
     dependencies: [],
     usage: [
         Usage { position: { 1:8 to 1:13 }, name: "Type2", kind: TypeIdentifier, context: None },
+        Usage { position: { 1:16 to 1:22 }, name: "field4", kind: FieldInitializer, context: Some("field_initializer") },
         Usage { position: { 1:24 to 1:27 }, name: "x14", kind: Identifier, context: None },
         Usage { position: { 1:32 to 1:38 }, name: "value8", kind: Identifier, context: None },
     ],

@@ -38,10 +38,7 @@ IntermediateRepresentation {
         Definition { position: { 1:18 to 1:23 }, name: "prop4", definition_type: PropertyDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:18 to 1:23 }, name: "prop4", kind: FieldExpression, context: None },
-        Usage { position: { 1:38 to 1:43 }, name: "prop4", kind: FieldExpression, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

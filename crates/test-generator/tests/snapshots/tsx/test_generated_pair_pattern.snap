@@ -28,7 +28,6 @@ IntermediateRepresentation {
     ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:9 to 1:13 }, name: "key1", kind: FieldExpression, context: None },
         Usage { position: { 1:27 to 1:31 }, name: "obj3", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

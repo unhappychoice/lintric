@@ -36,10 +36,7 @@ IntermediateRepresentation {
         Definition { position: { 1:41 to 1:48 }, name: "method2", definition_type: MethodDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
-    usage: [
-        Usage { position: { 1:27 to 1:31 }, name: "prop", kind: FieldExpression, context: None },
-        Usage { position: { 1:41 to 1:48 }, name: "method2", kind: FieldExpression, context: None },
-    ],
+    usage: [],
     analysis_metadata: AnalysisMetadata {
         language: "TypeScript",
         total_lines: 1,

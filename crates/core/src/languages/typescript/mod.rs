@@ -1,3 +1,9 @@
+pub mod binding_queries;
+pub mod definition_extractor;
+pub mod definition_queries;
 pub mod dependency_resolver;
 pub mod formatter;
-pub mod typescript_node_extractors;
+pub mod imports;
+pub mod pattern_bindings;
+pub mod scope_queries;
+pub mod usage_extractor;

@@ -1,3 +1,4 @@
+use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::models::{Definition, Dependency, Type, Usage, UsageKind};
 use std::collections::HashMap;
 use tree_sitter::Node;
@@ -69,57 +70,59 @@ impl MethodResolver {
         self.class_methods.insert(class_name, methods);
     }
 
-    /// Resolve struct/interface field access dependencies for TypeScript
+    /// Resolve `receiver.field` to the field the receiver's type declares.
+    ///
+    /// Matching on the field name alone links an access to every type declaring that name, so the
+    /// candidates are narrowed by what the receiver is; see `ReceiverNarrowing`.
     pub fn resolve_struct_field_access(
         &self,
         usage_node: &Usage,
         definitions: &[Definition],
+        narrowing: &ReceiverNarrowing,
     ) -> Vec<Dependency> {
-        let mut dependencies = Vec::new();
-
-        // Only handle FieldExpression usage
         if usage_node.kind != UsageKind::FieldExpression {
-            return dependencies;
+            return Vec::new();
         }
 
-        // For field expressions like "obj.field", extract the field name "field"
-        let field_name = if usage_node.name.contains('.') {
-            usage_node
-                .name
-                .split('.')
-                .next_back()
-                .unwrap_or(&usage_node.name)
-                .to_string()
-        } else {
-            usage_node.name.clone()
-        };
+        let field_name = Self::accessed_field_name(usage_node);
+        let candidates = definitions
+            .iter()
+            .filter(|definition| definition.name == field_name && Self::is_member(definition))
+            .collect();
 
-        // Find interface/class field definitions by the extracted field name
-        for definition in definitions {
-            if definition.name == field_name
-                && matches!(
-                    definition.definition_type,
-                    crate::models::DefinitionType::StructFieldDefinition
-                        | crate::models::DefinitionType::PropertyDefinition
-                )
-            {
-                let source_line = usage_node.position.start_line;
-                let target_line = definition.position.start_line;
+        narrowing
+            .narrow(usage_node, candidates)
+            .into_iter()
+            .filter(|definition| definition.position.start_line != usage_node.position.start_line)
+            .map(|definition| Self::field_access(usage_node, definition, &field_name))
+            .collect()
+    }
 
-                // Don't create self-referential dependencies
-                if source_line != target_line {
-                    let dependency = Dependency {
-                        source_line,
-                        target_line,
-                        symbol: field_name.clone(),
-                        dependency_type: crate::models::DependencyType::StructFieldAccess,
-                        context: Some("field_access".to_string()),
-                    };
-                    dependencies.push(dependency);
-                }
-            }
+    /// The last segment of `obj.field`, which is the member being read.
+    fn accessed_field_name(usage_node: &Usage) -> String {
+        usage_node
+            .name
+            .split('.')
+            .next_back()
+            .unwrap_or(&usage_node.name)
+            .to_string()
+    }
+
+    fn is_member(definition: &Definition) -> bool {
+        matches!(
+            definition.definition_type,
+            crate::models::DefinitionType::StructFieldDefinition
+                | crate::models::DefinitionType::PropertyDefinition
+        )
+    }
+
+    fn field_access(usage_node: &Usage, definition: &Definition, field_name: &str) -> Dependency {
+        Dependency {
+            source_line: usage_node.position.start_line,
+            target_line: definition.position.start_line,
+            symbol: field_name.to_string(),
+            dependency_type: crate::models::DependencyType::StructFieldAccess,
+            context: Some("field_access".to_string()),
         }
-
-        dependencies
     }
 }

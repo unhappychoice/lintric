@@ -9,12 +9,11 @@ expression: out
       "line_metrics": [
         {
           "line_number": 7,
-          "total_dependencies": 2,
-          "dependency_distance_cost": 0.0625,
+          "total_dependencies": 1,
+          "dependency_distance_cost": 0.03125,
           "depth": 1,
           "transitive_dependencies": 1,
           "dependent_lines": [
-            6,
             6
           ]
         },
@@ -30,21 +29,25 @@ expression: out
         },
         {
           "line_number": 12,
-          "total_dependencies": 1,
-          "dependency_distance_cost": 0.34375,
+          "total_dependencies": 3,
+          "dependency_distance_cost": 0.9375,
           "depth": 1,
-          "transitive_dependencies": 1,
+          "transitive_dependencies": 3,
           "dependent_lines": [
+            3,
+            2,
             1
           ]
         },
         {
           "line_number": 13,
-          "total_dependencies": 1,
-          "dependency_distance_cost": 0.375,
+          "total_dependencies": 3,
+          "dependency_distance_cost": 1.03125,
           "depth": 1,
-          "transitive_dependencies": 1,
+          "transitive_dependencies": 3,
           "dependent_lines": [
+            3,
+            2,
             1
           ]
         },
@@ -60,39 +63,39 @@ expression: out
         },
         {
           "line_number": 16,
-          "total_dependencies": 5,
-          "dependency_distance_cost": 1.40625,
+          "total_dependencies": 4,
+          "dependency_distance_cost": 0.96875,
           "depth": 2,
-          "transitive_dependencies": 5,
+          "transitive_dependencies": 6,
           "dependent_lines": [
             13,
-            2,
             12,
-            2,
-            6
+            6,
+            2
           ]
         },
         {
           "line_number": 17,
-          "total_dependencies": 5,
-          "dependency_distance_cost": 1.5,
+          "total_dependencies": 4,
+          "dependency_distance_cost": 1.0625,
           "depth": 2,
-          "transitive_dependencies": 5,
+          "transitive_dependencies": 6,
           "dependent_lines": [
             13,
-            3,
             12,
-            3,
-            6
+            6,
+            3
           ]
         },
         {
           "line_number": 21,
-          "total_dependencies": 1,
-          "dependency_distance_cost": 0.625,
+          "total_dependencies": 3,
+          "dependency_distance_cost": 1.78125,
           "depth": 1,
-          "transitive_dependencies": 1,
+          "transitive_dependencies": 3,
           "dependent_lines": [
+            3,
+            2,
             1
           ]
         },
@@ -101,7 +104,7 @@ expression: out
           "total_dependencies": 1,
           "dependency_distance_cost": 0.03125,
           "depth": 2,
-          "transitive_dependencies": 2,
+          "transitive_dependencies": 4,
           "dependent_lines": [
             21
           ]
@@ -111,7 +114,7 @@ expression: out
           "total_dependencies": 1,
           "dependency_distance_cost": 0.03125,
           "depth": 3,
-          "transitive_dependencies": 3,
+          "transitive_dependencies": 5,
           "dependent_lines": [
             22
           ]
@@ -133,8 +136,8 @@ expression: out
           "depth": 2,
           "transitive_dependencies": 2,
           "dependent_lines": [
-            26,
-            27
+            27,
+            26
           ]
         },
         {
@@ -158,10 +161,10 @@ expression: out
           ]
         }
       ],
-      "overall_complexity_score": 52.178125
+      "overall_complexity_score": 57.728125
     }
   ],
   "total_files_analyzed": 1,
-  "total_overall_complexity_score": 52.178125,
-  "average_complexity_score": 52.178125
+  "total_overall_complexity_score": 57.728125,
+  "average_complexity_score": 57.728125
 }

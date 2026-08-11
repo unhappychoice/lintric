@@ -46,7 +46,6 @@ IntermediateRepresentation {
         Dependency { source_line: 2, target_line: 1, symbol: "b", dependency_type: VariableUse, context: Some("Identifier:2:15") },
     ],
     usage: [
-        Usage { position: { 2:3 to 2:17 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 2:3 to 2:10 }, name: "console", kind: Identifier, context: Some("call_expression") },
         Usage { position: { 2:11 to 2:14 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 2:15 to 2:16 }, name: "b", kind: Identifier, context: Some("call_expression") },

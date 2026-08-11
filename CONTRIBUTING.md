@@ -32,10 +32,12 @@ If you have a feature request, please open an [issue on GitHub](https://github.c
 
 ### Project Structure
 
-Lintric is organized into two main crates:
+Lintric is organized into the following crates:
 
-*   **`core/`**: Contains the core logic for calculating code metrics based on line-level dependencies. It uses `tree-sitter` for AST parsing and `petgraph` for dependency graph construction.
-*   **`cli/`**: Provides a command-line interface for the Lintric tool, utilizing the `lintric-core` library.
+*   **`crates/core/`**: Contains the core logic for calculating code metrics based on line-level dependencies. It uses `tree-sitter` for AST parsing and `petgraph` for dependency graph construction.
+*   **`crates/cli/`**: Provides a command-line interface for the Lintric tool, utilizing the `lintric-core` library.
+*   **`crates/test-generator/`**: Generates per-node-type analysis tests from tree-sitter node type definitions.
+*   **`crates/accuracy/`**: Measures how accurately dependencies are detected, against hand-written expectations. See [crates/accuracy/README.md](crates/accuracy/README.md).
 
 ## Testing and Quality
 
@@ -48,6 +50,8 @@ For detailed information on debugging methods, such as displaying AST and IR, pl
 ## Implementing New Language Features
 
 If you are implementing dependency collection for a new language feature, please refer to the [Implementing New Language Features documentation](docs/development/implementing.md).
+
+Declarations are located by tree-sitter queries rather than hand-written traversal where their shape is enough to identify them; see [Locating declarations with queries](docs/development/queries.md).
 
 ## Commit Message Guidelines
 

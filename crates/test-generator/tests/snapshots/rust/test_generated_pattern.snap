@@ -38,13 +38,12 @@ IR:
 IntermediateRepresentation {
     file_path: "<memory>",
     definitions: [
-        Definition { position: { 2:10 to 2:11 }, name: "x", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 2:10 to 2:11 }, name: "x", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [],
     usage: [
         Usage { position: { 1:7 to 1:13 }, name: "option", kind: Identifier, context: None },
         Usage { position: { 2:5 to 2:9 }, name: "Some", kind: Identifier, context: None },
-        Usage { position: { 2:10 to 2:11 }, name: "x", kind: Identifier, context: None },
         Usage { position: { 2:16 to 2:17 }, name: "x", kind: Identifier, context: None },
         Usage { position: { 3:5 to 3:9 }, name: "None", kind: Identifier, context: None },
     ],

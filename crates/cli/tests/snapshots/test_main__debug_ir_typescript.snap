@@ -131,7 +131,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 2,
+      "scope_id": 3,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -144,7 +144,7 @@ expression: out
         "end_column": 14
       },
       "definition_type": "FunctionDefinition",
-      "scope_id": 3,
+      "scope_id": 4,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -157,7 +157,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -170,7 +170,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -183,7 +183,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -196,7 +196,7 @@ expression: out
         "end_column": 13
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -209,7 +209,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 7,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -222,7 +222,7 @@ expression: out
         "end_column": 17
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 4,
+      "scope_id": 7,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -235,7 +235,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -248,7 +248,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -261,7 +261,7 @@ expression: out
         "end_column": 10
       },
       "definition_type": "VariableDefinition",
-      "scope_id": 3,
+      "scope_id": 5,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     },
@@ -300,7 +300,7 @@ expression: out
         "end_column": 25
       },
       "definition_type": "FunctionDefinition",
-      "scope_id": 5,
+      "scope_id": 8,
       "accessibility": "ScopeLocal",
       "is_hoisted": false
     }
@@ -335,20 +335,6 @@ expression: out
       "context": "TypeIdentifier:16:15"
     },
     {
-      "source_line": 16,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 16,
-      "target_line": 7,
-      "symbol": "y",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
       "source_line": 17,
       "target_line": 5,
       "symbol": "Point",
@@ -356,32 +342,11 @@ expression: out
       "context": "TypeIdentifier:17:15"
     },
     {
-      "source_line": 17,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 17,
-      "target_line": 7,
-      "symbol": "y",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
       "source_line": 19,
       "target_line": 5,
       "symbol": "Point",
       "dependency_type": "TypeReference",
       "context": "TypeIdentifier:19:15"
-    },
-    {
-      "source_line": 20,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
     },
     {
       "source_line": 20,
@@ -415,13 +380,6 @@ expression: out
       "source_line": 20,
       "target_line": 6,
       "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 21,
-      "target_line": 7,
-      "symbol": "y",
       "dependency_type": "StructFieldAccess",
       "context": "field_access"
     },
@@ -466,20 +424,6 @@ expression: out
       "symbol": "Point",
       "dependency_type": "TypeReference",
       "context": "TypeIdentifier:25:19"
-    },
-    {
-      "source_line": 25,
-      "target_line": 6,
-      "symbol": "x",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
-    },
-    {
-      "source_line": 25,
-      "target_line": 7,
-      "symbol": "y",
-      "dependency_type": "StructFieldAccess",
-      "context": "field_access"
     },
     {
       "source_line": 26,
@@ -590,28 +534,6 @@ expression: out
       "context": null
     },
     {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 6,
-        "start_column": 5,
-        "end_line": 6,
-        "end_column": 6
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 7,
-        "start_column": 5,
-        "end_line": 7,
-        "end_column": 6
-      },
-      "context": null
-    },
-    {
       "name": "a",
       "kind": "Identifier",
       "position": {
@@ -656,28 +578,6 @@ expression: out
       "context": null
     },
     {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 16,
-        "start_column": 25,
-        "end_line": 16,
-        "end_column": 26
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 16,
-        "start_column": 31,
-        "end_line": 16,
-        "end_column": 32
-      },
-      "context": null
-    },
-    {
       "name": "Point",
       "kind": "TypeIdentifier",
       "position": {
@@ -685,28 +585,6 @@ expression: out
         "start_column": 15,
         "end_line": 17,
         "end_column": 20
-      },
-      "context": null
-    },
-    {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 17,
-        "start_column": 25,
-        "end_line": 17,
-        "end_column": 26
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 17,
-        "start_column": 31,
-        "end_line": 17,
-        "end_column": 32
       },
       "context": null
     },
@@ -722,17 +600,6 @@ expression: out
       "context": null
     },
     {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 20,
-        "start_column": 9,
-        "end_line": 20,
-        "end_column": 10
-      },
-      "context": null
-    },
-    {
       "name": "add",
       "kind": "CallExpression",
       "position": {
@@ -784,17 +651,6 @@ expression: out
         "start_column": 25,
         "end_line": 20,
         "end_column": 26
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 21,
-        "start_column": 9,
-        "end_line": 21,
-        "end_column": 10
       },
       "context": null
     },
@@ -852,17 +708,6 @@ expression: out
         "end_column": 26
       },
       "context": null
-    },
-    {
-      "name": "(() => {\n        const p5: Point = { x: 5, y: 6 };\n        const p6 = p5;\n        return p6;\n    })",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 24,
-        "start_column": 16,
-        "end_line": 28,
-        "end_column": 9
-      },
-      "context": "call_expression"
     },
     {
       "name": "Point",
@@ -872,28 +717,6 @@ expression: out
         "start_column": 19,
         "end_line": 25,
         "end_column": 24
-      },
-      "context": null
-    },
-    {
-      "name": "x",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 25,
-        "start_column": 29,
-        "end_line": 25,
-        "end_column": 30
-      },
-      "context": null
-    },
-    {
-      "name": "y",
-      "kind": "FieldExpression",
-      "position": {
-        "start_line": 25,
-        "start_column": 35,
-        "end_line": 25,
-        "end_column": 36
       },
       "context": null
     },
@@ -953,17 +776,6 @@ expression: out
       "context": null
     },
     {
-      "name": "console.log",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 34,
-        "start_column": 5,
-        "end_line": 34,
-        "end_column": 20
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "console",
       "kind": "Identifier",
       "position": {
@@ -993,17 +805,6 @@ expression: out
         "start_column": 17,
         "end_line": 34,
         "end_column": 19
-      },
-      "context": "call_expression"
-    },
-    {
-      "name": "console.log",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 35,
-        "start_column": 5,
-        "end_line": 35,
-        "end_column": 20
       },
       "context": "call_expression"
     },
@@ -1052,17 +853,6 @@ expression: out
       "context": null
     },
     {
-      "name": "Utils.helperFunction",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 39,
-        "start_column": 16,
-        "end_line": 39,
-        "end_column": 38
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "Utils",
       "kind": "Identifier",
       "position": {
@@ -1085,17 +875,6 @@ expression: out
       "context": null
     },
     {
-      "name": "DefaultExport.init",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 40,
-        "start_column": 1,
-        "end_line": 40,
-        "end_column": 21
-      },
-      "context": "call_expression"
-    },
-    {
       "name": "DefaultExport",
       "kind": "Identifier",
       "position": {
@@ -1116,17 +895,6 @@ expression: out
         "end_column": 19
       },
       "context": null
-    },
-    {
-      "name": "console.log",
-      "kind": "CallExpression",
-      "position": {
-        "start_line": 43,
-        "start_column": 5,
-        "end_line": 43,
-        "end_column": 34
-      },
-      "context": "call_expression"
     },
     {
       "name": "console",

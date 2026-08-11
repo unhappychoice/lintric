@@ -1,16 +1,23 @@
 use crate::dependency_resolver::DependencyResolverTrait;
-use crate::models::{
-    scope::{CodeAnalysisContext, SymbolTable},
-    Definition, Dependency, Usage,
-};
+use crate::models::{CodeAnalysisContext, Definition, Dependency, SymbolTable, Usage};
 use tree_sitter::Node;
 
+use super::accessor_direction::AccessorDirection;
 use super::method_resolver::MethodResolver;
 use super::module_resolver::ModuleResolver;
+use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
+use crate::dependency_resolver::self_reference::SelfReference;
+use crate::query;
+
+/// Names an export clause exposes, which belong to either namespace.
+const EXPORT_SPECIFIERS: &str =
+    include_str!("../../../../queries/typescript/export_specifiers.scm");
+
+/// Each declarator paired with its initializer, so a binding stays out of the names it reads.
+const OWN_INITIALIZERS: &str = include_str!("../../../../queries/typescript/own_initializers.scm");
 
 /// TypeScript-specific dependency resolver
 pub struct TypeScriptDependencyResolver {
-    #[allow(dead_code)]
     symbol_table: SymbolTable,
     method_resolver: MethodResolver,
     module_resolver: ModuleResolver,
@@ -45,30 +52,108 @@ impl TypeScriptDependencyResolver {
     /// TypeScript-specific field access resolution
     fn resolve_typescript_field_access(
         &self,
+        narrowing: &ReceiverNarrowing,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
         self.method_resolver
-            .resolve_struct_field_access(usage_node, definitions)
+            .resolve_struct_field_access(usage_node, definitions, narrowing)
+    }
+
+    /// Whether this declaration can be named from the position this usage sits in.
+    ///
+    /// TypeScript keeps types and values in separate namespaces, so an interface and a `const` may
+    /// share a name and each is invisible where the other belongs. A class, an enum and a namespace
+    /// declare in both, which is why the rule is about what a declaration introduces rather than
+    /// about matching a type usage to a type declaration.
+    fn is_in_usage_namespace(
+        exported: &std::collections::HashSet<(usize, usize)>,
+        usage: &Usage,
+        definition: &Definition,
+    ) -> bool {
+        use crate::models::DefinitionType::*;
+
+        // An export names a local declaration of either kind, and `export type { X }` reads as an
+        // ordinary identifier, so the two namespaces are not kept apart there.
+        if exported.contains(&(usage.position.start_line, usage.position.start_column)) {
+            return true;
+        }
+
+        match definition.definition_type {
+            InterfaceDefinition | TypeDefinition => {
+                usage.kind == crate::models::UsageKind::TypeIdentifier
+            }
+            VariableDefinition | ConstDefinition | FunctionDefinition => {
+                usage.kind != crate::models::UsageKind::TypeIdentifier
+            }
+            _ => true,
+        }
+    }
+
+    /// Whether a member would be reached by its bare name.
+    ///
+    /// `receiver.member` reaches only what the receiver's type declares, which the field access
+    /// path above decides. Matching the name here as well would undo that decision and resolve
+    /// `first.id` to any type's `id`.
+    fn is_member_reached_by_name(usage: &Usage, definition: &Definition) -> bool {
+        usage.kind == crate::models::UsageKind::FieldExpression
+            && matches!(
+                definition.definition_type,
+                crate::models::DefinitionType::StructFieldDefinition
+                    | crate::models::DefinitionType::PropertyDefinition
+            )
     }
 
     /// Check if definition is accessible from usage (TypeScript-specific rules)
     fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
-        // Check for hoisting rules first
+        // A function, class, interface, enum, type alias or namespace is visible before its own
+        // line, so where it sits does not restrict who can name it.
         if self.is_hoisted_basic(definition) {
             return true;
         }
 
-        // For non-hoisted definitions, check TypeScript-specific scope rules
-        if !self.is_hoisted_basic(definition)
-            && !self
-                .module_resolver
-                .are_in_same_function_scope(usage, definition)
-        {
-            return false;
+        // A member is reached through a receiver rather than by a name in scope, so where it sits
+        // does not restrict who can name it either.
+        if Self::is_member(definition) {
+            return true;
         }
 
-        true
+        // Everything else is reachable only from inside the scope that declares it. `const` and
+        // `let` are block-scoped, so a binding inside a block is invisible outside it.
+        self.is_in_scope_chain(usage, definition)
+    }
+
+    fn is_member(definition: &Definition) -> bool {
+        use crate::models::DefinitionType;
+        matches!(
+            definition.definition_type,
+            DefinitionType::MethodDefinition | DefinitionType::PropertyDefinition
+        )
+    }
+
+    /// Whether the definition sits in the usage's scope or one enclosing it.
+    ///
+    /// A declaration that opens a scope has its own name recorded inside that scope rather than
+    /// beside it, so the parent counts too — otherwise no such declaration would look reachable.
+    fn is_in_scope_chain(&self, usage: &Usage, definition: &Definition) -> bool {
+        let chain = self.usage_scope_chain(usage);
+
+        definition
+            .scope_id
+            .is_some_and(|def_scope| chain.contains(&def_scope))
+    }
+
+    /// The usage's own scope followed by its enclosing scopes.
+    fn usage_scope_chain(&self, usage: &Usage) -> Vec<crate::models::ScopeId> {
+        let usage_scope = self
+            .symbol_table
+            .scopes
+            .find_scope_at_position(&usage.position)
+            .unwrap_or(0);
+
+        std::iter::once(usage_scope)
+            .chain(self.symbol_table.scopes.get_parent_scopes(usage_scope))
+            .collect()
     }
 
     fn is_hoisted_basic(&self, definition: &Definition) -> bool {
@@ -176,21 +261,48 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
         usage_nodes: &[Usage],
         definitions: &[Definition],
     ) -> Result<Vec<Dependency>, String> {
-        let mut all_dependencies = Vec::new();
+        // Read off the file once rather than per usage: every member access asks the same questions
+        // of it, and a malformed query must fail rather than quietly resolve nothing.
+        let narrowing =
+            ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
+        let direction = AccessorDirection::new(source_code, root_node)?;
+        let own = SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?;
+        let exported =
+            query::captured_positions(EXPORT_SPECIFIERS, source_code, root_node, "exported")?;
 
-        for usage_node in usage_nodes {
-            let mut deps =
-                self.resolve_single_dependency(source_code, root_node, usage_node, definitions);
-            all_dependencies.append(&mut deps);
-        }
+        let mut all_dependencies: Vec<Dependency> = usage_nodes
+            .iter()
+            .flat_map(|usage| {
+                self.resolve_single_dependency(
+                    &narrowing,
+                    &direction,
+                    &own,
+                    &exported,
+                    usage,
+                    definitions,
+                )
+            })
+            .collect();
+
+        // Add interface implementation dependencies (class method -> interface declaration), which
+        // have no usage to resolve and are derived from the class heritage instead
+        let implementation_deps =
+            super::interface_implementation_resolver::resolve(source_code, root_node)?;
+        all_dependencies.extend(implementation_deps);
 
         Ok(all_dependencies)
     }
+}
 
+impl TypeScriptDependencyResolver {
+    /// Resolve one usage. Internal to this resolver: the Rust side reaches its own equivalent by a
+    /// different route, so there is nothing for the trait to abstract over.
     fn resolve_single_dependency(
         &self,
-        _source_code: &str,
-        _root_node: Node,
+        narrowing: &ReceiverNarrowing,
+        direction: &AccessorDirection,
+        own: &SelfReference,
+        exported: &std::collections::HashSet<(usize, usize)>,
         usage_node: &Usage,
         definitions: &[Definition],
     ) -> Vec<Dependency> {
@@ -198,7 +310,8 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
 
         // Try TypeScript-specific field access resolution
         if usage_node.kind == crate::models::UsageKind::FieldExpression {
-            let field_dependencies = self.resolve_typescript_field_access(usage_node, definitions);
+            let field_dependencies =
+                self.resolve_typescript_field_access(narrowing, usage_node, definitions);
             if !field_dependencies.is_empty() {
                 dependencies.extend(field_dependencies);
                 return dependencies;
@@ -211,11 +324,20 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
             .filter(|def| def.name == usage_node.name)
             .collect();
 
-        let matching_definitions: Vec<&Definition> = all_matching_definitions
+        let accessible: Vec<&Definition> = all_matching_definitions
             .into_iter()
+            // A binding is not among the candidates for its own initializer, so `let x = x + 1`
+            // looks past it and finds the previous `x`.
+            .filter(|def| !own.declares(usage_node, def))
+            .filter(|def| Self::is_in_usage_namespace(exported, usage_node, def))
+            .filter(|def| !Self::is_member_reached_by_name(usage_node, def))
             .filter(|def| self.is_accessible_basic(usage_node, def))
             .filter(|def| self.module_resolver.is_valid_dependency(usage_node, def))
             .collect();
+
+        // A getter and a setter share a name, so which one is reached is decided by whether this
+        // access reads or writes rather than by any preference among them.
+        let matching_definitions = direction.narrow(usage_node, accessible);
 
         // Apply TypeScript-specific preference logic
         let preferred_definition = if usage_node.kind == crate::models::UsageKind::TypeIdentifier {
@@ -240,7 +362,7 @@ impl DependencyResolverTrait for TypeScriptDependencyResolver {
                     source_line,
                     target_line,
                     symbol: usage_node.name.clone(),
-                    dependency_type: self.get_dependency_type(usage_node),
+                    dependency_type: self.get_dependency_type(usage_node, definition),
                     context: self.get_context(usage_node),
                 };
                 dependencies.push(dependency);

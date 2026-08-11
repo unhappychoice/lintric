@@ -17,6 +17,7 @@ pub enum DefinitionType {
     VariableDefinition,
     StructDefinition,
     EnumDefinition,
+    EnumVariantDefinition,
     TypeDefinition,
     ModuleDefinition,
     ClassDefinition,
@@ -176,5 +177,20 @@ impl fmt::Debug for Definition {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Definition {{ position: {:?}, name: {:?}, definition_type: {:?}, scope_id: {:?}, accessibility: {:?}, is_hoisted: {:?} }}", 
             self.position, self.name, self.definition_type, self.scope_id, self.accessibility, self.is_hoisted)
+    }
+}
+
+impl Definition {
+    /// A definition with nothing but a name, a kind and a position, for tests that do not care
+    /// about scope or visibility.
+    pub fn new_simple(name: String, definition_type: DefinitionType, position: Position) -> Self {
+        Self {
+            name,
+            definition_type,
+            position,
+            scope_id: None,
+            accessibility: None,
+            is_hoisted: None,
+        }
     }
 }

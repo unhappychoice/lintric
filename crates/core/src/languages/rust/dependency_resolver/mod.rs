@@ -5,10 +5,13 @@ pub mod lifetime_resolver;
 pub mod method_resolver;
 pub mod module_resolver;
 pub mod nested_scope_resolver;
-pub mod resolution_candidate;
+pub mod qualified_paths;
+pub mod receiver_narrowing;
 pub mod rust_dependency_resolver;
 pub mod trait_database;
+pub mod trait_implementation_resolver;
 pub mod type_system;
+pub mod visibility;
 
 pub use associated_type_resolver::AssociatedTypeResolver;
 pub use constraint_solver::ConstraintSolver;
@@ -17,7 +20,6 @@ pub use lifetime_resolver::LifetimeResolver;
 pub use method_resolver::{MethodResolutionResult, MethodResolver};
 pub use module_resolver::{ImportResolver, ModuleResolver, VisibilityChecker};
 pub use nested_scope_resolver::{ClosureAnalyzer, NestedScopeResolver, ScopeChainWalker};
-pub use resolution_candidate::{ResolutionCandidate, ShadowingWarning};
 pub use rust_dependency_resolver::RustDependencyResolver;
 pub use trait_database::{TraitDatabase, TraitDefinition, TraitImplementation};
 pub use type_system::{

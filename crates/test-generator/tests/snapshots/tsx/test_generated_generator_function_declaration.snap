@@ -23,10 +23,11 @@ AST:
 IR:
 IntermediateRepresentation {
     file_path: "<memory>",
-    definitions: [],
+    definitions: [
+        Definition { position: { 1:11 to 1:18 }, name: "testFn2", definition_type: FunctionDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+    ],
     dependencies: [],
     usage: [
-        Usage { position: { 1:11 to 1:18 }, name: "testFn2", kind: Identifier, context: None },
         Usage { position: { 1:29 to 1:35 }, name: "value9", kind: Identifier, context: None },
     ],
     analysis_metadata: AnalysisMetadata {

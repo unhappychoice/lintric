@@ -1,0 +1,508 @@
+{
+  "fixtures": {
+    "rust/associated_items.rs": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/associated_types.rs": {
+      "expected": 11,
+      "detected": 11,
+      "correct": 11,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/closures.rs": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/consts_statics.rs": {
+      "expected": 11,
+      "detected": 11,
+      "correct": 11,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/destructuring.rs": {
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/enums.rs": {
+      "expected": 13,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 3
+    },
+    "rust/error_handling.rs": {
+      "expected": 11,
+      "detected": 11,
+      "correct": 11,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/function_types.rs": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/functions.rs": {
+      "expected": 8,
+      "detected": 8,
+      "correct": 8,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/generic_traits.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/generics.rs": {
+      "expected": 13,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/impl_trait.rs": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/imports.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "rust/let_else.rs": {
+      "expected": 32,
+      "detected": 32,
+      "correct": 32,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/loops.rs": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/macros.rs": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/macros_and_unions.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/match_arms.rs": {
+      "expected": 13,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/method_chains.rs": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/method_receivers.rs": {
+      "expected": 23,
+      "detected": 23,
+      "correct": 23,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/nested_modules.rs": {
+      "expected": 11,
+      "detected": 11,
+      "correct": 11,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/nested_scopes.rs": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/operator_traits.rs": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 3
+    },
+    "rust/path_head_names.rs": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/pattern_forms.rs": {
+      "expected": 20,
+      "detected": 20,
+      "correct": 20,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/patterns.rs": {
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/qualified_paths.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/structs.rs": {
+      "expected": 18,
+      "detected": 18,
+      "correct": 18,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "rust/supertraits.rs": {
+      "expected": 5,
+      "detected": 5,
+      "correct": 5,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/trait_objects.rs": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/traits.rs": {
+      "expected": 18,
+      "detected": 18,
+      "correct": 18,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/tuple_structs.rs": {
+      "expected": 13,
+      "detected": 13,
+      "correct": 13,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "rust/type_aliases.rs": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "rust/use_aliases.rs": {
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "rust/variables.rs": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "tsx/component.tsx": {
+      "expected": 2,
+      "detected": 2,
+      "correct": 2,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "tsx/props.tsx": {
+      "expected": 6,
+      "detected": 6,
+      "correct": 6,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/abstract_classes.ts": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/accessors.ts": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/assertions_and_exports.ts": {
+      "expected": 17,
+      "detected": 17,
+      "correct": 17,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/async_functions.ts": {
+      "expected": 6,
+      "detected": 6,
+      "correct": 6,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/block_scopes.ts": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/class_members.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/classes.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "typescript/declaration_names.ts": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/destructuring.ts": {
+      "expected": 22,
+      "detected": 22,
+      "correct": 22,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/enums.ts": {
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 4
+    },
+    "typescript/functions.ts": {
+      "expected": 7,
+      "detected": 7,
+      "correct": 7,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/generic_interfaces.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/generics.ts": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/imports.ts": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/inheritance.ts": {
+      "expected": 6,
+      "detected": 6,
+      "correct": 6,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/interfaces.ts": {
+      "expected": 14,
+      "detected": 14,
+      "correct": 14,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/loop_and_catch_bindings.ts": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/member_access.ts": {
+      "expected": 24,
+      "detected": 24,
+      "correct": 24,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/member_syntax.ts": {
+      "expected": 12,
+      "detected": 12,
+      "correct": 12,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/namespaces.ts": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 2
+    },
+    "typescript/object_shapes.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/type_aliases.ts": {
+      "expected": 9,
+      "detected": 9,
+      "correct": 9,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 1
+    },
+    "typescript/type_and_value_names.ts": {
+      "expected": 10,
+      "detected": 10,
+      "correct": 10,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 3
+    },
+    "typescript/type_operators.ts": {
+      "expected": 15,
+      "detected": 15,
+      "correct": 15,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    },
+    "typescript/variables.ts": {
+      "expected": 5,
+      "detected": 5,
+      "correct": 5,
+      "missing": 0,
+      "spurious": 0,
+      "duplicates": 0
+    }
+  },
+  "total": {
+    "expected": 743,
+    "detected": 743,
+    "correct": 743,
+    "missing": 0,
+    "spurious": 0,
+    "duplicates": 37
+  }
+}

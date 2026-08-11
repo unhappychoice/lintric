@@ -59,8 +59,8 @@ IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/dependency_resolver/fixtures/typescript_basic.ts",
     definitions: [
         Definition { position: { 1:10 to 1:16 }, name: "helper", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 5:10 to 5:14 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 6:11 to 6:17 }, name: "result", definition_type: VariableDefinition, scope_id: Some(2), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 5:10 to 5:14 }, name: "main", definition_type: FunctionDefinition, scope_id: Some(3), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 6:11 to 6:17 }, name: "result", definition_type: VariableDefinition, scope_id: Some(4), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [
         Dependency { source_line: 6, target_line: 1, symbol: "helper", dependency_type: FunctionCall, context: Some("CallExpression:6:20") },
@@ -68,7 +68,6 @@ IntermediateRepresentation {
     ],
     usage: [
         Usage { position: { 6:20 to 6:28 }, name: "helper", kind: CallExpression, context: Some("call_expression") },
-        Usage { position: { 7:5 to 7:24 }, name: "console.log", kind: CallExpression, context: Some("call_expression") },
         Usage { position: { 7:5 to 7:12 }, name: "console", kind: Identifier, context: Some("call_expression") },
         Usage { position: { 7:13 to 7:16 }, name: "log", kind: FieldExpression, context: None },
         Usage { position: { 7:17 to 7:23 }, name: "result", kind: Identifier, context: Some("call_expression") },

@@ -32,6 +32,15 @@
     ```bash
     cargo insta accept --workspace
     ```
+*   **Measure Dependency Detection Accuracy**:
+    Reports precision and recall against hand-written expectations, so a change in what the
+    analyzer detects is visible as a number rather than only as a changed snapshot. See
+    [crates/accuracy/README.md](../../crates/accuracy/README.md) for the annotation format.
+    ```bash
+    cargo run -p lintric-accuracy              # print the report
+    cargo run -p lintric-accuracy -- --check   # compare against the recorded baseline
+    cargo run -p lintric-accuracy -- --update  # record the current numbers
+    ```
 *   **Generate Code Coverage Report**:
     (Requires `cargo-tarpaulin` to be installed: `cargo install cargo-tarpaulin`)
     ```bash
