@@ -43,7 +43,7 @@ IntermediateRepresentation {
     definitions: [
         Definition { position: { 1:7 to 1:8 }, name: "x", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
         Definition { position: { 2:5 to 2:6 }, name: "y", definition_type: VariableDefinition, scope_id: Some(0), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
-        Definition { position: { 3:10 to 3:13 }, name: "foo", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 3:10 to 3:13 }, name: "foo", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(true) },
     ],
     dependencies: [
         Dependency { source_line: 2, target_line: 1, symbol: "x", dependency_type: VariableUse, context: Some("Identifier:2:9") },
