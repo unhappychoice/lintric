@@ -119,7 +119,7 @@ pub fn display_overall_summary(overall_report: &OverallAnalysisReport, logger: &
     ));
 }
 
-fn format_file_path_for_display(file_path: &str, base_paths: &[String]) -> String {
+pub fn format_file_path_for_display(file_path: &str, base_paths: &[String]) -> String {
     let normalized_path = file_path.replace('\\', "/");
     let original_path = Path::new(&normalized_path);
 

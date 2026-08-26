@@ -122,7 +122,7 @@ where
             } else if args.verbose {
                 display::display_verbose(&overall_report, &args.paths, logger);
             } else if args.html {
-                html_output::generate_html_report(&overall_report, logger);
+                html_output::generate_html_report(&overall_report, &args.paths, logger);
             } else {
                 display::display_summary(&overall_report, &args.paths, logger);
             }
