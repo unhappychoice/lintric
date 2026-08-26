@@ -1,7 +1,10 @@
 [package]
 name = "lintric-test-generator"
-version = "0.1.0"
-edition = "2021"
+description = "Generates per-node-type analysis tests from tree-sitter node type definitions"
+publish = false
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
 
 [dependencies]
 lintric-core = { path = "../core" }

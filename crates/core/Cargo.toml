@@ -1,7 +1,12 @@
 [package]
 name = "lintric-core"
-version = "0.1.0"
-edition = "2021"
+description = "Code metrics derived from line-level dependencies in source code"
+readme = "README.md"
+keywords = ["metrics", "static-analysis", "tree-sitter", "complexity"]
+categories = ["development-tools"]
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
 
 [dependencies]
 petgraph = "0.8.3"
