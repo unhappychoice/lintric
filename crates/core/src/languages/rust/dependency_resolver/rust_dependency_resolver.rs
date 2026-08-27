@@ -245,9 +245,11 @@ impl RustDependencyResolver {
         matching_definitions: &[&'a Definition],
         usage: &Usage,
     ) -> Option<&'a Definition> {
-        // An import is what a name in `main` reaches, since that is where a `use` was written for.
-        if self.is_usage_in_main_function(usage) {
-            if let Some(imported) = first_of(matching_definitions, IMPORTED) {
+        // A `use` is what puts a name from another module within reach in its bare form. Where the
+        // declarations it could otherwise name all sit in scopes the usage is not inside, the
+        // import is what the name reaches.
+        if let Some(imported) = first_of(matching_definitions, IMPORTED) {
+            if self.every_other_candidate_is_out_of_scope(matching_definitions, usage) {
                 return Some(imported);
             }
         }
@@ -295,36 +297,16 @@ impl RustDependencyResolver {
             .copied()
     }
 
-    fn is_usage_in_main_function(&self, usage: &Usage) -> bool {
-        // Find the main function definition
-        for scope in self.symbol_table.scopes.scopes.values() {
-            if let Some(main_defs) = scope.symbols.get("main") {
-                for def in main_defs {
-                    if matches!(
-                        def.definition_type,
-                        crate::models::DefinitionType::FunctionDefinition
-                    ) {
-                        // Find function body scope that contains this main function
-                        let main_line = def.position.start_line;
-                        for body_scope in self.symbol_table.scopes.scopes.values() {
-                            // Look for a scope that starts right after the main function definition
-                            if body_scope.position.start_line == main_line + 1
-                                || (body_scope.position.start_line <= main_line + 1
-                                    && body_scope.position.end_line > main_line)
-                            {
-                                // Check if usage is within this function body scope
-                                if usage.position.start_line > main_line
-                                    && usage.position.start_line <= body_scope.position.end_line
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        false
+    /// True when nothing but an import is reachable from where the usage sits.
+    fn every_other_candidate_is_out_of_scope(
+        &self,
+        candidates: &[&Definition],
+        usage: &Usage,
+    ) -> bool {
+        candidates
+            .iter()
+            .filter(|definition| definition.definition_type != DefinitionType::ImportDefinition)
+            .all(|definition| !self.is_in_scope_chain(usage, definition))
     }
 }
 

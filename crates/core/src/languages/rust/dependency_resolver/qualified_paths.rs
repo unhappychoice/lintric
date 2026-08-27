@@ -5,7 +5,17 @@
 //! share a line are never mistaken for one path.
 
 use super::rust_dependency_resolver::RustDependencyResolver;
-use crate::models::{Definition, ScopeType, Usage};
+use crate::models::{Definition, DefinitionType, ScopeType, Usage};
+
+/// A type declared in this file, as opposed to a name brought in by `use`.
+fn declares_a_local_type(definition: &Definition) -> bool {
+    matches!(
+        definition.definition_type,
+        DefinitionType::StructDefinition
+            | DefinitionType::EnumDefinition
+            | DefinitionType::TypeDefinition
+    )
+}
 
 impl RustDependencyResolver {
     /// Check if this usage should be skipped because it has no definition
@@ -43,25 +53,15 @@ impl RustDependencyResolver {
             let mut current_scope_id = qualifier_scope_id;
             while let Some(scope) = self.symbol_table.scopes.get_scope(current_scope_id) {
                 if let Some(qualifier_definitions) = scope.symbols.get(&qualifier.name) {
-                    // Look for the method in definitions that are related to this qualifier
-                    let has_method_definition = definitions.iter().any(|def| {
-                        def.name == usage_node.name
-                            && qualifier_definitions.iter().any(|qual_def| {
-                                // Check if this method definition is related to the qualifier's scope
-                                match qual_def.definition_type {
-                                    crate::models::DefinitionType::StructDefinition
-                                    | crate::models::DefinitionType::EnumDefinition
-                                    | crate::models::DefinitionType::TypeDefinition => {
-                                        // For local types, check if method is in nearby lines (impl block)
-                                        (def.position.start_line as i32
-                                            - qual_def.position.start_line as i32)
-                                            .abs()
-                                            < 20
-                                    }
-                                    _ => false, // For imports, no local method definitions
-                                }
-                            })
-                    });
+                    // A qualifier that names a type declared here can have methods of its own; one
+                    // that names an import cannot.
+                    let qualifies_a_local_type =
+                        qualifier_definitions.iter().any(declares_a_local_type);
+
+                    let has_method_definition = qualifies_a_local_type
+                        && definitions.iter().any(|def| {
+                            def.name == usage_node.name && self.is_declared_in_impl_block(def)
+                        });
 
                     return !has_method_definition;
                 }
@@ -75,6 +75,24 @@ impl RustDependencyResolver {
 
         // If we can't find qualifier or determine scope, don't skip
         false
+    }
+
+    /// A method reached through `Type::` is declared in an `impl` or `trait` block, so what marks a
+    /// definition as such a method is the block it sits in, not how near it happens to be written
+    /// to the type.
+    fn is_declared_in_impl_block(&self, definition: &Definition) -> bool {
+        self.symbol_table
+            .scopes
+            .find_scope_at_position(&definition.position)
+            .is_some_and(|scope_id| {
+                std::iter::once(scope_id)
+                    .chain(self.symbol_table.scopes.get_parent_scopes(scope_id))
+                    .any(|id| {
+                        self.symbol_table.scopes.get_scope(id).is_some_and(|scope| {
+                            matches!(scope.scope_type, ScopeType::Impl | ScopeType::Trait)
+                        })
+                    })
+            })
     }
 
     /// Check if this usage is likely a method name in a qualified call (Type::method)
