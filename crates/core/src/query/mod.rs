@@ -32,7 +32,7 @@ pub fn capture_roles<T: Clone>(
     let mut roles = Roles::new();
 
     while let Some(query_match) = matches.next() {
-        for capture in query_match.captures {
+        for capture in query_match.captures() {
             if let Some(role) = roles_by_index.get(&capture.index) {
                 roles.insert(capture.node.id(), role.clone());
             }
@@ -201,7 +201,7 @@ pub fn map_pairs<T>(
     while let Some(query_match) = matches.next() {
         let of = |index: u32| {
             query_match
-                .captures
+                .captures()
                 .iter()
                 .find(|capture| capture.index == index)
                 .map(|capture| capture.node)
