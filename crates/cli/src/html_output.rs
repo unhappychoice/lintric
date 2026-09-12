@@ -1,9 +1,7 @@
 use crate::display::format_file_path_for_display;
 use crate::logger::Logger;
 use lintric_core::models::{AnalysisResult, LineMetrics, OverallAnalysisReport};
-use std::collections::hash_map::DefaultHasher;
 use std::fs;
-use std::hash::{Hash, Hasher};
 use std::io::Write;
 use std::path::{Path, PathBuf};
 use syntect::highlighting::ThemeSet;
@@ -42,9 +40,14 @@ pub fn generate_html_report(
 
     let mut results_for_template: Vec<serde_json::Value> = Vec::new();
 
-    for result in &report.results {
+    let paths: Vec<_> = report
+        .results
+        .iter()
+        .map(|r| r.file_path.as_str())
+        .collect();
+    let file_names = report_file_names(&paths, base_paths);
+    for (result, html_file_name) in report.results.iter().zip(file_names) {
         let display_path = format_file_path_for_display(&result.file_path, base_paths);
-        let html_file_name = report_file_name(&result.file_path, &display_path);
 
         // Prepare data for index template
         let mut file_data = serde_json::to_value(result).unwrap();
@@ -89,14 +92,27 @@ pub fn generate_html_report(
     }
 }
 
-/// Build the report file name for one source file.
-///
-/// The readable half comes from the path as displayed, so reports are easy to
-/// find. Slugging alone collides — `src/a.rs` and `src_a.rs` both read as
-/// `src_a_rs` — so a digest of the full source path is appended and each source
-/// keeps its own report.
-fn report_file_name(source_path: &str, display_path: &str) -> String {
-    format!("{}-{:08x}.html", slug(display_path), digest(source_path))
+/// Allocate globally unique suffixes in source-path order, preserving result order.
+fn report_file_names(paths: &[&str], base_paths: &[String]) -> Vec<String> {
+    let mut sorted_paths: Vec<_> = paths.iter().enumerate().collect();
+    sorted_paths.sort_by_key(|&(index, path)| (path, index));
+    let mut names = vec![String::new(); paths.len()];
+    sorted_paths
+        .into_iter()
+        .enumerate()
+        .for_each(|(id, (index, path))| {
+            let display_path = format_file_path_for_display(path, base_paths);
+            names[index] = report_file_name(&display_path, id);
+        });
+    names
+}
+
+fn report_file_name(display_path: &str, id: usize) -> String {
+    let suffix = format!("-{id}.html");
+    let mut name = slug(display_path);
+    name.truncate(255 - suffix.len());
+    name.push_str(&suffix);
+    name
 }
 
 fn slug(path: &str) -> String {
@@ -107,12 +123,6 @@ fn slug(path: &str) -> String {
         .filter(|part| !part.is_empty())
         .collect::<Vec<_>>()
         .join("_")
-}
-
-fn digest(path: &str) -> u32 {
-    let mut hasher = DefaultHasher::new();
-    path.hash(&mut hasher);
-    hasher.finish() as u32
 }
 
 /// Bucket a line by how many lines it depends on.
@@ -248,29 +258,59 @@ mod tests {
     use super::*;
 
     #[test]
-    fn report_file_name_distinguishes_paths_that_slug_identically() {
-        assert_ne!(
-            report_file_name("src/a.rs", "src/a.rs"),
-            report_file_name("src_a.rs", "src_a.rs")
+    fn report_file_names_allocate_unique_suffixes_for_every_entry() {
+        let paths = ["一瘕.rs", "一籏.rs", "src/a.rs", "src_a.rs", "src/a.rs"];
+        let names = report_file_names(&paths, &[]);
+        assert_eq!(
+            names,
+            [
+                "rs-3.html",
+                "rs-4.html",
+                "src_a_rs-0.html",
+                "src_a_rs-2.html",
+                "src_a_rs-1.html"
+            ]
         );
     }
 
     #[test]
     fn report_file_name_collapses_repeated_separators() {
-        assert!(!report_file_name("a///b.rs", "a///b.rs").contains("__"));
+        assert_eq!(report_file_name("a///b.rs", 0), "a_b_rs-0.html");
     }
 
     #[test]
-    fn report_file_name_is_stable_for_the_same_path() {
+    fn report_file_names_are_independent_of_input_order() {
         assert_eq!(
-            report_file_name("src/a.rs", "src/a.rs"),
-            report_file_name("src/a.rs", "src/a.rs")
+            report_file_names(&["src/a.rs", "src/b.rs"], &[]),
+            report_file_names(&["src/b.rs", "src/a.rs"], &[])
+                .into_iter()
+                .rev()
+                .collect::<Vec<_>>()
         );
     }
 
     #[test]
     fn report_file_name_reads_as_the_displayed_path() {
-        assert!(report_file_name("/abs/base/src/a.rs", "src/a.rs").starts_with("src_a_rs-"));
+        assert_eq!(
+            report_file_names(&["/abs/base/src/a.rs"], &["/abs/base".into()]),
+            ["src_a_rs-0.html"]
+        );
+    }
+
+    #[test]
+    fn report_file_name_limits_bytes_including_the_largest_suffix() {
+        let path = format!("{}.rs", "a".repeat(240));
+        let name = report_file_name(&path, usize::MAX);
+        assert_eq!(name.len(), 255);
+        assert!(name.ends_with(&format!("-{}.html", usize::MAX)));
+    }
+
+    #[test]
+    fn report_file_names_handle_empty_and_non_ascii_slugs() {
+        assert!(report_file_names(&[], &[]).is_empty());
+        assert_eq!(report_file_name("一瘕", 0), "-0.html");
+        assert_eq!(report_file_name("", 1), "-1.html");
+        assert_eq!(report_file_name("index", 2), "index-2.html");
     }
 
     #[test]
