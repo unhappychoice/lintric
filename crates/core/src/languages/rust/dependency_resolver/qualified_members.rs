@@ -57,20 +57,26 @@ impl QualifiedMembers {
         if owner.uses_fallback(&self.parameters) {
             return candidates;
         }
-        candidates
+        let (direct, inherited): (Vec<_>, Vec<_>) = candidates
             .into_iter()
-            .filter(|candidate| {
-                self.owners
-                    .get(&location(&candidate.position))
-                    .and_then(|reference| {
-                        self.resolve(resolver, reference, definitions, &mut HashSet::new())
-                            .owner()
-                    })
-                    .is_some_and(|declared| {
-                        declared == owner
-                            || self.implements(resolver, &owner, &declared, definitions)
-                    })
+            .filter_map(|candidate| {
+                let declared =
+                    self.owners
+                        .get(&location(&candidate.position))
+                        .and_then(|reference| {
+                            self.resolve(resolver, reference, definitions, &mut HashSet::new())
+                                .owner()
+                        })?;
+                let direct = declared == owner;
+                (direct || self.implements(resolver, &owner, &declared, definitions))
+                    .then_some((candidate, direct))
             })
+            .partition(|(_, direct)| *direct);
+        // A concrete override wins; trait declarations supply defaults only when it is absent.
+        let preferred = if direct.is_empty() { inherited } else { direct };
+        preferred
+            .into_iter()
+            .map(|(candidate, _)| candidate)
             .collect()
     }
 

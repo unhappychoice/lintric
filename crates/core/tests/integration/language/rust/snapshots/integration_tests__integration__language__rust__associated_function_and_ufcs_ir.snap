@@ -145,7 +145,7 @@ IntermediateRepresentation {
         Dependency { source_line: 22, target_line: 1, symbol: "MyStruct", dependency_type: TypeReference, context: Some("Identifier:22:14") },
         Dependency { source_line: 22, target_line: 4, symbol: "new", dependency_type: FunctionCall, context: Some("Identifier:22:24") },
         Dependency { source_line: 23, target_line: 13, symbol: "MyType", dependency_type: TypeReference, context: Some("Identifier:23:5") },
-        Dependency { source_line: 23, target_line: 10, symbol: "my_function", dependency_type: FunctionCall, context: Some("Identifier:23:13") },
+        Dependency { source_line: 23, target_line: 16, symbol: "my_function", dependency_type: FunctionCall, context: Some("Identifier:23:13") },
         Dependency { source_line: 24, target_line: 13, symbol: "MyType", dependency_type: TypeReference, context: Some("TypeIdentifier:24:6") },
         Dependency { source_line: 24, target_line: 9, symbol: "MyTrait", dependency_type: TypeReference, context: Some("TypeIdentifier:24:16") },
         Dependency { source_line: 24, target_line: 10, symbol: "my_function", dependency_type: FunctionCall, context: Some("Identifier:24:26") },

@@ -314,6 +314,56 @@ fn primitive_without_a_matching_impl_does_not_claim_a_local_member() {
         .any(|(line, _, name)| *line == 4 && name == "f"));
 }
 
+#[test]
+fn concrete_and_primitive_overrides_beat_trait_defaults_in_both_orders() {
+    ["B", "i32"].into_iter().for_each(|owner| {
+        [false, true].into_iter().for_each(|trait_first| {
+            let declaration = "trait T {\n fn f() {}\n}\n";
+            let implementation = format!("impl T for {owner} {{\n fn f() {{}}\n}}\n");
+            let blocks = if trait_first {
+                format!("{declaration}{implementation}")
+            } else {
+                format!("{implementation}{declaration}")
+            };
+            let source = format!("struct B;\n{blocks}fn run() {{ {owner}::f(); }}");
+            let actual: Vec<_> = dependencies(&source)
+                .into_iter()
+                .filter(|(line, _, name)| *line == 8 && name == "f")
+                .collect();
+            assert_eq!(
+                actual,
+                vec![(8, if trait_first { 6 } else { 3 }, "f".to_string())],
+                "{source}"
+            );
+        });
+    });
+}
+
+#[test]
+fn concrete_and_primitive_owners_fall_back_to_trait_defaults_in_both_orders() {
+    ["B", "i32"].into_iter().for_each(|owner| {
+        [false, true].into_iter().for_each(|trait_first| {
+            let declaration = "trait T {\n fn f() {}\n}\n";
+            let implementation = format!("impl T for {owner} {{}}\n");
+            let blocks = if trait_first {
+                format!("{declaration}{implementation}")
+            } else {
+                format!("{implementation}{declaration}")
+            };
+            let source = format!("struct B;\n{blocks}fn run() {{ {owner}::f(); }}");
+            let actual: Vec<_> = dependencies(&source)
+                .into_iter()
+                .filter(|(line, _, name)| *line == 6 && name == "f")
+                .collect();
+            assert_eq!(
+                actual,
+                vec![(6, if trait_first { 3 } else { 4 }, "f".to_string())],
+                "{source}"
+            );
+        });
+    });
+}
+
 fn dependencies(source: &str) -> Vec<(usize, usize, String)> {
     let (ir, _) = analyze_content(source.to_string(), Language::Rust).unwrap();
 
