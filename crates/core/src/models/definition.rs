@@ -124,9 +124,15 @@ impl Definition {
         accessibility: &Accessibility,
         is_hoisted: bool,
     ) {
+        self.set_scope(scope_id, accessibility);
+        self.is_hoisted = Some(is_hoisted);
+    }
+
+    /// Attach the scope a definition was found in, leaving `is_hoisted` alone: whether a
+    /// declaration hoists follows from how it was declared, which only the extractor knows.
+    pub fn set_scope(&mut self, scope_id: ScopeId, accessibility: &Accessibility) {
         self.scope_id = Some(scope_id);
         self.accessibility = Some(accessibility.clone());
-        self.is_hoisted = Some(is_hoisted);
     }
 
     pub fn get_scope_id(&self) -> Option<ScopeId> {

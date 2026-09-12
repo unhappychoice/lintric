@@ -84,11 +84,11 @@ impl ASTScopeTraverser {
         // This matches the old implementation where scope-creating items have their definitions in the new scope
         let definitions = def_extractor.extract_definition(node, self.current_scope, source);
         for mut definition in definitions {
-            // Set scope context for the definition
-            definition.set_context(
+            // Set scope context for the definition. Hoisting is decided by the extractor, which
+            // reads it off the declaration, so it is left untouched here.
+            definition.set_scope(
                 self.current_scope,
                 &super::definition::Accessibility::ScopeLocal, // Match old implementation
-                false,                                         // Default, extractors can override
             );
             context
                 .definitions
