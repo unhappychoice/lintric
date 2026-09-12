@@ -1,3 +1,4 @@
+use super::import_lookup::ImportLookup;
 use super::nested_scope_resolver::ScopeUtilities;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::self_reference::SelfReference;
@@ -14,6 +15,12 @@ const OWN_INITIALIZERS: &str = include_str!("../../../../queries/rust/own_initia
 /// including generics, lifetimes, traits, and Rust-specific language features
 pub struct RustDependencyResolver {
     pub(super) symbol_table: SymbolTable,
+}
+
+struct ResolutionContext {
+    narrowing: ReceiverNarrowing,
+    own: SelfReference,
+    imports: ImportLookup,
 }
 
 impl RustDependencyResolver {
@@ -111,16 +118,21 @@ impl RustDependencyResolver {
     ) -> Result<Vec<Dependency>, String> {
         // Read off the file once rather than per usage: every method call asks the same questions of
         // it, and a malformed query must fail rather than quietly resolve nothing.
-        let narrowing =
-            ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
-        let own = SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?;
+        let context = ResolutionContext {
+            narrowing: ReceiverNarrowing::new(
+                &super::receiver_narrowing::DIALECT,
+                source_code,
+                root_node,
+            )?,
+            own: SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?,
+            imports: ImportLookup::new(source_code, root_node)?,
+        };
 
         Ok(usage_nodes
             .iter()
             .flat_map(|usage_node| {
                 self.resolve_single_dependency_with_scope_aware_external_filtering(
-                    &narrowing,
-                    &own,
+                    &context,
                     usage_node,
                     definitions,
                     usage_nodes,
@@ -131,8 +143,7 @@ impl RustDependencyResolver {
 
     fn resolve_single_dependency_with_scope_aware_external_filtering(
         &self,
-        narrowing: &ReceiverNarrowing,
-        own: &SelfReference,
+        context: &ResolutionContext,
         usage_node: &Usage,
         definitions: &[Definition],
         all_usage_nodes: &[Usage],
@@ -163,8 +174,7 @@ impl RustDependencyResolver {
 
         // Proceed with normal resolution
         if let Some(def) = self.find_closest_accessible_definition_basic(
-            narrowing,
-            own,
+            context,
             usage_node,
             definitions,
             all_usage_nodes,
@@ -207,8 +217,7 @@ impl RustDependencyResolver {
 
     fn find_closest_accessible_definition_basic<'a>(
         &self,
-        narrowing: &ReceiverNarrowing,
-        own: &SelfReference,
+        context: &ResolutionContext,
         usage: &Usage,
         definitions: &'a [Definition],
         all_usage_nodes: &[Usage],
@@ -218,15 +227,19 @@ impl RustDependencyResolver {
         let matching_definitions: Vec<&Definition> = definitions
             .iter()
             .filter(|d| d.name == usage.name && self.is_accessible_basic(usage, d))
+            .filter(|d| {
+                d.definition_type != DefinitionType::ImportDefinition
+                    || context.imports.allows(usage)
+            })
             // A binding is not among the candidates for its own initializer, so `let w = w + 1`
             // looks past it and finds the previous `w`.
-            .filter(|d| !own.declares(usage, d))
+            .filter(|d| !context.own.declares(usage, d))
             .filter(|d| !self.is_value_reached_through(usage, d, all_usage_nodes))
             .collect();
 
         // `receiver.method()` reaches only what the receiver's type declares, so the priority logic
         // below chooses among those rather than among every method sharing the name.
-        let matching_definitions = narrowing.narrow(usage, matching_definitions);
+        let matching_definitions = context.narrowing.narrow(usage, matching_definitions);
 
         if matching_definitions.is_empty() {
             return None;

@@ -58,12 +58,12 @@ impl RustDependencyResolver {
                     let qualifies_a_local_type =
                         qualifier_definitions.iter().any(declares_a_local_type);
 
-                    let has_method_definition = qualifies_a_local_type
-                        && definitions.iter().any(|def| {
-                            def.name == usage_node.name && self.is_declared_in_impl_block(def)
-                        });
+                    let has_member_definition = qualifies_a_local_type
+                        && definitions
+                            .iter()
+                            .any(|def| def.name == usage_node.name && self.is_type_member(def));
 
-                    return !has_method_definition;
+                    return !has_member_definition;
                 }
                 if let Some(parent_id) = scope.parent {
                     current_scope_id = parent_id;
@@ -75,6 +75,18 @@ impl RustDependencyResolver {
 
         // If we can't find qualifier or determine scope, don't skip
         false
+    }
+
+    /// Variants belong to enums; associated functions, constants and types belong to impls or traits.
+    fn is_type_member(&self, definition: &Definition) -> bool {
+        match definition.definition_type {
+            DefinitionType::EnumVariantDefinition => true,
+            DefinitionType::FunctionDefinition
+            | DefinitionType::MethodDefinition
+            | DefinitionType::ConstDefinition
+            | DefinitionType::TypeDefinition => self.is_declared_in_impl_block(definition),
+            _ => false,
+        }
     }
 
     /// A method reached through `Type::` is declared in an `impl` or `trait` block, so what marks a

@@ -88,6 +88,59 @@ fn does_not_confuse_two_calls_on_one_line() {
     );
 }
 
+#[test]
+fn resolves_enum_variants_through_type_aliases() {
+    [
+        ("V", "V"),
+        ("V(i32)", "V(1)"),
+        ("V { value: i32 }", "V { value: 1 }"),
+    ]
+    .into_iter()
+    .for_each(|(variant, value)| {
+        let source = format!(
+            "enum E {{ {variant} }}\ntype Alias = E;\nfn run() {{\n let _ = Alias::{value};\n}}\n"
+        );
+        let (ir, _) = analyze_content(source, Language::Rust).unwrap();
+        let variants: Vec<_> = ir
+            .dependencies
+            .iter()
+            .filter(|dependency| dependency.source_line == 4 && dependency.symbol == "V")
+            .map(|dependency| (dependency.target_line, dependency.dependency_type.clone()))
+            .collect();
+        assert_eq!(
+            variants,
+            vec![(
+                1,
+                lintric_core::models::DependencyType::EnumVariantReference
+            )]
+        );
+    });
+}
+
+#[test]
+fn resolves_an_associated_function_reference_regardless_of_distance() {
+    [0, 30].into_iter().for_each(|padding| {
+        let source = format!("struct T;\ntype Alias = T;\n{}impl T {{ fn make() {{}} }}\nfn run() {{\n let _ = Alias::make;\n}}\n", "\n".repeat(padding));
+        assert!(dependencies(&source).contains(&(padding + 5, padding + 3, "make".to_string())));
+    });
+}
+
+#[test]
+fn a_nearby_free_function_is_not_an_associated_function() {
+    let source = "struct T;\ntype Alias = T;\nfn make() {}\nfn run() {\n let _ = Alias::make;\n}\n";
+    assert!(!dependencies(source)
+        .iter()
+        .any(|(line, _, name)| *line == 5 && name == "make"));
+}
+
+#[test]
+fn an_imported_type_does_not_claim_a_local_member() {
+    let source = "use external::T;\nstruct Local;\nimpl Local { fn make() {} }\nfn run() {\n let _ = T::make;\n}\n";
+    assert!(!dependencies(source)
+        .iter()
+        .any(|(line, _, name)| *line == 5 && name == "make"));
+}
+
 fn dependencies(source: &str) -> Vec<(usize, usize, String)> {
     let (ir, _) = analyze_content(source.to_string(), Language::Rust).unwrap();
 

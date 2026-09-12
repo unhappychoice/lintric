@@ -1,6 +1,7 @@
 pub mod associated_type_resolver;
 pub mod constraint_solver;
 pub mod impl_collector;
+mod import_lookup;
 pub mod lifetime_resolver;
 pub mod method_resolver;
 pub mod module_resolver;

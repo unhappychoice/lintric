@@ -59,6 +59,44 @@ fn a_method_call_inside_a_macro_still_reaches_the_method() {
     assert_eq!(targets(source, 11, "get"), vec![4]);
 }
 
+#[test]
+fn a_qualified_call_does_not_prefer_an_unrelated_import() {
+    ["fn elsewhere() { use crate::b::f; }", "use crate::b::f;"].into_iter().for_each(|import| {
+        let source = format!("mod a {{ pub fn f() {{}} }}\nmod b {{ pub fn f() {{}} }}\n{import}\nfn run() {{\n a::f();\n}}\n");
+        let (ir, _) = analyze_content(source, Language::Rust).unwrap();
+        let calls: Vec<_> = ir.dependencies.iter()
+            .filter(|dependency| dependency.source_line == 5 && dependency.symbol == "f")
+            .map(|dependency| (dependency.target_line, dependency.dependency_type.clone()))
+            .collect();
+        assert_eq!(calls, vec![(1, lintric_core::models::DependencyType::FunctionCall)]);
+    });
+}
+
+#[test]
+fn an_import_is_visible_only_in_its_lexical_scope() {
+    let source = "fn elsewhere() { use external::f; }\nfn run() {\n f();\n}\n";
+    assert!(targets(source, 3, "f").is_empty());
+
+    let source = "fn run() {\n { use external::f; }\n f();\n}\n";
+    assert!(targets(source, 3, "f").is_empty());
+}
+
+#[test]
+fn a_local_import_wins_in_any_function_and_its_nested_blocks() {
+    ["main", "run"].into_iter().for_each(|name| {
+        let source = format!(
+            "mod m {{ pub fn f() {{}} }}\nfn {name}() {{\n use crate::m::f;\n {{\n f();\n }}\n}}\n"
+        );
+        assert_eq!(targets(&source, 5, "f"), vec![3]);
+    });
+}
+
+#[test]
+fn an_imported_path_head_still_reaches_its_binding() {
+    let source = "mod m { pub struct T; }\nuse m::T;\nfn run() {\n T::new();\n}\n";
+    assert_eq!(targets(source, 4, "T"), vec![2]);
+}
+
 fn targets(source: &str, from: usize, symbol: &str) -> Vec<usize> {
     let (ir, _) = analyze_content(source.to_string(), Language::Rust).unwrap();
 
