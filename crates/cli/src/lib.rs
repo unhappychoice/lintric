@@ -164,7 +164,7 @@ fn render(args: &Args, report: &OverallAnalysisReport, logger: &dyn Logger) -> O
     } else if args.verbose {
         display::display_verbose(report, &args.paths, logger);
     } else if args.html {
-        return html_output::generate_html_report(report, logger);
+        return html_output::generate_html_report(report, &args.paths, logger);
     } else {
         display::display_summary(report, &args.paths, logger);
     }
