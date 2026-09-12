@@ -41,13 +41,6 @@ impl RustDependencyResolver {
 
     // Helper methods for Rust-specific dependency resolution
     pub(super) fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
-        // Imports bind in their recorded scope; unlike an item, they create no child scope.
-        if definition.definition_type == crate::models::DefinitionType::ImportDefinition {
-            return definition
-                .scope_id
-                .is_some_and(|scope| self.usage_scope_chain(usage).contains(&scope));
-        }
-
         // ModuleDefinitions are accessible through qualified paths.
         if matches!(
             definition.definition_type,

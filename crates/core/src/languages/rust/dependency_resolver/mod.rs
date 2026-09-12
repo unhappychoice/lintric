@@ -5,6 +5,7 @@ mod import_lookup;
 pub mod lifetime_resolver;
 pub mod method_resolver;
 pub mod module_resolver;
+mod module_scopes;
 pub mod nested_scope_resolver;
 pub mod qualified_paths;
 pub mod receiver_narrowing;

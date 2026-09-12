@@ -226,10 +226,12 @@ impl RustDependencyResolver {
         // This matches the old implementation behavior more closely
         let matching_definitions: Vec<&Definition> = definitions
             .iter()
-            .filter(|d| d.name == usage.name && self.is_accessible_basic(usage, d))
-            .filter(|d| {
-                d.definition_type != DefinitionType::ImportDefinition
-                    || context.imports.allows(usage)
+            .filter(|d| d.name == usage.name)
+            .filter(|d| match d.definition_type {
+                DefinitionType::ImportDefinition => {
+                    context.imports.allows(usage, d, &self.symbol_table)
+                }
+                _ => self.is_accessible_basic(usage, d),
             })
             // A binding is not among the candidates for its own initializer, so `let w = w + 1`
             // looks past it and finds the previous `w`.
@@ -240,6 +242,13 @@ impl RustDependencyResolver {
         // `receiver.method()` reaches only what the receiver's type declares, so the priority logic
         // below chooses among those rather than among every method sharing the name.
         let matching_definitions = context.narrowing.narrow(usage, matching_definitions);
+
+        // A validated module member beats same-named declarations found by the fallback lookup.
+        if context.imports.is_qualified(usage) {
+            if let Some(imported) = first_of(&matching_definitions, IMPORTED) {
+                return Some(imported);
+            }
+        }
 
         if matching_definitions.is_empty() {
             return None;
