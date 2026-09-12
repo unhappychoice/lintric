@@ -55,7 +55,7 @@ expression: out
       "definition_type": "InterfaceDefinition",
       "scope_id": 1,
       "accessibility": "ScopeLocal",
-      "is_hoisted": false
+      "is_hoisted": true
     },
     {
       "name": "x",
@@ -94,7 +94,7 @@ expression: out
       "definition_type": "FunctionDefinition",
       "scope_id": 2,
       "accessibility": "ScopeLocal",
-      "is_hoisted": false
+      "is_hoisted": true
     },
     {
       "name": "a",
@@ -146,7 +146,7 @@ expression: out
       "definition_type": "FunctionDefinition",
       "scope_id": 4,
       "accessibility": "ScopeLocal",
-      "is_hoisted": false
+      "is_hoisted": true
     },
     {
       "name": "p1",
@@ -302,7 +302,7 @@ expression: out
       "definition_type": "FunctionDefinition",
       "scope_id": 8,
       "accessibility": "ScopeLocal",
-      "is_hoisted": false
+      "is_hoisted": true
     }
   ],
   "dependencies": [

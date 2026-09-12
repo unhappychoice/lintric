@@ -1,6 +1,11 @@
 [workspace]
 members = ["crates/core", "crates/cli", "crates/test-generator", "crates/accuracy"]
 
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+repository = "https://github.com/unhappychoice/lintric"
+
 [package]
 name = "lintric-workspace"
 version = "0.1.0"

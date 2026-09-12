@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
-use std::process::Command;
+use std::process::{Command, Output};
 
 #[test]
 fn html_reports_isolate_unicode_hash_collisions() {
@@ -11,6 +11,8 @@ fn html_reports_isolate_unicode_hash_collisions() {
 }
 
 #[test]
+// Windows whole-path limits depend on host configuration; byte bounds are unit-tested everywhere.
+#[cfg(unix)]
 fn html_reports_bound_long_names_and_keep_truncated_slugs_unique() {
     let prefix = "a".repeat(240);
     let longer = "a".repeat(250);
@@ -48,6 +50,40 @@ fn html_reports_use_readable_stable_names_for_typical_paths() {
     assert_eq!(first, fixture.assert_pages().into_iter().collect());
 }
 
+#[test]
+fn html_output_directory_failure_exits_nonzero() {
+    let fixture = HtmlFixture::new("directory-failure", &["a.rs"]);
+    fs::write(fixture.root.join(".lintric"), "blocked").unwrap();
+    fixture.assert_failure(&["a.rs"], "Error creating output directory");
+}
+
+#[test]
+fn html_index_write_failure_exits_nonzero() {
+    let fixture = HtmlFixture::new("index-failure", &["a.rs"]);
+    let output = fixture.root.join(".lintric/output/html");
+    fs::create_dir_all(output.join("index.html")).unwrap();
+    fixture.assert_failure(&["a.rs"], "Error writing index.html");
+    assert!(output.join("a_rs-0.html").is_file());
+}
+
+#[test]
+fn html_page_write_failure_exits_nonzero_and_keeps_other_reports() {
+    let fixture = HtmlFixture::new("page-failure", &["a.rs", "b.rs"]);
+    let output = fixture.root.join(".lintric/output/html");
+    fs::create_dir_all(output.join("a_rs-0.html")).unwrap();
+    fixture.assert_failure(&["a.rs", "b.rs"], "Error generating HTML for file a.rs");
+    assert!(output.join("index.html").is_file());
+    let page = fs::read_to_string(output.join("b_rs-1.html")).unwrap();
+    assert!(page.contains("unique_source_1"));
+}
+
+#[test]
+fn html_success_does_not_hide_analysis_failure() {
+    let fixture = HtmlFixture::new("analysis-failure", &["a.rs"]);
+    fixture.assert_failure(&["missing.rs", "a.rs"], "is neither a file nor a directory");
+    fixture.assert_pages();
+}
+
 struct HtmlFixture {
     root: PathBuf,
     paths: Vec<String>,
@@ -70,22 +106,34 @@ impl HtmlFixture {
     }
 
     fn render(&self, paths: &[&str]) {
-        let binary = option_env!("CARGO_BIN_EXE_lintric")
-            .or(option_env!("CARGO_BIN_EXE_lintric-cli"))
-            .expect("CLI binary must be built for integration tests");
-        let output = Command::new(binary)
-            .current_dir(&self.root)
-            .arg("--html")
-            .args(paths)
-            .output()
-            .unwrap();
+        let output = self.run(paths);
         assert!(output.status.success(), "{output:?}");
         assert!(output.stderr.is_empty(), "{output:?}");
     }
 
+    fn run(&self, paths: &[&str]) -> Output {
+        Command::new(env!("CARGO_BIN_EXE_lintric"))
+            .current_dir(&self.root)
+            .arg("--html")
+            .args(paths)
+            .output()
+            .unwrap()
+    }
+
+    fn assert_failure(&self, paths: &[&str], message: &str) {
+        let output = self.run(paths);
+        assert_eq!(output.status.code(), Some(1), "{output:?}");
+        assert!(
+            String::from_utf8_lossy(&output.stderr).contains(message),
+            "{output:?}"
+        );
+    }
+
     fn assert_pages(&self) -> Vec<String> {
         let output = self.root.join(".lintric/output/html");
-        let index = fs::read_to_string(output.join("index.html")).unwrap();
+        let index = fs::read_to_string(output.join("index.html"))
+            .unwrap()
+            .replace('\\', "/");
         let links: Vec<_> = index
             .split("<a href=\"")
             .skip(1)
@@ -100,7 +148,9 @@ impl HtmlFixture {
                     index.contains(&format!("href=\"{link}\" class=\"file-link\">{path}</a>"))
                 })
                 .unwrap();
-            let page = fs::read_to_string(output.join(link)).unwrap();
+            let page = fs::read_to_string(output.join(link))
+                .unwrap()
+                .replace('\\', "/");
             assert!(
                 page.contains(&format!("Analysis for: {path}</h1>")),
                 "{page}"

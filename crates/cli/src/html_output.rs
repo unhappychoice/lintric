@@ -1,5 +1,6 @@
 use crate::display::format_file_path_for_display;
 use crate::logger::Logger;
+use crate::Outcome;
 use lintric_core::models::{AnalysisResult, LineMetrics, OverallAnalysisReport};
 use std::fs;
 use std::io::Write;
@@ -13,7 +14,7 @@ pub fn generate_html_report(
     report: &OverallAnalysisReport,
     base_paths: &[String],
     logger: &dyn Logger,
-) {
+) -> Outcome {
     let output_dir = PathBuf::from(".lintric/output/html");
     if let Err(e) = fs::create_dir_all(&output_dir) {
         logger.error(&format!(
@@ -21,7 +22,7 @@ pub fn generate_html_report(
             output_dir.display(),
             e
         ));
-        return;
+        return Outcome::Failure;
     }
 
     // Initialize Tera with templates embedded in the binary
@@ -39,6 +40,7 @@ pub fn generate_html_report(
     index_context.insert("average_complexity_score", &report.average_complexity_score);
 
     let mut results_for_template: Vec<serde_json::Value> = Vec::new();
+    let mut failed = false;
 
     let paths: Vec<_> = report
         .results
@@ -69,6 +71,7 @@ pub fn generate_html_report(
                 "Error generating HTML for file {}: {}",
                 result.file_path, e
             ));
+            failed = true;
         }
     }
     index_context.insert("results", &results_for_template);
@@ -77,18 +80,25 @@ pub fn generate_html_report(
         Ok(s) => s,
         Err(e) => {
             logger.error(&format!("Error rendering index.html: {e}"));
-            return;
+            return Outcome::Failure;
         }
     };
 
     let index_file_path = output_dir.join("index.html");
     if let Err(e) = write_file(&index_file_path, &index_html_content) {
         logger.error(&format!("Error writing index.html: {e}"));
+        return Outcome::Failure;
+    }
+
+    logger.info(&format!(
+        "HTML report generated at: {}",
+        index_file_path.display()
+    ));
+
+    if failed {
+        Outcome::Failure
     } else {
-        logger.info(&format!(
-            "HTML report generated at: {}",
-            index_file_path.display()
-        ));
+        Outcome::Success
     }
 }
 
