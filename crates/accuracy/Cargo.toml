@@ -1,7 +1,10 @@
 [package]
 name = "lintric-accuracy"
-version = "0.1.0"
-edition = "2021"
+description = "Measures how accurately Lintric detects line-level dependencies"
+publish = false
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
 
 [dependencies]
 lintric-core = { path = "../core" }

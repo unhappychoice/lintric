@@ -1,7 +1,12 @@
 [package]
 name = "lintric-cli"
-version = "0.1.0"
-edition = "2021"
+description = "Command-line interface for Lintric, a line-level dependency metrics tool"
+readme = "README.md"
+keywords = ["metrics", "static-analysis", "cli", "complexity"]
+categories = ["command-line-utilities", "development-tools"]
+version.workspace = true
+edition.workspace = true
+repository.workspace = true
 
 [[bin]]
 name = "lintric"
