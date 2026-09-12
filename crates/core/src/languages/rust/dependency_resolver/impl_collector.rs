@@ -122,7 +122,7 @@ impl RustImplCollector {
         let mut type_name = None;
         let mut body_node = None;
 
-        for capture in query_match.captures.iter() {
+        for capture in query_match.captures().iter() {
             let node = capture.node;
             let text = node.utf8_text(source_code.as_bytes()).ok()?;
 
@@ -159,7 +159,7 @@ impl RustImplCollector {
         let mut type_name = None;
         let mut body_node = None;
 
-        for capture in query_match.captures.iter() {
+        for capture in query_match.captures().iter() {
             let node = capture.node;
             let text = node.utf8_text(source_code.as_bytes()).ok()?;
 
@@ -195,7 +195,7 @@ impl RustImplCollector {
         let mut trait_name = None;
         let mut body_node = None;
 
-        for capture in query_match.captures.iter() {
+        for capture in query_match.captures().iter() {
             let node = capture.node;
             let text = node.utf8_text(source_code.as_bytes()).ok()?;
 
