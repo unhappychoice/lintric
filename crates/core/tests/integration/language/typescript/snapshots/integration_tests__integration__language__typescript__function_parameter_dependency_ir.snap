@@ -39,7 +39,7 @@ IR:
 IntermediateRepresentation {
     file_path: "tests/integration/language/typescript/fixtures/function_parameter_dependency.ts",
     definitions: [
-        Definition { position: { 1:10 to 1:11 }, name: "a", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
+        Definition { position: { 1:10 to 1:11 }, name: "a", definition_type: FunctionDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(true) },
         Definition { position: { 1:12 to 1:13 }, name: "b", definition_type: VariableDefinition, scope_id: Some(1), accessibility: Some(ScopeLocal), is_hoisted: Some(false) },
     ],
     dependencies: [

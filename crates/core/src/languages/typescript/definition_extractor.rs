@@ -127,17 +127,11 @@ impl TypeScriptDefinitionExtractor {
             None => return vec![],
         };
 
-        // Check if it's a const declaration for hoisting
-        let is_hoisted = if let Some(parent) = node.parent() {
-            if let Some(grandparent) = parent.parent() {
-                grandparent.kind() == "variable_declaration"
-                    && grandparent.child_by_field_name("kind").map(|k| k.kind()) == Some("var")
-            } else {
-                false
-            }
-        } else {
-            false
-        };
+        // `var` hoists. Its declarator sits directly under a `variable_declaration`, while `let`
+        // and `const` sit under a `lexical_declaration` and do not hoist.
+        let is_hoisted = node
+            .parent()
+            .is_some_and(|parent| parent.kind() == "variable_declaration");
 
         // Use find_identifier_nodes_in_node to handle destructuring patterns
         self.find_identifier_nodes_in_node(name_node)
