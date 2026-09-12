@@ -1,4 +1,6 @@
+use super::import_lookup::ImportLookup;
 use super::nested_scope_resolver::ScopeUtilities;
+use super::qualified_members::QualifiedMembers;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::self_reference::SelfReference;
 use crate::dependency_resolver::DependencyResolverTrait;
@@ -14,6 +16,13 @@ const OWN_INITIALIZERS: &str = include_str!("../../../../queries/rust/own_initia
 /// including generics, lifetimes, traits, and Rust-specific language features
 pub struct RustDependencyResolver {
     pub(super) symbol_table: SymbolTable,
+}
+
+struct ResolutionContext {
+    narrowing: ReceiverNarrowing,
+    own: SelfReference,
+    imports: ImportLookup,
+    qualified_members: QualifiedMembers,
 }
 
 impl RustDependencyResolver {
@@ -111,16 +120,22 @@ impl RustDependencyResolver {
     ) -> Result<Vec<Dependency>, String> {
         // Read off the file once rather than per usage: every method call asks the same questions of
         // it, and a malformed query must fail rather than quietly resolve nothing.
-        let narrowing =
-            ReceiverNarrowing::new(&super::receiver_narrowing::DIALECT, source_code, root_node)?;
-        let own = SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?;
+        let context = ResolutionContext {
+            narrowing: ReceiverNarrowing::new(
+                &super::receiver_narrowing::DIALECT,
+                source_code,
+                root_node,
+            )?,
+            own: SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?,
+            imports: ImportLookup::new(source_code, root_node)?,
+            qualified_members: QualifiedMembers::new(source_code, root_node)?,
+        };
 
         Ok(usage_nodes
             .iter()
             .flat_map(|usage_node| {
                 self.resolve_single_dependency_with_scope_aware_external_filtering(
-                    &narrowing,
-                    &own,
+                    &context,
                     usage_node,
                     definitions,
                     usage_nodes,
@@ -131,27 +146,12 @@ impl RustDependencyResolver {
 
     fn resolve_single_dependency_with_scope_aware_external_filtering(
         &self,
-        narrowing: &ReceiverNarrowing,
-        own: &SelfReference,
+        context: &ResolutionContext,
         usage_node: &Usage,
         definitions: &[Definition],
         all_usage_nodes: &[Usage],
     ) -> Vec<Dependency> {
         let mut dependencies = Vec::new();
-
-        // Check if this usage is a method name in a qualified call that has no accessible definition
-        // But don't skip if it's a type reference (like in use statements or type annotations)
-        if self.is_method_name_in_qualified_call(usage_node, all_usage_nodes)
-            && self.is_method_in_scoped_identifier_without_definition(
-                usage_node,
-                definitions,
-                all_usage_nodes,
-            )
-            && !self.is_type_reference_in_scoped_identifier(usage_node)
-        {
-            // Skip creating dependency for method calls that are not defined in accessible scopes
-            return dependencies;
-        }
 
         // Skip creating dependencies for TypeIdentifiers that are part of qualified paths
         // (like "future" in "std::future::Future")
@@ -163,8 +163,7 @@ impl RustDependencyResolver {
 
         // Proceed with normal resolution
         if let Some(def) = self.find_closest_accessible_definition_basic(
-            narrowing,
-            own,
+            context,
             usage_node,
             definitions,
             all_usage_nodes,
@@ -207,8 +206,7 @@ impl RustDependencyResolver {
 
     fn find_closest_accessible_definition_basic<'a>(
         &self,
-        narrowing: &ReceiverNarrowing,
-        own: &SelfReference,
+        context: &ResolutionContext,
         usage: &Usage,
         definitions: &'a [Definition],
         all_usage_nodes: &[Usage],
@@ -217,16 +215,39 @@ impl RustDependencyResolver {
         // This matches the old implementation behavior more closely
         let matching_definitions: Vec<&Definition> = definitions
             .iter()
-            .filter(|d| d.name == usage.name && self.is_accessible_basic(usage, d))
+            .filter(|d| d.name == usage.name)
+            .filter(|d| match d.definition_type {
+                DefinitionType::ImportDefinition => {
+                    context.imports.allows(usage, d, &self.symbol_table)
+                }
+                _ => self.is_accessible_basic(usage, d),
+            })
             // A binding is not among the candidates for its own initializer, so `let w = w + 1`
             // looks past it and finds the previous `w`.
-            .filter(|d| !own.declares(usage, d))
+            .filter(|d| !context.own.declares(usage, d))
             .filter(|d| !self.is_value_reached_through(usage, d, all_usage_nodes))
             .collect();
 
         // `receiver.method()` reaches only what the receiver's type declares, so the priority logic
         // below chooses among those rather than among every method sharing the name.
-        let matching_definitions = narrowing.narrow(usage, matching_definitions);
+        let matching_definitions = context.narrowing.narrow(usage, matching_definitions);
+        let matching_definitions = if context
+            .imports
+            .has_module_qualifier(usage, &self.symbol_table)
+        {
+            matching_definitions
+        } else {
+            context
+                .qualified_members
+                .narrow(self, usage, matching_definitions, definitions)
+        };
+
+        // A validated module member beats same-named declarations found by the fallback lookup.
+        if context.imports.is_qualified(usage) {
+            if let Some(imported) = first_of(&matching_definitions, IMPORTED) {
+                return Some(imported);
+            }
+        }
 
         if matching_definitions.is_empty() {
             return None;
@@ -245,9 +266,11 @@ impl RustDependencyResolver {
         matching_definitions: &[&'a Definition],
         usage: &Usage,
     ) -> Option<&'a Definition> {
-        // An import is what a name in `main` reaches, since that is where a `use` was written for.
-        if self.is_usage_in_main_function(usage) {
-            if let Some(imported) = first_of(matching_definitions, IMPORTED) {
+        // A `use` is what puts a name from another module within reach in its bare form. Where the
+        // declarations it could otherwise name all sit in scopes the usage is not inside, the
+        // import is what the name reaches.
+        if let Some(imported) = first_of(matching_definitions, IMPORTED) {
+            if self.every_other_candidate_is_out_of_scope(matching_definitions, usage) {
                 return Some(imported);
             }
         }
@@ -295,36 +318,16 @@ impl RustDependencyResolver {
             .copied()
     }
 
-    fn is_usage_in_main_function(&self, usage: &Usage) -> bool {
-        // Find the main function definition
-        for scope in self.symbol_table.scopes.scopes.values() {
-            if let Some(main_defs) = scope.symbols.get("main") {
-                for def in main_defs {
-                    if matches!(
-                        def.definition_type,
-                        crate::models::DefinitionType::FunctionDefinition
-                    ) {
-                        // Find function body scope that contains this main function
-                        let main_line = def.position.start_line;
-                        for body_scope in self.symbol_table.scopes.scopes.values() {
-                            // Look for a scope that starts right after the main function definition
-                            if body_scope.position.start_line == main_line + 1
-                                || (body_scope.position.start_line <= main_line + 1
-                                    && body_scope.position.end_line > main_line)
-                            {
-                                // Check if usage is within this function body scope
-                                if usage.position.start_line > main_line
-                                    && usage.position.start_line <= body_scope.position.end_line
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        false
+    /// True when nothing but an import is reachable from where the usage sits.
+    fn every_other_candidate_is_out_of_scope(
+        &self,
+        candidates: &[&Definition],
+        usage: &Usage,
+    ) -> bool {
+        candidates
+            .iter()
+            .filter(|definition| definition.definition_type != DefinitionType::ImportDefinition)
+            .all(|definition| !self.is_in_scope_chain(usage, definition))
     }
 }
 

@@ -41,11 +41,10 @@ impl RustDependencyResolver {
 
     // Helper methods for Rust-specific dependency resolution
     pub(super) fn is_accessible_basic(&self, usage: &Usage, definition: &Definition) -> bool {
-        // ImportDefinitions and ModuleDefinitions are always accessible from any scope
+        // ModuleDefinitions are accessible through qualified paths.
         if matches!(
             definition.definition_type,
-            crate::models::DefinitionType::ImportDefinition
-                | crate::models::DefinitionType::ModuleDefinition
+            crate::models::DefinitionType::ModuleDefinition
         ) {
             return true;
         }
@@ -133,7 +132,7 @@ impl RustDependencyResolver {
     /// An item that creates a scope has its own name recorded inside that scope rather than
     /// alongside it, so a top-level `fn` is registered in the function's own scope. The parent
     /// therefore counts too, otherwise no such item would ever look reachable.
-    fn is_in_scope_chain(&self, usage: &Usage, definition: &Definition) -> bool {
+    pub(super) fn is_in_scope_chain(&self, usage: &Usage, definition: &Definition) -> bool {
         let chain = self.usage_scope_chain(usage);
 
         definition.scope_id.is_some_and(|def_scope| {
