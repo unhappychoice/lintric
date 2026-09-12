@@ -19,18 +19,29 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Cache cargo build
         uses: Swatinem/rust-cache@v2
-      - run: cargo build --release
+      - run: cargo build --release --locked --package lintric-cli
       - name: Archive binary
         shell: bash
         run: |
           mkdir -p target/release/archives
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            7z a target/release/archives/lintric-windows.zip .\target\release\lintric.exe
+            7z a target/release/archives/lintric-windows.zip ./target/release/lintric.exe
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             tar -czf target/release/archives/lintric-macos.tar.gz -C target/release lintric
           else
             tar -czf target/release/archives/lintric-linux.tar.gz -C target/release lintric
           fi
+      - name: Generate checksums
+        shell: bash
+        working-directory: target/release/archives
+        run: |
+          for file in *; do
+            if command -v sha256sum > /dev/null; then
+              sha256sum "$file" > "$file.sha256"
+            else
+              shasum -a 256 "$file" > "$file.sha256"
+            fi
+          done
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
