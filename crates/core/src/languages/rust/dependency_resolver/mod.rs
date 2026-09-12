@@ -7,6 +7,7 @@ pub mod method_resolver;
 pub mod module_resolver;
 mod module_scopes;
 pub mod nested_scope_resolver;
+mod qualified_members;
 pub mod qualified_paths;
 pub mod receiver_narrowing;
 pub mod rust_dependency_resolver;

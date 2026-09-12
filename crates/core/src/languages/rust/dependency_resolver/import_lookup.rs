@@ -65,9 +65,24 @@ impl ImportLookup {
         self.qualifiers
             .contains_key(&(usage.position.start_line, usage.position.start_column))
     }
+
+    pub(super) fn has_module_qualifier(&self, usage: &Usage, symbols: &SymbolTable) -> bool {
+        let scope = symbols
+            .scopes
+            .find_scope_at_position(&usage.position)
+            .unwrap_or(0);
+        self.qualifiers
+            .get(&(usage.position.start_line, usage.position.start_column))
+            .and_then(Option::as_ref)
+            .is_some_and(|path| {
+                ModuleScopes::new(&symbols.scopes)
+                    .resolve(path, scope)
+                    .is_some()
+            })
+    }
 }
 
-fn path_segments(node: Node, source: &str) -> Option<Vec<String>> {
+pub(super) fn path_segments(node: Node, source: &str) -> Option<Vec<String>> {
     match node.kind() {
         "identifier" | "type_identifier" | "self" | "super" | "crate" => {
             Some(vec![node.utf8_text(source.as_bytes()).ok()?.to_string()])

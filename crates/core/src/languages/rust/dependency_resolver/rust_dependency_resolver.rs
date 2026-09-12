@@ -1,5 +1,6 @@
 use super::import_lookup::ImportLookup;
 use super::nested_scope_resolver::ScopeUtilities;
+use super::qualified_members::QualifiedMembers;
 use crate::dependency_resolver::receiver_narrowing::ReceiverNarrowing;
 use crate::dependency_resolver::self_reference::SelfReference;
 use crate::dependency_resolver::DependencyResolverTrait;
@@ -21,6 +22,7 @@ struct ResolutionContext {
     narrowing: ReceiverNarrowing,
     own: SelfReference,
     imports: ImportLookup,
+    qualified_members: QualifiedMembers,
 }
 
 impl RustDependencyResolver {
@@ -126,6 +128,7 @@ impl RustDependencyResolver {
             )?,
             own: SelfReference::new(OWN_INITIALIZERS, source_code, root_node)?,
             imports: ImportLookup::new(source_code, root_node)?,
+            qualified_members: QualifiedMembers::new(source_code, root_node)?,
         };
 
         Ok(usage_nodes
@@ -149,20 +152,6 @@ impl RustDependencyResolver {
         all_usage_nodes: &[Usage],
     ) -> Vec<Dependency> {
         let mut dependencies = Vec::new();
-
-        // Check if this usage is a method name in a qualified call that has no accessible definition
-        // But don't skip if it's a type reference (like in use statements or type annotations)
-        if self.is_method_name_in_qualified_call(usage_node, all_usage_nodes)
-            && self.is_method_in_scoped_identifier_without_definition(
-                usage_node,
-                definitions,
-                all_usage_nodes,
-            )
-            && !self.is_type_reference_in_scoped_identifier(usage_node)
-        {
-            // Skip creating dependency for method calls that are not defined in accessible scopes
-            return dependencies;
-        }
 
         // Skip creating dependencies for TypeIdentifiers that are part of qualified paths
         // (like "future" in "std::future::Future")
@@ -242,6 +231,16 @@ impl RustDependencyResolver {
         // `receiver.method()` reaches only what the receiver's type declares, so the priority logic
         // below chooses among those rather than among every method sharing the name.
         let matching_definitions = context.narrowing.narrow(usage, matching_definitions);
+        let matching_definitions = if context
+            .imports
+            .has_module_qualifier(usage, &self.symbol_table)
+        {
+            matching_definitions
+        } else {
+            context
+                .qualified_members
+                .narrow(self, usage, matching_definitions, definitions)
+        };
 
         // A validated module member beats same-named declarations found by the fallback lookup.
         if context.imports.is_qualified(usage) {
